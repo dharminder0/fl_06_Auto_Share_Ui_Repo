@@ -1,0 +1,119 @@
+<div class="tab-pane" id="tab-3">
+  <div *ngIf='isApiHitted && !analyticsStats?.IsBranchingLogicEnabled' class="box-layout margin-bottom-20">
+    <h2>{{"EXPANDED_AUTOMATION_INTERACTION_DROPOFF" | translate }}</h2>
+    <div class="table-container">
+      <table class="table point-table">
+        <tbody>
+          <tr>
+            <td>
+              <span class="top">{{ analyticsOverview?.Views }}</span>
+              <span class="circle cirlce-over view"></span>
+              <span class="bottom">{{"VIEWS" | translate }}</span>
+            </td>
+            <td>
+              <span class="top">{{ analyticsOverview?.QuizStarts }}</span>
+              <span class="circle cirlce-over"></span>
+              <span class="bottom">{{"STARTS" | translate }}</span>
+            </td>
+            <td *ngFor='let question of analyticsStats?.Questions; let i=index;'>
+              <span class="top">{{ question?.QuestionAttempts }}</span>
+              <span class="circle cirlce-over"></span>
+              <span class="bottom">Q{{i+1}}</span>
+            </td>
+            <td>
+              <span class="top">{{ analyticsOverview?.Leads }}</span>
+              <span class="circle cirlce-over"></span>
+              <span class="bottom">{{"LEAD" | translate }}</span>
+            </td>
+            <td>
+              <span class="top">{{ analyticsOverview?.Completion }}</span>
+              <span class="circle cirlce-over finished"></span>
+              <span class="bottom">{{"FINISH" | translate }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="t2">{{"TOTAL_INTERACTIONS_BY_VISITOR_EVENT" | translate }}</p>
+    </div>
+  </div>
+  <div class="box-layout">
+    <h2>{{"AUTOMATION_BREAKDOWN_BY_QUESTION" | translate }}</h2>
+    <div class="breakdown">
+      <div class="top">
+        <div class="in">
+          <i class="circle check-o"></i>
+          <div class="cnt">
+            <p>{{"STARTS" | translate }}</p>
+            <span class="pressed">{{ analyticsStats?.VisitorsCount }} Visitors pressed the {{ analyticsStats?.StartButtonText }} button.</span>
+          </div>
+        </div>
+        <div *ngIf ='isApiHitted && analyticsStats?.IsBranchingLogicEnabled' class="in">
+          <i class="circle check-o"></i>
+          <div class="cnt">
+            <p>{{"QUESTION_DATA_NOT_AVAILABLE_YET_WITH_BRANCHING_LOGIC." | translate }}</p>
+          </div>
+        </div>
+        <div class="in">
+          <i class="circle check-o"></i>
+          <div class="cnt">
+            <p>{{"USER_OPT-IN" | translate }}</p>
+          </div>
+        </div>
+        <div class="in">
+          <i class="circle email-o"></i>
+          <div class="cnt">
+            <p>{{"LEADS" | translate }}</p>
+            <div class="progress-col">
+              <div class="left">
+                <span class="top-view">
+                  <b>{{ leadProgressBarValue | number:'.1-2' }}%</b>
+                </span>
+                <span class="bottom-view">
+                  <i class="fa-icon check-o n"></i>
+                  <small class="opacity">{{ analyticsStats?.LeadsCount }}</small>
+                </span>
+              </div>
+              <div class="progress">
+                <!-- <div class="progress-bar light" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100" style="width:98%">
+                </div> -->
+                <progressbar class="progress-bar" [value]="leadProgressBarValue"></progressbar>
+              </div>
+              <div class="right">
+                <span class="top-view">
+                  <b>100%</b>
+                </span>
+                <span class="bottom-view opacity">
+                  <i class="fa-icon check-o n"></i>
+                  <small>{{ analyticsStats?.VisitorsCount }}</small>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="in">
+          <i class="circle flag color"></i>
+          <div class="cnt">
+            <p>{{"RESULTS" | translate }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="bottom">
+        <div *ngFor='let result of analyticsStats?.Results;let i = index;' class="progress-col">
+          <div class="left">
+            <span class="top-view">
+              <b class="opacity n">{{ i+1 }}.</b> {{ result?.ResultTitle }}</span>
+            <span class="bottom-view opacity">
+              <b class="nn">{{ progressBarValues[i] | number:'.1-2' }}%</b>
+              <i class="fa-icon check-o n"></i>
+              <small>{{result?.LeadsInResult}}</small>
+            </span>
+          </div>
+          <div class="progress">
+            <progressbar class="progress-bar" [value]="progressBarValues[i]"></progressbar>
+          </div>
+        </div>
+        <span class="pressed">{{ analyticsStats?.CompletedQuizCount }} {{"VISITORS_COMPLETED_THE_AUTOMATION" | translate}}.</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+:host ::ng-deep .selected.highlighted{
+    background-color: #000000;
+    background-color: var(--secondary-color);
+}
+
+:host ::ng-deep .highlighted{
+    background-color: #000000;
+    background-color: var(--secondary-color);
+}

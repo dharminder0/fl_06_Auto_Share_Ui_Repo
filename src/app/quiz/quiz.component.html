@@ -1,0 +1,13 @@
+<div id="scrollDiv" class="pre-scroll" (scroll)="onScroll($event)">
+    <div *ngIf="!isMoblieViewLogo && logoPublicId" [style.background]="backgroundColorLogo" [ngClass]="{'left-logo':logoAlignment=='Left','right-logo':logoAlignment=='Right'}" class="logo-body">
+        <cl-image public-id={{logoPublicId}}>
+            <cl-transformation width="130" height="60" crop="lpad" fetch-format="auto"></cl-transformation>
+        </cl-image>
+    </div>
+    <div [style.background]="isMobile ? background:background" class="quiz-preview-popup" [ngClass]="{'islogo': !isLogoDisplay && logoImage }">
+        <div class="overlay" [style.background]="isMobile ? overlay:overlay" *ngIf="attemptQuizSetting && attemptQuizSetting.QuizBrandingAndStyle && attemptQuizSetting.QuizBrandingAndStyle.IsBackType == 1"></div>
+
+        <div [ngClass]="{'vertically-center': !isMobileView,'automation-align-left':!isMobileView && (automationAlignment=='Left') ,'automation-align-right':!isMobileView && (automationAlignment=='Right')}">
+            <div #quizRef></div>
+        </div>
+</div>

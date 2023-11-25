@@ -1,0 +1,353 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Modal 
+*/
+
+.app-sidebar-overlay {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0;
+  content: "";
+  z-index: -9999;
+  position: fixed;
+  transition: 3s;
+  visibility: hidden;
+  background: rgba(0, 0, 0, 0.20);
+  transition: visibility 0s, opacity 0.5s linear;
+  &.open{
+    opacity: 1;
+    z-index: 91;
+    visibility: visible;
+  }
+}
+.app-sidebar{
+  top: 0;
+  right: -6000px;
+  bottom: 0;
+  border: 0;
+  margin: 0;
+  width: 600px;
+  z-index: 92;
+  position: fixed;
+  background: $base-bkg-4;
+  box-shadow: $base-shadow-1;
+  @include transition(all 0.8s ease-in-out);
+  .tabbable-body{
+    margin: 0;
+  }
+  &.medium{
+    width: 800px;
+  }
+  &.large{
+    width: 960px;
+  }
+  &.open{
+    right: 0px;
+  }
+
+  .app-calc {
+    height: calc(100% - 60px);    
+    &.max{
+      height: calc(100% - 140px);
+      .form-body{
+        margin-bottom: 0 !important;  
+      }
+    }
+    &.min{
+      height: calc(100% - 60px);
+    }
+  }
+  .portlet-head{
+    height: 60px;
+    padding: 0 30px;
+    background: $base-bkg-1; 
+    @include flex();
+    @include align-item();
+    a.back{ 
+      font-weight: bold;
+      @include flex-value-1();
+      i{       
+        padding-right: 6px;
+      }
+    }
+    .action{
+      a.closet{
+        width: 80px;
+        height: 80px;
+        top: 40px;
+        left: -140px;
+        position: absolute;
+        background: $base-bkg-1;
+        @include border-radius(100%);
+        &:before{
+          width: 1px;
+          height: 50px;
+          left: 40px;
+          top: 14px;
+          content: "";
+          position: absolute;
+          background: $base-bkg-5;
+          transform: rotate(45deg);
+        }
+        &:after{
+          width: 1px;
+          height: 50px;
+          left: 40px;
+          top: 14px;
+          content: "";
+          position: absolute;
+          background: $base-bkg-5;
+          transform: rotate(-45deg);
+        }
+      }  
+    }
+  }  
+  .portlet-body{
+    .app-grow{
+      padding: 0 50px; 
+      .form-body{          
+        margin-bottom: 40px;
+        border: 1px solid $base-color-3;
+        box-shadow: $primary-shadow;
+        .in{  
+          padding: 28px 40px;
+          &.white-bkg{
+            background: $base-bkg-1;
+          }
+          &.grey-bkg{
+            background: $base-bkg-6;
+          }
+          &.light-bkg{
+            background: $base-bkg-2;
+          }
+          &.gutter{
+            padding: 22px 30px;  
+          }
+        }
+        span{
+          &.in{
+            padding: 10px;
+            display: block;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+  .form-actions{ 
+    height: 80px;
+    background: $base-bkg-1;   
+    @include flex-group(); 
+    &.bottom{
+      margin: 0 53px 0 50px;
+      border: 1px solid $base-color-3;
+      box-shadow: $primary-shadow;
+    }
+  }
+}
+.app-side-menu{
+  right: 0;
+  top: 203px;
+  width: 0;
+  position: fixed;
+  ul{
+    li{
+        height: 31px;       
+        position: relative;
+      a{   
+        width: 36px;     
+        height: 30px;
+        font-size: 12px;
+        color: $base-color-1;        
+        font-weight: bold;
+        right: 0;
+        padding: 0 16px;
+        position: absolute;
+        background: $base-bkg-3;        
+        @include flex();
+        @include align-item();  
+        @include transition(all 0.3s ease-in-out); 
+        &:hover{
+          width: 210px;
+        } 
+        i{
+          font-size: 20px;
+        }   
+      }
+      span{
+        font-size: $font-size-small;        
+        padding-left: 14px;
+        white-space: nowrap;
+      }
+    }
+  }    
+}
+.modal-content{
+  box-shadow: $base-shadow-1;
+  @include border-radius(0); 
+}
+
+@media (min-width: 992px){
+  .modal-medium {
+    width: 830px;
+  }
+}
+.modal-body{
+  padding: 20px 40px 40px;  
+  h2{
+    font-size: $font-size-large;
+  }
+  .heading{
+    margin-top: 6px;
+    h2{
+      font-size: $font-size-medium;
+    }
+  }
+}
+
+.modal-footer{
+  border: 0;
+  text-align: left;
+  padding: 0 40px 40px;
+  .btn{
+    min-width: 80px;
+  }
+}
+
+.modal-header{
+  border: 0;
+  padding: 22px 40px;
+  text-align: center;
+  background: #ececf2;
+  margin-bottom: 36px;
+}
+
+.modal-body.prev-view {
+  .modular-builder{
+    text-align: center;
+    h2{
+      margin: 26px 0;
+    }
+    .box{
+      padding: 20px;
+      background: $base-bkg-1;  
+      border: 1px solid $base-color-3;
+      box-shadow: $primary-shadow;
+      position: relative;
+      figure{
+        img{
+          width: 100%;
+          @include border-radius(4px);
+        }
+      }
+      h3{
+        margin: 26px 0;
+        line-height: 22px;
+        font-size: $font-size-medium;
+      }
+    }
+  }
+}
+
+.modal-body.publish-view {
+  padding: 0 0 60px;
+  text-align: center;  
+  p.dec{
+    margin-bottom: 36px;
+  }
+  .alert-ember{
+    max-width: 628px;
+    margin: 36px auto 40px;
+  }
+  .btn{
+    min-width: 100px;
+  }
+}
+
+.tab-dialog{
+  margin-top: 80px;
+  .tabbable-body{
+    margin: -43px 0 0 0;
+  }
+}
+
+.heading{
+  margin: 20px 0;        
+  h2{ 
+    margin: 0;         
+    position: relative; 
+    @include inline-flex();    
+    @include align-item();
+    small{
+      font-size: $font-size-regular;
+      display: block;
+      color: $regular-color;
+      margin-top: 4px;
+      line-height: normal;
+    } 
+  }
+}
+
+
+
+
+
+
+
+
+
+.draggable-engine{
+  .is-draggable-row-heading {   
+    opacity: 0.8;
+    margin-bottom: 10px;
+  }
+  .is-draggable-row {
+    height: 40px;
+    padding: 0 12px;
+    @include flex();
+    @include align-item();
+    position: relative;
+    margin-bottom: 20px;
+    background: $base-bkg-6;
+    @include border-radius(2px);
+    &.open{
+      margin-bottom: 0;
+    }
+    .handle{
+      margin-right: 10px;
+    }
+    .tringgr{
+      top: 10px;
+      right: 12px;
+      opacity: 0.8;
+      position: absolute;
+      color: $regular-color;
+    }
+  }
+  .is-draggable-answer{
+    padding: 20px 50px 0;
+    margin-bottom: 20px;
+    border: 1px solid $base-color-9;
+    .is-draggable-row{
+      margin-bottom: 12px;
+    }
+  }
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

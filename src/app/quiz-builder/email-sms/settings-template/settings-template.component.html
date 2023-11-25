@@ -1,0 +1,43 @@
+<div class="app-sidebar" id="data-settings">
+  <div class="portlet-head">
+    <a href="javascript:void(0)" class="back closet">
+      <i class="fa fa-chevron-left"></i>{{"BACK_TO_ALL_EMAIL_AND_SMS_TEMPLATES" | translate }}</a>
+    <div class="action">
+      <a href="javascript:void(0)" class="closet"></a>
+    </div>
+  </div>
+  <div class="portlet-body horizontal-form app-calc">
+    <div class="app-grow">
+      <div class="heading">
+        <h2 class="title-8">{{"SETTINGS" | translate }}</h2>
+      </div>
+      <div class="form-body">
+        <div class="in white-bkg">
+          <div class="app-radio-list form-group flex-info">
+            <div>
+              <label class="app-radio extra-clickable">{{"MARK_AS_INACTIVE_QUIZ" | translate}}
+                <input type="radio" [value]="inactiveValue" name="1" [(ngModel)]="templateId">
+                <span></span>
+                <!-- <a href="javascript:void(0);" class="tool-tip">
+                    <i class="fa-icon tip"></i>
+                  </a> -->
+              </label>
+            </div>
+            <div *ngFor="let item of list.NotificationTemplateList;let i = index">
+              <label class="app-radio extra-clickable">{{"ASSOCIATE_WITH_TEMPLATE" | translate}} {{i+1}}
+                <input type="radio" [value]="item.Id" name="1" [(ngModel)]="templateId" [checked]="templateId == item.Id">
+                <span></span>
+                <!-- <a href="javascript:void(0);" class="tool-tip">
+                    <i class="fa-icon tip"></i>
+                  </a> -->
+              </label>
+            </div>
+          </div>
+          <div class="form-action">
+            <button class="btn blue closet" (click)="saveOrder()">{{"SAVE" | translate }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

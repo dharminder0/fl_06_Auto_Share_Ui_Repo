@@ -1,0 +1,32 @@
+<div class="app-sidebar large" id="data-add">
+  <div class="portlet-head">
+    <a href="javascript:void(0)" class="back closet">
+      <i class="fa fa-chevron-left"></i>{{"BACK_TO_ALL_EMAIL_AND_SMS_TEMPLATE" | translate }}</a>
+    <div class="action">
+      <a href="javascript:void(0)" class="closet"></a>
+    </div>
+  </div>
+  <div class="portlet-body horizontal-form app-calc">
+    <div class="app-grow">
+      <div class="heading">
+        <h2 class="title-9">{{"ADD_NEW_TEMPLATES" | translate }}</h2>
+      </div>
+      <div class="form-body">
+        <form [formGroup] = 'addTemplateForm' (submit) = 'addNewTemplate()' class="in white-bkg">
+          <div class="row margin-bottom-10">
+            <div class="col-md-4" *ngFor = 'let quiz of quizList; let i = index' >
+              <label class="app-checkbox">{{ quiz.QuizTitle }}
+                <input type="checkbox" (click) = 'omSelectQuiz(i)' [value]="quiz.Id" name="0">
+                <span></span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn blue closet">{{"SAVE_NEW_TEMPLATE" | translate }}</button>
+            <a class="btn no-btn line closet">{{"CANCEL" | translate }}</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

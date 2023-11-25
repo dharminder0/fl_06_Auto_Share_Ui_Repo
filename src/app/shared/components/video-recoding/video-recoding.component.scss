@@ -1,0 +1,39 @@
+.modal {
+    background: rgba(0, 0, 0, 0.36);
+    z-index: 999;
+    display: block !important;
+    overflow: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    .modal-open {
+        min-width: 960px;
+        height: 600px;
+        overflow: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: auto;
+        transform: translate(-50%, -50%);
+        background-color: #ffffff;
+    }
+    .cross-icon {
+        cursor: pointer;
+        float: right;
+        margin: 10px;
+    }
+}
+
+#myVideo {
+    background-color: #374b6b;
+}
+
+.video-block{
+    margin: auto;
+    bottom: 0;
+    top: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+}

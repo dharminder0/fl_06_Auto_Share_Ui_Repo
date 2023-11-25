@@ -1,0 +1,13 @@
+.error-status{
+    font-size: 24px;
+    text-align: center;
+}
+
+.error-message{
+    text-align: center;
+    font-weight: bold;
+}
+
+.error{
+    padding-top: 20%
+}

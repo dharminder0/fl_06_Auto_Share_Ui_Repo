@@ -1,0 +1,43 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : List 
+*/
+
+.action-list{
+  margin: 0;
+  padding: 0;
+  float: right;
+  @include inline-flex();
+  li{
+    display: inline-block;
+    a{
+      opacity: 0.8;
+      color: $regular-color;
+      display: flex;
+      align-items: center;
+      padding-left: 52px;
+      white-space: nowrap;
+      &:hover{
+        color: $secondary-color;
+        opacity: 1;
+
+      }      
+      &.grey{        
+        min-width: 160px;         
+      }
+      i{
+        margin-right: 8px;
+        font-size: 16px;
+      }       
+    }
+    .dropdown-menu{
+      li{
+        display: block;
+        a{
+          padding-left: 14px;          
+        }
+      }
+    }
+  } 
+}

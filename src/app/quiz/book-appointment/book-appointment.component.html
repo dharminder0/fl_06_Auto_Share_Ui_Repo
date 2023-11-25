@@ -1,0 +1,21 @@
+<div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !leftSlide, 'left-quiz-silder':isMobileView && leftSlide}">
+  <div class="container-single page" #previewContainer>
+    <div class="ins no" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat',
+    'minHeight.px':isMobileView == false ? calculateMinHeight() : '','maxHeight.px':isMobileView == false ? CalculateHeight() : ''}">
+      <iframe class="iframe-div" [src]="Url | test" [ngStyle]="{'maxHeight.px':isMobileView == false ? CalculateHeight() : '','minHeight.px':isMobileView == false ? calculateMinHeight() : iframeHeight,'background-color': QuizBrandingAndStyle.BackgroundColor}"></iframe>
+      <div *ngIf="!isMobileView && flowOrder && flowOrder == 3" class="p-all-20">
+        <button class="btn take-personality-btn ellipsiss" [disabled]="!isBookingSlotEnable" (click)="close()" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+            data-dismiss="modal">
+            {{"Continue" | translate}}
+          </button>
+      </div>
+      <div *ngIf="isLoaderEnable" class="default-loader" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor}"></div>
+    </div>
+    <div *ngIf="isMobileView && flowOrder && flowOrder == 3" style="background: #fff;">
+      <button class="btn take-personality-btn ellipsiss" style="border-radius: 0px;" [disabled]="!isBookingSlotEnable" (click)="close()" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+          data-dismiss="modal">
+          {{"Continue" | translate}}
+        </button>
+    </div>
+  </div>
+</div>  

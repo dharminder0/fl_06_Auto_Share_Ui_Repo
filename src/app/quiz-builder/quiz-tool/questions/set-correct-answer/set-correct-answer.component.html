@@ -1,0 +1,275 @@
+<div class="portlet-head">
+  <div class="font-type font-text2">
+    <span *ngIf="quizTypeID == 2 || quizTypeID == 5 || quizTypeID == 1">{{"ANSWER_SETTINGS" | translate}}</span>
+    <span *ngIf="quizTypeID == 4 || quizTypeID == 6">{{"EDIT_ANSWER_SCORES" | translate}}</span>
+  </div>
+  <div class="action"><a href="javascript:void(0)" class="closet" (click)="onClose()"></a></div>
+</div>
+    <div class="form-body font-type">
+      <form [formGroup]="setCorrectAnswerForm">
+        <div class="in white-bkg">
+          <div class="answer-container">
+            <div *ngIf="answerTypeData <= 2" class="form-group">
+              <h3 *ngIf="quizTypeID == 2 || quizTypeID == 5 || quizTypeID == 1">
+                <img src="assets/layouts/img/circle-check.png" class="some-icon"/>
+                {{ "SELECT_RIGHT_ANSWER" | translate }}
+              </h3>
+              <h3 *ngIf="quizTypeID == 4 || quizTypeID == 6">
+                <img src="assets/layouts/img/circle-check.png" class="some-icon"/>
+                {{ "DEFINE_A_SCORE_FOR_EACH_ANSWER" | translate }}
+              </h3>
+              <ul *ngIf="quizTypeID == 2 || quizTypeID == 5 || quizTypeID == 1" class="nav">
+                <li
+                  *ngFor="let answer of questionData.AnswerList; let i = index"
+                >
+                  <a class="select-anw"
+                    href="javascript:void(0);"
+                    [ngClass]="{ active: _correctAnswerArray[i] }"
+                    (click)="patchCorrectAnswerId(answer.AnswerId, i)"
+                  >
+                    <span>{{ i + 1 }}</span
+                    >{{ answer.AnswerText }} <i class="fa fa-check check-icon"></i>
+                  </a>
+                </li>
+              </ul>
+              <ul
+                *ngIf="quizTypeID == 4 || quizTypeID == 6"
+                class="nav"
+                formArrayName="AnswerScoreRequestData"
+              >
+                <li
+                  *ngFor="let answer of questionData.AnswerList; let i = index"
+                >
+                  <a class="select-anw"
+                    href="javascript:void(0);"
+                    [formGroupName]="i"
+                    [ngClass]="{
+                      active:
+                        setCorrectAnswerForm.get('CorrectAnswerId').value ==
+                        answer.AnswerId
+                    }"
+                  >
+                    <table>
+                      <tr>
+                        <td>
+                          <span>{{ i + 1 }}</span>
+                        </td>
+                        <td class="wide">
+                          {{ answer.AnswerText }}
+                        </td>
+                        <td>
+                          <a role="button" class="back" (click)="decrement(i)" style="border: none;"
+                            ><i class="zmdi zmdi-minus plusminus"></i></a>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            class="form-control associated-answers"
+                            formControlName="AssociatedScore"
+                          />
+                        </td>
+                        <td>
+                          <a role="button" class="back" (click)="increment(i)" style="border: none;">
+                            <i class="zmdi zmdi-plus plusminus"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <ul
+              *ngIf="(quizTypeID == 4 || quizTypeID == 6) && answerTypeData == 2"
+              class="nav selected-answer-limit"
+            >
+              <li>
+                <div class="answer-number-container">
+                  <span>Required Answers (Min)</span>
+                  <input
+                    type="text"
+                    class="answer-number min-max-text"
+                    formControlName="MinAnswer"
+                    OnlyNumber="true"
+                  />
+                </div>
+                <small
+                  *ngIf="setCorrectAnswerForm.controls['MinAnswer'].invalid"
+                  class="error-message"
+                >
+                  please enter a valid required answers
+                </small>
+              </li>
+              <li>
+                <div class="answer-number-container">
+                  <span>Select Limit (Max)</span>
+                  <input
+                    type="text"
+                    class="answer-number min-max-text"
+                    formControlName="MaxAnswer"
+                    OnlyNumber="true"
+                  />
+                </div>
+                <small
+                  *ngIf="setCorrectAnswerForm.controls['MaxAnswer'].invalid"
+                  class="error-message"
+                >
+                  please enter a valid select limit
+                </small>
+              </li>
+            </ul>
+            <div
+              *ngIf="answerTypeData > 2"
+              class="form-group no-answer-selection"
+            >
+              <div>
+                <p class="no-answer-selection-para">
+                  <span class="no-answer-selection-span">
+                    No correct answer setup as this is an open text answer.
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div *ngIf="!isWhatsappEnable && (quizTypeID == 2 || quizTypeID == 5 || quizTypeID == 1)" class="form-group">
+              <h3>
+                <img src="assets/layouts/img/message-icon.png" class="some-icon"/>
+                {{ "EXPLANATION_FOR_CORRECT_ANSWER_(OPTIONAL)" | translate }}
+              </h3>
+              <textarea
+                class="form-control"
+                formControlName="CorrectAnswerExplanation"
+                placeholder="{{ 'ENTER_EXPLANATION_HERE' | translate }}"
+              ></textarea>
+            </div>
+            <div *ngIf="!isWhatsappEnable && (quizTypeID == 2 || quizTypeID == 5 || quizTypeID == 1) && answerTypeData <= 2"
+              class="form-group"
+            >
+              <h3>
+                <img src="assets/layouts/img/eye-icon.png" class="eye-icon" />
+                {{ "SHOW_ANSWERS" | translate }}
+              </h3>
+              <p>
+                {{
+                  "DECIDE_IF_YOU_WANT_TO_DISPLAY_THE_CORRECT_ANSWER_AFTER_EACH_QUESTION"
+                    | translate
+                }}
+              </p>
+              <p class="margin-bottom-20">
+                {{
+                  "PAY_ATTENTION_THIS_SETTING_IS_APPLIED_ON_ALL_QUESTIONS_AND_CAN_NOT_BE_CONFIGURED_INDIVIDUALLY"
+                    | translate
+                }}
+              </p>
+              <label class="app-radio">
+                {{
+                  "YES,SHOW_THE_CORRECT_ANSWER_AFTER_EACH_QUESTION"
+                    | translate
+                }}
+                <input
+                  type="radio"
+                  formControlName="RevealCorrectAnswer"
+                  [value]="true"
+                  name="RevealCorrectAnswer"
+                />
+                <span></span>
+              </label>
+              <div
+                class="child"
+                *ngIf="setCorrectAnswerForm.get('RevealCorrectAnswer').value"
+              >
+                <div class="form-group">
+                  <label class="control-label">{{
+                    "EDIT_THE_TEXT_CORRECT" | translate
+                  }}</label>
+                  <input
+                    type="text"
+                    formControlName="AliasTextForCorrect"
+                    class="form-control correct-anw-field"
+                    placeholder="{{'CORRECT' | translate}}"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="control-label">{{
+                    "EDIT_TEXT_NOT_RIGHT" | translate
+                  }}</label>
+                  <input
+                    type="text"
+                    formControlName="AliasTextForIncorrect"
+                    class="form-control correct-anw-field"
+                    placeholder="{{ 'INCORRECT' | translate }}"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="control-label">{{
+                    "EDIT_TEXT_YOUR_ANSWER" | translate
+                  }}</label>
+                  <input
+                    type="text"
+                    formControlName="AliasTextForYourAnswer"
+                    class="form-control correct-anw-field"
+                    placeholder="{{ 'YOUR_ANSWER' | translate }}"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="control-label">{{
+                    "EDIT_THE_TEXT_CORRECT_ANSWERS" | translate
+                  }}</label>
+                  <input
+                    type="text"
+                    formControlName="AliasTextForCorrectAnswer"
+                    class="form-control correct-anw-field"
+                    placeholder="{{ 'CORRECT_ANSWER_IN_RESULT_SETTING' | translate }}"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="control-label">{{
+                    "EDIT_TEXT_EXPLANATION" | translate
+                  }}</label>
+                  <input
+                    type="text"
+                    formControlName="AliasTextForExplanation"
+                    class="form-control correct-anw-field"
+                    placeholder="{{ 'EXPLANATION' | translate }}"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="control-label">{{
+                    "EDIT_TEXT_NEXT" | translate
+                  }}</label>
+                  <input
+                    type="text"
+                    formControlName="AliasTextForNextButton"
+                    class="form-control correct-anw-field"
+                    placeholder="{{ 'NEXT' | translate }}"
+                  />
+                </div>
+              </div>
+              <br />
+              <label class="app-radio">
+                {{
+                  "DO_NOT_SHOW_THE_CORRECT_ANSWERS_QUESTION"
+                    | translate
+                }}
+                <input
+                  type="radio"
+                  [value]="false"
+                  formControlName="RevealCorrectAnswer"
+                  name="RevealCorrectAnswer"
+                  checked=""
+                />
+                <span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+<div class="content-bottom">
+  <button type="submit" class="btn save-btn font-type normal-text" (click) = "save()"  [disabled]="
+  questionData.AnswerType != answerTypeData ||
+  !setCorrectAnswerForm.valid ||
+  setCorrectAnswerForm.get('MinAnswer').value >
+    setCorrectAnswerForm.get('MaxAnswer').value
+">{{"SAVE" | translate }}</button>
+</div>

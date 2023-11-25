@@ -1,0 +1,85 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Add 
+*/
+.ember-body-container {
+  margin: $regular-container;
+  position: relative;
+  @media all and (min-width: 768px) and (max-width: 1024px) {
+    margin: 0 40px;
+  }
+
+  @media (max-width: 767px) {
+    margin: 0 20px;
+  }
+}
+
+.choose-quiz {
+  text-align: center;
+  .box {
+    min-height: 350px;
+    position: relative;
+    background: $base-bkg-1;
+    @include border-radius(2px);
+    @include box-shadow($secondary-shadow);
+    @include transition(all 0.2s ease-in-out);
+    &:before {
+      content: "";
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      position: absolute;
+      background: $base-bkg-10;
+      @include border-radius(2px 2px 0 0);
+    }
+    .ins {
+      padding: 30px 40px;
+      h3 {
+        margin: 0;
+        font-size: $font-size-lg;
+      }
+      i {
+        margin: 40px 40px 30px;
+        display: inline-block;
+      }
+      h4 {
+        margin: 0;
+        line-height: 23px;
+        font-size: $font-size-medium;
+      }
+      figure {
+        margin: 28px 0;
+      }
+    }
+    .btn {
+      left: 0;
+      right: 0;
+      width: 150px;
+      margin: auto;
+      bottom: -16px;
+      position: absolute;
+      background: $base-bkg-1;
+    }
+    &:hover {
+      @include box-shadow($base-shadow-2);
+      &:before {
+        background: $primary-bkg;
+      }
+      .btn {
+        color: $base-color-1;
+        background: $primary-bkg;
+      }
+    }
+  }
+  &.sm {
+    .box {
+      min-height: 300px;
+      margin-bottom: 40px;
+    }
+  }
+  .bottom {
+    padding: 40px 32px;
+  }
+}

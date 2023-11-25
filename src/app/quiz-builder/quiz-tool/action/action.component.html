@@ -1,0 +1,130 @@
+<div class="ins-body h-auto">
+  <form [formGroup]='actionForm' (ngSubmit)='saveAction()' class="inner cart-mini-height action-gutter form-div" [ngStyle]="{'background': brandingColors.BackgroundColor}">
+    <div class="default-header">
+      <i class="fa fa-circle dot-icon" style="color: #FB403E;" aria-hidden="true"></i>
+      <i class="fa fa-circle dot-icon" style="color: #FEC414;" aria-hidden="true"></i>
+      <i class="fa fa-circle dot-icon" style="color: #04C95A;" aria-hidden="true"></i>
+    </div>
+    <div class="form-padding font-type">
+      <div class="builder-element">
+        <h2>
+          <input id="id-quiz-title" type="text" maxlength="200" autocomplete="off" [value]="actionForm.controls['Title'].value" formControlName='Title'
+          [ngStyle]="{'color': brandingColors.FontColor ,'background': brandingColors.BackgroundColor ,'font-family': brandingColors.FontType ? brandingColors.FontType:'' }" 
+            class="form-control" />
+        </h2>
+        <div class="app-radio-inline action-radio">
+          <label class="app-radio">{{"APPOINTMENT" | translate}}
+            <input type="radio" formControlName='ActionType' [value]="1" name="ActionType" checked="">
+            <span></span>
+          </label>
+          <label class="app-radio">{{"EMAIL" | translate}}
+            <input type="radio" formControlName='ActionType' [value]="2" name="ActionType">
+            <span></span>
+          </label>
+          <label class="app-radio">{{"AUTOMATION" | translate}}
+            <input type="radio" formControlName='ActionType' [value]="3" name="ActionType" checked="">
+            <span></span>
+          </label>
+          <!-- <label class="app-radio">{{"CONTACTS_MODULE_APPOINTMENT" | translate}}
+            <input type="radio" formControlName='ActionType' [value]="4" name="ActionType" checked="">
+            <span></span>
+          </label> -->
+        </div>
+        <div *ngIf='actionForm.value.ActionType == 1' id="action1" class="desc">
+          <ng-select placeholder="{{'SELECT_APPOINTMENT' | translate}}" formControlName="AppointmentId"  (selected)="onSelectAppointment($event)"
+            [options]="appointmentTypeList" [noFilter]="10" >
+            <ng-template
+            #optionTemplate
+            let-option="option">
+            <div title="{{option.label | translate}}">{{ option.label | translate }}</div>
+          </ng-template>
+          </ng-select>
+        </div>
+        <div *ngIf='actionForm.value.ActionType == 2' id="action2" class="desc action-temp-box">
+          <div class="emailer-box">
+            <tag-input formControlName="ReportEmailsArray" [clearOnBlur]="true" [placeholder]="placeholderData | translate" [secondaryPlaceholder]="placeholderData | translate" [errorMessages]="errorMessages"
+              [validators]="validators" (onAdd)="onAddingAction($event)" [separatorKeyCodes]=[32,9]></tag-input>
+          </div>
+        </div>
+        <!-- [checked]="calenderFromServer?.includes(cal.Id)?true : false" -->
+        <!-- <div *ngIf="calendarList.length && actionForm.value.ActionType == 1" class="row padTop">
+          <label class="control-label">Calendar List</label>
+          <div class="clearfix"></div>
+          <div class="col-md-4" *ngFor="let cal of calendarList">
+            <label class="app-checkbox ty">{{cal.CalendarName}}
+              <input type="checkbox" value="{{cal.Id}}"
+                name="cal" [checked]="selectedCalendarIds?.includes(cal.Id) && actionForm.get('AppointmentId').value == quizActionData.AppointmentId?true : false" (click)="addCalenderId(cal.Id,cal.CalendarName)">
+              <span></span>
+            </label>
+          </div>
+        </div> -->
+        <!-- <div *ngIf="calendarList.length == 0 && actionForm.get('AppointmentId').value != 0 && actionForm.value.ActionType == 1" class="margTop">
+          <p class="no-data">{{ "NO_CALENDAR_FOUND_FOR_THIS_APPOINTMENT_TYPE!!" | translate}}</p>
+        </div>  -->
+        <div *ngIf='actionForm.value.ActionType == 3' id="action3" class="desc">
+          <ng-select placeholder="{{'SELECT_AUTOMATION' | translate}}" formControlName="AutomationId" (selected)="onSelectAutomation($event)"
+            [options]="automationList" [noFilter]="10" >
+            <ng-template
+            #optionTemplate
+            let-option="option">
+            <div title="{{option.label | translate}}">{{ option.label | translate }}</div>
+          </ng-template>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="form-action-group">
+      <button [disabled]='!actionForm.valid' type="submit" href="javascript:void(0);" class="btn grey line">
+        <span> Save</span>
+      </button>
+    </div> -->
+  </form>
+</div>
+
+<!-- <div class="form-action-group beta">
+  <a href="javascript:void(0);" (click)='onPreviewQuiz(publishTemplate)' class="btn grey line" data-toggle="modal" data-target="#preview-modal">
+    <span>
+      <i class="zmdi zmdi-eye plan"></i>{{"PREVIEW" | translate }}</span>
+  </a>
+  <a href="javascript:void(0);" (click)='dynamicTemplateShare()' app-data="data-share" class="app-data btn grey line">
+    <span>
+      <i class="zmdi zmdi-share plan"></i>{{"SHARE" | translate }}</span>
+  </a>
+  <a href="javascript:void(0);" class="btn grey line" (click)='onPublished()' data-toggle="modal" data-target="#publish-modal">
+    <span>
+      <i class="zmdi zmdi-flash plan"></i>{{"PUBLISH" | translate }}</span>
+  </a>
+  <button href="javascript:void(0);" (click)='saveAction()' class="btn grey line" type="button" [disabled]="actionForm.invalid"> -->
+  <!-- <button href="javascript:void(0);" (click)='saveAction()' class="btn grey line" type="button" [disabled]="actionForm.invalid || (selectedCalendarIds.length == 0 && actionForm.get('AppointmentId').value != '0')"> -->
+    <!-- <span>
+      <i class="zmdi zmdi-floppy plan"></i>{{"SAVE" | translate }}</span>
+  </button>
+</div> -->
+
+<ng-template #publishTemplate>
+  <div class="modal-body text-center">
+    <p>{{"THIS_QUIZ_HAS_UNPUBLISHED_CHANGES_AND_WILL_NEED_TO_BE_PUBLISHED_BEFORE_YOU_CAN_SHARE_THE_QUIZ." | translate }}</p>
+    <br>
+    <button type="button" class="btn blue" (click)="publish()">{{"PUBLISH" | translate }}</button>
+    <button type="button" class="btn btn-default" (click)="cancel()">{{"CANCEL" | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #shareTemplate>
+  <div class="modal-body text-center">
+    <h2>{{"DIRECT_URL_TO_YOUR_QUIZ" | translate }}</h2>
+    <p>{{"SHAREABLE_URL_TO_QUIZ" | translate }}</p>
+    <br>
+    <p>{{"THE_URL_BELOW_CAN_BE_USED_TO_SHARE_YOUR_QUIZ_DIRECTLY." | translate }}</p>
+    <br>
+    <input type="text" [value]='quizURL'>
+    <br>
+    <button class="btn blue" type="button" ngxClipboard [cbContent]="quizURL">
+      {{"COPY_CODE_TO_CLIPBOARD" | translate}}</button>
+  </div>
+</ng-template>
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar" id="data-share">
+  <div #shareQuizTemplate></div>
+</div>

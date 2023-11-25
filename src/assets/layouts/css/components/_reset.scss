@@ -1,0 +1,223 @@
+/*
+#	Author : Finoit
+#	Date : 6 Dec 2017
+#	Description : Reset 
+*/
+
+body {
+  font-family: $font-stack;
+  line-height: 1.42857;
+  color: $regular-color;
+  font-size: $font-size-regular;
+  background: #f7f7f7;
+}
+
+html, body, .app-wrapper{
+  height: 100%;
+}
+
+img{
+  max-width: 100%;
+  height: auto;
+}
+
+img.wide{
+  width: 100%;
+}
+*{
+  outline: 0;
+}
+
+a, a:focus, a:hover{
+  outline: $outline;
+  text-decoration: none;
+}
+
+a {
+  color: $secondary-color;
+}
+
+h1, h2{
+  font-weight: bold;
+  margin: 0;
+}
+
+h1{
+  font-size: $font-size-large;
+}
+
+h2{
+  font-size: $font-size-medium;
+}
+
+.bold{
+  font-weight: 600;
+}
+
+.fa.pull-right {
+  margin-top: 2px;
+}
+
+.block{
+  display: block;
+}
+
+.t1{
+  text-align: left;
+}
+
+.t2{
+  text-align: center;
+}
+
+.t3{
+  text-align: right;
+}
+
+.margin-bottom-10{
+  margin-bottom: 10px;
+}
+
+.margin-bottom-20{
+  margin-bottom: 20px;
+}
+
+.margin-bottom-30{
+  margin-bottom: 30px !important;
+}
+
+.margin-top-10{
+  margin-top: 10px;
+}
+
+.margin-top-20{
+  margin-top: 20px;
+}
+
+
+.img-circle {
+  @include border-radius(100%);
+}
+
+.bootstrap-select {
+  .dropdown-toggle,
+  .dropdown-toggle:focus{
+    outline: $outline;
+  }    
+}
+
+.input-group-addon{
+  &.no{
+    border: 0;
+    background: $no-bkg;
+  }
+}
+
+.btn, button, .btn, .btn-group.open .dropdown-toggle, .cell, .resource, a, button, code, div, img, input, label, li, p, pre, select, span, svg, table, td, textarea, th, ul{
+  outline: $outline;  
+  @include border-radius(0); 
+}
+
+.bs-select{
+  width: 100%;
+}
+
+.bs-ember{
+  width: 100% !important;
+}
+
+.flex-scroll, 
+.app-grow {
+  height: 100%;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 0;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.label-info{
+  background: transparent;
+  &.orange{
+    color: $primary-color;
+  }
+}
+
+.circular-info{
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  opacity: 0.5;
+  margin-right: 20px;
+  position: relative;
+  display: inline-block;
+  background: $base-color-3;
+  @include border-radius(100%); 
+  i{
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+  }
+}
+
+.hint{
+  opacity: 0.5;
+  font-size: $font-size-small;
+}
+
+.row-info{
+  margin-left: -5px;
+  margin-right: -5px;
+  .md-info{
+    padding-left: 5px;
+    padding-right: 5px;  
+  }
+  .right-item{
+    top: 11px;
+    display: block;
+    position: relative;
+    &.top{
+      top: 32px;
+    }
+    &.link{
+      text-decoration: underline;
+      &:hover{
+        text-decoration: none;
+      }  
+    }    
+  }
+}
+.recurring-data,
+.time-data{
+  display: none;
+}
+
+
+::-webkit-scrollbar-track {
+    background-color: inherit;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    background-color: inherit;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #494949;
+}
+
+
+/*overright*/
+.select2-container--bootstrap.select2-container--focus .select2-selection, 
+.select2-container--bootstrap.select2-container--open .select2-selection,
+.select2-container--bootstrap .select2-dropdown{
+  border-color: $primary-color;
+}
+
+.select2-container--bootstrap .select2-results__option--highlighted[aria-selected]{
+  background: $primary-bkg;
+}

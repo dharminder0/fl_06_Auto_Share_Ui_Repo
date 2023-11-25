@@ -1,0 +1,78 @@
+.ques-res-division-container {
+    display: inline-block !important;
+    position: absolute;
+    /* background: #3796db; */
+    background: #FFFFFF;
+    right: -49px;
+    padding: 0px 5px;
+    font-size: 0.8em;
+    /* color: white; */
+    color: #202020;
+    border-radius: 4px;
+    min-width: 18px;
+    /* max-width: 40px; */
+    text-align: center;
+    height: 18px;
+    line-height: 18px;
+  }
+
+
+  .range-error small {
+    color: red;
+  }
+
+  input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+
+.row{
+  margin-bottom: 10px; 
+}
+
+.btn-save{
+  margin-right: 20px;
+}
+
+@-moz-document url-prefix() {
+  .btn-save{
+    margin-right: 14px !important;
+  }
+}
+
+.cancelColor
+{
+  background-color: #ddd
+}
+
+.saveColor
+{
+  background-color: var(--secondary-color);
+  color: #fff;
+}
+
+/* new style */
+
+.input-text{
+  width: 52px;
+  border: 1px solid #D0D0D0;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: none;
+  background: #ffffff;
+}
+
+.popup-save-btn{
+  border: 1px solid #494949;
+    border-radius: 5px;
+    width: 100%;
+    background: #ffffff;
+}
+
+.popup-save-btn:hover{
+  background-color: var(--secondary-color);
+  color: #ffffff;
+}

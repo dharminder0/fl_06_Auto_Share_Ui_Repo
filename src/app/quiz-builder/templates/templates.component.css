@@ -1,0 +1,173 @@
+.hover-tag {
+    display: none;
+  }
+  
+  .show-tag:hover .hover-tag {
+    display: block;
+  }
+  
+  .display-tag {
+    height: 17px;
+    /* width: 17px; */
+    width: 100%;
+    cursor: pointer;
+    background-color: transparent;
+  }
+  
+  .color {
+    height: 17px;
+    width: 17px;
+    float: left;
+    display: inline-block;
+    cursor: pointer;
+    border: 2px transparent solid;
+  }
+  
+  .active {
+    border-color: black;
+  }
+  
+  .width-resize {
+    width: max-content;
+  }
+  
+  .flex-value-1 {
+    flex: 1;
+  }
+  .sort-engine a {
+    margin-left: 10px;
+  }
+  .break-word {
+    word-break: break-all;
+  }
+  
+  .total-automation-count {
+    margin: 0 80px;
+    padding: 12px;
+    text-align: right;
+    font-size: 12px;
+  }
+  
+  .automation-type-filter{
+      width: 200px;
+      margin: 0 15px;
+  }
+  
+  .sub-head{
+    margin-bottom: unset;
+  }
+  
+  .checkbox-dropdown{
+    min-width: 140px;
+    left: 0;
+  }
+  
+  .office-checkbox-ul{
+    max-height: 250px;
+    overflow-y: auto;
+    /* overflow: hidden; */
+  }
+  
+  .overflow-data{
+    overflow-x: unset !important;
+  }
+  
+  .dropdown-container{
+    overflow: auto;
+  }
+  
+  .dropdown-container span{
+    float: left;
+  }
+  
+  .dropdown-container i {
+    margin-top: 3px;
+  }
+
+  .float-right-flex{
+      display: flex;
+      justify-content: flex-end;
+  }
+
+  :host ::ng-deep .pagination{
+      display: flex !important;
+      justify-content: center !important; 
+  }
+
+
+
+
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+  :host ::ng-deep .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover
+  {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+  }
+
+  .activePadding{
+    padding-left: 53px !important;
+  }
+
+  .deactivePadding{
+    padding-left: 37px !important
+  }

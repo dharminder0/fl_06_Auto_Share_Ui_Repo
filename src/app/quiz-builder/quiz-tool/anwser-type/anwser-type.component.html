@@ -1,0 +1,53 @@
+<div class="form-body">
+    <div>
+        Type
+    </div>
+
+    <div class="mTop-20">
+        <ng-select placeholder="Select Anwser Type" [options]="AnswerTypes" [(ngModel)]="selectedAnswerType" (ngModelChange)="isWhatsappEnable && updateAnsStructureType(); onAnswerTypeChange()">
+            <ng-template #optionTemplate let-option="option">
+                <div>{{ option.label | translate}}</div>
+            </ng-template>
+        </ng-select>
+        <div class="ptop-15" *ngIf="isWhatsappEnable && selectedAnswerType == '1'">
+            <div class="mbottom-5">{{"Lbl_AnswerStructureType" | translate}}</div>
+            <span class="mright-20">
+                <label class="mleft-10">
+                    <input type="radio" name="answerStructureType" [(ngModel)]="answerStructureType" [value]="quizAnswerStructureType.button" (ngModelChange)="updateChangeStatus()">
+                    {{"Lbl_Button" | translate}}
+                </label>
+            </span>
+            <span class="mright-20">
+                <label class="mleft-10">
+                    <input type="radio" name="answerStructureType" [(ngModel)]="answerStructureType" [value]="quizAnswerStructureType.list" (ngModelChange)="updateChangeStatus()">
+                    {{"Lbl_List" | translate}}
+                </label>
+            </span>
+        </div>
+        <div *ngIf="!isWhatsappEnable && (selectedAnswerType == '11' || selectedAnswerType == '12')" class="switch-bar-col ptop-15 mbottom-15">
+           Multiple option
+            <label class="switch" style="float: right;">
+                <input type="checkbox" class="boxid" (change)='onMultiRatingOption(isMultiRating)' [checked]="isMultiRating" [disabled] = '!isAnyChange'>
+                <span class="slider round" [ngClass]="{'jr-disabled': !isAnyChange}"></span>
+            </label>
+        </div>
+        <!-- save button -->
+        <div class="ptop-15">
+            <button type="submit" class="btn save-btn" (click)="onSave()" [ngClass]="{'jr-disabled': !isAnyChange}">
+                {{ "SAVE" | translate }}
+            </button>
+        </div>
+    </div>
+    <div *ngIf="(selectedAnswerType == '1' || selectedAnswerType == '2') && !isWhatsappEnable" class="mTop-20">
+        <div class="mLeft-10">{{"TEXT" | translate }} / {{"IMAGE" | translate }}</div>
+        <div class="flex-dis mTop-20">
+            <div class="text-btn" style="border-radius: 5px 0 0 5px" (click)="onTextImage(false)">
+                {{"TEXT" | translate }}
+            </div>
+            <div class="text-btn" style="border-radius: 0 5px 5px 0" (click)="onTextImage(true)">
+                {{"IMAGE" | translate }}
+            </div>
+        </div>
+    </div>
+
+</div>

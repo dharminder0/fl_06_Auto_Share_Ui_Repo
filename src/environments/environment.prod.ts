@@ -1,0 +1,32 @@
+export const environment = {
+  production: true,
+  cloudinaryConfiguration: {
+    cloud_name: 'dbbkqtyqn',
+    theme: 'white',
+    show_powered_by: false,
+    max_files: 3,
+    multiple: false,
+    cropping_aspect_ratio: null,
+    cropping_coordinates_mode: 'face',
+    cropping_show_back_button: true,
+    folder: 'user-photos',
+    tags: ['user', 'content'],
+    resource_type: ['auto'],
+    context: { alt: "my_alt", caption: "my_caption" },
+    max_file_size: 30000000000000,
+    max_image_width: '1000',
+    max_image_height: '1000',
+    // thumbnails: true,
+    // button_class: 'quiz-class',
+    button_caption: 'uppp',
+    min_image_height: '200',
+    min_image_width: '200',
+    cropping_validate_dimensions: true,
+    cropping_show_dimensions: true,
+    google_api_key: 'AIzaSyCeNbYSLGrynlZh8mRWg6RhJfTLw3y4QEM',
+    sources: ['local', 'url', 'camera', 'dropbox', 'image_search', 'facebook', 'instagram'],
+    upload_preset: 'pu3dk3lp',
+    cropping: 'server'
+  },
+
+};

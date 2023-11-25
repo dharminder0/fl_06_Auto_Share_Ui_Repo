@@ -1,0 +1,11 @@
+version: '2.1'
+
+services:
+  Olympia:
+    image: Olympia
+    build: .
+    environment:
+      PUBLICWEB: ./publicweb
+    ports:
+      - 4200:3000
+    command: node index.js

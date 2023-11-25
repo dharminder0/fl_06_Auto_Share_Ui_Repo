@@ -1,0 +1,119 @@
+:host ::ng-deep .ng-tns-c10-0.ng2-tag-input.ng2-tag-input--focused{
+    border-bottom: 2px solid #f9f9f9;
+}
+
+:host ::ng-deep .selected.highlighted{
+    background-color: #000000;
+    background-color: var(--secondary-color);
+}
+
+:host ::ng-deep .highlighted{
+    background-color: #000000;
+    background-color: var(--secondary-color);
+}
+
+:host ::ng-deep .ng2-tag-input__text-input{
+    background: transparent;
+}
+
+:host ::ng-deep .below{
+    z-index: 101;
+}
+
+:host ::ng-deep .temp-box{
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+:host ::ng-deep select-dropdown>div{
+    z-index: 999;
+}
+
+.childGrouping{
+    padding-left: 15px;
+}
+
+.h-360{
+    height: 360px;
+}
+
+.pright-15{
+    padding-right: 15px;
+}
+
+.font-style{
+    font-family: Raleway;
+    font-style: normal;
+}
+
+.font-text2{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 125%;
+    color: #494949;
+}
+
+.portlet-head{
+    padding: 0 15px;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.content-bottom{
+    width: 100%;
+    height: 60px;
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    padding: 10px 40px;
+    position: absolute;
+}
+
+.save-btn{
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    box-sizing: border-box;
+    width: 80px;
+    height: 40px;
+    color: #000000;
+    color: var(--secondary-color);
+}
+
+.save-btn:hover{
+    background: #000000;
+    background:  var(--secondary-color);
+    color: #FFFFFF;
+}
+
+.normal-text{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.cancel-btn{
+    color: #000000;
+    color: var(--secondary-color);
+    padding-left: 25px;
+}
+
+.form-body{
+    height: calc(100% - 121px);
+    background: #fff;
+    position: relative;
+    padding: 34px 40px;
+}
+
+.mbottom-17{
+    margin-bottom: 17px;
+}
+
+.custom{
+    height: 42px;
+    width: 100%;
+}
+
+:host ::ng-deep ng-select > div.disabled {            
+background-color: #fff;
+color: #D0D0D0;
+}

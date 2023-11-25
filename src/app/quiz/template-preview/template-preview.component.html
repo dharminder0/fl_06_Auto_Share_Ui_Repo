@@ -1,0 +1,25 @@
+<!-- <div class="quiz-popup-btn-sec" *ngIf="showUseTemplateButton">
+  <p>Ready to use this template?</p>
+  <button class="btn green quiz-popup-btn" (click)="openModal()">
+    Use this template
+  </button>
+</div> -->
+
+<router-outlet></router-outlet>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This is a modal.
+  </div>
+</ng-template>

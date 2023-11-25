@@ -1,0 +1,54 @@
+<div class="portlet-head">
+  <div class="font-type font-text2">
+    <span>{{"REORDER_QUIZ_ELEMENTS" | translate }}</span>
+  </div>
+  <div class="action">
+    <a href="javascript:void(0)" class="btn blue hide">{{"SAVE_RECORDS" | translate }}</a>
+    <a href="javascript:void(0)" class="closet"></a>
+  </div>
+</div>
+<!-- <div class="portlet-body horizontal-form app-calc">
+  <div class="app-grow">
+    <div class="heading">
+      <h2 class="title-12">{{"REORDER_QUIZ_ELEMENTS" | translate }}</h2>
+    </div>  -->
+    <div class="form-body">
+      <div class="in white-bkg">
+        <accordion  class="draggable-engine" [dragula]="'parent-bag'" [dragulaModel]="groups">
+          <div *ngFor="let group of groups;let i = index;">
+          <div *ngIf="group.Type == 2">
+            <accordion-group  [heading]="group.QuestionTitle ? group.QuestionTitle : (('QUESTION' | translate)+' ' +(i+1))" [ngClass] = "{'p-0': group.Type == 2 && (group.AnswerType == 3 || group.AnswerType == 4 || group.AnswerType == 5 || group.AnswerType == 7 || group.AnswerType == 8 || group.AnswerType == 10 || group.AnswerType == 11 || group.AnswerType == 12)}">
+              <div *ngIf="group.AnswerType == 1 || group.AnswerType == 2 || group.AnswerType == 6 || group.AnswerType == 9" class="is-draggable-answer"  [dragula]="'child-bag'" [dragulaModel]="group.Answers">
+                <div class="is-draggable-row" *ngFor="let item of group.Answers;let j = index;">
+                  <span class="handle">
+                    <!-- <i class="fa fa-bars"></i> -->
+                    
+                    <svg class="mtop-5" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect y="12" width="3" height="3" rx="1" fill="#D0D0D0"/>
+                      <rect x="6" y="12" width="3" height="3" rx="1" fill="#D0D0D0"/>
+                      <rect y="6" width="3" height="3" rx="1" fill="#D0D0D0"/>
+                      <rect x="6" y="6" width="3" height="3" rx="1" fill="#D0D0D0"/>
+                      <rect width="3" height="3" rx="1" fill="#D0D0D0"/>
+                      <rect x="6" width="3" height="3" rx="1" fill="#D0D0D0"/>
+                    </svg>
+  
+                  </span>
+                  <span class="draggable-label">{{item.AnswerText}}</span>
+                </div>
+              </div>
+            </accordion-group>
+          </div>
+          <div *ngIf="group.Type == 6 && !isQuesAndContentInSameTable">
+            <accordion-group [heading]="group.ContentTitle ? group.ContentTitle : ('Content'+' ' +(i+1))" class="p-0 hide-quesicon">
+            </accordion-group>
+          </div>
+          <div *ngIf="group.Type == 6 && isQuesAndContentInSameTable">
+            <accordion-group [heading]="group.QuestionTitle ? group.QuestionTitle : ('Content'+' ' +(i+1))" class="p-0 hide-quesicon">
+            </accordion-group>
+          </div>
+        </div>
+        </accordion>
+      </div>
+    </div>
+  <!-- </div>
+</div> -->

@@ -1,0 +1,68 @@
+<div class="quiz-header-body">
+    <div class="row h-100">
+        <div class="col-sm-12 col-md-4 display-flex h-100">
+            <div class="logo-body">
+                <img class="logo-image" src="assets/layouts/img/jr-logo.png"/>
+            </div>
+            <div class="font-type font-text quiz-title">
+                <!-- <div *ngIf="quizData && islogic && quizData.QuizTitle" class="text-notedit ellipsiss" title="{{quizData.QuizTitle}}">{{quizData.QuizTitle}}</div>
+                <div *ngIf="quizData && islogic && !quizData.QuizTitle" class="text-notedit ellipsiss" title="{{'UNTITLED_QUIZ' | translate}}">{{"UNTITLED_QUIZ" | translate }}</div> -->
+                <input *ngIf="quizData" type="text" (ngModelChange)="onChangeTitle($event)" class="form-control quiz-input-title" [(ngModel)]="quizData.QuizTitle" placeholder="{{'UNTITLED_QUIZ' | translate }}"/>
+                <!-- <span class="quiz-title-boder" *ngIf="quizData.QuizTitle">{{quizData.QuizTitle | truncate:35}}</span>
+                <span class="quiz-title-boder" *ngIf="!quizData.QuizTitle">{{"UNTITLED_QUIZ" | translate }}</span> -->
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div *ngIf="usageName || tagName" class="usage-div ellipsiss" (click)="onUsage()">
+                    <span *ngIf="usageName" title="{{usageName}}" style="margin-right: 10px;line-height: 28px;"><strong>{{"Lbl_Usage" | translate}}</strong> {{usageName}}</span>
+                    <span *ngIf="tagName" title="{{tagName}}" style="line-height: 28px;"><strong>Tags:</strong> {{tagName}}</span>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4 h-100">
+            <div *ngIf="islogic" class="btn-body">
+                <a href="javascript:void(0);" (click)='onPreviewQuiz(publishTemplate)' class="btn app-button" data-toggle="modal"
+                data-target="#preview-modal">
+                    <span class="font-type font-text">{{"PREVIEW" | translate }}</span>
+                </a>
+                <a href="javascript:void(0);" class="btn app-button" (click)='onLogicSave()' [ngClass]="{'disabled': isBackandSave}">
+                    <span class="font-type font-text">{{"SAVE" | translate }}</span>
+                </a>
+                <a href="javascript:void(0);" class="btn publish-btn" (click)='onPublished()' data-toggle="modal"
+                data-target="#publish-modal">
+                    <span class="publish-text font-type">{{"PUBLISH" | translate }}</span>
+                </a>
+            </div>
+            <div *ngIf="!islogic" class="btn-body">
+                <a href="javascript:void(0);" (click)='onPreviewQuiz(publishTemplate)' class="btn app-button" data-toggle="modal"
+                data-target="#preview-modal">
+                    <span class="font-type font-text">{{"PREVIEW" | translate }}</span>
+                </a>
+                <a href="javascript:void(0);" class="btn app-button" (click)='onSaveAll()'>
+                    <span class="font-type font-text">{{"SAVE" | translate }}</span>
+                </a>
+                <a href="javascript:void(0);" class="btn publish-btn" (click)='onPublished()' data-toggle="modal"
+                data-target="#publish-modal">
+                    <span class="publish-text font-type">{{"PUBLISH" | translate }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #publishTemplate>
+    <div class="modal-body text-center">
+      <p>{{"THIS_QUIZ_HAS_UNPUBLISHED_CHANGES_AND_WILL_NEED_TO_BE_PUBLISHED_BEFORE_YOU_CAN_SHARE_THE_QUIZ." | translate
+        }}</p>
+      <br>
+      <button type="button" class="btn blue" (click)="confirm()">{{"PUBLISH" | translate }}</button>
+      <button type="button" class="btn btn-default" (click)="decline()">{{"CANCEL" | translate }}</button>
+    </div>
+</ng-template>
+
+<!-- <div class="app-sidebar-overlay"></div>
+<div class="app-sidebar" id="data-share">
+  <div #shareQuizTemplate></div>
+</div> -->
+<div *ngIf="isUagesPopup">
+    <app-select-usage [usagesData]="usagesDatas" [isEditUsage]="isEditUsage" [quizId]="quizId" [quizType]="quizType" (changeValue)='changeUsage($event)'></app-select-usage>
+</div>

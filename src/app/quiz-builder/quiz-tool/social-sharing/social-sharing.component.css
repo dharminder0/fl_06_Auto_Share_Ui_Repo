@@ -1,0 +1,16 @@
+.attach-container {
+  padding: 10px 80px 30px 10px !important;
+}
+
+.top-image-container {
+  margin: unset;
+}
+
+.app-head h1.title-9 {
+  margin-bottom: 18px;
+}
+
+.social-share-gutter {
+  max-width: 800px;
+  margin: 0 auto;
+}

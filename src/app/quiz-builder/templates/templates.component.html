@@ -1,0 +1,152 @@
+<!-- begin contents -->
+<section class="app-contents">
+  <!-- begin head -->
+  <div class="app-head app-head-dashboard float-right-flex">
+    <div class="action">
+      <div class="btn-group">
+        <a [routerLink]="['add-template']" class="btn line blue">
+          <i class="zmdi zmdi-plus"></i>{{"CREATE_NEW_TEMPLATE" | translate }}</a>
+      </div>
+    </div>
+  </div>
+  <!-- end head -->
+  <div class="sub-head">
+    <div class="flex-value-1">
+      <div class="search-engine">
+        <app-app-search (searchText)="onSearchText($event)"></app-app-search>
+      </div>
+    </div>
+    <div class="btn-group ember-office automation-type-filter">
+      <div class="dropdown">
+        <a href="javascript:void(0);" class="dropdown-toggle block btn white shadow t1 dropdown-container"
+          data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+          <span class="">{{"Category" | translate }}</span>
+          <i class="zmdi zmdi-caret-down pull-right"></i>
+        </a>
+        <div class="dropdown-menu li-ember pull-right hold-on-click checkbox-dropdown">
+          <ul class="nav">
+            <li>
+              <label class="app-checkbox">{{"ALL" | translate}}
+                <input type="checkbox" value="1" name="1" [checked]="isSelectAllCategories"
+                  (click)="onSelectAllCategory()">
+                <span></span>
+              </label>
+            </li>
+            <li *ngFor="let category of categoryList; let i = index;">
+              <label class="app-checkbox">{{ category.CategoryName }}
+                <input type="checkbox" [value]="category.value" [checked]="selectedCategoryList.includes(category.Id)"
+                  name="1" (click)="onSelectCategory(category.Id)">
+                <span></span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="btn-group ember-office automation-type-filter">
+      <div class="dropdown">
+        <a href="javascript:void(0);" class="dropdown-toggle block btn white shadow t1 dropdown-container"
+          data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+          <span class="">{{"Type" | translate }}</span>
+          <i class="zmdi zmdi-caret-down pull-right"></i>
+        </a>
+        <div class="dropdown-menu li-ember pull-right hold-on-click checkbox-dropdown">
+          <ul class="nav">
+            <li>
+              <label class="app-checkbox">{{"ALL" | translate}}
+                <input type="checkbox" value="1" name="1" [checked]="isSelectAllTypes" (click)="onSelectAllType()">
+                <span></span>
+              </label>
+            </li>
+            <li *ngFor="let type of typeList; let i = index;">
+              <label class="app-checkbox">{{ type.name }}
+                <input type="checkbox" [value]="type.id" [checked]="selectedTypeList.includes(type.id)" name="1"
+                  (click)="onSelectType(type.id)">
+                <span></span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="sort-engine">
+      {{"SORT_BY" | translate}}
+      <a style="cursor:pointer" (click)='onSortedByDate()'>
+        <i *ngIf='OrderByDate == 1' class="zmdi zmdi-caret-down" aria-hidden="true"></i>
+        <i *ngIf='OrderByDate == 2' class="zmdi zmdi-caret-up" aria-hidden="true"></i>
+        {{"DATE" | translate}}
+      </a>
+    </div>
+  </div>
+
+  <div class="total-automation-count">
+  </div>
+  <!-- begin page -->
+  <div class="ember-body" *ngIf="templateList.length">
+    <div class="table-container overflow-data">
+      <table class="table data-tabe">
+        <tr class="show-tag" *ngFor="let template of templateList">
+          <td>
+            <div class="xs-info">
+              <span class="circular-info">
+                <i class="fa-quest-icon"></i>
+              </span>
+              <p class="txt">
+                <span href="javascript:void(0);" data-toggle="modal" class="break-word" data-target="#preview-modal">{{
+                  template.QuizTitle }}</span>
+                <span class="width-resize">{{ quiz?.createdOnFormat }}</span>
+              </p>
+            </div>
+          </td>
+          <td>
+            <ul class="action-list">
+              <li>
+                <a [routerLink]="['../../quiz-tool', template.Id,'cover']">
+                  <i class="zmdi zmdi-edit"></i>{{"EDIT" | translate }}</a>
+              </li>
+              <li>
+                <a class="pointer" data-toggle="modal" data-target="#preview-modal" (click)='onPreviewQuiz(template)'>
+                  <i class="zmdi zmdi-eye"></i>{{"PREVIEW" | translate }}</a>
+              </li>
+              <li>
+                <a class="pointer deactivePadding" *ngIf="template.Status == StatusEnum.Active"  data-toggle="modal" data-target="#preview-modal"
+                  (click)='changeStatusOfTemplate(template)'>
+                  {{"DEACTIVATE" | translate }}</a>
+                <a class="pointer activePadding" *ngIf="template.Status == StatusEnum.Inactive" data-toggle="modal" data-target="#preview-modal"
+                  (click)='changeStatusOfTemplate(template)'>
+                  {{"ACTIVATE" | translate }}</a>
+              </li>
+              <li>
+                <div class="dropdown">
+                  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                    aria-expanded="false">
+                    <i class="zmdi zmdi-settings"></i>
+                  </a>
+                  <div class="dropdown-menu pull-right">
+                    <ul class="nav">
+                      <li>
+                        <a *ngIf="template.IsCreatedByYou || !template.IsViewOnly" class="pointer"
+                          (click)='onRemovedQuiz(template.Id)'>
+                          <i class="zmdi zmdi-close-circle-o"></i>
+                          <span>{{"DELETE_TEMPLATE" | translate }}</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="ember-body no-data" *ngIf="!templateList.length && !isDataLoading">
+    {{"DATA_NOT_FOUND" | translate}}!!
+  </div>
+  <pagination [(ngModel)]="currentPage" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+    lastText="&raquo;" [totalItems]="totalRecords" [itemsPerPage]="PAGE_SIZE" (pageChanged)="pageChanged($event)">
+  </pagination>
+  <!-- end page -->
+</section>
+<!-- end contents -->

@@ -1,0 +1,33 @@
+<!-- <div class="portlet-head">
+  <div class="font-type font-text2">
+    <span>{{"CONTENT_PAGE_ATTEMPTS_SETTINGS" | translate}}</span>
+  </div>
+        <div class="action"><a href="javascript:void(0)" class="closet"></a></div>
+      </div> -->
+        <form [formGroup]="contentSettingForm" class="form-body font-type">
+            <div class="in white-bkg">
+                <div class="answer-container">
+                <div class="form-group" style="margin-bottom: 0 !important;">
+                  <label class="app-checkbox"> 
+                    {{"USER_IS_ALLOWED_TO_NAVIGATE_BACK_TO_THIS_CONTENT_PAGE" | translate }}
+                    <input type="checkbox" formControlName="ViewPreviousQuestion" [(ngModel)]="viewPreviousQuestion" [checked]="viewPreviousQuestion == true" />
+                    <span></span>
+                  </label>
+                  <!-- <br>
+                    <label class="app-checkbox"> {{"AUTOPLAY_VIDEO" | translate }}
+                      <input type="checkbox" formControlName="AutoPlay"  [(ngModel)]="autoplay" [checked]="autoplay == true" />
+                      <span></span>
+                    </label> -->
+                </div>
+            </div>
+          </div>
+        </form>
+      
+      <!-- <div class="content-bottom">
+        <button type="submit" id="myBtn" class="btn save-btn font-type normal-text" (click) = "onUpdateContentSetting()">{{"SAVE" | translate }}</button>
+      </div> -->
+      <div class="form-actions btn-block">
+        <button type="submit" id="myBtn" class="btn save-btn font-type normal-text" (click)="onUpdateContentSetting()">
+          {{ "SAVE" | translate }}
+        </button>
+      </div>

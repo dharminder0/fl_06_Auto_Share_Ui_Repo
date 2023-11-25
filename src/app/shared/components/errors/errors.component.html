@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="error-page-404">
+    <div class="error-message">
+      <h1>4<i class="svg404"></i>4</h1>
+      <h2 *ngIf="errorMessage1.message == ''">Congratulations! <span>You are one of the elite few who has managed to find our 404 page.</span></h2>
+      <p *ngIf="errorMessage.message == '' && errorMessage1.message == ''"><b>Don't worry - </b>this is not a dead end. Looks like you tried to open a page which is not available.<br/> Please enter correct page url and try again.</p>
+      <p *ngIf="errorMessage.message != '' && errorMessage1.message == '' "><b>Don't worry - </b>{{ errorMessage.message }}<br/> {{ errorMessage.message1 }}</p>
+      <p *ngIf="errorMessage1"><b>{{ errorMessage1.message }}</b></p>
+    </div>
+  </div>
+</div>

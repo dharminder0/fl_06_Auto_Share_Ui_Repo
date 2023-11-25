@@ -1,0 +1,55 @@
+<div class="portlet-head">
+  <div class="font-type font-text2">
+    <span>{{"AUTOMATION_NAVIGATION_SETTINGS" | translate}}</span>
+  </div>
+  <div class="action">
+    <a href="javascript:void(0)" class="btn blue hide">Save Records</a>
+    <a href="javascript:void(0)" class="closet"></a>
+  </div>
+</div>
+
+<div class="form-body">
+    <div class="inner">
+      <form [formGroup]="previousButtonForm" class="tab-content">
+        <div class="tab-pane active" id="tab-1">
+          <div class="info-box">
+           <div class="font-type font-text2 mbottom-16">
+            {{"QUESTION_AND_CONTENT_PAGE_ATTEMPTS_SETTINGS"| translate }}
+           </div>
+              <div class="form-group">
+                <label class="app-checkbox font-type normal-text"> 
+                  {{"USER_IS_ALLOWED_TO_NAVIGATE_BACK_TO_ALL_QUESTIONS_AND_CONTEMT_PAGES_TO_VIEW" | translate }}
+                  <input type="checkbox" formControlName="ViewPreviousQuestion" [checked]="viewPreviousQuestion == true" (click)="onSelect('viewPreviousQuestion')" />
+                  <span></span>
+                </label>
+                <br>
+                <label class="app-checkbox font-type normal-text">
+                  {{"USERS_IS_ALLOWED_TO_NAVIGATE_BACK_TO_ALL_QUESTIONS_AND_CAN_EDIT_ANSWER" | translate }}
+                  <input type="checkbox" formControlName="EditAnswer" [checked]="editAnswer == true" (click)="onSelect('editAnswer')" />
+                  <span></span>
+                </label>
+              </div>
+
+              <div class="form-group block-display">
+
+                <div class="switch-bar-col">
+                  <label class="switch">
+                    <input type="checkbox" formControlName="ApplyToAll" class="boxid" [(ngModel)]="applyToAll" [checked]="applyToAll == true">
+                    <span class="slider round"></span>
+                  </label>
+                 </div>
+
+                 <div class="control-label font-type normal-text">
+                     {{"USE_ABOVE_SETTINGS_FOR_ALL_QUESTIONS_AND_CONTENT_PAGES" | translate }}
+                 </div>
+
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="content-bottom">
+    <button type="submit" class="btn save-btn font-type normal-text" (click) = "onUpdatePreviousButtonSetting()">{{"SAVE" | translate }}</button>
+  </div>

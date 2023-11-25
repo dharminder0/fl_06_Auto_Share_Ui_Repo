@@ -1,0 +1,166 @@
+<!-- begin contents -->
+<section class="app-contents">
+  <div class="ember-report">
+    <form class="horizontal-form">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label">{{"SELECT_QUIZZES" | translate }}</label>
+            <angular2-multiselect [data]="dropdownList" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedItems"
+              [settings]="dropdownSettings" (onSelect)="onQuizSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+              (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+            </angular2-multiselect>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label">{{"DATE_RANGE" | translate }}</label>
+            <div>
+              <input type="text" [(ngModel)]='daterangepickerModel' [ngModelOptions]="{standalone: true}" placeholder="{{'SELECT_DATE' | translate}}"
+                [minDate]='minDate' [maxDate]='maxDate' (bsValueChange)='dateChange($event)' class="form-control"
+                bsDaterangepicker>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label">{{"CONFIGURE_CONVERSION_RATE" | translate }}</label>
+            <div class="input-flex-group">
+              <select [ngModel]='conversion1' (ngModelChange)='onselectedFirstData($event)' [ngModelOptions]="{standalone: true}"
+                class="form-control select2">
+                <option value="Views">{{"VIEWS" | translate }}</option>
+                <option value="Starts">{{"STARTS" | translate }}</option>
+                <option value="Completions">{{"COMPLETIONS" | translate }}</option>
+              </select>
+              <span class="input-group-addon">
+                <i>{{"CONVERTS_ON" | translate }}</i>
+              </span>
+              <select [ngModel]='conversion2' (ngModelChange)='onSelectedSecondData($event)' [ngModelOptions]="{standalone: true}"
+                class="form-control select2">
+                <option value="Starts">{{"STARTS" | translate }}</option>
+                <option value="Completions">{{"COMPLETIONS" | translate }}</option>
+                <option value="Leads">{{"LEADS" | translate }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="reporting-compare-sort-container">
+
+        <ul class="list-unstyled sorting-list">
+          <li class="sort-by">
+            <p>SORT BY
+            </p>
+          </li>
+          <li>
+            <a [ngClass]="{'selected-sort-option': sortByDate==true || sortByDate==false}" href="javascript:void(0);"
+              (click)='onSortedByDate()'>{{"DATE" | translate}}
+              <i *ngIf='!sortByDate' class="zmdi zmdi-chevron-down" aria-hidden="true"></i>
+              <i *ngIf='sortByDate' class="zmdi zmdi-chevron-up" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a [ngClass]="{'selected-sort-option': sortByName==true || sortByName==false}" href="javascript:void(0);"
+              (click)='onSortedByName()'>{{"NAME" | translate}}
+              <i *ngIf='!sortByName' class="zmdi zmdi-chevron-down" aria-hidden="true"></i>
+              <i *ngIf='sortByName' class="zmdi zmdi-chevron-up" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a [ngClass]="{'selected-sort-option': sortByTotals==true || sortByTotals==false}" href="javascript:void(0);"
+              (click)='onSortedByTotals()'>{{"TOTALS" | translate}}
+              <i *ngIf='!sortByTotals' class="zmdi zmdi-chevron-down" aria-hidden="true"></i>
+              <i *ngIf='sortByTotals' class="zmdi zmdi-chevron-up" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a [ngClass]="{'selected-sort-option': sortByConversion==true || sortByConversion==false}" href="javascript:void(0);"
+              (click)='onSortedByConversion()'>{{"CONVERSION_RATE" | translate}}
+              <i *ngIf='!sortByConversion' class="zmdi zmdi-chevron-down" aria-hidden="true"></i>
+              <i *ngIf='sortByConversion' class="zmdi zmdi-chevron-up" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </form>
+  </div>
+
+  <!-- begin page -->
+  <div class="ember-body-srcoller">
+    <div *ngIf="quizList.length > 0" class="ember-body boxme">
+      <div *ngIf="individualReporting?.length !== 1">
+        <div class="app-head alpha app-head-data">
+          <h1 class="title-8">{{"AGGREGATE_REPORTING" | translate}}
+            <span>{{"SELECT_SPECIFIC_QUIZZES_AND_A_DATE_RANGE_TO_VIEW_AGGREGATED_DATA_OVER_TIME." | translate }}</span>
+          </h1>
+        </div>
+        <!-- <img src="../assets/layouts/img/graph2.png" alt="" /> -->
+        <div class="chart-container" *ngFor='let aggregateQuizReport of multi; let j=index;'>
+          <div class="quiz-container">
+            <h2 class="quiz-title">
+              <span></span>
+              <span class="tag-padding"></span>
+              <br>
+              <span class="quiz-created"></span>
+            </h2>
+          </div>
+          <ngx-charts-area-chart [view]="view" [scheme]="colorScheme" [results]="aggregateQuizReport" [gradient]="gradient"
+            [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [autoScale]="autoScale"
+            (select)="onSelect($event, -1)">
+            <ng-template #seriesTooltipTemplate let-items="model">
+              <p class="legend-datetime">{{items[0]?.name | date:'short'}}</p>
+              <ul class="legent-list">
+                <li class="change-align" *ngFor="let item of items;">
+                  {{logValues(item)}} {{item.series}}: {{item.value | number}}
+                  <span *ngIf='item.series == "Conversion"'>%</span>
+                </li>
+              </ul>
+            </ng-template>
+          </ngx-charts-area-chart>
+
+        </div>
+      </div>
+
+      <!-- begin head -->
+      <div *ngIf="individualReporting?.length >= 1">
+        <div class="app-head alpha app-head-data">
+          <h1 class="title-8">{{"INDIVIDUAL_REPORTING" | translate}}
+            <span>{{"A_SIDE_BY_SIDE_SORTABLE_COMPARISON_OF_THE_SELECETD_QUIZZES." | translate }}</span>
+          </h1>
+        </div>
+        <div class="chart-container" *ngFor='let quizReport of individualReporting | sortBydate: sortByDate | sortByName: sortByName | sortByTotal: sortByTotals | sortByConversion: sortByConversion; let i=index;'>
+          <div class="quiz-container">
+            <h2 class="quiz-title">
+              <span class="quiz-title-container">{{ quizReport.title }}</span>
+              <span class="tag-padding" [ngStyle]='{"background-color": quizReport.tagColor}'>{{ quizReport.tagTitle }}</span>
+              <br>
+              <span class="quiz-created">{{ quizReport?.createdOnFormat }}</span>
+            </h2>
+          </div>
+          <ngx-charts-area-chart [view]="view" [scheme]="colorScheme" [results]="quizReport.data"
+            [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [autoScale]="autoScale"
+            (select)="onSelect($event, i)">
+            <ng-template #seriesTooltipTemplate let-items="model">
+              <p>{{items[0]?.name | date:'short'}}</p>
+              <ul>
+                <li *ngFor="let item of items">
+                  {{logValues(item)}} {{item.series}}: {{item.value | number}}
+                  <span *ngIf='item.series == "Conversion"'>%</span>
+                </li>
+              </ul>
+            </ng-template>
+          </ngx-charts-area-chart>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="quizList.length === 0" class="ember-content no-data">
+      {{ "DATA_NOT_FOUND" | translate}}!!
+    </div>
+  </div>
+  <!-- end head -->
+  <!-- end page -->
+</section>
+<!-- end contents -->

@@ -1,0 +1,41 @@
+.error-page-404{
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .error-page-404 h1{
+    font-size: 180px;
+    color: #f5f5f5;
+    margin: 0px 0px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .error-page-404 h2{
+    font-size: 18px;
+    line-height: 26px;
+    color: #05b8ac;
+    margin: 0 0 20px;
+  }
+  .error-page-404 h2 span{
+    display: block;
+    color: #000;
+    font-size: 15px;
+    font-weight: 100;
+  }
+  .error-page-404 p{
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .error-page-404 .error-message{
+    padding: 30px 0;
+  }
+  .error-page-404 h1 .svg404{
+    display: inline-block;
+    width: 66px;
+    height: 62px;
+    background: url(/assets/layouts/img/sprites2.png) -7px -1662px;
+    margin: 0 10px;
+  }

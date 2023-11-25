@@ -1,0 +1,505 @@
+/*
+#	Author : 
+#	Date : 6 Dec 2017
+#	Description : Icons
+*/
+i.fa-icon {
+  float: left;
+  width: 22px;
+  height: 22px;
+  background: url(../img/sprites.png) no-repeat 0 0;
+  &.group {
+    background-position: 0 0px;
+  }
+  &.user {
+    background-position: 0 -20px;
+  }
+  &.phone {
+    background-position: 0 -42px;
+  }
+  &.email {
+    background-position: -2px -63px;
+  }
+  &.calendar {
+    background-position: 0 -86px;
+  }
+  &.cancel {
+    background-position: 0 -111px;
+  }
+  &.timer {
+    background-position: 0 -135px;
+  }
+  &.plus {
+    height: 18px;
+    background-position: 0 -158px;
+  }
+  &.edit {
+    width: 19px;
+    height: 19px;
+    background-position: 0 -182px;
+  }
+  &.copy {
+    height: 18px;
+    min-width: 22px;
+    background-position: 0 -206px;
+  }
+  &.plus-ember {
+    width: 20px;
+    height: 20px;
+    background-position: -1px -230px;
+  }
+  &.close-circle {
+    width: 20px;
+    height: 20px;
+    background-position: -1px -255px;
+  }
+  &.calendar-medium {
+    background-position: 0 -279px;
+  }
+  &.calendar-blue {
+    background-position: 1px -307px;
+  }
+  &.settings {
+    width: 21px;
+    height: 20px;
+    background-position: 0 -331px;
+  }
+  &.tip {
+    background-position: 2px -354px;
+  }
+  &.search {
+    background-position: 0 -373px;
+  }
+  &.close-1 {
+    background-position: 0 -391px;
+  }
+  &.right {
+    width: 40px;
+    height: 40px;
+    background-position: 0 -413px;
+  }
+  &.preview {
+    height: 18px;
+    background-position: 0 -531px;
+  }
+  &.semb {
+    height: 18px;
+    background-position: 0 -485px;
+  }
+  &.analytics {
+    background-position: 0 -509px;
+  }
+  &.quest {
+    width: 36px;
+    background-position: 0 -457px;
+  }
+  &.add {
+    height: 18px;
+    background-position: -24px -575px;
+  }
+  &.rqa {
+    height: 18px;
+    margin-right: 5px;
+    background-position: 2px -595px;
+  }
+  &.r {
+    height: 18px;
+    background-position: -24px -594px;
+  }
+  &.a {
+    height: 18px;
+    background-position: -22px -614px;
+  }
+  &.img {
+    height: 18px;
+    background-position: 2px -614px;
+  }
+  &.i {
+    height: 18px;
+    background-position: -46px -594px;
+  }
+  &.delete {
+    background-position: -1px -554px;
+  }
+  &.publish {
+    width: 12px;
+    height: 18px;
+    background-position: -1px -634px;
+  }
+  &.download {
+    width: 18px;
+    height: 18px;
+    background-position: -1px -660px;
+  }
+  &.alert-lg {
+    width: 28px;
+    height: 26px;
+    background-position: -1px -687px;
+  }
+  &.enabled-lg {
+    width: 32px;
+    height: 32px;
+    background-position: -38px -684px;
+  }
+  &.bulb-lg {
+    width: 32px;
+    height: 32px;
+    background-position: -33px 0px;
+  }
+  &.crop {
+    background-position: 3px -1058px;
+  }
+  &.upload {
+    height: 18px;
+    background-position: 0px -786px;
+  }
+  &.fig-ember {
+    width: 40px;
+    height: 34px;
+    background-position: -1px -746px;
+  }
+  &.fb {
+    width: 36px;
+    height: 36px;
+    background-position: -2px -810px;
+  }
+  &.twit {
+    width: 36px;
+    height: 36px;
+    background-position: -2px -853px;
+  }
+  &.check-o {
+    width: 16px;
+    height: 16px;
+    background-position: -2px -898px;
+  }
+  &.message {
+    width: 20px;
+    height: 16px;
+    background-position: -2px -962px;
+  }
+  &.url {
+    width: 18px;
+    height: 18px;
+    background-position: -1px -720px;
+  }
+  &.size {
+    width: 12px;
+    height: 18px;
+    background-position: -1px -982px;
+  }
+  &.color {
+    width: 16px;
+    height: 18px;
+    background-position: -1px -1001px;
+  }
+  &.plus-o {
+    width: 12px;
+    height: 12px;
+    background-position: -27px -233px;
+  }
+  &.minus-o {
+    width: 12px;
+    height: 12px;
+    background-position: -44px -233px;
+  }
+  &.date-icon {
+    width: 33px;
+    height: 31px;
+    background-position: -1px -1024px;
+  }
+  &.correct {
+    width: 63px;
+    height: 63px;
+    background-position: -3px -1083px;
+  }
+  &.incorrect {
+    width: 63px;
+    height: 63px;
+    background-position: -3px -1151px;
+  }
+  &.right-o {
+    width: 16px;
+    height: 13px;
+    background-position: -1px -1225px;
+  }
+  &.wrong-o {
+    width: 13px;
+    height: 13px;
+    background-position: -29px -1225px;
+  }
+}
+
+.blue {
+  i.fa-icon {
+    &.plus {
+      background-position: -25px -158px;
+    }
+    &.publish {
+      background-position: -58px -634px;
+    }
+    &.upload {
+      background-position: -51px -786px;
+    }
+    &.copy {
+      background-position: -51px -206px;
+    }
+  }
+}
+
+a:hover {
+  i.calendar-blue {
+    background-position: -29px -307px;
+  }
+  i.settings {
+    background-position: -28px -331px;
+  }
+  i.edit {
+    background-position: -24px -182px;
+  }
+  i.copy {
+    background-position: -25px -206px;
+  }
+  i.preview {
+    background-position: -25px -531px;
+  }
+  i.semb {
+    background-position: -24px -485px;
+  }
+  i.analytics {
+    background-position: -24px -509px;
+  }
+  i.url {
+    background-position: -27px -720px;
+  }
+  i.size {
+    background-position: -30px -982px;
+  }
+  i.color {
+    background-position: -28px -1001px;
+  }
+  i.plan {
+    &.delete {
+      background-position: -48px -554px;
+    }
+    &.email {
+      background-position: -50px -63px;
+    }
+    &.edit {
+      background-position: -50px -182px;
+    }
+    &.copy {
+      background-position: -51px -206px;
+    }
+    &.plus {
+      background-position: -50px -158px;
+    }
+    &.preview {
+      background-position: -50px -531px;
+    }
+    &.semb {
+      background-position: -48px -485px;
+    }
+    &.publish {
+      background-position: -58px -634px;
+    }
+    &.download {
+      background-position: -52px -660px;
+    }
+    &.upload {
+      background-position: -51px -786px;
+    }
+    &.plus {
+      background-position: -48px -158px;
+    }
+  }
+}
+
+.open a i.fa-icon {
+  &.settings {
+    background-position: -28px -331px;
+  }
+}
+
+.heading {
+  h2 {
+    &:before {
+      left: 0;
+      top: 0;
+      bottom: 0;
+      content: "";
+      margin: auto;
+      display: block;
+      position: relative;
+      margin-right: 10px;
+      background: url(../img/sprites3.png) no-repeat 0 0;
+    }
+    &.title-1 {
+      &:before {
+        width: 52px;
+        height: 56px;
+        background-position: -1px -1px;
+      }
+    }
+    &.title-2 {
+      &:before {
+        width: 52px;
+        height: 56px;
+        background-position: -1px -62px;
+      }
+    }
+    &.title-3 {
+      &:before {
+        width: 65px;
+        height: 60px;
+        background-position: -1px -125px;
+      }
+    }
+    &.title-4 {
+      &:before {
+        width: 74px;
+        height: 64px;
+        background-position: -1px -196px;
+      }
+    }
+    &.title-5 {
+      &:before {
+        width: 51px;
+        height: 58px;
+        background-position: -1px -267px;
+      }
+    }
+    &.title-6 {
+      &:before {
+        width: 51px;
+        height: 58px;
+        background-position: -1px -330px;
+      }
+    }
+    &.title-7 {
+      &:before {
+        width: 51px;
+        height: 58px;
+        min-width: 51px;
+        background-position: -1px -393px;
+      }
+    }
+    &.title-8 {
+      &:before {
+        width: 74px;
+        height: 58px;
+        background-position: -1px -458px;
+      }
+    }
+    &.title-9 {
+      &:before {
+        width: 48px;
+        height: 43px;
+        background-position: -1px -524px;
+      }
+    }
+    &.title-10 {
+      &:before {
+        width: 66px;
+        height: 66px;
+        background-position: -1px -572px;
+      }
+    }
+    &.title-11 {
+      &:before {
+        width: 64px;
+        height: 66px;
+        background-position: -1px -646px;
+      }
+    }
+  }
+}
+
+.choose-quiz {
+  i.icon {
+    width: 64px;
+    height: 68px;
+    display: inline-block;
+    background: url(../img/sprites2.png) no-repeat 0 0;
+    &.chat {
+      background-position: -1px -50px;
+    }
+    &.assessment {
+      background-position: 6px -117px;
+    }
+    &.personality {
+      background-position: -1px -192px;
+    }
+    &.score {
+      background-position: -4px -267px;
+    }
+  }
+}
+
+.nav-tabs {
+  i.fa-icon {
+    margin-right: 6px;
+    &.download {
+      background-position: -1px -660px;
+    }
+    &.url {
+      width: 18px;
+      height: 18px;
+      background-position: -1px -720px;
+    }
+    &.edit {
+      background-position: -1px -182px;
+    }
+    &.crop {
+      background-position: 3px -1060px;
+    }
+  }
+  .active {
+    i.fa-icon {
+      &.upload {
+        background-position: -51px -786px;
+      }
+      &.url {
+        background-position: -51px -720px;
+      }
+      &.edit {
+        background-position: -51px -182px;
+      }
+
+      &.img {
+        background-position: -51px -614px;
+      }
+      &.crop {
+        background-position: -48px -1060px;
+      }
+    }
+  }
+  a:hover {
+    i.fa-icon {
+      &.upload {
+        background-position: -51px -786px;
+      }
+      &.url {
+        background-position: -51px -720px;
+      }
+      &.edit {
+        background-position: -51px -182px;
+      }
+
+      &.img {
+        background-position: -51px -614px;
+      }
+      &.crop {
+        background-position: -48px -1060px;
+      }
+    }
+  }
+}
+
+a.add {
+  &:hover {
+    i.add {
+      background-position: -44px -575px;
+    }
+  }
+}

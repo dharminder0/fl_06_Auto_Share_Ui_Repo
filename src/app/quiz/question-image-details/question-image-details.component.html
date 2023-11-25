@@ -1,0 +1,356 @@
+<div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !isNextStatus, 'left-quiz-silder':isMobileView && isNextStatus}">
+    <div class="container-single page fixed-fr-toolbar" #previewContainer>
+        <div *ngIf="QuestionDetails['TimerRequired'] &&  checkForQuesType()" class="timer-body" [ngClass]="{'right-timer-body':QuizBrandingAndStyle.AutomationAlignment=='Right'}">
+            <circle-progress [percent]="progress" [showTitle]="false" [subtitle]="getDownTime()" [showUnits]="false" [radius]="50" [outerStrokeWidth]="3" [innerStrokeWidth]="2" [space]="-2" [outerStrokeColor]="QuizBrandingAndStyle.ButtonFontColor"
+                [innerStrokeColor]="QuizBrandingAndStyle.ButtonColor" [backgroundColor]="QuizBrandingAndStyle.ButtonColor" [showBackground]="true" [backgroundPadding]="0" [titleFontSize]="24" [subtitleFontSize]="24" [showSubtitle]="true" [subtitleColor]="QuizBrandingAndStyle.ButtonFontColor"
+                [animation]="true" [animationDuration]="0" [startFromZero]="false" [responsive]="true"></circle-progress>
+        </div>
+        <div class="ins no cover-height" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [ngClass]="{'bbottom-none':isMobileView && (QuestionDetails.AnswerType != 1 && QuestionDetails.AnswerType != 9),'content-box': !isMobileView}">
+
+            <div *ngIf="IsBackButtonEnable" [ngClass]="{'hidePreviousButton': QuestionDetails['TimerRequired']}" (click)="previousQuestion()">
+                <a class="close previous_button pre-btn" title="Go back" href="javascript:void(0)">
+                    <svg width="30" height="14" viewBox="0 0 30 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.52416 13.7894C6.80611 14.0702 7.25 14.0702 7.53195 13.7894C7.80438 13.5182 7.80438 13.0667 7.53195 12.7961L2.42185 7.70787L29.2843 7.70787C29.6774 7.70787 30 7.39677 30 7.00537C30 6.61397 29.6774 6.29276 29.2843 6.29276L2.42185 6.29276L7.53195 1.21404C7.80438 0.933294 7.80438 0.481191 7.53195 0.210562C7.25 -0.0701844 6.80611 -0.0701843 6.52415 0.210562L0.204321 6.50332C-0.0681078 6.77458 -0.0681077 7.22605 0.204321 7.49668L6.52416 13.7894Z" fill="#00B7AB"/>
+    </svg>
+                </a>
+            </div>
+
+            <div class="imgtype container-position">
+
+                <!-- timer added  -->
+                <div class="popup-container-attempt" [ngClass]="{'popup-container': addClass}">
+                    <div *ngFor="let reOrder of questionElementReorder">
+                        <!-- --------------- -->
+                        <div class="screen-sec" *ngIf="reOrder.key == 'media' && QuestionDetails.ShowQuestionImage && QuestionDetails.QuestionImage">
+                            <figure class="media-block" style="text-align: center;">
+                                <img class="img-align-center" *ngIf="imageORvideo === 'image'" [src]="coverImage" alt="">
+                                <ng-container *ngIf="imageORvideo === 'video'">
+                                    <cl-video id="autoPlayVideo" public-id={{QuestionDetails.PublicIdForQuestion}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposter()'>
+                                        <cl-transformation gravity="north" y="20"></cl-transformation>
+                                    </cl-video>
+                                </ng-container>
+                            </figure>
+                        </div>
+                        <a class="alink">
+                            <h1 *ngIf="reOrder.key == 'title' && QuestionDetails.ShowTitle" [ngStyle]="{'color': QuizBrandingAndStyle.FontColor,'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" class="question-title"
+                                [froalaEditor]="options" contenteditable="false" [ngModel]="QuestionDetails.QuestionTitle"></h1>
+                            <div *ngIf="reOrder.key == 'description' && QuestionDetails.ShowDescription" [ngStyle]="{'color': QuizBrandingAndStyle.FontColor,'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" class="next-line-string inner-div"
+                                [froalaEditor]="options" contenteditable="false" [ngModel]="QuestionDetails.Description"></div>
+
+                            <div class="screen-sec media-block" *ngIf="QuestionDetails.ShowDescription && QuestionDetails.DescriptionImage && QuestionDetails.ShowDescriptionImage && reOrder.key == 'description'">
+                                <figure style="text-align: center;">
+                                    <img class="img-align-center" *ngIf="imageORvideoDes === 'image'" [src]="descriptionImage">
+                                    <ng-container *ngIf="imageORvideoDes === 'video'">
+                                        <cl-video id="autoplayDes" public-id={{QuestionDetails.PublicIdForDescription}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposterDes()'>
+                                            <cl-transformation gravity="north" y="20"></cl-transformation>
+                                        </cl-video>
+                                    </ng-container>
+                                </figure>
+                            </div>
+
+                            <div *ngIf="reOrder.key == 'question' && QuestionDetails.AnswerType==questionTypeEnum.singleSelect" class="row image-option-cols-2">
+                                <ng-container *ngFor="let answer of QuestionDetails.AnswerOption; let i=index;">
+                                    <div class="col-s m-4 answer-div-container font-type" *ngIf="!answer.IsUnansweredType" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat' , 'color': QuizBrandingAndStyle.OptionFontColor}">
+
+                                        <ng-container *ngIf="!PreviousQuestionSubmittedAnswer">
+                                            <div class="option-box pointer" (mouseenter)="hoverOnOption[answer.AnswerId] = true" (mouseleave)="hoverOnOption[answer.AnswerId] = false" (click)="singleOptionSelected(answer.AnswerId)">
+                                                <figure>
+                                                    <label class="default-option check pointer" [ngStyle]="{'background': quizStatus.AnswerId == answer.AnswerId? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[answer.AnswerId]? QuizBrandingAndStyle.BackgroundColorofAnsweronHover :QuizBrandingAndStyle.OptionColor}">                 
+                                                        <div *ngIf="!isMobileView">
+                                                                <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                    <cl-transformation width="200" height="200" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                                </cl-image>
+                                                                <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImage"/>
+                                                        </div>
+                                                        <div *ngIf="isMobileView">
+                                                                <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                    <cl-transformation width="120" height="120" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                                </cl-image>
+                                                                <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImageInMoblie"/>
+                                                        </div>
+                                                        <ng-container *ngIf="answerImageORvideo[i] === 'video' && answer.PublicIdForAnswer">
+                                                            <cl-video id="{{answer.AnswerId}}"  public-id={{answer.PublicIdForAnswer}}
+                                                                secure="true" class="my-videos" controls="true" [attr.poster]='applyposterAns(answer)'>
+                                                                <cl-transformation gravity="north" y="20"></cl-transformation>
+                                                            </cl-video>
+                                                        </ng-container>
+                                                        </label>
+                                                </figure>
+                                                <div style="margin-top: 7px;">
+                                                    <p class="higherLevelBrandingColor image-select-text-color" [froalaEditor]="options" contenteditable="false" title="{{answer.Title}}" [ngModel]="answer.Title"></p>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="PreviousQuestionSubmittedAnswer">
+                                            <ng-container *ngIf="QuestionDetails.EditAnswer == false">
+                                                <div class="option-box disabled_label" (mouseenter)="hoverOnOption[answer.AnswerId] = true" (mouseleave)="hoverOnOption[answer.AnswerId] = false">
+                                                    <figure>
+                                                        <label class="default-option check disabled_label" (click)="singleSelectedBtn()" [ngStyle]="{'background': PreviousQuestionSubmittedAnswer.SubmittedAnswerDetails[0].AnswerId == answer.AnswerId? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[answer.AnswerId]? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor}">
+                                                            <div *ngIf="!isMobileView">
+                                                                <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                    <cl-transformation width="200" height="200" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                                </cl-image>
+                                                                <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImage"/>
+                                                            </div>
+                                                            <div *ngIf="isMobileView">
+                                                                <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                    <cl-transformation width="120" height="120" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                                </cl-image>
+                                                                <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImageInMoblie"/>
+                                                            </div>
+                                                            <ng-container *ngIf="answerImageORvideo[i] === 'video' && answer.PublicIdForAnswer">
+                                                                <cl-video id="{{answer.AnswerId}}" public-id={{answer.PublicIdForAnswer}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposterAns(answer)'>
+                                                                    <cl-transformation gravity="north" y="20"></cl-transformation>
+                                                                </cl-video>
+                                                            </ng-container>
+                                                        </label>
+                                                    </figure>
+                                                    <div style="margin-top: 7px;">
+                                                        <p class="higherLevelBrandingColor image-select-text-color" [froalaEditor]="options" contenteditable="false" title="{{answer.Title}}" [ngModel]="answer.Title"></p>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                            <ng-container *ngIf="QuestionDetails.EditAnswer == true">
+                                                <div class="option-box pointer" (mouseenter)="hoverOnOption[answer.AnswerId] = true" (mouseleave)="hoverOnOption[answer.AnswerId] = false">
+                                                    <figure>
+                                                        <label class="default-option check pointer" (click)="singleOptionSelected(answer.AnswerId)" [ngStyle]="{'background': (quizStatus.AnswerId ? (quizStatus.AnswerId == answer.AnswerId) :PreviousQuestionSubmittedAnswer.SubmittedAnswerDetails[0].AnswerId == answer.AnswerId) ? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[answer.AnswerId]? QuizBrandingAndStyle.BackgroundColorofAnsweronHover :QuizBrandingAndStyle.OptionColor}">
+                                                        <div *ngIf="!isMobileView">
+                                                            <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                <cl-transformation width="200" height="200" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                            </cl-image>
+                                                            <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImage"/>
+                                                        </div>
+                                                        <div *ngIf="isMobileView">
+                                                            <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                <cl-transformation width="120" height="120" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                            </cl-image>
+                                                            <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImageInMoblie"/>
+                                                        </div>
+                                                        <ng-container *ngIf="answerImageORvideo[i] === 'video' && answer.PublicIdForAnswer">
+                                                            <cl-video id="{{answer.AnswerId}}"  public-id={{answer.PublicIdForAnswer}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposterAns(answer)'>
+                                                                <cl-transformation gravity="north" y="20"></cl-transformation>
+                                                            </cl-video>
+                                                        </ng-container>
+                                                    </label>
+                                                    </figure>
+                                                    <div style="margin-top: 7px;">
+                                                        <p class="higherLevelBrandingColor image-select-text-color" [froalaEditor]="options" contenteditable="false" title="{{answer.Title}}" [ngModel]="answer.Title"></p>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </div>
+
+                            <div *ngIf="reOrder.key == 'button' && QuestionDetails.AnswerType==questionTypeEnum.singleSelect && !isMobileView && QuestionDetails.EnableNextButton" class="next-btn-container mbottom-10">
+                                  <button class="next-btn ellipsiss" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!buttonEnable" [ngStyle]="{ 
+                                    'color': QuizBrandingAndStyle.ButtonFontColor , 
+                                    'background': QuizBrandingAndStyle.ButtonColor,
+                                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                                  </button>
+                            </div>
+
+
+                            <div *ngIf="reOrder.key == 'question' && QuestionDetails.AnswerType==questionTypeEnum.multiSelect" class="text-center select-one-more-options" [ngStyle]="{'color': QuizBrandingAndStyle.FontColor}">
+                                {{"multipleAnswersPossible" | translate}}
+                            </div>
+
+                            <div *ngIf=" reOrder.key == 'question' && QuestionDetails.AnswerType==questionTypeEnum.multiSelect" class="row image-option-cols-2">
+                                <ng-container *ngFor="let answer of QuestionDetails.AnswerOption; let i=index;">
+                                    <div class="col-s m-4 answer-div-container font-type" *ngIf="!answer.IsUnansweredType" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat' , 'color': QuizBrandingAndStyle.OptionFontColor}">
+                                        <ng-container *ngIf="!PreviousQuestionSubmittedAnswer">
+                                            <div class="option-box pointer" (click)="selectedMultipleOption(answer.AnswerId, i);" (mouseenter)="hoverOnOption[answer.AnswerId] = true" (mouseleave)="hoverOnOption[answer.AnswerId] = false">
+                                                <figure>
+                                                    <label class="default-option check pointer" [ngStyle]="{'background': selectedOptionArray.includes(answer.AnswerId)? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[answer.AnswerId]? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor}">
+                                                        <div *ngIf="!isMobileView">
+                                                            <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                <cl-transformation width="200" height="200" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                            </cl-image>
+                                                            <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImage"/>
+                                                        </div>
+                                                        <div *ngIf="isMobileView">
+                                                            <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                <cl-transformation width="120" height="120" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                            </cl-image>
+                                                            <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImageInMoblie"/>
+                                                        </div>
+
+                                                        <ng-container *ngIf="answerImageORvideo[i] === 'video' && answer.PublicIdForAnswer">
+                                                            <cl-video id="{{answer.AnswerId}}"  public-id={{answer.PublicIdForAnswer}}
+                                                                secure="true" class="my-videos" controls="true" [attr.poster]='applyposterAns(answer)'>
+                                                                <cl-transformation gravity="north" y="20"></cl-transformation>
+                                                            </cl-video>
+                                                        </ng-container>
+                                                    </label>
+                                                </figure>
+                                                <div style="margin-top: 7px;">
+                                                    <p class="higherLevelBrandingColor image-select-text-color" [froalaEditor]="options" contenteditable="false" title="{{answer.Title}}" [ngModel]="answer.Title"></p>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container *ngIf="PreviousQuestionSubmittedAnswer">
+                                            <ng-container *ngIf="QuestionDetails.EditAnswer == false">
+                                                <div class="option-box disabled_label" (mouseenter)="hoverOnOption[answer.AnswerId] = true" (mouseleave)="hoverOnOption[answer.AnswerId] = false">
+                                                    <figure>
+                                                        <label class="default-option check disabled_label" [ngStyle]="{'background':selectedOptionArray.includes(answer.AnswerId)? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[answer.AnswerId]? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor}">
+                                                            <div *ngIf="!isMobileView">
+                                                                <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                    <cl-transformation width="200" height="200" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                                </cl-image>
+                                                                <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImage"/>
+                                                            </div>
+                                                            <div *ngIf="isMobileView">
+                                                                <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                    <cl-transformation width="120" height="120" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                                </cl-image>
+                                                                <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImageInMoblie"/>
+                                                            </div>
+                                                            <ng-container *ngIf="answerImageORvideo[i] === 'video' && answer.PublicIdForAnswer">
+                                                                <cl-video id="{{answer.AnswerId}}" public-id={{answer.PublicIdForAnswer}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposterAns(answer)'>
+                                                                    <cl-transformation gravity="north" y="20"></cl-transformation>
+                                                                </cl-video>
+                                                            </ng-container>
+                                                        </label>
+                                                    </figure>
+                                                    <div style="margin-top: 7px;">
+                                                        <p class="higherLevelBrandingColor image-select-text-color" [froalaEditor]="options" contenteditable="false" title="{{answer.Title}}" [ngModel]="answer.Title"></p>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+
+                                            <ng-container *ngIf="QuestionDetails.EditAnswer == true">
+                                                <div class="option-box pointer" (click)="selectedMultipleOption(answer.AnswerId, i);" (mouseenter)="hoverOnOption[answer.AnswerId] = true" (mouseleave)="hoverOnOption[answer.AnswerId] = false">
+                                                    <figure>
+                                                        <label class="default-option check pointer" [ngStyle]="{'background': selectedOptionArray.includes(answer.AnswerId)? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[answer.AnswerId]? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor}">
+                                                            <div *ngIf="!isMobileView">
+                                                                <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                    <cl-transformation width="200" height="200" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                                </cl-image>
+                                                                <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImage"/>
+                                                            </div>
+                                                            <div *ngIf="isMobileView">
+                                                                <cl-image *ngIf="answerImageORvideo[i] === 'image' && answer.PublicIdForAnswer" public-id={{answer.PublicIdForAnswer}}>
+                                                                    <cl-transformation width="120" height="120" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                                                </cl-image>
+                                                                <img *ngIf="!answer.PublicIdForAnswer || !answer.ImageURL" [src]="defaultCoverImageInMoblie"/>
+                                                            </div>
+                                                            <ng-container *ngIf="answerImageORvideo[i] === 'video' && answer.PublicIdForAnswer">
+                                                                <cl-video id="{{answer.AnswerId}}" public-id={{answer.PublicIdForAnswer}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposterAns(answer)'>
+                                                                    <cl-transformation gravity="north" y="20"></cl-transformation>
+                                                                </cl-video>
+                                                            </ng-container>
+                                                            </label>
+                                                    </figure>
+                                                    <div style="margin-top: 7px;">
+                                                        <p class="higherLevelBrandingColor image-select-text-color" [froalaEditor]="options" contenteditable="false" title="{{answer.Title}}" [ngModel]="answer.Title"></p>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <div *ngIf="reOrder.key == 'button' && QuestionDetails.AnswerType==questionTypeEnum.multiSelect && !isMobileView && QuestionDetails.EnableNextButton" class="next-btn-container mbottom-10">
+                                <ng-container *ngIf="!PreviousQuestionSubmittedAnswer">
+                                    <button class="next-btn ellipsiss" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{ 
+            'color': QuizBrandingAndStyle.ButtonFontColor , 
+            'background': QuizBrandingAndStyle.ButtonColor,
+            'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+            </button>
+                                </ng-container>
+
+                                <ng-container *ngIf="PreviousQuestionSubmittedAnswer">
+                                    <button class="next-btn ellipsiss" (click)="submitCurrentOption()" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{
+              'color': QuizBrandingAndStyle.ButtonFontColor , 
+              'background': QuizBrandingAndStyle.ButtonColor,
+              'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+              </button>
+                                </ng-container>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isMobileView && logoImage" [style.background]="logoBackgroundColor" class="mobile-logo">
+                <div>
+                    <cl-image public-id={{logoImage}}>
+                        <cl-transformation width="100" height="60" crop="lpad" fetch-format="auto"></cl-transformation>
+                    </cl-image>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div *ngIf="isMobileView && QuestionDetails.EnableNextButton" class="next-btn-container">
+            <div *ngIf="buttonShow">
+            <ng-container *ngIf="!PreviousQuestionSubmittedAnswer">
+                <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.multiSelect" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{ 
+    'color': QuizBrandingAndStyle.ButtonFontColor , 
+    'background': QuizBrandingAndStyle.ButtonColor,
+    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+    </button>
+            </ng-container>
+
+            <ng-container *ngIf="PreviousQuestionSubmittedAnswer">
+                <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.multiSelect" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{
+      'color': QuizBrandingAndStyle.ButtonFontColor , 
+      'background': QuizBrandingAndStyle.ButtonColor,
+      'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+      </button>
+            </ng-container>
+
+              <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.singleSelect" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!buttonEnable" [ngStyle]="{
+              'color': QuizBrandingAndStyle.ButtonFontColor , 
+              'background': QuizBrandingAndStyle.ButtonColor,
+              'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+              </button>
+
+        </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div *ngIf="isMobileView && QuestionDetails.EnableNextButton" class="mobile-view-logo-body fixed-fr-toolbar" style="bottom: 0;width: 100%;padding: 0 20px;">
+    <div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !isNextStatus, 'left-quiz-silder':isMobileView && isNextStatus}">
+        <div *ngIf="isMobileView && !buttonShow">
+          <div class="next-btn-container" *ngIf="(QuestionDetails.AnswerType==questionTypeEnum.singleSelect)">
+            <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!buttonEnable" [ngStyle]="{
+              'color': QuizBrandingAndStyle.ButtonFontColor , 
+              'background': QuizBrandingAndStyle.ButtonColor,
+              'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+              </button>
+          </div>
+            <div class="next-btn-container" *ngIf="(QuestionDetails.AnswerType==questionTypeEnum.multiSelect)">
+                <ng-container *ngIf="!PreviousQuestionSubmittedAnswer">
+                    <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{ 
+      'color': QuizBrandingAndStyle.ButtonFontColor , 
+      'background': QuizBrandingAndStyle.ButtonColor,
+      'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+      </button>
+                </ng-container>
+
+                <ng-container *ngIf="PreviousQuestionSubmittedAnswer">
+                    <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" (click)="submitCurrentOption()" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{
+        'color': QuizBrandingAndStyle.ButtonFontColor , 
+        'background': QuizBrandingAndStyle.ButtonColor,
+        'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+        </button>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #popTemplate>
+    <div>
+        <span>Note: Minimum {{ QuestionDetails.MinAnswer }} <span *ngIf="QuestionDetails.MinAnswer <= 1">answer is
+                </span><span *ngIf="QuestionDetails.MinAnswer > 1">answers are </span>required. <span *ngIf="QuestionDetails.MinAnswer != QuestionDetails.MaxAnswer">Also, you can select
+                    {{ QuestionDetails.MaxAnswer }} <span *ngIf="QuestionDetails.MaxAnswer <= 1">answer </span><span *ngIf="QuestionDetails.MaxAnswer > 1">answers </span> at max.</span>
+        </span>
+    </div>
+</ng-template>

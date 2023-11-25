@@ -1,0 +1,148 @@
+/*
+#	Author : Finoit
+#	Date : 6 Dec 2017
+#	Description : Btns 
+*/
+.btn{
+  padding: 8px 12px;
+  &.medium{
+    height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: $font-size-medium;
+  }
+  &.wide{
+    display: block;
+  }
+  &.white {
+    color: $regular-color;
+    background: $base-bkg-1;
+    border-color: $base-color-1;
+    &.shadow {
+      @include box-shadow($regular-shadow);  
+    }    
+  }
+
+  &.blue{
+    color: $base-color-1;
+    background: $secondary-bkg;
+    @include border-radius(2px); 
+    box-shadow: $no-shadow;
+    &.line{
+      color: $secondary-color;
+      background: $no-bkg;
+      border-color: $secondary-color;
+      &:hover{
+        color: $base-color-1;
+        background: $secondary-bkg;        
+      }
+    }
+  }
+  &.blue{
+    &.no-btn{
+      color: $secondary-color;
+      background: $base-bkg-1;
+    }    
+  }
+  &.grey{
+    color: $base-color-1;
+    background: $regular-bkg;
+    @include border-radius(2px); 
+    box-shadow: $no-shadow;
+    &.line{
+      color: $regular-color;
+      border-color: $base-color-5;
+      background: $base-bkg-1;
+      &:hover{
+        color: $base-color-1;
+        background: $secondary-bkg;
+        border-color: $secondary-color;        
+      }
+    }
+  }
+  &.line{
+    color: $regular-color;
+    border-color: $base-color-5;
+    @include border-radius(2px); 
+    box-shadow: $no-shadow;
+  }
+  &.light {
+    color: $regular-color;
+    background: $base-bkg-7; 
+    &:hover{
+      color: $base-color-1;
+      background: $secondary-bkg;        
+    } 
+  }
+  &.pm{
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    position: relative;
+    @include border-radius(100px); 
+    i{
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      position: absolute;
+    }
+  }
+}
+
+.form-actions{
+  text-align: center;
+  .btn{
+    min-width: 150px;
+    + .btn{
+      margin-left: 20px;
+    }
+  }  
+}
+
+.form-action{
+  .btn{
+    min-width: 150px;
+    + .btn{
+      margin-left: 20px;
+    }
+  }  
+}
+
+.builder-action{
+  top: 12px;
+  left: 12px;
+  position: absolute;
+  a{
+    position: relative;
+    input{
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 6;
+      width: 100%;
+      font-size: 0;
+      cursor: pointer;
+      position: absolute;
+      text-indent: -9999px;
+    }
+  }
+}
+
+.form-action-group{
+  text-align: center;
+  margin-bottom: 30px;
+  .btn{
+    margin: 0 10px 10px;
+    padding: 8px 20px;
+  }
+}
+
+.btn{
+  i{
+    font-size: 16px; 
+    margin-right: 6px;
+  }
+}

@@ -1,0 +1,43 @@
+.portlet-head{
+  padding: 0 40px;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.font-type{
+  font-family: Raleway;
+  font-style: normal;
+}
+
+.font-text2{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 125%;
+  color: #494949;
+}
+
+.normal-text{
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.form-body{
+  height: calc(100% - 60px);
+  background: #fff;
+  position: relative;
+  padding: 34px 40px;
+  overflow: auto;
+}  
+
+.Collapse-block{
+    cursor: all-scroll;
+    padding: 10px 15px;
+    border: 1px solid #D0D0D0;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.Collapse-block:hover{
+  border: 1px solid #494949;
+}

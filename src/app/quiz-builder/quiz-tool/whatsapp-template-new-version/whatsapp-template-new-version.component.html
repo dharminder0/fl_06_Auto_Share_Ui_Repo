@@ -1,0 +1,52 @@
+<div *ngIf="availableHsmTemplateList && availableHsmTemplateList.length > 0" style="width: 240px;margin-bottom: 20px;">
+    <select class="form-control lang-dropdown" [(ngModel)]="selectedTemplateLangCode" (ngModelChange)="getWhatsappHsmTemplates()" style="border-width: 1px;">
+        <option title="{{languageNameByCode[option]}}" [ngValue]="option" *ngFor="let option of clientLanguageList">{{languageNameByCode[option]}}</option>
+    </select>
+</div>
+<div *ngIf="availableHsmTemplateList && availableHsmTemplateList.length > 0" class="display-flex">
+    <div class="temp-block">
+        <div class="searchBoxForDropdown">
+            <input type="text" class="someinput" placeholder="{{'SEARCH_TEMPLATES' | translate}}" [(ngModel)]="searchTemplate" />
+            <img alt="search icon" class="search-icon" src="assets/layouts/img/icon_search.png">
+        </div>
+        <ng-container *ngIf="( availableHsmTemplateList | searchArrayPipe : 'displayName': searchTemplate) as templateList">
+            <div *ngFor="let template of templateList;let i = index" [ngClass]="{'b-left': selectedTempDetails && selectedTempDetails.id == template.id}" (click)="onSelectedTemp(template)">
+                <div class="template-list-text ellipsiss" [ngClass]="{'p-left': (selectedTempDetails.id != template.id || !selectedTempDetails),'selected': selectedTempDetails && selectedTempDetails.id == template.id}">
+                    <span class="p-right">
+                        {{i+1}}
+                    </span>
+                    <span title="{{template.displayName}}">{{template.displayName}}</span>
+                </div>
+            </div>
+            <div class="no-temp" *ngIf="templateList.length === 0">No Templates available</div> 
+        </ng-container>
+    </div>
+
+    <div class="right-side-body">
+        <div class="whatsapp-block">
+            <div class="template-body">
+                <form [formGroup]="whatsappTemplateForm">
+                        <span *ngFor="let dataObj of whatsappTemplateStructureList" [ngClass]="{'mleft-5' : dataObj.fieldCode === 'inputField'}">
+                            <span *ngIf="dataObj.fieldCode === 'text'">{{dataObj.fieldValue}}</span>
+                        <input *ngIf="dataObj.fieldCode === 'inputField'" type="text" formControlName="{{dataObj.fieldValue}}" placeholder="{{dataObj.fieldPlaceholder | translate}}" style="border: 0;border-bottom: 1px solid;padding-left: 5px;font-weight: 600;height: auto;outline: none;margin:5px 0"
+                        />
+                        </span>
+                </form>
+            </div>
+            <div *ngIf="selectedTempDetails && selectedTempDetails.customComponents && selectedTempDetails.customComponents.length > 0">
+                <div *ngFor="let customComponent of selectedTempDetails.customComponents">
+                    <div *ngIf="customComponent.type == 'buttons'" class="flex-dis">
+                        <div *ngFor="let item of customComponent.items" class="d-inline-block">
+                            <button class="unslected-custombtn" [ngClass]="{'whatsapp-customBtn' : (selectedTempDetails.allowedAnswersList && selectedTempDetails.allowedAnswersList.includes(item.text))}">{{item.text}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="!availableHsmTemplateList || availableHsmTemplateList.length == 0">
+    <div class="no-temp mtop-20per" >No Templates available</div> 
+</div>

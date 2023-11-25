@@ -1,0 +1,509 @@
+<div class="ember-rightsidebar" *ngIf="isSidebarOpen">
+    <!-- Question Page Setting -->
+    <div *ngIf="menuType == 2">
+        <div class="sidebar-head">
+            <i class="zmdi zmdi-close pointer" (click)="closeSideBar()"></i>
+            <span class="mleft-10">{{"SETTINGS" | translate}}</span>
+        </div>
+        <div>
+            <div class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseQuestionPage('elements')">
+                    <svg *ngIf="elements" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+            </svg>
+                    <svg *ngIf="!elements" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+            </svg>
+                    <span class="mleft-10">{{"ELEMENTS" | translate}}</span>
+                </div>
+                <div *ngIf="elements" class="Collapse-block">
+                    <div class="p-all-15">
+                        <accordion *ngIf="!isWhatsappEnable" [dragula]="'question-element'" [dragulaModel]="questionElementReorder">
+                            <ng-container [ngTemplateOutlet]="questionElemnentSettings"></ng-container>
+                        </accordion>
+                        <accordion *ngIf="isWhatsappEnable">
+                            <ng-container [ngTemplateOutlet]="questionElemnentSettings"></ng-container>
+                        </accordion>
+                        <ng-template #questionElemnentSettings>
+                            <div *ngFor="let element of questionElementReorder">
+                                <div *ngIf="element.id < elementDisplayOrder.question" class="switch-bar-col mbottom-5"  [ngStyle]="!isWhatsappEnable? {'cursor': 'all-scroll'}: ''">
+                                    {{element.titleName}}
+                                    <label *ngIf="!(!isWhatsappEnable && element.id == elementDisplayOrder.title || isWhatsappEnable && element.id == elementDisplayOrder.description)" class="switch">
+                                        <input type="checkbox" class="boxid" (change)='onQuestionElement(element,"normal")' [checked]="element.value">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div *ngIf="!isWhatsappEnable && element.id == elementDisplayOrder.description && element.value == true" class="switch-bar-col mbottom-5" style="padding-left: 20px;">
+                                    {{element.disMedia.titleName}}
+                                    <label class="switch">
+                                        <input type="checkbox" class="boxid" (change)='onQuestionElement(element,"descriptionMedia")' [checked]="element.disMedia.value">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div *ngIf="element.id == elementDisplayOrder.question" class="switch-bar-col mbottom-5" [ngStyle]="!isWhatsappEnable? {'cursor': 'all-scroll'}: ''">
+                                    {{element.titleName}}
+                                    <label *ngIf="isQuesAndContentInSameTable" class="switch">
+                                        <input type="checkbox" class="boxid" (change)='onQuestionElement(element,"normal")' [checked]="element.value">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div *ngIf="element.id == elementDisplayOrder.button" class="switch-bar-col mbottom-5" style="cursor: all-scroll;">
+                                    {{element.titleName}}
+                                    <label class="switch">
+                                        <input type="checkbox" class="boxid" (change)='onQuestionElement(element,"normal")' [checked]="element.value">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isMediaEnable" class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseQuestionPage('dynamic_media')">
+                    <svg *ngIf="dynamic_media" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+            </svg>
+                    <svg *ngIf="!dynamic_media" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+            </svg>
+                    <span class="mleft-10">{{"Lbl_MEDIA" | translate}}</span>
+                </div>
+                <div *ngIf="isLoaderEnable" class="center">
+                    <div class="loader" id="loading"></div>
+                </div>
+                <div *ngIf="dynamic_media" class="Collapse-block">
+                    <div *ngIf="dynamicMediaData" class="edit-builder">          
+                        <div *ngIf="dynamicMediaData.isVideo == 'video'" class="items padding-setting">
+                            <span class="switch-bar-col">
+                                {{"VIDEO_AUTOPLAY_MEDIA" | translate}}
+                                <label class="switch">
+                                    <input type="checkbox" (change)='onClickedEnable(dynamicMediaData,"autoPlayVideo",menuType)' class="boxid" [checked]="dynamicMediaData.autoPlayData">
+                                   <span class="slider round"></span>
+                               </label>
+                            </span>
+                        </div>
+                        <div *ngIf="dynamicMediaData.isVideo == 'video' && multipleVideoFrame" class="items setFrame-padding-setting">
+                            <app-video-design-setup [setFrameVideo]="setFrameVideo" (editSetFrameVideo)="editSetFrameVideo($event)"></app-video-design-setup>
+                        </div>
+                        <div class="items padding-setting">
+                            <span class="switch-bar-col">
+                                {{"DYNAMIC_MEDIA_OBJECT" | translate}}
+                                <label class="switch">
+                                    <input type="checkbox" (change)='onClickedEnable(dynamicMediaData,"enableMedia",menuType)' class="boxid" [checked]="dynamicMediaData.data">
+                                    <span class="slider round"></span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isQuestionEnable" class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseQuestionPage('anwserSetting')">
+                    <svg *ngIf="anwserSetting" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+            </svg>
+                    <svg *ngIf="!anwserSetting" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+            </svg>
+                    <span class="mleft-10">{{"ANSWERS" | translate}}</span>
+                </div>
+                <div *ngIf="anwserSetting" class="Collapse-block">
+                    <anwser-type [questionId]="questionId" [selectedAnswerType]="selectedAnswerType" [quizData]="quizData" [isWhatsappEnable]="isWhatsappEnable" (isSelectedAwnserType)="onSelectedAnswerType($event)" [answerStructureType]="answerStructureType" [isMultiRating]="isMultiRating"></anwser-type>
+                </div>
+            </div>
+            <div *ngIf="isQuestionEnable && selectedAnswerType != '10'" class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseQuestionPage('answer_result_setting')">
+                    <svg *ngIf="answer_result_setting" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <svg *ngIf="!answer_result_setting" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <span class="mleft-10">{{"RESULT_MAPPING" | translate }}</span>
+                </div>
+                <div *ngIf="answer_result_setting" class="Collapse-block">
+                    <div class="p-all-15">
+                        <a href="javascript:void(0);" class="btn ans-result-btn app-data ellipsiss" app-data="data-add" (click)="onDynamicTemplateSetCorrectAnswer()">
+                            <svg class="svg-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7.84412 15C4.07054 15 1 11.8596 1 8.00006C1 4.1405 4.07054 1 7.84412 1C9.15632 1 10.433 1.38243 11.5361 2.10661C11.7527 2.24923 11.8162 2.5445 11.6767 2.76659C11.5368 2.98868 11.2487 3.05288 11.0315 2.91038C10.0796 2.28477 8.97712 1.95455 7.84412 1.95455C4.58503 1.95455 1.93328 4.66671 1.93328 8.00006C1.93328 11.3333 4.58503 14.0455 7.84412 14.0455C11.1031 14.0455 13.7548 11.3333 13.7548 8.00006C13.7548 7.80081 13.7455 7.60353 13.7275 7.40952C13.7027 7.14665 13.8905 6.91372 14.1469 6.88832C14.4044 6.86409 14.6315 7.05507 14.6565 7.31724C14.6775 7.54189 14.6881 7.76969 14.6881 8.00006C14.6881 11.8596 11.6177 15 7.84412 15Z" fill="#FFF" stroke="#FFF" stroke-width="0.25"/>
+                                <path d="M8.14574 9.92915C8.03381 9.92915 7.92177 9.88556 7.83665 9.79795L5.21179 7.11329C5.0409 6.93839 5.0409 6.65503 5.21179 6.48024C5.38267 6.30546 5.65973 6.30546 5.83062 6.48024L8.14638 8.84877L14.2529 2.60301C14.4239 2.42823 14.701 2.42823 14.8718 2.60301C15.0427 2.77779 15.0427 3.06116 14.8718 3.23594L8.45548 9.7985C8.36971 9.88556 8.25778 9.92915 8.14574 9.92915Z" fill="#FFF" stroke="#FFF" stroke-width="0.25"/>
+                            </svg>
+                            <span *ngIf="quizTypeID == 1 || quizTypeID == 2 || quizTypeID == 5" title="{{'ANSWER_SETTINGS' | translate}}">{{'ANSWER_SETTINGS' | translate}}</span>
+                            <span *ngIf="quizTypeID == 3 || quizTypeID == 7 " title="{{'RESULT_RELATION_SETTINGS' | translate}}">{{'RESULT_RELATION_SETTINGS' | translate}}</span>
+                            <span *ngIf="quizTypeID == 4 || quizTypeID == 6 " title="{{'EDIT_ANSWER_SCORES' | translate}}">{{'EDIT_ANSWER_SCORES' | translate}}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!isWhatsappEnable" class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseQuestionPage('pageSetting')">
+                    <svg *ngIf="pageSetting" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <svg *ngIf="!pageSetting" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <span class="mleft-10">{{"NAVIGATION" | translate}}</span>
+                </div>
+                <div *ngIf="pageSetting" class="Collapse-block">
+                    <app-question-setting [questionId]="questionId" [isQuestionEnable]="isQuestionEnable" [quizId]="quizId"></app-question-setting>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- content pageSetting -->
+    <div *ngIf="menuType == 5">
+        <div class="sidebar-head">
+            <i class="zmdi zmdi-close pointer" (click)="closeSideBar()"></i>
+            <span class="mleft-10">{{"SETTINGS" | translate}}</span>
+        </div>
+        <div>
+            <div class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseContentPage('element')">
+                    <svg *ngIf="contentElement" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <svg *ngIf="!contentElement" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <span class="mleft-10">{{"ELEMENTS" | translate}}</span>
+                </div>
+                <div *ngIf="contentElement" class="Collapse-block">
+                    <div class="p-all-15">
+                        <accordion [dragula]="'content-element'" [dragulaModel]="contentElementReorder">
+                            <div *ngFor="let element of contentElementReorder">
+                                <div class="switch-bar-col mbottom-5" style="cursor: all-scroll;" [ngClass]="{'d-none': element.id == elementDisplayOrder.button && isWhatsappEnable}">
+                                    {{element.titleName}}
+                                    <!-- <label *ngIf="element.id != elementDisplayOrder.title" class="switch"> -->
+                                    <label *ngIf="!(element.id == elementDisplayOrder.title || isWhatsappEnable && element.id == elementDisplayOrder.description)" class="switch">
+                                        <input type="checkbox" class="boxid" (change)='onContentElement(element,"normal")' [checked]="element.value">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div *ngIf="!isWhatsappEnable && element.id == elementDisplayOrder.description && element.value == true" class="switch-bar-col mbottom-5" style="padding-left: 20px;">
+                                    {{element.disMedia.titleName}}
+                                    <label class="switch">
+                                        <input type="checkbox" class="boxid" (change)='onContentElement(element,"descriptionMedia")' [checked]="element.disMedia.value">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </accordion>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isContentMediaEnable" class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseContentPage('dynamic_media')">
+                    <svg *ngIf="contentDynamicMedia" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <svg *ngIf="!contentDynamicMedia" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <span class="mleft-10">{{"Lbl_MEDIA" | translate}}</span>
+                </div>
+                <div *ngIf="isLoaderEnable" class="center">
+                    <div class="loader" id="loading"></div>
+                </div>
+                <div *ngIf="contentDynamicMedia" class="Collapse-block">
+                    <div *ngIf="dynamicMediaData" class="edit-builder">
+                        <div *ngIf="dynamicMediaData.isVideo == 'video'" class="items padding-setting">
+                            <span class="switch-bar-col">
+                                {{"VIDEO_AUTOPLAY_MEDIA" | translate}}
+                                <label class="switch">
+                                    <input type="checkbox" (change)='onClickedEnable(dynamicMediaData,"autoPlayVideo",menuType)' class="boxid" [checked]="dynamicMediaData.autoPlayData">
+                                    <span class="slider round"></span>
+                                 </label>
+                            </span>
+                        </div>
+                        <div *ngIf="dynamicMediaData.isVideo == 'video' && multipleVideoFrame" class="items setFrame-padding-setting">
+                            <app-video-design-setup [setFrameVideo]="setFrameVideo" (editSetFrameVideo)="editSetFrameVideo($event)"></app-video-design-setup>
+                        </div>
+                        <div class="items padding-setting">
+                            <span class="switch-bar-col">
+                                {{"ALLOW_DYNAMIC_MEDIA" | translate}}
+                                <label class="switch">
+                                    <input type="checkbox" (change)='onClickedEnable(dynamicMediaData,"enableMedia",menuType)' class="boxid" [checked]="dynamicMediaData.data">
+                                    <span class="slider round"></span>
+                               </label>
+                            </span>
+                       </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!isWhatsappEnable" class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseContentPage('contentPage')">
+                    <svg *ngIf="contentPageSetting" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <svg *ngIf="!contentPageSetting" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <span class="mleft-10">{{"NAVIGATION" | translate}}</span>
+                </div>
+                <div *ngIf="contentPageSetting" class="Collapse-block">
+                    <app-content-setting [contentId]="contentId" [quizId]="quizId"></app-content-setting>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- cover pageSetting -->
+    <div *ngIf="menuType == 3">
+        <div class="sidebar-head">
+            <i class="zmdi zmdi-close pointer" (click)="closeSideBar()"></i>
+            <span class="mleft-10">{{"SETTINGS" | translate}}</span>
+        </div>
+        <div>
+            <div class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseCoverPage('element')">
+                    <svg *ngIf="coverElement" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+          </svg>
+                    <svg *ngIf="!coverElement" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+          </svg>
+                    <span class="mleft-10">{{"ELEMENTS" | translate}}</span>
+                </div>
+                <div *ngIf="coverElement" class="Collapse-block">
+                    <div class="p-all-15">
+                        <accordion [dragula]="'cover-element'" [dragulaModel]="coverElementReorder">
+                            <div *ngFor="let element of coverElementReorder">
+                                <div class="switch-bar-col mbottom-5" style="cursor: all-scroll;" [ngClass]="{'d-none': element.id == elementDisplayOrder.coverOrResultButton && isWhatsappEnable}">
+                                    {{element.titleName}}
+                                    <label *ngIf="element.id != elementDisplayOrder.title" class="switch">
+                                        <input type="checkbox" class="boxid" (change)='onCoverElement(element)' [checked]="element.value">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </accordion>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isCoverMedia" class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseCoverPage('dynamic_media')">
+                    <svg *ngIf="coverDynamicMedia" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+          </svg>
+                    <svg *ngIf="!coverDynamicMedia" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+          </svg>
+                    <span class="mleft-10">{{"Lbl_MEDIA" | translate}}</span>
+                </div>
+                <div *ngIf="isLoaderEnable" class="center">
+                    <div class="loader" id="loading"></div>
+                </div>
+                <div *ngIf="coverDynamicMedia" class="Collapse-block">
+                    <div *ngIf="dynamicMediaData" class="edit-builder">
+                        <div *ngIf="dynamicMediaData.isVideo == 'video'" class="items padding-setting">
+                            <span class="switch-bar-col">
+                                {{"VIDEO_AUTOPLAY_MEDIA" | translate}}
+                                <label class="switch">
+                                    <input type="checkbox" (change)='onClickedEnable(dynamicMediaData,"autoPlayVideo")' class="boxid" [checked]="dynamicMediaData.autoPlayData">
+                                    <span class="slider round"></span>
+                                </label>
+                            </span>
+                        </div>
+                        <div *ngIf="dynamicMediaData.isVideo == 'video'" class="items setFrame-padding-setting">
+                            <app-video-design-setup [setFrameVideo]="setFrameVideo" (editSetFrameVideo)="editSetFrameVideo($event)"></app-video-design-setup>
+                        </div>
+                        <div class="items padding-setting">
+                            <span class="switch-bar-col">
+                                {{"ALLOW_DYNAMIC_MEDIA" | translate}}
+                                <label class="switch">
+                                    <input type="checkbox" (change)='onClickedEnable(dynamicMediaData,"enableMedia")' class="boxid" [checked]="dynamicMediaData.data">
+                                    <span class="slider round"></span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- badge pageSetting -->
+    <div *ngIf="menuType == 4">
+        <div class="sidebar-head">
+            <i class="zmdi zmdi-close pointer" (click)="closeSideBar()"></i>
+            <span class="mleft-10">{{"SETTINGS" | translate}}</span>
+        </div>
+        <div>
+            <div *ngIf="menuType == 4" class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseBadgePage('element')">
+                    <svg *ngIf="badgeElement" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+          </svg>
+                    <svg *ngIf="!badgeElement" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+          </svg>
+                    <span class="mleft-10">{{"ELEMENTS" | translate}}</span>
+                </div>
+                <div *ngIf="badgeElement" class="Collapse-block">
+                    <div class="p-all-15">
+                        <accordion [dragula]="'badge-element'" [dragulaModel]="badgeElementReorder">
+                            <div *ngFor="let element of badgeElementReorder">
+                                <div class="switch-bar-col mbottom-5" style="cursor: all-scroll;">
+                                    {{element.titleName}}
+                                    <label *ngIf="element.id != 1" class="switch">
+                    <input type="checkbox" class="boxid" (change)='onBadgeElement(element)' [checked]="element.value">
+                    <span class="slider round"></span>
+                  </label>
+                                </div>
+                            </div>
+                        </accordion>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isBadgeMedia" class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseBadgePage('dynamic_media')">
+                    <svg *ngIf="badgeDynamicMedia" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+          </svg>
+                    <svg *ngIf="!badgeDynamicMedia" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+          </svg>
+                    <span class="mleft-10">{{"Lbl_MEDIA" | translate}}</span>
+                </div>
+                <div *ngIf="isLoaderEnable" class="center">
+                    <div class="loader" id="loading"></div>
+                </div>
+                <div *ngIf="badgeDynamicMedia" class="Collapse-block">
+                    <div *ngIf="dynamicMediaData" class="edit-builder">
+                        <div *ngIf="dynamicMediaData.isVideo == 'video'" class="items padding-setting">
+                            <span class="switch-bar-col">
+                            {{"VIDEO_AUTOPLAY_MEDIA" | translate}}
+                            <label class="switch">
+                                <input type="checkbox" (change)='onClickedEnable(dynamicMediaData,"autoPlayVideo",menuType)' class="boxid" [checked]="dynamicMediaData.autoPlayData">
+                                <span class="slider round"></span>
+                            </label>
+                            </span>
+                        </div>
+                        <div *ngIf="dynamicMediaData.isVideo == 'video'" class="items setFrame-padding-setting">
+                            <app-video-design-setup [setFrameVideo]="setFrameVideo" (editSetFrameVideo)="editSetFrameVideo($event)"></app-video-design-setup>
+                        </div>
+                        <div class="items padding-setting">
+                            <span class="switch-bar-col">
+                              {{"ALLOW_DYNAMIC_MEDIA" | translate}}
+                              <label class="switch">
+                                <input type="checkbox" (change)='onClickedEnable(dynamicMediaData,"enableMedia",menuType)' class="boxid" [checked]="dynamicMediaData.data">
+                                <span class="slider round"></span>
+                              </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- result pageSetting -->
+    <div *ngIf="menuType == 6">
+        <div class="sidebar-head">
+            <i class="zmdi zmdi-close pointer" (click)="closeSideBar()"></i>
+            <span class="mleft-10">{{"SETTINGS" | translate}}</span>
+        </div>
+        <div>
+            <div class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseResultPage('element')">
+                    <svg *ngIf="resultElement" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <svg *ngIf="!resultElement" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <span class="mleft-10">{{"ELEMENTS" | translate}}</span>
+                </div>
+                <div *ngIf="resultElement" class="Collapse-block">
+                    <div class="p-all-15">
+                        <accordion *ngIf="!isWhatsappEnable" [dragula]="'result-element'" [dragulaModel]="resultElementReorder">
+                           <ng-container [ngTemplateOutlet]="resultElementSetting"></ng-container>                        
+                        </accordion>
+                        <accordion *ngIf="isWhatsappEnable">
+                           <ng-container [ngTemplateOutlet]="resultElementSetting"></ng-container>                        
+                        </accordion>
+                        <ng-template #resultElementSetting>
+                            <div *ngFor="let element of resultElementReorder">
+                                <div class="switch-bar-col mbottom-5"  [ngStyle]="!isWhatsappEnable? {'cursor': 'all-scroll'}: ''" [ngClass]="{'d-none': (element.id == elementDisplayOrder.coverOrResultButton || element.id == elementDisplayOrder.title) && isWhatsappEnable }">
+                                    {{element.titleName}}
+                                    <!-- <label *ngIf="element.id != elementDisplayOrder.title" class="switch"> -->
+                                    <label *ngIf="!(element.id == elementDisplayOrder.title || isWhatsappEnable && element.id == elementDisplayOrder.description)"  class="switch">
+                                        <input type="checkbox" class="boxid" (change)='onResultElement(element)' [checked]="element.value">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isResultMedia" class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseResultPage('dynamic_media')">
+                    <svg *ngIf="resultDynamicMedia" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+            </svg>
+                    <svg *ngIf="!resultDynamicMedia" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+            </svg>
+                    <span class="mleft-10">{{"Lbl_MEDIA" | translate}}</span>
+                </div>
+                <div *ngIf="isLoaderEnable" class="center">
+                    <div class="loader" id="loading"></div>
+                </div>
+                <div *ngIf="resultDynamicMedia" class="Collapse-block">
+                    <div *ngIf="dynamicMediaData" class="edit-builder">
+                        <div *ngIf="dynamicMediaData.isVideo == 'video'" class="items padding-setting">
+                            <span class="switch-bar-col">
+                                {{"VIDEO_AUTOPLAY_MEDIA" | translate}}
+                                <label class="switch">
+                                    <input type="checkbox" (change)='onClickedEnable(dynamicMediaData,"autoPlayVideo",menuType)' class="boxid" [checked]="dynamicMediaData.autoPlayData">
+                                <span class="slider round"></span>
+                            </label>
+                            </span>
+                        </div>
+                        <div *ngIf="dynamicMediaData.isVideo == 'video'" class="items setFrame-padding-setting">
+                            <app-video-design-setup [setFrameVideo]="setFrameVideo" (editSetFrameVideo)="editSetFrameVideo($event)"></app-video-design-setup>
+                        </div>
+                        <div class="items padding-setting">
+                            <span class="switch-bar-col">
+                            {{"ALLOW_DYNAMIC_MEDIA" | translate}}
+                            <label class="switch">
+                                <input type="checkbox" (change)='onClickedEnable(dynamicMediaData,"enableMedia",menuType)' class="boxid" [checked]="dynamicMediaData.data">
+                                <span class="slider round"></span>
+                            </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="quizTypeID != 1 && quizTypeID != 3" class="b-bottom">
+                <div class="padding-subbox" (click)="onCollapseResultPage('navigation_result')">
+                    <svg *ngIf="resultNavigationSetting" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.64308 0.645997L1.14762 5.1381C0.950795 5.33521 0.950795 5.65456 1.14762 5.85217C1.34445 6.04928 1.66414 6.04928 1.86097 5.85217L5.99973 1.71637L10.1385 5.85167C10.3353 6.04878 10.655 6.04878 10.8523 5.85167C11.0492 5.65456 11.0492 5.33471 10.8523 5.1376L6.35692 0.6455C6.16213 0.451417 5.83741 0.451417 5.64308 0.645997Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <svg *ngIf="!resultNavigationSetting" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.35688 5.854L10.8523 1.3619C11.0492 1.16479 11.0492 0.845441 10.8523 0.647833C10.6555 0.450723 10.3358 0.450723 10.139 0.647833L6.00023 4.78363L1.86146 0.648332C1.66464 0.451221 1.34494 0.451221 1.14762 0.648332C0.950794 0.845442 0.950794 1.16529 1.14762 1.3624L5.64304 5.8545C5.83783 6.04858 6.16255 6.04858 6.35688 5.854Z" fill="white" stroke="white" stroke-width="0.25"/>
+                    </svg>
+                    <span class="mleft-10">{{"ScoreSettings" | translate}}</span>
+                </div>
+                <div *ngIf="resultNavigationSetting" class="Collapse-block">
+                    <div class="p-all-15">
+                        <a href="javascript:void(0);" class="btn ans-result-btn app-data ellipsiss" app-data="data-add" (click)="onResultSetting()">
+                            <svg class="svg-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7.84412 15C4.07054 15 1 11.8596 1 8.00006C1 4.1405 4.07054 1 7.84412 1C9.15632 1 10.433 1.38243 11.5361 2.10661C11.7527 2.24923 11.8162 2.5445 11.6767 2.76659C11.5368 2.98868 11.2487 3.05288 11.0315 2.91038C10.0796 2.28477 8.97712 1.95455 7.84412 1.95455C4.58503 1.95455 1.93328 4.66671 1.93328 8.00006C1.93328 11.3333 4.58503 14.0455 7.84412 14.0455C11.1031 14.0455 13.7548 11.3333 13.7548 8.00006C13.7548 7.80081 13.7455 7.60353 13.7275 7.40952C13.7027 7.14665 13.8905 6.91372 14.1469 6.88832C14.4044 6.86409 14.6315 7.05507 14.6565 7.31724C14.6775 7.54189 14.6881 7.76969 14.6881 8.00006C14.6881 11.8596 11.6177 15 7.84412 15Z" fill="#FFF" stroke="#FFF" stroke-width="0.25"/>
+                                <path d="M8.14574 9.92915C8.03381 9.92915 7.92177 9.88556 7.83665 9.79795L5.21179 7.11329C5.0409 6.93839 5.0409 6.65503 5.21179 6.48024C5.38267 6.30546 5.65973 6.30546 5.83062 6.48024L8.14638 8.84877L14.2529 2.60301C14.4239 2.42823 14.701 2.42823 14.8718 2.60301C15.0427 2.77779 15.0427 3.06116 14.8718 3.23594L8.45548 9.7985C8.36971 9.88556 8.25778 9.92915 8.14574 9.92915Z" fill="#FFF" stroke="#FFF" stroke-width="0.25"/>
+                            </svg>
+                            <span title="{{'SETTINGS' | translate}}">{{'SETTINGS' | translate}}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

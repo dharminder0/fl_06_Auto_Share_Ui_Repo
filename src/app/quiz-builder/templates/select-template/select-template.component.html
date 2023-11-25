@@ -1,0 +1,222 @@
+<!-- begin head -->
+<!-- <div class="choose-quiz-head" *ngIf="templateList.length">
+  <h1 class="title-1">Great!!</h1>
+  <h2>
+    Select a automation template to use from the list below.
+  </h2>
+  <p>The automations below are built by experts & designed to convert.</p>
+  <div class="selectable-actions">
+    <div class="btn-group">
+      <span class="sorting"
+        >Sort by:
+        <a href="javascript:void(0)" (click)="sortAlphabetical()">A to Z <i *ngIf="!alphabet" class="fa fa-angle-down"></i>
+          <i *ngIf="alphabet" class="fa fa-angle-up"></i></a
+      ></span>
+    </div>
+  </div>
+</div> -->
+<!-- end head  -->
+
+<!-- <div
+  class="ember-body-container"
+  infiniteScroll
+  [infiniteScrollDistance]="0"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()"
+>
+  <div class="choose-quiz sm-2">
+    <div class="row row-info choose-quiz-row">
+      <div class="md-info" *ngFor="let template of templateList">
+        <div class="thumbnail" (click)="onTemplateClick(template)">
+          <img src="{{ template.CoverImage }}" alt="" />
+          <div class="caption">
+            <h3>{{ template.QuizTitle }}</h3>
+            <p *ngIf="template.QuizType == 5 && template.TotalQuestion > 1">{{ template.TotalQuestion}} Questions | Assesment</p>
+            <p *ngIf="template.QuizType == 5 && template.TotalQuestion <= 1">{{ template.TotalQuestion}} Question | Assesment</p>
+            <p *ngIf="template.QuizType == 6 && template.TotalQuestion > 1">{{ template.TotalQuestion}} Questions | Scored</p>
+            <p *ngIf="template.QuizType == 6 && template.TotalQuestion <= 1">{{ template.TotalQuestion}} Question | Scored</p>
+            <p *ngIf="template.QuizType == 7 && template.TotalQuestion > 1">{{ template.TotalQuestion}} Questions | Personality</p>
+            <p *ngIf="template.QuizType == 7 && template.TotalQuestion <= 1">{{ template.TotalQuestion}} Question | Personality</p>
+            <a href="javascript:;" class="btn green btn-block"
+              ><i class="fa fa-plus"></i> Use This Template
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="no-data" *ngIf="!templateList.length">
+    No Templates Found
+  </div>
+  <h1 *ngIf="showLoading">Loader</h1>
+</div> -->
+<!-- end page -->
+
+<!-- begin head -->
+<div class="choose-quiz-head">
+  <div class="template-header">
+    <p>{{"SELECT_A_TEMPLATE" | translate}}</p>
+  </div>
+
+  <div class="choose-quiz sm-2 b-bottom choose-option">
+    <div class="row row-info f-block-display option-margin">
+      <div *ngFor="let optionCategory of filterCategoriesList" class="choose-categories-options" [ngClass]="{'active': selectedCategories.includes((optionCategory.Id).toString())}" (mouseover)="isActiveDotIcon[optionCategory.Id] = true" (mouseout)="isActiveDotIcon[optionCategory.Id] = false" (click)="onSelectCategory(optionCategory.Id)" >
+        <span class="choose-categories-options-text"  [ngClass]="{'selected-choose-options-text': selectedCategories.includes((optionCategory.Id).toString())}">{{optionCategory.categoryNameTranslate | translate}} 
+          <!-- <span *ngIf="!isActiveDotIcon[optionCategory.Id] && !selectedCategories.includes((optionCategory.Id).toString())"><img class="dot-check"
+            (mouseover)="isActiveDotIcon[optionCategory.Id] = true"
+            src="assets/layouts/img/graydot-icon.png"  /></span>
+          <span *ngIf="isActiveDotIcon[optionCategory.Id] && !selectedCategories.includes((optionCategory.Id).toString())"><img class="dot-check"
+            (mouseout)="isActiveDotIcon[optionCategory.Id] = false"
+            src="assets/layouts/img/dot-icon.png"/></span> -->
+            <svg *ngIf="!selectedCategories.includes((optionCategory.Id).toString())" class="dot-svg" width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="2.5" cy="2.5" r="2.5" fill="#E0E0E0"/>
+              </svg>
+            <span *ngIf="selectedCategories.includes((optionCategory.Id).toString())"><img class="check-set"
+              src="assets/layouts/img/check-icon.png" /></span>
+        </span>
+      </div>
+      <div class="p-all-15" *ngIf="isShowAll && filterCategoriesList">
+        <span class="show-all" (click)="showAllCategoryList()">{{"SHOW_ALL" | translate}}</span>
+      </div>
+      <div class="p-all-15" *ngIf="!isShowAll && filterCategoriesList">
+        <span class="show-all" (click)="showLessCategoryList()">{{"SHOW_LESS" | translate}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="choose-quiz sm-2 choose-option">
+    <div class="row row-info f-block-display option-margin">
+      <div *ngFor="let typeList of templateTypeList" class="choose-categories-options" [ngClass]="{'active': typeLists.includes((typeList.id).toString())}" (mouseover)="isActiveTypeIcon[typeList.id] = true" (mouseout)="isActiveTypeIcon[typeList.id] = false" (click)="onSelectTemplateType(typeList.id)">
+        <span class="choose-categories-options-text"  [ngClass]="{'selected-choose-options-text': typeLists.includes((typeList.id).toString())}">{{typeList.typeName | translate}} 
+          <!-- <span *ngIf="!isActiveTypeIcon[typeList.id] && !typeLists.includes((typeList.id).toString())"><img class="dot-check"
+            (mouseover)="isActiveTypeIcon[typeList.id] = true"
+            src="assets/layouts/img/graydot-icon.png"  /></span>
+          <span *ngIf="isActiveTypeIcon[typeList.id] && !typeLists.includes((typeList.id).toString())"><img class="dot-check"
+            (mouseout)="isActiveTypeIcon[typeList.id] = false"
+            src="assets/layouts/img/dot-icon.png"/></span> -->
+            
+          <svg *ngIf="!typeLists.includes((typeList.id).toString())" class="dot-svg" width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="2.5" cy="2.5" r="2.5" fill="#E0E0E0"/>
+            </svg>
+            <span *ngIf="typeLists.includes((typeList.id).toString())"><img class="check-set"
+              src="assets/layouts/img/check-icon.png" /></span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-pane">
+        <!-- search area -->
+        <!-- <div class="search-area search-area-margin">
+          <input type="text" placeholder="{{'SEARCH_AND_FILTER' | translate}} ..." class="form-control search-box" />
+          <img alt="search icon" class="search-icon" src="assets/layouts/img/icon_search.png">
+      </div> -->
+
+    <!-- filter area -->
+    <!-- <div class="filter-area">
+      <div class="row">
+        <div class="col-sm-8"></div>
+        <div class="col-sm-4 text-right">
+          <span class="font-adjust mright-20">Show:</span>
+          <span class="font-adjust-1x">All</span>
+          <label class="switch mright-10">
+              <input type="checkbox">
+              <span class="slider round" checked></span>
+          </label>
+          <span class="font-adjust">Favorite</span>
+        </div>
+      </div>
+    </div> -->
+
+  <!--Start All Automation Block Section -->
+  <div class="autocontainer">
+    <div class="choose-quiz sm-2">
+      <div class="row row-info choose-quiz-row option-margin" *ngIf="templateList.length">
+      <div class="card Atomation-card" *ngFor="let item of templateList">
+
+          <div class="image-block">
+            <img *ngIf="item.CoverImage" (mouseenter)="mouseoverId = item.Id"
+            (mouseleave)="mouseoverId = -1" [src]="item.CoverImage"
+            class="bd-placeholder-img card-img-top" width="300px" height="120px">
+            <img *ngIf="!item.CoverImage" (mouseenter)="mouseoverId = item.Id"
+            (mouseleave)="mouseoverId = -1" [src]="defaultImage"
+            class="bd-placeholder-img card-img-top" width="300px" height="120px">
+            <div class="overlay hand-cursor" (click)="onTemplateClick(item)">
+              <div class="text">Click to Preview</div>
+            </div>
+            <span (mouseenter)="mouseoverId = item.Id"
+            (mouseleave)="mouseoverId = -1" class="half-circle">
+              <span class="haif-circle-txt">{{item.TotalQuestion}}Q</span>
+              <!-- <img src="assets/layouts/img/drack-star-icon.png"
+                  class="icon haif-circle-txt img-corner" />
+              <img src="assets/layouts/img/star-icon.png"
+                  *ngIf="!checkFavoriteTemplateId.includes(item.Id) && mouseoverId == item.Id"
+                  class="icon haif-circle-txt img-corner" /> -->
+            </span>
+          </div>
+
+          <div class="card-body p-0">
+            <div class="title-pad">
+              <div class="card-text card-img-title ellipsis-2line" title={{item.QuizTitle}}>{{item.QuizTitle}}
+              </div>
+            </div>
+            <hr class="h-line-263">
+            <div class="">
+              <div class="card-pad" *ngIf="item.QuizType == 5"><span
+                      class="card-level" title="{{'ASSESSMENT_SELECT_TEMPLATE' | translate}}">{{"ASSESSMENT_SELECT_TEMPLATE" | translate}}</span></div>
+              <div class="card-pad" *ngIf="item.QuizType == 6"><span
+                      class="card-level" title="{{'SCORED' | translate}}">{{"SCORED" | translate}}</span></div>
+              <div class="card-pad" *ngIf="item.QuizType == 7"><span
+                      class="card-level" title="{{'PERSONALITY_SELECT_TEMPLATE' | translate}}">{{"PERSONALITY_SELECT_TEMPLATE" | translate}}</span></div>
+            </div>
+            <div class="card-version">
+              <span class="ellipsis-1line"
+                  title={{item.CoverTitle}}>{{item.CoverTitle}}</span>
+            </div>
+
+            <!-- <div class="tagDetailRow" *ngIf="item.TagDetails.length>1">
+              <div class="card-link d-inline-block">
+                  <span class="card-link-img pull-left pointer"
+                      onmouseover="style='color: #00B7AB'"
+                      onmouseout="style='color:#494949'">
+                      <i class="fa fa-tag tag-icon"
+                          aria-hidden="true"></i>{{item.TagDetails[0]?.LabelText}}</span>
+              </div>
+              <div class="tags-count btn" *ngIf="item.TagDetails.length > 1"
+                (mouseover)="isActiveIconOnHover[item.Id] = true"
+                (mouseout)="isActiveIconOnHover[item.Id] = false">
+                <span *ngIf="!isActiveIconOnHover[item.Id]"><img class="plusimg-set"
+                        src="assets/layouts/img/black-plus.png"></span>
+                <span *ngIf="isActiveIconOnHover[item.Id]"><img class="plusimg-set"
+                        src="assets/layouts/img/Hover-plusicon.png"
+                        (mouseout)="isActiveIconOnHover[item.Id] = false" /></span>
+                <span class="tag-title"
+                    [ngClass]="{'primary-color' : isActiveIconOnHover[item.id] == true}">{{item.TagDetails.length}}
+                    tags</span>
+            </div>
+            </div> -->
+          </div>
+
+          <!-- <div class="tagdetails-blank"></div> -->
+          <div class="automation-btn">
+            <div class="card-use">
+                <a class="card-use-img"
+                    (mouseover)="isActiveIcon[item.Id] = true" (mouseout)="isActiveIcon[item.Id] = false" (click)="onUseAutomation(item.Id)">
+                    <!-- <span *ngIf="!isActiveIcon[item.Id]"><img class="img-set"
+                            src="assets/layouts/img/plus-icon.png" /></span>
+                    <span *ngIf="isActiveIcon[item.Id]"><img class="img-set"
+                            (mouseout)="isActiveIcon[item.Id] = false"
+                            src="assets/layouts/img/whiteplus-icon.png" /></span> -->
+                            <svg class="plus-icon" width="11" height="10" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M10.3404 4.84032L6.06257 4.85325V0.659563C6.06257 0.294158 5.76841 0 5.40301 0C5.03772 0 4.74344 0.294158 4.74344 0.659563L4.75638 4.84044H0.659563C0.294158 4.84044 0 5.1346 0 5.5C0 5.86529 0.294158 6.15945 0.659563 6.15945H4.74991V10.3404C4.74991 10.7056 5.04407 11 5.40947 11C5.77488 11 6.06903 10.7056 6.06903 10.3404V6.15956H10.3404C10.7058 6.15956 11 5.86517 11 5.5C11 5.13448 10.7026 4.84032 10.3404 4.84032Z" fill="white"/>
+                          </svg>
+                    {{"SELECT" | translate}}</a></div>
+        </div>
+      </div>
+      </div>
+      <div class="m-topbottom" *ngIf="isTemplateList && !templateList.length">
+        <span class="template-header">Oops! No Template.</span>
+      </div>
+    </div>
+  </div>
+
+  </div>

@@ -1,0 +1,135 @@
+<div class="portlet-head">
+    <div class="font-type font-text2">
+        <span>{{"LINK_TAG_TO_ANSWER" | translate}}</span>
+    </div>
+    <div class="action">
+        <a href="javascript:void(0)" class="closet" (click)="onClose()"></a>
+    </div>
+</div>
+<!-- <div class="portlet-body horizontal-form app-calc">
+  <div class="app-grow"> -->
+<!-- <div class="heading">
+      <h2 class="title-10">{{"LINK_TAG_TO_ANSWER" | translate}}</h2>
+    </div> -->
+<div class="form-body font-type">
+    <form>
+
+        <div class="in white-bkg">
+            <div class="answer-container">
+                <div *ngIf="selectedAnswerType >=0 && selectedAnswerType <= 4" class="form-group">
+                    <h3>
+                        <!-- <i class="fa-icon check-o"></i> -->
+                        <img src="assets/layouts/img/circle-check.png" class="some-icon" /> {{"SELECT_AN_ANSWER_TO_VIEW_AND_EDIT_TAGS" | translate}}</h3>
+                    <ul class="nav">
+                        <li *ngFor="let answer of questionData.AnswerList;let i = index;">
+                            <a href="javascript:void(0);" [ngClass]="{'active':selectedAnswer && selectedAnswer.AnswerId == answer.AnswerId}" class="select-anw" (click)="chooseAnswer(answer)">
+                                <span>{{i+1}}</span>{{answer.AnswerText}}
+                                <i class="fa fa-check check-icon"></i>
+                                <img class="salesforce" [ngStyle]="{'right': (selectedAnswer && selectedAnswer.AnswerId == answer.AnswerId) ? '45px' : '20px'}" *ngIf="(answerObjectModel[answer.AnswerId] && answerObjectModel[answer.AnswerId].IsExternalSync == true)" src="assets/layouts/img/salesforce.png"
+                                />
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tag-body" *ngIf="selectedAnswerType >=0 && selectedAnswerType <= 4">
+                    <div class="form-group col-sm-6" *ngFor="let category of quizCategoryList">
+                        <label class="control-label">{{ category.categoryName?.tagCategoryName | translate }}</label>
+                        <ng-select #mySelect [options]="category.tagList" placeholder="Choose Tags" [(ngModel)]="categoryModel[selectedAnswer.AnswerId][category.categoryName?.tagCategoryName+'_'+category.categoryName?.tagCategoryId]" [ngModelOptions]="{standalone: true}" [multiple]="true"
+                            placeholder="Select {{category.categoryName?.tagCategoryName}}">
+                        </ng-select>
+                    </div>
+                </div>
+                <!-- <div *ngIf="objectMappingList && objectMappingList.length > 0"> -->
+                <div *ngIf="enabledPermissions.isJRSalesforceEnabled && userInfo.AccountLoginType == 'salesforce'" class="toggle bold">
+                    <img src="assets/layouts/img/salesforce.png" />
+                    <label class="switch">
+                        <input type="checkbox" [(ngModel)]="answerObjectModel[this.selectedAnswer.AnswerId].IsExternalSync" [ngModelOptions]="{standalone: true}">
+                        <span class="slider round"></span>
+                    </label>Salesforce sync enabled
+                </div>
+                <div *ngIf="enabledPermissions.isJRSalesforceEnabled && userInfo.AccountLoginType == 'salesforce' && this.answerObjectModel[this.selectedAnswer.AnswerId].IsExternalSync">
+                    <div class="form-group col-sm-6">
+                        <!-- <label class="bold">Object</label>
+                        <ng-select [options]="objectMappingList" placeholder="{{'SELECT_OBJECT' | translate}}" [(ngModel)]="answerObjectModel[selectedAnswer.AnswerId].ObjectName" [ngModelOptions]="{standalone: true}" (ngModelChange)="answerObjectModel[selectedAnswer.AnswerId].FieldName = ''">
+                        </ng-select> -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="bold">{{"Lbl_Object" | translate}}</label>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <span *ngIf="answerObjectModel[selectedAnswer.AnswerId].ObjectName" class="mleft-5 pointer bold" (click)="removeAnswerTag(selectedAnswer.AnswerId)">
+                                    {{"Lbl_Remove" | translate}}                               
+                                </span>
+                                <span class="mleft-10 pointer bold" (click)="openVariablePopup()">
+                                    {{answerObjectModel[selectedAnswer.AnswerId].ObjectName ? ("Lbl_Edit" | translate) : ("Lbl_Add" | translate)}}                                    
+                                </span>
+                            </div>
+                        </div>
+                        <input type="text" placeholder="{{'Object' | translate}}" class="form-control h-42p" [(ngModel)]="answerObjectModel[selectedAnswer.AnswerId].ObjectName" [ngModelOptions]="{standalone: true}" readonly>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        <!--<label class="bold">{{ "FIELDS" | translate }}</label> 
+                         <ng-select [options]="fieldMappingList[answerObjectModel[selectedAnswer.AnswerId].ObjectName]" placeholder="{{'SELECT_FIELDS' | translate}}" [(ngModel)]="answerObjectModel[selectedAnswer.AnswerId].FieldName" [ngModelOptions]="{standalone: true}">
+                        </ng-select> -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="bold">{{ "FIELDS" | translate }}</label>
+                            </div>
+                        </div>
+                        <input type="text" placeholder="{{'Field' | translate}}" class="form-control h-42p" [(ngModel)]="answerObjectModel[selectedAnswer.AnswerId].FieldLabel" [ngModelOptions]="{standalone: true}" readonly>
+                    </div>
+
+                    <div *ngIf="selectedAnswerType >=0 && selectedAnswerType <= 4 && answerObjectModel[selectedAnswer.AnswerId].ObjectName && answerObjectModel[selectedAnswer.AnswerId].FieldName" class="col-sm-12">
+                        <div class="bold margin-bottom-10">{{"PUSH_VALUE_TO_SELESFORCE" | translate}}</div>
+                        <div *ngIf="fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName] &&
+                        fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].length > 0" class="mtop-15 row">
+                            <div class="col-sm-6">
+                                <label class="control-label font-type bold">{{"Lbl_Salesforcelist" | translate}}</label>
+                                <ng-select [options]="(answerObjectModel[selectedAnswer.AnswerId].ObjectName && answerObjectModel[selectedAnswer.AnswerId].FieldName)
+                                 ? fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName]:[]" placeholder="{{answerObjectModel[selectedAnswer.AnswerId].AnswerText?answerObjectModel[selectedAnswer.AnswerId].AnswerText:'Select'}}"
+                                    [(ngModel)]="answerObjectModel[selectedAnswer.AnswerId].AnswerText" (ngModelChange)="getMatchValueIsPickList()" [ngModelOptions]="{standalone: true}">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div *ngIf="!isPickListValueMatch" class="error-msg">{{"LbL_Value_Not_Found_Salesforce" | translate}}</div>
+                        <div *ngIf="!fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName] ||
+                        fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].length == 0" class="row">
+                            <div class="col-sm-12">
+                                <div *ngIf="!editFieldMappingValue">
+                                    <span>{{answerObjectModel[selectedAnswer.AnswerId].AnswerText}}</span>
+                                    <a href="javascript:void(0)" class="link margin-left-20" (click)="editFieldMappingValue = true;fieldMappingValue = answerObjectModel[selectedAnswer.AnswerId].AnswerText">{{"EDIT" | translate}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName] ||
+                              fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].length == 0" class="row">
+                            <div class="col-sm-6">
+                                <div *ngIf="editFieldMappingValue">
+                                    <input type="text" name="text" class="form-control margin-bottom-10" [(ngModel)]="fieldMappingValue" [ngModelOptions]="{standalone: true}">
+                                    <a href="javascript:void(0)" class="link" (click)="updateFieldMappingValue()">{{ "SAVE" | translate }}</a>
+                                    <a href="javascript:void(0)" class="link margin-left-20" (click)="resetFieldMappingValue()">{{"CANCEL" | translate}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-actions">
+            <button class="btn blue closet" type="submit" [disabled]="questionData.AnswerType != answerTypeData" (click)="saveTagDetails()">{{"SAVE" | translate }}</button>
+            <a class="btn line closet">{{"CANCEL" | translate }}</a>
+          </div> -->
+        </div>
+    </form>
+</div>
+<!-- </div>
+</div> -->
+<!-- </form> -->
+
+<div class="content-bottom">
+    <button type="submit" class="btn save-btn font-type normal-text" (click)="saveAnswerSettings()" [disabled]="
+  questionData.AnswerType != answerTypeData || !isPickListValueMatch ||  (!answerObjectModel[selectedAnswer.AnswerId].ObjectName && !answerObjectModel[selectedAnswer.AnswerId].FieldName && answerObjectModel[selectedAnswer.AnswerId].IsExternalSync)">{{"SAVE" | translate }}</button>
+</div>
+
+<app-message-variable-popup (updateIsOpenPopup)="UpdatePopUpStatus($event)"></app-message-variable-popup>

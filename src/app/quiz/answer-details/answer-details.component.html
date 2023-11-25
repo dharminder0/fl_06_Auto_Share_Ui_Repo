@@ -1,0 +1,156 @@
+<div class="container-single page fixed-fr-toolbar" #previewContainer>
+    <div class="ins no cover-height" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" [ngClass]="{'content-box': !isMobileView}">
+        <div class="popup-container-attempt" [ngClass]="{'popup-container': addClass}">
+            <div class="ember-ic">
+                <div *ngIf="SubmittedAnswer.IsCorrect == null; else correctIncorrectAnswer">
+                    <div class="sub-tittle initial-text font-type" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{SubmittedAnswer.AliasTextForYourAnswer ? SubmittedAnswer.AliasTextForYourAnswer : "YOUR_ANSWER" | translate}} :
+                        <div *ngIf="!SubmittedAnswer.ShowAnswerImage">
+                            <div *ngFor="let ansDetails of SubmittedAnswer.SubmittedAnswerDetails; let i=index;">
+                                <div class="initial-text sub-text-body" [ngStyle]="{'background':QuizBrandingAndStyle.OptionColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color':QuizBrandingAndStyle.OptionFontColor}">
+                                    <div class="upperLevelStyle sub-text font-type correct-incorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" [froalaEditor]="options" contenteditable="false" [ngModel]="ansDetails.SubmittedAnswerTitle"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row image-option-cols-2" *ngIf="SubmittedAnswer.ShowAnswerImage">
+                            <div class="col-s answer-div-container" *ngFor="let ansDetails of SubmittedAnswer.SubmittedAnswerDetails; let i=index;">
+                                <div class="mtop-12">
+                                    <figure class="default-option pointer" [ngStyle]="{'background':QuizBrandingAndStyle.OptionColor}">
+                                        <img *ngIf="!ansDetails.PublicIdForSubmittedAnswer || !ansDetails.SubmittedAnswerImage" [src]="defaultCoverImage" alt="" />
+                                        <cl-image *ngIf="answerImageORvideo[i] === 'image' && ansDetails.PublicIdForSubmittedAnswer" public-id={{ansDetails.PublicIdForSubmittedAnswer}}>
+                                            <cl-transformation width="200" height="200" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                        </cl-image>
+                                        <ng-container *ngIf="ansDetails.AutoPlay == true">
+                                            <cl-video autoplay *ngIf="answerImageORvideo[i] === 'video'" public-id={{ansDetails.PublicIdForSubmittedAnswer}} secure="true" class="my-videos" controls="true">
+                                                <cl-transformation gravity="north" y="20"></cl-transformation>
+                                            </cl-video>
+                                        </ng-container>
+                                        <ng-container *ngIf="ansDetails.AutoPlay == false">
+                                            <cl-video *ngIf="answerImageORvideo[i] === 'video'" public-id={{ansDetails.PublicIdForSubmittedAnswer}} secure="true" class="my-videos" controls="true">
+                                                <cl-transformation gravity="north" y="20"></cl-transformation>
+                                            </cl-video>
+                                        </ng-container>
+                                    </figure>
+                                    <div style="margin-top: 7px;text-align: center;">
+                                        <div class="upperLevelStyle sub-text font-type correct-incorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" [froalaEditor]="options" contenteditable="false" [ngModel]="ansDetails.SubmittedAnswerTitle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div *ngIf="SubmittedAnswer.CorrectAnswerDescription" class="explanation-word-break sub-tittle initial-text font-type" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{SubmittedAnswer.AliasTextForExplanation ? SubmittedAnswer.AliasTextForExplanation : "EXPLANATION" | translate}}
+                        <img class="explanation-icon" src="assets/layouts/img/explanation-icon.png" />
+                    </div>
+                    <div class="initial-text font-type sub-text" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{SubmittedAnswer.CorrectAnswerDescription}}</div>
+                    <a *ngIf="!isMobileView" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}" class="btn next-btn ellipsiss"
+                        (click)="next()">{{SubmittedAnswer.AliasTextForNextButton ? SubmittedAnswer.AliasTextForNextButton : "NEXT" | translate}}</a>
+                </div>
+                <ng-template #correctIncorrectAnswer>
+                    <div>
+                        <img *ngIf="!SubmittedAnswer.IsCorrect" class="incorrect-icon" src="assets/layouts/img/incorrect-icon.png" />
+                        <img *ngIf="SubmittedAnswer.IsCorrect" class="incorrect-icon" src="assets/layouts/img/correct-icon.png" />
+                        <p class="font-type incorrect-text correct-alignment" *ngIf="!SubmittedAnswer.IsCorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{SubmittedAnswer.AliasTextForIncorrect ? SubmittedAnswer.AliasTextForIncorrect : "INCORRECT" | translate}}</p>
+                    </div>
+                    <p class="font-type incorrect-text correct-alignment" *ngIf="SubmittedAnswer.IsCorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{SubmittedAnswer.AliasTextForCorrect ? SubmittedAnswer.AliasTextForCorrect : "CORRECT" | translate}}</p>
+                    <div class="sub-tittle initial-text font-type" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{SubmittedAnswer.AliasTextForYourAnswer ? SubmittedAnswer.AliasTextForYourAnswer : "YOUR_ANSWER" | translate}} :
+                        <div *ngIf="!SubmittedAnswer.ShowAnswerImage">
+                            <div *ngFor="let ansDetails of SubmittedAnswer.SubmittedAnswerDetails; let i=index;">
+                                <div class="initial-text sub-text-body" [ngStyle]="{'background':QuizBrandingAndStyle.OptionColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color':QuizBrandingAndStyle.OptionFontColor}">
+                                    <div class="upperLevelStyle sub-text font-type correct-incorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" [froalaEditor]="options" contenteditable="false" [ngModel]="ansDetails.SubmittedAnswerTitle"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row image-option-cols-2" *ngIf="SubmittedAnswer.ShowAnswerImage">
+                            <div class="col-s answer-div-container" *ngFor="let ansDetails of SubmittedAnswer.SubmittedAnswerDetails; let i=index;">
+                                <div class="mtop-12">
+                                    <figure>
+                                        <label class="default-option pointer" [ngStyle]="{'background':QuizBrandingAndStyle.OptionColor}">
+                                            <img *ngIf="!ansDetails.PublicIdForSubmittedAnswer || !ansDetails.SubmittedAnswerImage" [src]="defaultCoverImage" alt="" />
+                                            <cl-image *ngIf="answerImageORvideo[i] === 'image' && ansDetails.PublicIdForSubmittedAnswer" public-id={{ansDetails.PublicIdForSubmittedAnswer}}>
+                                                <cl-transformation width="200" height="200" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                            </cl-image>
+                                            <ng-container *ngIf="ansDetails.AutoPlay == true">
+                                                <cl-video autoplay *ngIf="answerImageORvideo[i] === 'video'" public-id={{ansDetails.PublicIdForSubmittedAnswer}} secure="true" class="my-videos" controls="true">
+                                                    <cl-transformation gravity="north" y="20"></cl-transformation>
+                                                </cl-video>
+                                            </ng-container>
+                                            <ng-container *ngIf="ansDetails.AutoPlay == false">
+                                                <cl-video *ngIf="answerImageORvideo[i] === 'video'" public-id={{ansDetails.PublicIdForSubmittedAnswer}} secure="true" class="my-videos" controls="true">
+                                                    <cl-transformation gravity="north" y="20"></cl-transformation>
+                                                </cl-video>
+                                            </ng-container>
+                                        </label>
+                                    </figure>
+                                    <div style="margin-top: 7px;text-align: center;">
+                                        <div class="upperLevelStyle sub-text font-type correct-incorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" [froalaEditor]="options" contenteditable="false" [ngModel]="ansDetails.SubmittedAnswerTitle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sub-tittle initial-text font-type" *ngIf="!SubmittedAnswer.IsCorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{SubmittedAnswer.AliasTextForCorrectAnswer ? SubmittedAnswer.AliasTextForCorrectAnswer : "CORRECT_ANSWER" | translate}}:
+                        <div *ngIf="!SubmittedAnswer.ShowAnswerImage">
+                            <div *ngFor="let correcAnsDetails of SubmittedAnswer.CorrectAnswerDetails; let i=index;">
+                                <div class="initial-text sub-text-body" [ngStyle]="{'background':QuizBrandingAndStyle.OptionColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color':QuizBrandingAndStyle.OptionFontColor}">
+                                    <div class="upperLevelStyle sub-text font-type correct-incorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" [froalaEditor]="options" contenteditable="false" [ngModel]="correcAnsDetails.CorrectAnswerTitle"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row image-option-cols-2" *ngIf="SubmittedAnswer.ShowAnswerImage">
+                            <div class="col-s answer-div-container"  *ngFor="let correcAnsDetails of SubmittedAnswer.CorrectAnswerDetails; let i=index;">
+                                <div class="mtop-12">
+                                    <figure class="default-option pointer" [ngStyle]="{'background':QuizBrandingAndStyle.OptionColor}">
+                                        <img *ngIf="!correcAnsDetails.PublicIdForCorrectAnswer || !correcAnsDetails.CorrectAnswerImage" [src]="defaultCoverImage" alt="" />
+                                        <cl-image *ngIf="correctAnswerImageORvideo[i] === 'image' && correcAnsDetails.PublicIdForCorrectAnswer" public-id={{correcAnsDetails.PublicIdForCorrectAnswer}}>
+                                            <cl-transformation width="200" height="200" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                                        </cl-image>
+                                        <ng-container *ngIf="correcAnsDetails.AutoPlay == true">
+                                            <cl-video autoplay *ngIf="correctAnswerImageORvideo[i] === 'video'" public-id={{correcAnsDetails.PublicIdForCorrectAnswer}} secure="true" class="my-videos" controls="true">
+                                                <cl-transformation gravity="north" y="20"></cl-transformation>
+                                            </cl-video>
+                                        </ng-container>
+                                        <ng-container *ngIf="correcAnsDetails.AutoPlay == false">
+                                            <cl-video *ngIf="correctAnswerImageORvideo[i] === 'video'" public-id={{correcAnsDetails.PublicIdForCorrectAnswer}} secure="true" class="my-videos" controls="true">
+                                                <cl-transformation gravity="north" y="20"></cl-transformation>
+                                            </cl-video>
+                                        </ng-container>
+                                    </figure>
+                                    <div style="margin-top: 7px;text-align: center;">
+                                        <div class="upperLevelStyle sub-text font-type correct-incorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" [froalaEditor]="options" contenteditable="false" [ngModel]="correcAnsDetails.CorrectAnswerTitle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div *ngIf="SubmittedAnswer.CorrectAnswerDescription" class="explanation-word-break sub-tittle initial-text font-type" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{SubmittedAnswer.AliasTextForExplanation ? SubmittedAnswer.AliasTextForExplanation : "EXPLANATION" | translate}}
+                        <img class="explanation-icon" src="assets/layouts/img/explanation-icon.png" />
+                    </div>
+                    <div class="initial-text font-type sub-text" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{SubmittedAnswer.CorrectAnswerDescription}}</div>
+                    <a *ngIf="!isMobileView" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}" class="btn next-btn ellipsiss"
+                        (click)="next()">{{SubmittedAnswer.AliasTextForNextButton ? SubmittedAnswer.AliasTextForNextButton : "NEXT" | translate}}</a>
+                </ng-template>
+            </div>
+        </div>
+
+        <div *ngIf="isMobileView && logoImage" [style.background]="logoBackgroundColor" class="mobile-logo">
+            <div>
+                <cl-image public-id={{logoImage}}>
+                    <cl-transformation width="100" height="60" crop="lpad" fetch-format="auto"></cl-transformation>
+                </cl-image>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div *ngIf="isMobileView" class="next-btn-container" style="position: relative;">
+        <a [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}" class="btn next-btn ellipsiss mobile-next-btn" style="margin-top: 0!important;"
+            (click)="next()">{{SubmittedAnswer.AliasTextForNextButton ? SubmittedAnswer.AliasTextForNextButton : "NEXT" | translate}}</a>
+    </div>
+</div>
+
+<div *ngIf="isMobileView && !buttonShow" class="mobile-view-logo-body" style="bottom: 0;width: 100%;padding: 0 20px;z-index: 10;">
+    <a style="width: 100%;border-radius: 0px;margin-top:0 !important;" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+        class="btn next-btn ellipsiss" (click)="next()">{{SubmittedAnswer.AliasTextForNextButton ? SubmittedAnswer.AliasTextForNextButton : "NEXT" | translate}}</a>
+</div>

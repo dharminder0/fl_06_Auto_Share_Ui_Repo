@@ -1,0 +1,88 @@
+.result-detail-container {
+    border: 1px dotted #ccc;
+    margin: 50px 30px;
+    padding: 20px;
+  }
+  
+  .result-data {
+    display: flex;
+    margin: 15px 0;
+  }
+  .inter {
+    margin-bottom: 0px;
+  }
+  .is-result-row {
+    flex: 5;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .side-btn {
+    flex: 1;
+  }
+  
+  .side-btn button {
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 140px;
+    margin: 15px 5px;
+  }
+  
+  .result-progress-bar {
+    width: 100%;
+  }
+  
+  .progress-bar-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .form-actions .set-2 {
+    margin-top: 30px;
+  }
+  
+  .color-save-btn {
+    width: 100%;
+  }
+  .visible
+  {
+    visibility: hidden;
+  }
+  .display
+  {
+    display: none;
+  }
+
+  .pull-right.close{
+    z-index: 2;
+  }
+  .container-single .ins.no{
+    display: block;
+    /* height: calc(100vh - 48px); */
+    width: 100%;
+    overflow: auto;
+  } 
+
+  .ins.no{
+    display: block;
+  }
+
+  .take-next-btn{
+    width: 100%;
+    min-height: 38px;
+    background: #00B7AB;
+    border-radius: 5px;
+   color: #FFFFFF;
+   font-family: Raleway;
+   font-style: normal;
+   font-size: 14px;
+   padding: 0;
+   line-height: 34px;
+  }
+
+  .cal-icon{
+    position: relative;
+    top: 2px;
+    right: 4px;
+  }

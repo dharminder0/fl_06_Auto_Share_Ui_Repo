@@ -1,0 +1,152 @@
+@media (min-width: 1100px) {
+  .ember-body-container {
+    width: 914px;
+    margin: auto;
+  }
+}
+
+.choose-quiz-head {
+  @media (min-width: 1100px) {
+    width: 885px;
+    margin: auto;
+  }
+  padding: 40px 0 0;
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+  h2 {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+    line-height: normal;
+  }
+  .selectable-actions {
+    text-align: right;
+  }
+  @media (max-width: 800px) {
+    padding: 40px 40px 0;
+  }
+}
+
+.choose-quiz-actions {
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding: 35px 0 35px;
+  left: 0;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0, rgba(138, 146, 153, 0)),
+    to(rgba(0, 0, 0, 0.49))
+  );
+  background: linear-gradient(
+    180deg,
+    rgba(138, 146, 153, 0) 0,
+    rgba(0, 0, 0, 0.49)
+  );
+  z-index: 9999;
+  .btn {
+    &.green {
+      color: #fff;
+      background: var(--secondary-color);
+      &:hover {
+        background: var(--secondary-color);
+      }
+    }
+  }
+}
+.choose-quiz-row {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-bottom: 106px;
+  p {
+    line-height: 22px;
+  }
+}
+.choose-quiz-row .md-info {
+  width: 285px;
+  margin: 15px 10px 30px;
+}
+
+.choose-quiz .choose-quiz-row .box .ins {
+  padding: 46px 25px 35px;
+}
+
+.choose-quiz .box:hover:before,
+.choose-quiz .box.selectedCategoriesCss:before {
+  background: var(--secondary-color);
+}
+
+.choose-quiz .box:hover .btn,
+.choose-quiz .box.selectedCategoriesCss .btn {
+  background: var(--secondary-color);
+}
+
+.choose-quiz .box .btn.blue.line {
+  border-color: #a4a4a4;
+  color: #a4a4a4;
+}
+
+.choose-quiz .box:hover .btn.blue.line,
+.choose-quiz .box.selectedCategoriesCss .btn.blue.line {
+  color: #fff;
+  border-color: var(--secondary-color);
+  background: var(--secondary-color);;
+}
+
+.choose-quiz {
+  .choose-quiz-row {
+    i.icon {
+      width: 64px;
+      height: 68px;
+      display: inline-block;
+      background: url(../../../../assets/layouts/img/sprites2.png) no-repeat 0 0;
+      &.quiz {
+        background-position: 3px 3px;
+        width: 53px;
+        height: 65px;
+      }
+      &.assessment {
+        background-position: 6px -117px;
+      }
+      &.personality {
+        background-position: -1px -192px;
+      }
+      &.career {
+        background-position: -7px -1138px;
+      }
+      &.pre-hiring {
+        background-position: -8px -1226px;
+      }
+      &.pool-management {
+        background-position: -8px -1316px;
+      }
+      &.onboarding {
+        background-position: -7px -1401px;
+      }
+      &.pre-interview {
+        background-position: -9px -1488px;
+      }
+      &.e-learning {
+        background-position: -8px -1576px;
+      }
+    }
+  }
+}

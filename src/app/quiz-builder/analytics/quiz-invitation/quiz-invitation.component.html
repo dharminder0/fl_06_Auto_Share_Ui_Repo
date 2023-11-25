@@ -1,0 +1,53 @@
+<div class="tab-pane active" id="tab-1">
+  <div class="row">
+
+    <app-combo-chart [width]="width" [height]="height" [chartDataSource]="dataSource"></app-combo-chart>
+
+    <div class="col-md-4 view-start">
+      <div class="rate-container">
+        <label>{{"CONVERSION_RATE" | translate }}</label>
+        <button type="button" class="btn btn-default" [ngClass]='{"active-button":showDataonType}' (click)='showDataonType=true'>{{"VIEW" | translate }}</button>
+        <button type="button" class="btn btn-default" [ngClass]='{"active-button":!showDataonType}' (click)='showDataonType=false'>{{"START" | translate }}</button>
+      </div>
+      <div *ngIf='showDataonType'>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="rate-cnt">
+              <h2 *ngIf='!analyticsViews?.Views'>0%</h2>
+              <h2 *ngIf='analyticsViews?.Views'>{{ 100*analyticsViews?.Completion/analyticsViews?.Views | number: '.1-2' }}%</h2>
+              <p>{{"COMPLETED_THIS_AUTOMATION" | translate }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="rate-cnt">
+              <h2 *ngIf='!analyticsViews?.Views'>0%</h2>
+              <h2 *ngIf='analyticsViews?.Views'>{{ 100*analyticsViews?.Leads/analyticsViews?.Views | number: '.1-2' }}%</h2>
+              <!-- <h2>{{ analyticsViews?.Leads/analyticsViews?.Views }}</h2> -->
+              <p>{{"CONVERT_TO_LEADS" | translate }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf='!showDataonType'>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="rate-cnt">
+              <h2 *ngIf='!analyticsViews?.QuizStarts'>0%</h2>
+              <h2 *ngIf='analyticsViews?.QuizStarts'>{{ 100*analyticsViews?.Completion/analyticsViews?.QuizStarts | number: '.1-2' }}%</h2>
+              <p>{{"COMPLETED_THIS_QUIZ" | translate }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="rate-cnt">
+              <h2 *ngIf='!analyticsViews?.QuizStarts'>0%</h2>
+              <h2 *ngIf='analyticsViews?.QuizStarts'>{{ 100*analyticsViews?.Leads/analyticsViews?.QuizStarts | number: '.1-2' }}%</h2>
+              <!-- <h2>{{ analyticsViews?.Leads/analyticsViews?.Views }}</h2> -->
+              <p>{{"CONVERT_TO_LEADS" | translate }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

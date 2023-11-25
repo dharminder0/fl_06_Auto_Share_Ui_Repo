@@ -1,0 +1,118 @@
+header .app-nav > ul > li > .custom-menu > a {
+  height: 40px;
+  padding: 0;
+  font-size: 13px;
+  color: #fff;
+  font-weight: bold;
+  position: relative;
+  background: transparent !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+}
+.custom-menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.custom-menu .dropdown-toggle .fa.fa-angle-down {
+  position: absolute;
+  left: 4px;
+  top: 9px;
+  color: white;
+}
+
+.img-custom {
+  position: absolute;
+  width: 87%;
+  left: -78px;
+  top: -26px;
+}
+.min-image-size {
+  min-width: 66px;
+  max-height: 66px;
+}
+.relative {
+  position: relative;
+}
+
+.check {
+  right: 24px;
+  top: 14px;
+  width: 5px;
+  height: 10px;
+  position: absolute;
+}
+
+.dropdown-menu li a:hover > i {
+  color: #fff !important;
+}
+
+.nav pull-right > li > a::before {
+  display: none;
+}
+
+header .app-top .top-menu .dropdown-menu .nav li .dropdown-menu li a:before {
+  display: none !important;
+}
+
+/* .hover-icon{
+      color: #fff !important
+  } */
+
+@media (max-width: 800px) {
+  header .app-nav {
+    width: 250px;
+  }
+  header .app-nav ul li.dropdown .dropdown-menu {
+    display: none !important;
+    position: relative !important;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    margin-left: 0;
+  }
+  header .app-nav ul li.dropdown .custom-menu {
+    padding-left: 22px;
+    display: block;
+  }
+  header .app-nav ul li.dropdown .custom-menu a,
+  header .app-nav ul li.dropdown .custom-menu a i {
+    color: #000;
+  }
+  header .app-nav ul li.dropdown .custom-menu a.dropdown-toggle {
+    position: absolute;
+    right: 30px;
+    top: 4px;
+    float: right;
+    display: block;
+    font-size: 16px;
+  }
+  header .app-nav ul li.dropdown .custom-menu > a.menu-item {
+    width: calc(100% - 36px);
+    -webkit-box-pack: left;
+    -ms-flex-pack: left;
+    justify-content: left;
+  }
+  header .app-nav ul li.dropdown .custom-menu.open .dropdown-menu {
+    display: block !important;
+  }
+}
+
+.logo-image-container {
+  width: 200px;
+  /* height: 43px; */
+}
+
+@media (max-width: 400px) {
+  header .app-top .top-menu a img {
+    display: none;
+  }
+}

@@ -1,0 +1,292 @@
+<div class="header font-type">
+    <div class="col-sm-12">
+        <div class="div-margin text-size-1" style="display: flex;">
+            <div style="padding: 26px 20px 20px 0;cursor: pointer;" (click)="scrollTo('.Filters')">Filters</div>
+            <div style="padding: 26px 20px 20px;cursor: pointer;">{{"SUMMARY" | translate}}</div>
+            <div style="padding: 26px 20px 20px;cursor: pointer;"  (click)="scrollTo('.question')">{{"QUESTIONS_&_ANSWERRS" | translate}}</div>
+    </div>
+    </div>
+    </div>
+    <div class="col-sm-12 report-height">
+        <div class="div-margin">
+<div *ngIf="quizTitle" class="row">
+    <div class="col-sm-12 mtop-30">
+            <app-daterangepicker [startDate]="startDate" [endDate]="endDate"></app-daterangepicker>
+        <h3 class="font-type Filters" style="margin-top:0px;margin-bottom:19px">Filters</h3>
+        <div class="font-type flex-dis">
+            <div *ngIf="quizTitle" class="filter-div">
+               <span class="text-size-1">Flow:</span> {{quizTitle}}
+            </div>
+            <div *ngIf="souceId" class="filter-div mleft-10">
+               <span class="text-size-1">Case:</span> {{souceId}}
+            </div>
+            <div *ngIf="templateName" class="filter-div mleft-10">
+                <span class="text-size-1">Template:</span> {{templateName}}
+             </div>
+        </div>
+    </div>
+</div>
+
+<!-- insights -->
+<div *ngIf="reportDetails && (reportDetails.Stages.length > 0 || reportDetails.Results.length > 0 || reportDetails.TopRecordsDetails.length > 0)"  class="font-type">
+    <h3 class="mbottom-15">{{"Lbl_Insights" | translate}}</h3>
+    <div class="w-1060 insights-div">
+        <div class="insigh-tab">
+            <div *ngFor="let tab of insightsTabList" class="mright-20" [ngClass]="{'selected-tab':tab.isActive}" (click)="onSelectInsightTab(tab)">
+               <span *ngIf="tab.id != 4" >{{tab.name | translate}}</span>
+               <span *ngIf="tab.id == 4 && QuizTypeId == 1">{{tab.name | translate}}</span>
+            </div>
+        </div>
+        <div>
+            <div *ngIf="selectedInsightId == 1 && reportDetails && reportDetails.Results.length > 0" class="flex-dis p-40">
+                <div *ngIf="QuizTypeId == 1" style="width: 40%;height: 380px;position: relative;">
+                    <div class="avg-block">
+                        <div class="flex-dis">
+                            <div class="avg-score">{{npsScore}}</div>
+                            <div class="avg-score-text"><div>NPS</div>
+                                 <div>score</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div [ngStyle]="{'width':(QuizTypeId == 1) ? '60%' : '100%'}">
+                    <app-report-result [reportDetails] = "reportDetails" [QuizTypeId]="QuizTypeId"></app-report-result>
+                </div>
+               
+            </div>
+            <div *ngIf="selectedInsightId == 1 && reportDetails && reportDetails.Results.length <= 0" style="padding: 10% 40px;text-align: center;">
+                <b>{{"Lbl_noDataTopReport" | translate}}</b>
+             </div>
+            <div *ngIf="selectedInsightId == 2 && reportDetails && reportDetails.Stages.length > 0">
+                <app-column-with-roated-series [reportDetails]="reportDetails"></app-column-with-roated-series>
+            </div>
+            <div *ngIf="selectedInsightId == 3 && reportDetails && reportDetails.TopRecordsDetails.length > 0" style="padding: 34px 40px;">
+                <div class="flex-dis top-result">
+                    <div style="width: 326px;">
+                        <div class="top-result-title mbottom-25">{{"RESULT" | translate}}</div>
+                        <div *ngFor="let item of topRecordsDetails" (click)="onSelectTopRecordsDetails(item)" class="flex-dis" [ngStyle]="{'margin-bottom': !item.isActive ? '30px' : '15px'}">
+                            <div style="width: 200px;">
+                                <div *ngIf="item.InternalResultTitle && item.InternalResultTitle.length <= 22" title="{{item.InternalResultTitle}}" [ngClass] = "{'selected-result-top-detail' : item.isActive}" style="cursor: pointer;">
+                                    {{item.InternalResultTitle}}
+                                </div>
+                                <div *ngIf="item.InternalResultTitle && item.InternalResultTitle.length > 22" title="{{item.InternalResultTitle}}" [ngClass] = "{'selected-result-top-detail' : item.isActive}" style="cursor: pointer;">
+                                    {{item.InternalResultTitle | slice:0:22}} ...
+                                </div>
+                            </div>
+                           <div>{{item.NumberofLead}} Leads</div>
+                        </div>
+                    </div>
+                    <div style="width: 300px;">
+                        <div class="top-result-title mbottom-25">{{"Msg_Top_3_positivepoints" | translate}}</div>
+                        <div *ngFor="let positiveThing of selectedResultTopThings.PositiveThings" style="margin-bottom: 12px;">
+                            <div class="ellipsiss-w90" style="height: 16px;" title="{{positiveThing.TopicTitle}}">
+                                {{positiveThing.TopicTitle}}
+                            </div>
+                           <div style="color: #A9A9A9;">
+                                {{positiveThing.Rating}} {{"Msg_Outof" | translate}} 5
+                           </div>
+                        </div>
+                    </div>
+                    <div style="width: 300px;">
+                        <div class="top-result-title mbottom-25">{{"Msg_Top_3_negativepoints" | translate}}</div>
+                        <div *ngFor="let negativeThing of selectedResultTopThings.NegativeThings" style="margin-bottom: 12px;">
+                            <div class="ellipsiss-w90" style="height: 16px;" title="{{negativeThing.TopicTitle}}">
+                                {{negativeThing.TopicTitle}}
+                            </div>
+                           <div style="color: #A9A9A9;">
+                                {{negativeThing.Rating}} {{"Msg_Outof" | translate}} 5
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="selectedInsightId == 3 && reportDetails && reportDetails.TopRecordsDetails.length <= 0" style="padding: 10% 40px;text-align: center;">
+               <b> {{"Lbl_noDataTopReport" | translate}} </b>
+            </div>
+            <div *ngIf="selectedInsightId == 4 && reportDetails && npsScoreDetails && npsScoreDetails.length > 0">
+                <app-zoomable-value-axis [npsScoreDetails]="npsScoreDetails" [chatView]="chatView"></app-zoomable-value-axis>
+                        <!-- tob select -->
+                        <div class="filter-area">
+                            <div class="row" style="float: right;margin-right: 5px;">
+                                <div class="col-xs-12 flex-dis tab-row">
+                                    <div class="flex-dis">
+                                    <div>
+                                        {{"SHOW_PER" | translate}}:
+                                    </div>
+                                    <div class="mright-20"></div>
+                                    <div class="p-bottom-10" [ngClass]="{'bottom-line': tab == 'tab_1'}" (click)="onChangeNpsScoreDetail('tab_1')">
+                                        <a class="filter-tab" [ngClass]="{'fw-bolder': tab == 'tab_1'}" 
+                                            onmouseover="style='color: var(--primary-color)'" onmouseout="style='color:#494949'"
+                                            title="{{'DAY' | translate}}">{{"DAY" | translate}}</a>
+                                    </div>
+                                    <div class="mright-20"></div>
+                                    <div class="p-bottom-10" [ngClass]="{'bottom-line': tab == 'tab_2'}" (click)="onChangeNpsScoreDetail('tab_2')">
+                                        <a class="filter-tab" [ngClass]="{'fw-bolder': tab == 'tab_2'}" 
+                                            onmouseover="style='color: var(--primary-color)'" onmouseout="style='color:#494949'"
+                                            title="Week">Week</a>
+                                    </div>
+                                    <div class="mright-20"></div>
+                                    <div class="p-bottom-10" [ngClass]="{'bottom-line': tab == 'tab_3'}" (click)="onChangeNpsScoreDetail('tab_3')">
+                                        <a class="filter-tab" [ngClass]="{'fw-bolder': tab == 'tab_3'}" 
+                                            onmouseover="style='color: var(--primary-color)'" onmouseout="style='color:#494949'"
+                                            title="{{'MONTH' | translate}}">{{"MONTH" | translate}}</a>
+                                    </div>
+                                    <div class="mright-20"></div>
+                                    <div class="p-bottom-10" [ngClass]="{'bottom-line': tab == 'tab_4'}" (click)="onChangeNpsScoreDetail('tab_4')">
+                                        <a class="filter-tab" [ngClass]="{'fw-bolder': tab == 'tab_4'}" 
+                                            onmouseover="style='color: var(--primary-color)'" onmouseout="style='color:#494949'"
+                                            title="{{'YEAR' | translate}}">{{"YEAR" | translate}}</a>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="font-type mtop-30 question">
+    <div *ngIf="questionReport && questionReport.length > 0" class="question-div" style="margin-bottom: 4px;">{{"QUESTIONS_&_ANSWERRS" | translate}}</div>
+    <div class="releative" *ngIf="reportDetails && reportDetails.Results && reportDetails.Results.length > 0" (clickOutside)="showOptionsForFilter=false">
+        <div (click)="startResultFilter()">
+            {{"RESULT" | translate}} : <span class="default-color border-dot">{{selectedResult}} </span>
+            <i *ngIf="showOptionsForFilter" class="fa fa-caret-up default-color" aria-hidden="true"></i>
+            <i *ngIf="!showOptionsForFilter" class="fa fa-caret-down default-color" aria-hidden="true"></i>
+        </div>
+        <!-- filter list box -->
+        <div *ngIf="showOptionsForFilter" class="filterList">
+            <div class="filterMenuOptionBox">
+                <div  class="item font-type" (click)="allSelectResult()">
+                    {{"ALL" | translate}}
+                </div>
+                <div *ngFor="let list of reportDetails.Results">
+                    <div class="item ellipsiss font-type" title="{{list.InternalResultTitle}}"
+                        (click)="selectResultToFilter(list)">
+                        {{list.InternalResultTitle}}</div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div *ngIf="!isNoData && questionReport && questionReport.length > 0">
+    <div class="mTopBottom-10" *ngFor="let questions of questionReport;index as i">
+        <ng-container *ngIf="questions.QuestionType == questionTypeEnum.singleSelect || questions.QuestionType == questionTypeEnum.lookingForJob || questions.QuestionType == questionTypeEnum.availability">
+            <div class="ques-div">
+                <div class="ques-title-div title flex-dis">
+                    <div class="ellipsiss-w90">
+                      <span title="{{questions.QuestionTitle | removeallTagPipe}}">{{questions.QuestionTitle | removeallTagPipe | slice:0:70}}<span *ngIf="questions.QuestionTitle && questions.QuestionTitle.length > 70"> ...</span> </span> <span *ngIf="questions.QuestionType != questionTypeEnum.availability" class="mleft-20">({{"SINGLE_CHOICE_QUESTION" | translate}})</span>
+                      <span *ngIf="questions.QuestionType == questionTypeEnum.availability" class="mleft-20">(Availability question)</span>
+                    </div>
+                    <div>
+                        <span class="count-text">{{questions.LeadCountForQuestion}} {{"ANSWERS" | translate}}</span>
+                    </div>
+                   
+                </div>
+                <div class="p-40">
+                    <div>
+                        <app-pieChart [anwserDetails]="questions.Answers" [index]="i" [isRatingType]=""></app-pieChart>
+                    </div>
+                    <div *ngIf="questions.Comments && questions.Comments.length > 0 && questions.QuestionType == questionTypeEnum.availability" class="comment-text app-data" (click)="onFreeText(questions)" app-data="data-text">
+                        {{"Lbl_Seecomments" | translate}} ({{questions.Comments.length}})
+                        <svg class="arrow-icon" width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.84073 5.6431L1.94026 1.14762C1.72523 0.950794 1.37684 0.950794 1.16127 1.14762C0.946243 1.34445 0.946243 1.66414 1.16127 1.86097L5.67305 5.99975L1.16182 10.1385C0.946787 10.3354 0.946787 10.6551 1.16182 10.8524C1.37685 11.0492 1.72577 11.0492 1.9408 10.8524L6.84127 6.35694C7.053 6.16215 7.053 5.83743 6.84073 5.6431Z" fill="#00B7AB" stroke="#00B7AB" stroke-width="0.5"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="questions.QuestionType == questionTypeEnum.multiSelect || questions.QuestionType == questionTypeEnum.driversLicense">
+            <div class="ques-div">
+                <div class="ques-title-div title flex-dis">
+                    <div class="ellipsiss-w90">
+                        <span title="{{questions.QuestionTitle | removeallTagPipe}}"> {{questions.QuestionTitle | removeallTagPipe | slice:0:70}}<span *ngIf="questions.QuestionTitle && questions.QuestionTitle.length > 70"> ...</span></span> <span class="mleft-20">({{"MULTIPLE_CHOICE_QUESTION" | translate}})</span>
+                    </div>
+                    <div>
+                        <span class="count-text">{{questions.LeadCountForQuestion}} {{"ANSWERS" | translate}}</span>
+                    </div>
+                </div>
+                <div>
+                    <app-sorted-bar-chat [anwserDetails]="questions.Answers" [index]="i"></app-sorted-bar-chat>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container
+            *ngIf="questions.QuestionType == questionTypeEnum.smallText || questions.QuestionType == questionTypeEnum.largeText || questions.QuestionType == questionTypeEnum.dateOfBirth || questions.QuestionType == questionTypeEnum.fullAddress || questions.QuestionType == questionTypeEnum.postCode">
+            <div class="ques-div">
+                <div class="ques-title-div title flex-dis">
+                    <div class="ellipsiss-w90">
+                        <span title="{{questions.QuestionTitle | removeallTagPipe}}"> {{questions.QuestionTitle | removeallTagPipe | slice:0:70}}<span *ngIf="questions.QuestionTitle && questions.QuestionTitle.length > 70"> ...</span></span> <span class="mleft-20">({{"FREE_TEXT_ANWSER" | translate}})</span>
+                    </div>
+                    <div>
+                        <span class="count-text">{{questions.LeadCountForQuestion}} {{"ANSWERS" | translate}}</span>
+                    </div>
+                </div>
+                <div *ngIf="questions && questions.Answers && questions.Answers.length > 0">
+                    <div class="free-text" *ngFor="let answer of questions.Answers | slice:0:4">
+                        <div class="free-text-div">
+                            <span style="color: #A9A9A9;"> {{answer.CompletedOn}}</span>
+                            <div class="ellipsiss" title="{{answer.AnswerText | removeallTagPipe}}">
+                                {{answer.AnswerText | removeallTagPipe}}
+                            </div>
+                        </div>
+                    </div>
+                    <a *ngIf="questions.Answers.length > 4" href="javascript:void(0)" (click)="onFreeText(questions)"
+                        class="app-data see-all" app-data="data-text">
+                        <span title="See list">See all <i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                    </a>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="questions.QuestionType == questionTypeEnum.ratingEmoji || questions.QuestionType == questionTypeEnum.ratingStar || questions.QuestionType == questionTypeEnum.nps">
+            <div class="ques-div">
+                <div class="ques-title-div title flex-dis">
+                    <div class="ellipsiss-w90">
+                      <span title="{{questions.QuestionTitle | removeallTagPipe}}">{{questions.QuestionTitle | removeallTagPipe | slice:0:70}}<span *ngIf="questions.QuestionTitle && questions.QuestionTitle.length > 70"> ...</span></span> <span *ngIf="questions.QuestionType != 10" class="mleft-20">({{"Lbl_Ratingquestion" | translate}})</span>
+                      <span *ngIf="questions.QuestionType == 10" class="mleft-20">({{"Lbl_NPSquestion" | translate}})</span>
+                    </div>
+                    <div>
+                        <span class="count-text">{{questions.LeadCountForQuestion}} {{"ANSWERS" | translate}}</span>
+                    </div>
+                   
+                </div>
+                <div class="row p-40">
+                <div class="col-xs-4">
+                    <div style="position: relative;height: 380px;">
+                        <div class="avg-block">
+                            <div class="flex-dis">
+                                <div *ngIf="questions.QuestionType != 10" class="avg-score">{{questions.AVGScore}}</div>
+                                <div *ngIf="questions.QuestionType == 10" class="avg-score">{{questions.NPSScore}}</div>
+                                <div class="avg-score-text"><div *ngIf="questions.QuestionType != 10">AVG</div>
+                                <div *ngIf="questions.QuestionType == 10">NPS</div>
+                                     <div>score</div></div>
+                            </div>
+                            <div *ngIf="questions.Comments && questions.Comments.length > 0 && questions.QuestionType != 10" class="comment-text app-data" (click)="onFreeText(questions)" app-data="data-text">
+                                {{"Lbl_Seecomments" | translate}} ({{questions.Comments.length}})
+                                <svg class="arrow-icon" width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.84073 5.6431L1.94026 1.14762C1.72523 0.950794 1.37684 0.950794 1.16127 1.14762C0.946243 1.34445 0.946243 1.66414 1.16127 1.86097L5.67305 5.99975L1.16182 10.1385C0.946787 10.3354 0.946787 10.6551 1.16182 10.8524C1.37685 11.0492 1.72577 11.0492 1.9408 10.8524L6.84127 6.35694C7.053 6.16215 7.053 5.83743 6.84073 5.6431Z" fill="#00B7AB" stroke="#00B7AB" stroke-width="0.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-8">
+                    <app-pieChart [anwserDetails]="questions.Answers" [index]="i" [isRatingType]="isRatingType"></app-pieChart>
+                </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+</div>
+
+<div *ngIf="(reportDetails && reportDetails.Stages.length <= 0 && reportDetails.Results.length <= 0 && reportDetails.Questions.length <= 0 && reportDetails.TopRecordsDetails.length <= 0 && isNoData) || isApiError"
+    class="text-center font-type mTop-25per">
+    <h3>{{"NO_REPORT_AVAILABLE" | translate}}.</h3>
+</div>
+</div>
+    </div>
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar" id="data-text">
+    <div #freeTextTemplate></div>
+</div>

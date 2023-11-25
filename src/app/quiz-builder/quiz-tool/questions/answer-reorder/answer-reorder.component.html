@@ -1,0 +1,28 @@
+<div class="portlet-head">
+    <div class="font-type font-text2">
+      <span>Reorder</span>
+    </div>
+    <div class="action">
+      <a href="javascript:void(0)" class="btn blue hide">{{"SAVE_RECORDS" | translate }}</a>
+      <a href="javascript:void(0)" class="closet" (click)="onClose()"></a>
+    </div>
+  </div>
+
+
+  <div class="form-body">
+      <accordion class="draggable-engine" [dragula]="'answer-bag'" [dragulaModel]="questionData.AnswerList">
+        <div *ngFor="let group of questionData.AnswerList;let i = index;">
+          <div class="Collapse-block">
+            <svg class="move" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect y="12" width="3" height="3" rx="1" fill="#D0D0D0"/>
+              <rect x="6" y="12" width="3" height="3" rx="1" fill="#D0D0D0"/>
+              <rect y="6" width="3" height="3" rx="1" fill="#D0D0D0"/>
+              <rect x="6" y="6" width="3" height="3" rx="1" fill="#D0D0D0"/>
+              <rect width="3" height="3" rx="1" fill="#D0D0D0"/>
+              <rect x="6" width="3" height="3" rx="1" fill="#D0D0D0"/>
+              </svg>
+              <span style ="margin-left:16px;" class="font-type normal-text" title="{{group.AnswerText | removeallTagPipe}}">{{group.AnswerText | removeallTagPipe}}</span>
+          </div>
+      </div>
+      </accordion>
+  </div>

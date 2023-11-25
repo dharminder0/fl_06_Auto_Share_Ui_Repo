@@ -1,0 +1,10 @@
+<form>
+    <div class="form-group right-side">
+        <input class="input-cls" type="text" matInput ngxDaterangepickerMd [locale]="calendarLocale" [minDate]='minDate' [maxDate]='maxDate'
+            [showCustomRangeLabel]="true" [alwaysShowCalendars]="true" [linkedCalendars]="false" [ranges]="ranges"
+            [placeholder]="calendarPlaceholder" [showClearButton]="true" startKey="startdDate" endKey="endDate"
+            [(ngModel)]="selectedDaterange" (change)='selectDateRange()' name="daterange" readonly />
+        <i class="fa fa-caret-down ngx-daterangepicker-action drop-icon" aria-hidden="true"
+            (click)="openDatepicker()"></i>
+    </div>
+</form>

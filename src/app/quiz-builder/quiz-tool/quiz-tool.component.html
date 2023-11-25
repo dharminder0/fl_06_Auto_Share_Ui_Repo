@@ -1,0 +1,453 @@
+<app-quiz-header></app-quiz-header>
+<!-- begin page -->
+<div class="ember-body info">
+  <div class="ember-container info">
+    <div class="sidebar-tab">
+        <quiz-configuration-menu [quizTypeId]="quizData.QuizTypeId" [isEnabled]="isEnabled"></quiz-configuration-menu>
+    </div>
+
+    <div class="ember-sidebar" *ngIf="activeTab=='Settings'  && !isSidebarOpen">
+      <div class="sidebar-head">
+        <span>{{"SETTINGS" | translate}}</span>
+      </div>
+        <div class="edit-builder">
+          <div (click)="onAccessibility()" app-data="data-accessibility" class="app-data items padding-setting b-bottom" *ngIf="quizData.QuizTypeId == 1 || quizData.QuizTypeId == 2 || quizData.QuizTypeId == 3 || quizData.QuizTypeId == 4">
+            <img [src]="quizSettingIcon" class="quizsetting-icon"/>
+            <span class="item">{{"ACCESSIBILITY" | translate }}</span>
+          </div>
+          <div (click)="onAttachments()" class="app-data items padding-setting b-bottom" app-data="data-attachments">
+            <img [src]="quizSettingIcon" class="quizsetting-icon"/>
+            <span class="item">{{"ATTACHMENTS" | translate }}</span>
+          </div>
+
+          <div (click)="onAttemptsSetting()" class="app-data items padding-setting b-bottom" app-data="data-attempts-setting">
+            <img [src]="quizSettingIcon" class="quizsetting-icon"/>
+            <span class="item">{{"QUESTION_AND_CONTENT_ATTEMPTS" | translate }}</span>
+          </div>
+
+          <div (click)="dynamicTemplateShare()" class="app-data items padding-setting b-bottom" app-data="data-share-setting">
+            <img [src]="quizSettingIcon" class="quizsetting-icon"/>
+            <span class="item">{{"SHARE_YOUR_AUTOMATION" | translate }}</span>
+          </div>
+
+        </div>
+    </div>
+    <div class="ember-sidebar" *ngIf="activeTab=='Slides'  && !isSidebarOpen">
+      <div class="sidebar-head" >
+        <span>{{"SLIDES" | translate}}</span>
+      </div>
+      <div class="box alpha b-bottom" *ngIf="quizData.QuizTypeId == 2 || quizData.QuizTypeId == 3 || quizData.QuizTypeId == 4">
+        <!-- <div class="b-bottom padding-box">
+          <span>{{"BRANCHING_LOGIC" | translate}}</span>
+        </div> -->
+        <div class="logic-sidebar-head">
+          <svg width="18" height="17" viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 1C15.1 1 16 1.9 16 3V6C16 7.1 15.1 8 14 8H11C9.9 8 9 7.1 9 6V3C9 1.9 9.9 1 11 1H14ZM14 0H11C9.3 0 8 1.3 8 3V6C8 7.7 9.3 9 11 9H14C15.7 9 17 7.7 17 6V3C17 1.3 15.7 0 14 0Z" fill="white"/>
+            <path d="M14 20C14.6 20 15 20.4 15 21V24C15 24.6 14.6 25 14 25H11C10.4 25 10 24.6 10 24V21C10 20.4 10.4 20 11 20H14ZM14 19H11C9.9 19 9 19.9 9 21V24C9 25.1 9.9 26 11 26H14C15.1 26 16 25.1 16 24V21C16 19.9 15.1 19 14 19Z" fill="white"/>
+            <path d="M23 20C23.6 20 24 20.4 24 21V24C24 24.6 23.6 25 23 25H20C19.4 25 19 24.6 19 24V21C19 20.4 19.4 20 20 20H23ZM23 19H20C18.9 19 18 19.9 18 21V24C18 25.1 18.9 26 20 26H23C24.1 26 25 25.1 25 24V21C25 19.9 24.1 19 23 19Z" fill="white"/>
+            <path d="M5 20C5.6 20 6 20.4 6 21V24C6 24.6 5.6 25 5 25H2C1.4 25 1 24.6 1 24V21C1 20.4 1.4 20 2 20H5ZM5 19H2C0.9 19 0 19.9 0 21V24C0 25.1 0.9 26 2 26H5C6.1 26 7 25.1 7 24V21C7 19.9 6.1 19 5 19Z" fill="white"/>
+            <path d="M13 9H12V19H13V9Z" fill="white"/>
+            <path d="M3.5 19V15.5C3.5 14.4 4.4 13.5 5.5 13.5H19.5C20.6 13.5 21.5 14.4 21.5 15.5V19.5" stroke="white" stroke-miterlimit="10"/>
+          </svg> 
+          <div class="toggle mleft-10">
+            <div class="title">
+                <span class="item">{{"BRANCHING_LOGIC" | translate }}</span>
+                  <span class="switch-bar-col">
+                    <label class="switch" [ngClass]="{'display-none': isWhatsappEnable}">
+                      <input type="checkbox" (change)='onClickedEnable()' class="boxid" [checked]="quizData?.IsBranchingLogicEnabled">
+                      <span class="slider round"></span>
+                    </label>
+                  </span>
+            </div>
+          </div>
+      </div>
+      </div>
+      <div *ngIf="!isWhatsappEnable" class="box alpha">
+        <div class="b-bottom padding-box">
+          <div class="fs-16">{{"COVER" | translate }}</div>
+        </div>
+        <div class="toggle b-bottom">
+          <div class="padding-subbox">
+            <h4 [routerLink]="['cover']" class="trigger" id="cover">
+              <span *ngIf="quizData.QuizTitle" title="{{quizData.QuizTitle}}">{{quizData.QuizTitle | truncate:35}}</span>
+              <span *ngIf="!quizData.QuizTitle" title="{{'UNTITLED_QUIZ' | translate }}">{{"UNTITLED_QUIZ" | translate }}</span>
+            </h4>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="box alpha">
+        <div class="b-bottom padding-box">
+          <span class="fs-16">Content</span>
+          <a href="javascript:void(0);" (click)="dynamicTemplateReorder()" class="link app-data btn reoder-btn" app-data="data-reorder">
+            <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="12" height="1" fill="white"/>
+              <rect y="5" width="12" height="1" fill="white"/>
+              <rect y="10" width="12" height="1" fill="white"/>
+            </svg>              
+            <span class="reorder-text">{{"ORDER" | translate}}</span>
+          </a>
+        </div>
+        <div class="toggle b-bottom" *ngFor="let question of quizData.QuestionAndContent;let i = index">
+          <div *ngIf = "question.Type == 2">
+          <div class="padding-subbox" (mouseenter)="hoverOnTitle[question.QuestionId] = true;question.isquestion = true" (mouseleave)="hoverOnTitle[question.QuestionId] = false;question.isquestion = false">
+            <h4 [id]="'QUES_'+question.QuestionId" class="trigger" [routerLink]="['question',question.QuestionId]">
+              <span *ngIf="question.QuestionTitle && question.QuestionTitle.length>0" title="{{question.QuestionTitle}}">{{question.QuestionTitle | truncate:30}}</span>
+              <span *ngIf="!question.QuestionTitle || question.QuestionTitle.length==0" title="{{'QUESTION' | translate}} {{i+1}}">{{"QUESTION" | translate}} {{i+1}}</span>
+            </h4>
+            <span *ngIf="question.isquestion == false" style="position: relative;left: 29px;">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.78715 11.0132C6.36091 11.0132 6.01416 10.6621 6.01416 10.2307C6.01416 9.79933 6.36091 9.44824 6.78715 9.44824C7.21123 9.44824 7.56964 9.80665 7.56964 10.2307C7.56964 10.6548 7.21123 11.0132 6.78715 11.0132Z" fill="#808080"/>
+                <path d="M6.77789 8.63281C6.3484 8.63281 6.20351 8.45917 6.20351 7.94502C6.20351 7.13297 6.55216 6.72816 6.85603 6.46634C6.91409 6.41696 6.97813 6.36812 7.04568 6.31603C7.34251 6.08812 7.67894 5.82983 7.67894 5.43859C7.67894 5.00448 7.26735 4.84983 6.88208 4.84983C6.35247 4.84983 6.19917 5.07611 6.06378 5.27553C5.95824 5.43099 5.85867 5.57805 5.61475 5.57805C5.31332 5.57805 4.99316 5.37022 4.99316 4.98468C4.99316 4.45181 5.60254 3.66309 6.91057 3.66309C7.50964 3.66309 8.0265 3.82154 8.40553 4.12161C8.77561 4.41464 8.97937 4.82541 8.97937 5.2777C8.97937 5.89685 8.61607 6.49375 7.89925 7.0513C7.39053 7.44905 7.39053 7.7125 7.39053 8.19057C7.39026 8.39243 7.2839 8.63281 6.77789 8.63281Z" fill="#808080"/>
+                <path d="M0.596899 14C0.267791 14 0 13.7322 0 13.4031V7C0 5.12872 0.727674 3.37058 2.04926 2.04899C3.37058 0.727674 5.12899 0 7 0C8.87128 0 10.6294 0.727674 11.951 2.04926C13.2723 3.37058 14 5.12899 14 7C14 8.87128 13.2723 10.6294 11.9507 11.951C10.6294 13.2723 8.87101 14 7 14H0.596899ZM7 12.8062C10.2016 12.8062 12.8062 10.2016 12.8062 7C12.8062 3.79845 10.2016 1.1938 7 1.1938C3.79845 1.1938 1.1938 3.79845 1.1938 7V12.8062H7Z" fill="#808080"/>
+              </svg>
+            </span>
+            <div *ngIf ="!isQuesAndContentInSameTable && hoverOnTitle[question.QuestionId] &&
+                        questionCount > 1 && (((quizData.QuizTypeId == 2 || quizData.QuizTypeId == 5) && questionCount >= quizData.Results.length) ||
+                        (quizData.QuizTypeId == 1  || quizData.QuizTypeId == 3 || quizData.QuizTypeId == 7 || quizData.QuizTypeId == 4 || quizData.QuizTypeId == 6))" class="dropdown pull-right">
+              <a href="javascript:void(0);" class="dropdown-toggle left-11" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z" fill="white"/>
+                </svg>
+              </a>
+              <div class="dropdown-menu hover pull-right right-11">
+                <ul class="nav">
+                  <li>
+                    <a class="pointer" (click)="removeQuestion(question.QuestionId,i)">
+                      <i class="zmdi zmdi-close-circle-o"></i>
+                      <span>{{"DELETE" | translate }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div *ngIf ="isQuesAndContentInSameTable && hoverOnTitle[question.QuestionId]" class="dropdown pull-right">
+              <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <i class="fa fa-ellipsis-v" aria-hidden="true" style="color: #ffffff"></i>
+              </a>
+              <div class="dropdown-menu hover pull-right right-11">
+                <ul class="nav">
+                  <li *ngIf="questionCount > 1 && (((quizData.QuizTypeId == 2 || quizData.QuizTypeId == 5) && questionCount >= quizData.Results.length) ||
+                    (quizData.QuizTypeId == 1  || quizData.QuizTypeId == 3 || quizData.QuizTypeId == 7 || quizData.QuizTypeId == 4 || quizData.QuizTypeId == 6)
+                    )">
+                    <a class="pointer" (click)="removeQuestion(question.QuestionId,i)">
+                      <i class="zmdi zmdi-close-circle-o"></i>
+                      <span>{{"DELETE" | translate }}</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer" (click)="duplicateQuestion(question.QuestionId)">
+                      <i class="zmdi zmdi-copy"></i>
+                      <span>{{"Lbl_Duplicate" | translate }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf = "question.Type == 6 && !isQuesAndContentInSameTable">
+          <div class="padding-subbox" (mouseenter)="hoverOnTitle[question.Id] = true" (mouseleave)="hoverOnTitle[question.Id] = false">
+            <h4 class="trigger" [id]="'CON_'+question.Id" [routerLink]="['content',question.Id]">
+              <span *ngIf="question.ContentTitle && question.ContentTitle.length > 0" title="{{question.ContentTitle}}">{{question.ContentTitle | truncate:30}}</span>
+              <span *ngIf="!question.ContentTitle || question.ContentTitle.length == 0" title="content {{i+1}}">content {{i+1}}</span>
+            </h4>
+            <div *ngIf="hoverOnTitle[question.Id]" class="dropdown pull-right">
+              <a href="javascript:void(0);" class="dropdown-toggle left-11" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z" fill="white"/>
+                </svg>
+              </a>
+              <div class="dropdown-menu hover pull-right right-11">
+                <ul class="nav">
+                  <li>
+                    <a (click)="removeContent(question.Id, i)">
+                      <i class="zmdi zmdi-close-circle-o"></i>
+                      <span>{{"DELETE" | translate}}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf = "question.Type == 6 && isQuesAndContentInSameTable">
+          <div class="padding-subbox" (mouseenter)="hoverOnTitle[question.QuestionId] = true" (mouseleave)="hoverOnTitle[question.QuestionId] = false">
+            <h4 class="trigger" [id]="'CON_'+question.QuestionId" [routerLink]="['question',question.QuestionId]">
+              <span *ngIf="question.QuestionTitle && question.QuestionTitle.length > 0" title="{{question.QuestionTitle}}">{{question.QuestionTitle | truncate:30}}</span>
+              <span *ngIf="!question.QuestionTitle || question.QuestionTitle.length == 0" title="content {{i+1}}">content {{i+1}}</span>
+            </h4>
+            <div *ngIf="hoverOnTitle[question.QuestionId]" class="dropdown pull-right">
+              <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <i class="fa fa-ellipsis-v" aria-hidden="true" style="color: #ffffff"></i>
+              </a>
+              <div class="dropdown-menu hover pull-right right-11">
+                <ul class="nav">
+                  <li>
+                    <a (click)="removeQuestion(question.QuestionId, i, 6)">
+                      <i class="zmdi zmdi-close-circle-o"></i>
+                      <span>{{"DELETE" | translate}}</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer" (click)="duplicateQuestion(question.QuestionId)">
+                      <i class="zmdi zmdi-copy"></i>
+                      <span>{{"Lbl_Duplicate" | translate }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </div>
+        <div *ngIf="!isQuesAndContentInSameTable">
+        <div class="b-bottom padding-subbox fs-11">
+          <a *ngIf="questionCount == 0" href="javascript:void(0);" class="add" (click)="addQuestion()">
+            <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_QUESTION" | translate}}</a>
+          <a *ngIf="questionCount >= 1" href="javascript:void(0);" class="add" (click)="addQuestion()">
+            <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_ANOTHER_QUESTION" | translate }}</a>
+        </div>
+        <div class="b-bottom padding-subbox fs-11">
+          <a *ngIf="contentCount == 0" href="javascript:void(0);" class="add" (click)="addContent()">
+            <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_CONTENT_PAGE" | translate}}</a>
+          <a *ngIf="contentCount >= 1" href="javascript:void(0);" class="add" (click)="addContent()">
+            <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_CONTENT_PAGE" | translate}}</a>
+        </div>
+        </div>
+        <div *ngIf="isQuesAndContentInSameTable">
+          <div class="b-bottom padding-subbox fs-11">
+            <a href="javascript:void(0);" class="add" (click)="addQuestion()">
+              <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_QUESTION" | translate}}</a>
+          </div>
+          <div class="b-bottom padding-subbox fs-11">
+            <a href="javascript:void(0);" class="add" (click)="addQuestion('content')">
+              <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_CONTENT_PAGE" | translate}}</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="box alpha">
+        <div class="b-bottom padding-box">
+          <span>{{"RESULTS" | translate }}</span>
+        </div>
+        <div class="toggle b-bottom" *ngFor="let result of quizData.Results;let i = index;">
+          <div class="padding-subbox" (mouseenter)="hoverOnTitle[result.ResultId] = true" (mouseleave)="hoverOnTitle[result.ResultId] = false">
+            <h4 class="trigger result-title-width" [id]="'RES_'+result.ResultId" [routerLink]="['result',result.ResultId]">
+              <span *ngIf="result.InternalTitle && result.InternalTitle.length > 0" title="{{result.InternalTitle}}">{{result.InternalTitle | truncate:30}}
+                <app-result-range [result]="result" (datachange)="datachange($event)"
+                *ngIf="quizData.QuizTypeId == 1 || 
+                quizData.QuizTypeId == 2 || 
+                quizData.QuizTypeId == 4 ||
+                quizData.QuizTypeId == 5 ||
+                quizData.QuizTypeId == 6"></app-result-range>
+              </span>
+              <span *ngIf="!result.InternalTitle || result.InternalTitle.length == 0" title="{{'RESULT' | translate}} {{i+1}}">{{"RESULT" | translate}} {{i+1}}
+                <app-result-range [result]="result" (datachange)="datachange($event)"
+                *ngIf="quizData.QuizTypeId == 1 || 
+                quizData.QuizTypeId == 2 || 
+                quizData.QuizTypeId == 4 ||
+                quizData.QuizTypeId == 5 ||
+                quizData.QuizTypeId == 6"></app-result-range>
+              </span>
+            </h4>
+            <div *ngIf="!isQuesAndContentInSameTable && hoverOnTitle[result.ResultId] &&
+              ((quizData.Results.length > 1 && (quizData.QuizTypeId == 1 || 
+                    quizData.QuizTypeId == 2 || 
+                    quizData.QuizTypeId == 4 ||
+                    quizData.QuizTypeId == 5 ||
+                    quizData.QuizTypeId == 6)) || ((quizData.QuizTypeId == 3 || quizData.QuizTypeId == 7) && quizData.Results.length > 2))
+                    " class="dropdown pull-right">
+              <a href="javascript:void(0);" class="dropdown-toggle left-11" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z" fill="white"/>
+                </svg>
+              </a>
+              <div class="dropdown-menu hover pull-right right-11">
+                <ul class="nav">
+                  <li>
+                    <a (click)="removeResult(result.ResultId,i)">
+                      <i class="zmdi zmdi-close-circle-o"></i>
+                      <span>{{"DELETE" | translate }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div *ngIf="isQuesAndContentInSameTable && hoverOnTitle[result.ResultId] && ((quizData.QuizTypeId != 4 && quizData.QuizTypeId != 1 ) ||
+            (quizData.QuizTypeId == 4 && (quizData.Results.length > 1 || (quizData.Results.length<((maximum-minimum)+1)))) || 
+            (quizData.QuizTypeId == 1 && quizData.Results.length > 1))" 
+            class="dropdown pull-right">
+              <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false" style="left: 5px;">
+                <i class="fa fa-ellipsis-v" aria-hidden="true" style="color: #ffffff"></i>
+              </a>
+              <div class="dropdown-menu hover pull-right right-11">
+                <ul class="nav">
+                  <li *ngIf="(quizData.Results.length > 1 && (quizData.QuizTypeId == 1 || 
+                    quizData.QuizTypeId == 2 || 
+                    quizData.QuizTypeId == 4 ||
+                    quizData.QuizTypeId == 5 ||
+                    quizData.QuizTypeId == 6)) || ((quizData.QuizTypeId == 3 || quizData.QuizTypeId == 7) && quizData.Results.length > 2)">
+                    <a (click)="removeResult(result.ResultId,i)">
+                      <i class="zmdi zmdi-close-circle-o"></i>
+                      <span>{{"DELETE" | translate }}</span>
+                    </a>
+                  </li>
+                  <li *ngIf="(quizData.Results.length <= questionCount && (quizData.QuizTypeId == 2 || quizData.QuizTypeId == 5)) || 
+                  (quizData.Results.length<((maximum-minimum)+1) && (quizData.QuizTypeId == 4 || quizData.QuizTypeId == 6)) ||
+                  (quizData.QuizTypeId == 3 || quizData.QuizTypeId == 7)">
+                    <a class="pointer"  (click)="onDuplicateResult(result.ResultId)">
+                      <i class="zmdi zmdi-copy"></i>
+                      <span>{{"Lbl_Duplicate" | translate }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="quizData.Results.length == 0" class="b-bottom padding-subbox fs-11">
+        <a href="javascript:void(0);" class="add" (click)="addResults()">
+          <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_RESULT" | translate }}</a>
+        </div>  
+        <div *ngIf="quizData.Results.length >= 1 && quizData.Results.length <= questionCount && (quizData.QuizTypeId == 2 || quizData.QuizTypeId == 5)" class="b-bottom padding-subbox fs-11">
+        <a href="javascript:void(0);" class="add" (click)="addResults()">
+          <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_RESULT" | translate }}</a>
+        </div>
+        <div *ngIf="quizData.Results.length >= 1 && quizData.Results.length<((maximum-minimum)+1) && (quizData.QuizTypeId == 4 || quizData.QuizTypeId == 6)" class="b-bottom padding-subbox fs-11">
+          <a href="javascript:void(0);" class="add" (click)="addResults()">
+            <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_RESULT" | translate }}</a>
+        </div>
+        <div *ngIf="quizData.Results.length >= 1  && (quizData.QuizTypeId == 3 || quizData.QuizTypeId == 7)" class="b-bottom padding-subbox fs-11">    
+            <a href="javascript:void(0);" class="add" (click)="addResults()">
+              <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_RESULT" | translate }}</a>
+        </div>
+
+        <div *ngIf="quizData.QuizTypeId == 3 || quizData.QuizTypeId == 7">
+          <div class="b-bottom padding-subbox">
+        <a  href="javascript:void(0);" class="link app-da ta MultiRes" app-data="dat a-result">
+          <label class="app-checkbox">{{"MUTIPLE_RESULTS" | translate }}
+          <input type="checkbox" [(ngModel)]="checked" (click)="openMultiple()">
+          <span class="checkmark"></span>
+          </label>
+        </a>
+        </div>
+          <!-- ////// -->
+          <div class="toggle b-bottom" *ngIf="status == 1" [routerLink]="['show-multiple-results']">
+              <div class="padding-subbox">
+                  <h4 class="trigger">
+                    <span>
+                        {{"MULTI_RESULTS" | translate}}
+                    </span>
+                  </h4>
+              </div>
+              <div class="toggle-box">
+                      <ul class="list-unstyled">
+                          <li>
+                            <a [id]="quizId" ccFocus href="javascript:void(0);">
+                              <img [src]="alfaLatter" class="list-img"/>
+                              {{"TITLE" | translate }}</a>
+                          </li>
+                          <li>
+                            <a ccFocus id="mulriple-result-graph" href="javascript:void(0);">
+                              <img [src]="defaltImage" class="list-img"/>
+                              {{"BAR_GRAPH" | translate }}</a>
+                          </li>
+                        </ul>
+              </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div *ngIf="isELearningPermission" class="box alpha">
+        <div class="b-bottom padding-box">
+          <div>{{"BADGES" | translate}}</div>
+        </div>
+        <div class="toggle b-bottom" *ngFor="let badge of quizData.Badge;let i = index;">
+          <div class="padding-subbox" (mouseenter)="hoverOnTitle[badge.Id] = true" (mouseleave)="hoverOnTitle[badge.Id] = false">
+            <h4 class="trigger" [id]="'BAD_'+badge.Id" [routerLink]="['badge',badge.Id]">
+              <span *ngIf="badge.Title && badge.Title.length > 0" title="{{badge.Title}}">{{badge.Title | truncate:30}}</span>
+              <span *ngIf="!badge.Title || badge.Title.length == 0" title="{{'BADGE' | translate}} {{i+1}}">{{"BADGE" | translate}} {{i+1}}</span>
+            </h4>
+            <div *ngIf="hoverOnTitle[badge.Id]" class="dropdown pull-right">
+              <a href="javascript:void(0);" class="dropdown-toggle left-11" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z" fill="white"/>
+                </svg>
+              </a>
+              <div class="dropdown-menu hover pull-right right-11">
+                <ul class="nav">
+                  <li>
+                    <a (click)="removeBadge(badge.Id,i)">
+                      <i class="zmdi zmdi-close-circle-o"></i>
+                      <span>{{"DELETE_BADGE" | translate}}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="b-bottom padding-subbox fs-11">
+          <a *ngIf="quizData.Badge.length == 0" href="javascript:void(0);" class="add" (click)="addBadge()">
+            <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_BADGE" | translate}}</a>
+          <a *ngIf="quizData.Badge.length >= 1" href="javascript:void(0);" class="add" (click)="addBadge()">
+            <i class="zmdi zmdi-plus mright-5"></i>{{"ADD_BADGE" | translate}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="ember-content" [ngClass]="{'result-title-width':activeTab=='Styles'}">
+      <router-outlet></router-outlet>
+    </div>
+    <div>
+      <enable-media-setting></enable-media-setting>
+    </div>
+  </div>
+</div>
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar setting-width" id="data-reorder">
+  <div #questionReorderTemplate>
+  </div>
+</div>
+<!-- end page -->
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar medium" id="data-result">
+  <div #resultRedirectTemplate>
+  </div>
+</div>
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar setting-width" id="data-accessibility">
+  <div #quizAccessibility>
+  </div>
+</div>
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar setting-width" id="data-style">
+  <div #quizStyle>
+  </div>
+</div>
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar setting-width" id="data-attachments">
+  <div #quizAttachments>
+  </div>
+</div>
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar setting-width" id="data-attempts-setting">
+  <div #quizAttemptsSettings>
+  </div>
+</div>
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar setting-width" id="data-share-setting">
+  <div #shareQuizTemplate>
+  </div>
+</div>

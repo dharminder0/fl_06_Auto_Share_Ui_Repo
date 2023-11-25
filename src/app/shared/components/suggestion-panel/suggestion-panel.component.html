@@ -1,0 +1,125 @@
+<div class="suggestion-view">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="position-relative" (clickOutside)="showSuggestionDrpDwn = false">
+                <!-- search field -->
+                <div class="component-holder" (mouseenter)="hoverOnFilterHolder = true" (mouseleave)="hoverOnFilterHolder = false">
+                    <div class="search-icon" *ngIf="!appliedFilters || appliedFilters.length <= 0">
+                        <img src="assets/layouts/img/icon_search.png" alt="search icon" />
+                    </div>
+
+                    <!-- more selected filter -->
+                    <div class="moreSelectedFilter" *ngIf="appliedFilters.length > 1 && !isFullFilterList && suggestionType == 2" (click)="showSelectedFilter(true)">
+                        <span class="title right">More {{appliedFilters.length-1}} filters</span>
+                        <!-- close icon -->
+                        <svg class="arrow-more" width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.84073 5.6431L1.94026 1.14762C1.72523 0.950794 1.37684 0.950794 1.16127 1.14762C0.946243 1.34445 0.946243 1.66414 1.16127 1.86097L5.67305 5.99975L1.16182 10.1385C0.946787 10.3354 0.946787 10.6551 1.16182 10.8524C1.37685 11.0492 1.72577 11.0492 1.9408 10.8524L6.84127 6.35694C7.053 6.16215 7.053 5.83743 6.84073 5.6431Z" fill="#494949" stroke="#494949" stroke-width="0.5"/>
+                        </svg>
+                    </div>
+                    <!-- less selected filter -->
+                    <div class="moreSelectedFilter" *ngIf="appliedFilters.length > 1 && isFullFilterList && suggestionType == 2" (click)="showSelectedFilter(false)">
+                        <!-- close icon -->
+                        <svg class="arrow-less" width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.15927 6.3569L6.05974 10.8524C6.27477 11.0492 6.62315 11.0492 6.83873 10.8524C7.05376 10.6556 7.05376 10.3359 6.83873 10.139L2.32695 6.00025L6.83818 1.86147C7.05321 1.66464 7.05321 1.34494 6.83818 1.14762C6.62315 0.950794 6.27423 0.950794 6.0592 1.14762L1.15873 5.64306C0.947001 5.83785 0.947001 6.16257 1.15927 6.3569Z" fill="#00B7AB" stroke="#00B7AB" stroke-width="0.5"/>
+                        </svg>
+                        <span class="title left">{{"HIDE_FILTERS" | translate }}</span>
+                    </div>
+                    <!-- filter -->
+                    <div class="filter-block" *ngFor="let filter of appliedFilters; let index = index;" [ngClass]="{'d-none': suggestionType == 1 || suggestionType == 3}">
+                        <div class="selected-filters" *ngIf="index == 0 && !isFullFilterList">
+                            <!-- filter for appointment -->
+                            <div class="ellipsiss" title="{{filter.textToDisplay}}"><strong>{{filter.filterTitle}}:</strong> {{filter.textToDisplay}}</div>
+                            <!-- close icon -->
+                            <!-- <img class="close-icon" src="assets/layouts/img/greenCross-icon.png" alt="cross icon" (click)="removeFilter(filter)" /> -->
+
+                            <svg width="10" class="close-icon" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" (click)="removeFilter(filter)">
+                                <g clip-path="url(#clip0)">
+                                <path d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z" fill="#00B7AB"/>
+                                </g>
+                                <defs>
+                                <clipPath id="clip0">
+                                <rect width="10" height="10" fill="white"/>
+                                </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- FullFilterList -->
+                    <div class="filter-block" *ngFor="let filter of appliedFilters" [ngClass]="{'d-none': suggestionType == 1 || suggestionType == 3}">
+                        <div class="selected-filters" *ngIf="isFullFilterList">
+                            <!-- filter for appointment -->
+                            <div class="ellipsiss" title="{{filter.textToDisplay}}"><strong>{{filter.filterTitle}}:</strong> {{filter.textToDisplay}}</div>
+                            <!-- close icon -->
+                            <!-- <img class="close-icon" src="assets/layouts/img/greenCross-icon.png" alt="cross icon" (click)="removeFilter(filter)" /> -->
+                            <svg width="10" class="close-icon" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" (click)="removeFilter(filter)">
+                                <g clip-path="url(#clip0)">
+                                <path d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z" fill="#00B7AB"/>
+                                </g>
+                                <defs>
+                                <clipPath id="clip0">
+                                <rect width="10" height="10" fill="white"/>
+                                </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="selected-filters" *ngFor="let filter of appliedFilters" [ngClass]="{'d-none': suggestionType == 2}">
+                        <!-- filter for appointment -->
+                        <div class="ellipsiss" title="{{filter.textToDisplay}}"><strong>{{filter.filterTitle}}:</strong> {{filter.textToDisplay}}</div>
+                        <!-- close icon -->
+                        <!-- <img class="close-icon" src="assets/layouts/img/greenCross-icon.png" alt="cross icon" (click)="removeFilter(filter)" /> -->
+                        <svg width="10" class="close-icon" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" (click)="removeFilter(filter)">
+                            <g clip-path="url(#clip0)">
+                            <path d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z" fill="#00B7AB"/>
+                            </g>
+                            <defs>
+                            <clipPath id="clip0">
+                            <rect width="10" height="10" fill="white"/>
+                            </clipPath>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <!-- search filter -->
+                    <div class="search-field" *ngIf="hoverOnFilterHolder || snippet || showSuggestionDrpDwn">
+                        <input class="form-control search-box someinput" type="text" placeholder="{{'SEARCH_AND_FILTER' | translate}}..." [(ngModel)]="snippet" (ngModelChange)="getSuggestions(snippet)" (click)="showSuggestionDrpDwn = true; setPredefineFilter()" />
+
+                        <!-- suggestion dropdown-menu -->
+                        <div class="dropdown-menu" *ngIf="areSuggestionsAvailable && areSuggestionsAvailable.length > 0 && (snippet || showSuggestionDrpDwn)" [ngClass]="{'openDrpDwn': showSuggestionDrpDwn}">
+                            <div class="suggestion-block" *ngFor="let dataObj of suggestionDataAvailable; let first = first" [ngClass]="{'border-top': !first && dataObj.suggestions && dataObj.suggestions.length > 0, 'd-none': !dataObj.suggestions || dataObj.suggestions.length <= 0}">
+                                <ul class="suggestion-list list-unstyled m-0" *ngIf="dataObj.suggestions && dataObj.suggestions.length > 0">
+                                    <li class="search-list">
+                                        <div class="row table-row m-0">
+                                            <div class="fixed-with-block wide-30">
+                                                <img class="full-wide" src="{{dataObj.icon}}" alt="{{dataObj.title}}" />
+                                            </div>
+                                            <div class="title-content pleft-10">
+                                                <span>{{dataObj.title}}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="search-list pleft-30" *ngFor="let data of dataObj.suggestions | slice:0:5" (click)="applyFilterBasedOnSuggestion(dataObj.code, data)">
+                                        <a href="javascript:void(0)" class="grey-anchor ellipsiss pleft-10">
+                                            <span *ngIf="dataObj.code == 'Automations'" title="{{data.QuizTitle}}" ngxTextHighlight [content]="data.QuizTitle" [searchTerm]="snippet" [caseSensitive]="false"></span>
+                                            <span *ngIf="dataObj.code == 'AutomationTypes'" ngxTextHighlight [content]="data.AutomationTypeName" [searchTerm]="snippet" [caseSensitive]="false"></span>
+                                            <span *ngIf="dataObj.code == 'Tag'" ngxTextHighlight [content]="data.TagName" [searchTerm]="snippet" [caseSensitive]="false"></span>
+                                            <span *ngIf="dataObj.code == 'Office'" ngxTextHighlight [content]="data.Office" [searchTerm]="snippet" [caseSensitive]="false"></span>
+                                            <span *ngIf="dataObj.code == 'Date'" ngxTextHighlight [content]="data.Date" [searchTerm]="snippet" [caseSensitive]="false"></span>
+                                            <span *ngIf="dataObj.code == 'Usage'" ngxTextHighlight [content]="data.UsageTitle" [searchTerm]="snippet" [caseSensitive]="false"></span>
+                                        </a>
+                                    </li>
+                                    <li class="search-list" *ngIf="(dataObj.suggestions.length - 5) > 0 && dataObj.code == 'Automations'" (click)="applyFilterBasedOnSuggestion('qSearch', snippet)">
+                                        <a href="javascript:void(0)" class="mleft-40 fw-bold">
+                                            {{dataObj.suggestions.length - 5}} {{"MORE" | translate}} {{snippet}} >
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+.no-active-template-heading{
+    font-size: 30px;
+}
+
+.ember-body{
+    border: 1px solid #E0E0E0;
+    margin: 0 40px;
+    max-width: 1520px;
+}
+
+.mtop-21{
+    margin-top: 21px !important;
+}
+
+.w-linked{
+    width: 492px !important;
+}
+
+.w-temp-body{
+    width: 785px !important;
+}
+
+.reminder-block{
+    max-width: 1680px;
+    margin: auto;
+}

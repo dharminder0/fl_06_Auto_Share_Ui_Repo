@@ -1,0 +1,46 @@
+<div class="popup-overlay modal modal-small" *ngIf="isOpenPopup && !showExtVariablePopup" role="dialog" data-backdrop="static" data-keyword="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{"Lbl_Variables" | translate}}</h5>
+                <div type="button" class="close">
+                    <svg class="cross-btn" (click)="closeVariablePopup()" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z" fill="#494949"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <div class="d-flex">
+                    <div class="left-sec d-inline-block">
+                        <div class="var-cat ptop-10 pbottom-10" *ngFor="let category of variableCategories">
+                            <div class="cat-title pleft-10 pointer" [ngClass]="{'selected': category.categoryCode == selectedVariableCategoryCode}" (click)="showVariableForSelectedCategory(category)">{{category.categoryTitle}}</div>
+                        </div>
+                    </div>
+                    <div class="right-sec d-inline-block h-100">
+                        <div class="d-inline-block var-tag w-auto mleft-10 mtop-10 pointer" [ngClass]="{'selected-var-tag': insertActiveClass(variable)}" *ngFor="let variable of selectedVaribles">
+                            <div class="var-title p-all-2 pleft-10 pright-10" (click)="selectFormulaOfVariable(variable)">{{variable.title}}</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="modal-footer">
+        
+                    <button type="button" class="btn btn-primary" (click)="insertFormula()">{{'Lbl_Apply' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Popup for Variables -->
+<div class="modal" *ngIf="isOpenPopup && showExtVariablePopup">
+    <div class="modal-dialog w-50 h-75">
+        <div class="modal-content w-100 h-100">
+            <!-- Modal body -->
+            <div class="modal-body p-0">
+                <iframe class="iframe-div" [src]="extVariablePopupUrl | safeUrl"></iframe>
+                <div *ngIf="isLoaderEnable" class="default-loader" [ngStyle]="{'background-color': userInfo.PrimaryBrandingColor}"></div>
+            </div>
+        </div>
+    </div>
+</div>

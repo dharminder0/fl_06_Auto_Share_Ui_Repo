@@ -1,0 +1,309 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Table 
+*/
+.table{
+  thead{
+    tr{
+      th{
+        font-size: $font-size-medium;
+        font-weight: normal;
+        padding: 12px 20px;
+        vertical-align: middle;  
+        border-color: $base-color-3;
+      }
+    }
+  }
+  tbody{
+    tr{
+      td{
+        padding: 12px 20px;
+        vertical-align: middle;  
+        border-color: $base-color-3;
+      }
+    }
+  }
+  &.data-tabe{
+    thead{
+      tr{
+        th{          
+          &:first-child{
+            padding-left: 42px;
+          }
+          &:last-child{
+            padding-right: 42px;
+          }
+        }
+      }
+    }
+    tbody{
+      tr{
+        td{
+          &:first-child{
+            padding-left: 42px;
+          }
+          &:last-child{
+            padding-right: 42px;
+          }
+          .xs-info{
+            @include inline-flex();    
+            @include align-item();
+            p{
+              margin-bottom: 0;  
+            }
+            .txt{
+              span{
+                display: block;
+                opacity: 0.8;
+                margin-top: 6px;
+              }            
+              a{
+                color:#000;
+                position: relative;
+                white-space: nowrap;
+                &:before{
+                  height: 1px;
+                  width: 100%;
+                  left: 0;
+                  bottom: -2px;
+                  content:"";
+                  position: absolute;
+                  background: $base-bkg-5;
+                }
+                &:hover{
+                  color: $primary-color;
+                  &:before{
+                    background: $primary-bkg;
+                  }
+                }
+              } 
+            }
+          }
+          .label-info{
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+  &.hover{
+    tr{
+      &:hover{
+        background: $base-bkg-8;
+      }
+    }
+  }
+  &.days-table{    
+    thead{
+      tr{
+        th{  
+          text-align: center;
+          font-size: $font-size-small;
+          border: 1px solid $base-color-3 !important;      
+        }
+      }
+    }  
+    tbody{
+      tr{
+        td{          
+          height: 95px;
+          text-align: center;
+          vertical-align: top;
+          border: 1px solid $base-color-3;  
+          .closed{
+            opacity: 0.5;    
+          }    
+        }
+      }
+    }  
+  }
+}
+
+.table-container{
+  width: 100%;
+  overflow-x: auto; 
+}
+
+.box-layout{
+  border: 2px solid $base-color-3;
+  @include border-radius(0 0 4px 4px);
+  h2{
+    margin: 0;
+    color: $base-bkg-1;
+    padding: 12px 26px;
+    font-weight: normal;
+    background: $regular-bkg;
+  }  
+}
+
+table.data-tabe odd-even{
+  margin-bottom: 0;
+  thead{
+    tr{
+      th{          
+        &:first-child{
+          padding-left: 26px;
+        }
+        &:last-child{
+          padding-right: 26px;
+        }
+      }
+    }
+  }
+  tbody{
+    tr{
+      td{
+        border-color: $base-color-1;
+        &:first-child{
+          padding-left: 26px;
+        }
+        &:last-child{
+          padding-right: 26px;
+        }
+      }
+    &:nth-child(even){
+      td{
+        background: $base-bkg-2;
+      }
+    }
+    }
+  }
+}
+
+table{
+  &.point-table{
+    margin: 0;
+    tbody{
+      tr{
+        td{
+          padding: 30px 20px;
+          position: relative;
+          text-align: center;
+          &:before{
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            height: 1px;
+            content: "";
+            margin: auto;
+            position: absolute;
+            background: $base-bkg-11;
+          }          
+          span{
+            display: block;
+            &.top{
+              font-weight: bold;
+            }
+            &.circle{
+              width: 12px;
+              height: 12px;
+              margin: 10px auto;
+              position: relative;
+              z-index: 2;
+              background: $regular-bkg;
+              @include border-radius(100px);
+              border: 2px solid $base-color-1;
+              @include box-shadow($secondary-shadow);
+              &.view{
+                background: $primary-bkg;
+              }
+              &.finished{
+                background: $primary-bkg;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.score-table{
+  width: 100%;  
+  thead{
+    tr{
+      th{
+        padding: 10px 12px;
+      }
+    }
+  }
+  tbody{
+    tr{
+      td{
+        padding: 10px 12px;
+        border: 1px solid $base-color-9;
+        &:first-child{
+          border-right: 0;
+        }
+        &:last-child{
+          width: 260px;
+          border-left: 0;
+        }
+      } 
+      &:hover{
+        td{
+          background: $base-bkg-6;
+        }
+      }
+    }
+    
+  }
+}
+
+table.logic-table{
+  margin-bottom: 0;
+  thead{
+    tr{
+      th{
+        font-size: $font-size-regular;
+        font-weight: 600;
+        border: 1px solid $base-color-3;
+        border-bottom: 0;
+      }
+    }
+  }
+  tbody{
+    tr{
+      &:nth-child(odd) {
+        td{
+          background: $base-bkg-2;
+        }        
+      }
+      td{
+        vertical-align: top;
+        border: 1px solid $base-color-3;
+        white-space: nowrap;
+      }
+      .alpha{
+        padding: 0;
+        table{       
+          margin-bottom: 0;     
+          background: transparent;
+          tr{
+            td{
+              border: 0;
+              padding: 12px 20px;
+              background: transparent;
+              border-bottom: 1px solid $base-color-3;            
+            }
+            &:last-child{
+              td{
+                border-bottom: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .dropdown{
+    .dropdown-toggle{
+      color: $regular-color;
+      display: block;
+    }
+  }
+}
+
+

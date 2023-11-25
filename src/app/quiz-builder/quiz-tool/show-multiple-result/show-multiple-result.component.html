@@ -1,0 +1,204 @@
+<form [formGroup]="multipleResultForm" [ngClass]="{'pad-edit-bl':isOpenBranchingLogicSide}">
+    <!-- <div class="ins-body">
+             <div class="flex-memory">
+      <label class="right app-data" app-data="data-add">
+            <a href="javascript:void(0);" class="btn blue line" (click)="dynamicTemplateSettings()">
+              <i class="zmdi zmdi-settings"></i>{{"RESULT_SETTINGS" | translate }}</a>
+          </label>
+        </div> 
+      </div> -->
+
+    <div class="app-sidebar w-50" id="data-add">
+        <div #resultSettingsTemplate></div>
+    </div>
+    <div class="ins-body t3 fixed-fr-toolbar">
+        <div class="result-gutter-rs">
+            <!-- <label class="right app-data multiset" app-data="data-add">
+        <a href="javascript:void(0);" class="btn blue line" (click)="dynamicTemplateSettings()">
+          <i class="zmdi zmdi-settings"></i>{{ "MULTIPLE_RESULT_SETTINGS" | translate }}</a>
+      </label> -->
+            <!-- <input
+        [id]="quizId"
+        ccFocus
+        autocomplete="off"
+        maxlength="200"
+        class="form-control top-result"
+        type="text"
+        formControlName="Title"
+        [ngStyle]="{'background': brandingColor.BackgroundColor,'color': brandingColor.FontColor,'font-family': brandingColor.FontType}"
+      /> -->
+      <div class="default-header">
+        <i class="fa fa-circle dot-icon" style="color: #FB403E;" aria-hidden="true"></i>
+        <i class="fa fa-circle dot-icon" style="color: #FEC414;" aria-hidden="true"></i>
+        <i class="fa fa-circle dot-icon" style="color: #04C95A;" aria-hidden="true"></i>
+    </div>
+      <div class="inner" [ngClass]="{'pad-div':isOpenBranchingLogicSide}" [ngStyle]="{'background': brandingColor.BackgroundColor}">
+            <div ccFocus [id]="quizId" [froalaEditor]="options" autocomplete="off" [ngStyle]="{'background': brandingColor.BackgroundColor,'color': brandingColor.FontColor,'font-family': brandingColor.FontType}" formControlName='Title' class="form-control fr-prop top-result inner-div"></div>
+
+            <div class="form-actions" [ngStyle]="{'background': brandingColor.BackgroundColor}">
+                <div class="set-2">
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="javascript:void(0);" [outsideClick]="true" popoverTitle="{{ 'SIZE' | translate }}" [popover]="settingTooltip" placement="bottom" [isOpen]="isOpenSizeTooltip" (onShown)="onSizeTooltipShown()" (onHidden)="onSizeTooltipHidden()">
+                                <i class="zmdi zmdi-format-color-text"></i>{{ "SIZE" | translate }}</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" [outsideClick]="true" popoverTitle="{{ 'COLOURS' | translate }}" [popover]="colorTooltip" placement="bottom" [isOpen]="isOpenColorTooltip" (onShown)="onColorTooltipShown()" (onHidden)="onColorTooltipHidden()">
+                                <i class="zmdi zmdi-brush"></i>{{ "COLOURS" | translate }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="result-detail-container">
+                <div class="result-data" *ngFor="let res of resultData; let i = index">
+                    <div class="is-result-row">
+                        <div [ngStyle]="{'background': brandingColor.BackgroundColor,'color': brandingColor.FontColor,'font-family': brandingColor.FontType}" class="progress-bar-title title-value">
+                            {{ progressBarValues[i] }}%
+                        </div>
+                        <!-- <div class="col-md-6 progress internal" style="width:50%">
+                    <progressbar class="progress-bar" [value]="value" style="width:50%;" [style.background]="'aqua'"></progressbar>
+                  </div> -->
+                        <div class="progress" *ngIf="radioValue == false">
+                            <progressbar class="progress-bar" [style.width]="progressBarValues[i] + '%'" [style.background]="graphColor" [value]="value" max="100"></progressbar>
+                        </div>
+                        <div class="progress" *ngIf="radioValue == true">
+                            <progressbar class="result-progress-bar" [style.width]="progressBarValues[i] * 2 + '%'" [style.background]="graphColor" [value]="value" max="100"></progressbar>
+                        </div>
+                        <div [ngStyle]="{'background': brandingColor.BackgroundColor,'color': brandingColor.FontColor,'font-family': brandingColor.FontType}" class="result-title title-Res" [innerHtml]="res.Title | safeHtml">
+
+                        </div>
+                    </div>
+                    <div class="side-btn">
+                        <input ccFocus id="more-details-btn" formControlName="SideButtonText" placeholder="{{ 'MORE_DETAILS' | translate }} " [style.background]="btnColor" [ngStyle]="{'font-family': brandingColor.FontType}" [style.color]="btnFontColor">
+
+                        <!-- <div ccFocus id="more-details-btn" [froalaEditor]="options"
+            [style.background]="btnColor"
+            [style.color]="btnFontColor"
+              formControlName='SideButtonText' class="details-button fr-prop"></div> -->
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="form-action-group beta">
+    <a href="javascript:void(0);" (click)="onPreviewQuiz(publishTemplate)" class="btn grey line" data-toggle="modal"
+      data-target="#preview-modal">
+      <span>
+        <i class="zmdi zmdi-eye plan"></i>{{ "PREVIEW" | translate }}</span>
+    </a>
+    <a href="javascript:void(0);" (click)="dynamicTemplateShare()" app-data="data-share" class="app-data btn grey line">
+      <span>
+        <i class="zmdi zmdi-share plan"></i>{{ "SHARE" | translate }}</span>
+    </a>
+    <a href="javascript:void(0);" class="btn grey line" (click)="onPublished()" data-toggle="modal"
+      data-target="#publish-modal">
+      <span>
+        <i class="zmdi zmdi-flash plan"></i>{{ "PUBLISH" | translate }}</span>
+    </a>
+    <button href="javascript:void(0);" (click)="saveResult()" class="btn grey line" type="button"
+      [disabled]="multipleResultForm.invalid">
+      <span>
+        <i class="zmdi zmdi-floppy plan"></i>{{ "SAVE" | translate }}</span>
+    </button>
+  </div> -->
+
+    <ng-template #settingTooltip>
+        <div class="builder-action-content">
+            <i class="fa fa-close builder-action-close pointer popover-icon" (click)="isOpenSizeTooltip = !isOpenSizeTooltip"></i>
+            <!-- <h4>
+        <span>{{"SIZE" | translate }}</span>
+        <i class="fa fa-close builder-action-close pointer" (click)="isOpenSizeTooltip = !isOpenSizeTooltip"></i>
+      </h4> -->
+            <div class="builder-action-properties">
+                <div class="builder-action-property">
+                    <div class="builder-property-group-outer">
+                        <!-- <div class="builder-property-group">
+              <div class="form-box">
+                <input type="text" class="form-control range-input-val" [(ngModel)]="nextButtonTxtSize" [ngModelOptions]="{standalone: true}" (ngModelChange)="onNextButtonTxtSizeChange($event)">
+                <div class="range-suffix">{{"PX" | translate }}</div>
+              </div>
+              <span>{{"FONT_SIZE" | translate }}</span>
+              <div class="range-container">
+                <input type="range" min="1" max="72" [(ngModel)]="nextButtonTxtSize" (ngModelChange)="onNextButtonTxtSizeChange($event)"
+                  class="slider" [ngModelOptions]="{standalone: true}">
+              </div>
+            </div> -->
+                        <!-- <label class="app-radio bold"> -->
+                        <input type="checkbox" formControlName="IsFullWidthEnable" /> {{ "USE_FULL_WIDTH_FOR_MOST_POPULAR_RESULT" | translate }}
+                        <span></span>
+                        <!-- </label> -->
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn builder-action-save" (click)="saveProgressBarSize()">
+        <i class="fa fa-save fa-fw"></i>{{ "SAVE" | translate }}
+      </button>
+            <div class="clearfix"></div>
+        </div>
+    </ng-template>
+    <ng-template #colorTooltip>
+        <div class="builder-action-content" data-position="top">
+            <i class="fa fa-close builder-action-close pointer popover-icon" (click)="isOpenColorTooltip = !isOpenColorTooltip"></i>
+            <!-- <h4>
+        <span>{{"COLOR" | translate }}</span>
+      </h4> -->
+            <div class="builder-action-properties">
+                <div class="builder-action-property" data-property="btnColor">
+                    <div class="builder-property-group-outer">
+                        <div class="builder-property-group colorpicker-element" data-property-type="color">
+                            <div class="builder-styles-color" data-property="btnColor" style="background: #62afe0"></div>
+                            <span>{{ "BAR_GRAPH_COLOUR" | translate }}</span><br/>
+                            <!-- <input formControlName="GraphColor" class="color-box" [(colorPicker)]="nextButtonColor" [style.background]="nextButtonColor" [cpCancelButton]="false" (colorPickerChange)="onNextButtonColorChange($event)"
+                [cpSaveClickOutside]="true" /> -->
+                            <input formControlName="GraphColor" [(ngModel)]="graphColor" [(colorPicker)]="graphColor" class="color-box" [style.background]="graphColor" [cpCancelButton]="false" [cpSaveClickOutside]="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="builder-action-property" data-property="btnColor">
+                    <div class="builder-property-group-outer">
+                        <div class="builder-property-group colorpicker-element" data-property-type="color">
+                            <div class="builder-styles-color" data-property="btnColor" style="background: #62afe0"></div>
+                            <span>{{ "BUTTON_COLOR" | translate }}</span><br/>
+                            <input formControlName="ButtonColor" [(ngModel)]="btnColor" [(colorPicker)]="btnColor" [style.background]="btnColor" [cpCancelButton]="false" [cpSaveClickOutside]="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="builder-action-property" data-property="fontColor">
+                    <div class="builder-property-group-outer">
+                        <div class="builder-property-group colorpicker-element" data-property-type="color">
+                            <div class="builder-styles-color" data-property="fontColor" style="background: #ffffff"></div>
+                            <span>{{ "FONT_COLOUR" | translate }}</span><br/>
+                            <input formControlName="ButtonFontColor" [(ngModel)]="btnFontColor" [(colorPicker)]="btnFontColor" [style.background]="btnFontColor" [cpCancelButton]="false" [cpSaveClickOutside]="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <button type="button" class="btn builder-action-save color-save-btn" (click)="saveColors()">
+        <i class="fa fa-save fa-fw"></i>{{ "SAVE" | translate }}
+      </button>
+            <div class="clearfix"></div>
+        </div>
+    </ng-template>
+    <ng-template #publishTemplate>
+        <div class="modal-body text-center">
+            <p>
+                {{ "THIS_QUIZ_HAS_UNPUBLISHED_CHANGES_AND_WILL_NEED_TO_BE_PUBLISHED_BEFORE_YOU_CAN_SHARE_THE_QUIZ." | translate }}
+            </p>
+            <br />
+            <button type="button" class="btn blue" (click)="confirm()">
+        {{ "PUBLISH" | translate }}
+      </button>
+            <button type="button" class="btn btn-default" (click)="decline()">
+        {{ "CANCEL" | translate }}
+      </button>
+        </div>
+    </ng-template>
+
+    <div class="app-sidebar-overlay"></div>
+    <div class="app-sidebar" id="data-share">
+        <div #shareQuizTemplate></div>
+    </div>
+</form>

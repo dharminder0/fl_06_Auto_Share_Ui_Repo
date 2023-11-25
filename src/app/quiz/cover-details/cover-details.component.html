@@ -1,0 +1,53 @@
+<div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !leftSlide, 'left-quiz-silder':isMobileView && leftSlide && !isStartQuiz,'right-quiz-silder':isMobileView && isStartQuiz}">
+    <div class="container-single page fixed-fr-toolbar" #previewContainer>
+        <div class="ins no cover-height" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'
+    }" [ngClass]="{'content-box': !isMobileView}">
+            <div *ngFor="let reOrder of coverElementReorder">
+                <div class="popup-container-attempt" [ngClass]="{'popup-container': addClass}">
+                    <figure *ngIf="coverData.QuizCoverDetails.ShowQuizCoverImage && reOrder.key == 'media'" class="media-block">
+                        <img class="img-align-center w-100" *ngIf="imageORvideo === 'image'" [src]="coverImage" alt="">
+                        <ng-container *ngIf="imageORvideo === 'video' && coverData.QuizCoverDetails.PublicIdForQuizCover">
+                            <cl-video id="autoPlayVideo" controls="true" public-id={{coverData.QuizCoverDetails.PublicIdForQuizCover}} secure="true" class="my-videos" [attr.poster]='applyposter()'>
+                                <cl-transformation gravity="north" y="20"></cl-transformation>
+                            </cl-video>
+                        </ng-container>
+                        <img class="img-align-center w-100" *ngIf="!this.coverData.QuizCoverDetails.QuizCoverImage" [src]="defaultImage" alt="">
+                    </figure>
+                    <div *ngIf="coverData.QuizCoverDetails.ShowQuizCoverTitle && reOrder.key == 'title'" class="next-line-title cover-title correct-incorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.FontColor}"
+                        [froalaEditor]="options" contenteditable="false" [ngModel]="coverData.QuizCoverDetails.QuizCoverTitle"></div>
+                    <div *ngIf="coverData.QuizCoverDetails.ShowDescription && reOrder.key == 'description'" class="next-line-string" [froalaEditor]="options" contenteditable="false" [ngModel]="coverData.QuizCoverDetails.QuizDescription"></div>
+                    <div *ngIf="!isMobileView && coverData.QuizCoverDetails.EnableNextButton && reOrder.key == 'button'" class="text-center next-btn-container mbottom-10">
+                        <a class="btn take-personality-btn ellipsiss" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+                            data-dismiss="modal" title="{{coverData.QuizCoverDetails.QuizStartButtonText}}" [innerHTML]="coverData.QuizCoverDetails.QuizStartButtonText | safeHtml" (click)="startQuiz()"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="isMobileView && logoImage" [style.background]="logoBackgroundColor" class="mobile-logo">
+                <div>
+                    <cl-image public-id={{logoImage}}>
+                        <cl-transformation width="100" height="60" crop="lpad" fetch-format="auto"></cl-transformation>
+                    </cl-image>
+                </div>
+            </div>
+
+        </div>
+
+        <div *ngIf="isMobileView && coverData.QuizCoverDetails.EnableNextButton" class="text-center next-btn-container">
+            <div *ngIf="buttonShow">
+                <a class="btn take-personality-btn ellipsiss mobile-next-btn" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+                data-dismiss="modal" title="{{coverData.QuizCoverDetails.QuizStartButtonText}}" [innerHTML]="coverData.QuizCoverDetails.QuizStartButtonText | safeHtml" (click)="startQuiz()"></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="isMobileView && coverData.QuizCoverDetails.EnableNextButton" class="mobile-view-logo-body" style="bottom: 0;width: 100%;padding: 0 20px;">
+    <div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !leftSlide, 'left-quiz-silder':isMobileView && leftSlide && !isStartQuiz,'right-quiz-silder':isMobileView && isStartQuiz}">
+        <div *ngIf="isMobileView && !buttonShow" class="text-center next-btn-container">
+            <a class="btn take-personality-btn ellipsiss" style="width: 100%;border-radius: 0px;" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+                data-dismiss="modal" title="{{coverData.QuizCoverDetails.QuizStartButtonText}}" [innerHTML]="coverData.QuizCoverDetails.QuizStartButtonText | safeHtml" (click)="startQuiz()"></a>
+        </div>
+    </div>
+</div>

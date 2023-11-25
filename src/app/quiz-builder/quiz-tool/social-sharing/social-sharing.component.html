@@ -1,0 +1,78 @@
+<div class="ins-body attach-container">
+  <div class="app-head alpha top-image-container social-share-gutter">
+    <h1 class="title-9">{{"SOCIAL_SHARE_SETTINGS" | translate}}
+      <span>{{"CUSTOMIZE_THE_WAY_YOUR_QUIZ_IS_SHARED_ACROSS_ALL_SOCIAL_MEDIA_PLATFORMS." | translate }}</span>
+    </h1>
+  </div>
+  <form [formGroup]="socialShareForm" (submit)='onSocialShare()' class="inner social-sharing social-share-gutter">
+    <p class="title">{{"HIDE_SOCIAL_SHARE_BUTTONS_ON_RESULTS" | translate }}</p>
+    <label class="app-checkbox margin-bottom-30">{{"IF_YOU_WISH_TO_TURN_THE_SOCIAL_SHARE_BUTTONS_OFF_FOR_YOUR_QUIZ,_CHECK_THIS_BOX" | translate}}.
+      <input type="checkbox" formControlName="HideSocialShareButtons" [value]="true" name="1" [checked]="socialShareData?.HideSocialShareButtons">
+      <span></span>
+    </label>
+    <p class="title">{{"SHOW_SOCIAL_SHARE_BUTTONS_ON_RESULTS" | translate }}</p>
+    <div class="app-checkbox-list">
+      <label class="app-checkbox">{{"FACEBOOK" | translate}}
+        <input type="checkbox" formControlName="EnableFacebookShare" [value]="true" name="1" [checked]="socialShareData?.EnableFacebookShare">
+        <span [ngStyle]="{'cursor':socialShareForm.controls['EnableFacebookShare'].enabled === true ? 'pointer' : 'not-allowed' }"></span>
+      </label>
+      <label class="app-checkbox">{{"TWITTER" | translate}}
+        <input type="checkbox" formControlName="EnableTwitterShare" [value]="true" name="1" [checked]="socialShareData?.EnableTwitterShare">
+        <span [ngStyle]="{'cursor':socialShareForm.controls['EnableTwitterShare'].enabled === true ? 'pointer' : 'not-allowed' }"></span>
+      </label>
+      <label class="app-checkbox">{{"LINKEDIN" | translate}}
+        <input type="checkbox" formControlName="EnableLinkedinShare" [value]="true" name="1" [checked]="socialShareData?.EnableLinkedinShare">
+        <span [ngStyle]="{'cursor':socialShareForm.controls['EnableLinkedinShare'].enabled === true ? 'pointer' : 'not-allowed' }"></span>
+      </label>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn blue">{{"SAVE" | translate }}</button>
+    </div>
+  </form>
+</div>
+<div class="form-action-group beta">
+  <a href="javascript:void(0);" (click)='onPreviewQuiz(publishTemplate)' class="btn grey line" data-toggle="modal" data-target="#preview-modal">
+    <span>
+      <i class="zmdi zmdi-eye plan"></i>{{"PREVIEW" | translate }}</span>
+  </a>
+  <a href="javascript:void(0);" class="app-data btn grey line" app-data="data-share" (click)='dynamicTemplateShare()'>
+    <span>
+      <i class="zmdi zmdi-share plan"></i>{{"SHARE" | translate }}</span>
+  </a>
+  <a href="javascript:void(0);" (click)='onPublished()' class="btn grey line" data-toggle="modal" data-target="#publish-modal">
+    <span>
+      <i class="zmdi zmdi-flash plan"></i>{{"PUBLISH" | translate }}</span>
+  </a>
+  <a href="javascript:void(0);" class="btn grey line" (click)="onSocialShare()">
+    <span>
+      <i class="zmdi zmdi-floppy plan"></i>{{"SAVE" | translate }}</span>
+  </a>
+</div>
+
+<ng-template #publishTemplate>
+  <div class="modal-body text-center">
+    <p>{{"THIS_QUIZ_HAS_UNPUBLISHED_CHANGES_AND_WILL_NEED_TO_BE_PUBLISHED_BEFORE_YOU_CAN_DUPLICATE_THE_QUIZ." | translate }}</p>
+    <br>
+    <button type="button" class="btn blue" (click)="publish()">{{"PUBLISH" | translate }}</button>
+    <button type="button" class="btn btn-default" (click)="cancel()">{{"CANCEL" | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #shareTemplate>
+  <div class="modal-body text-center">
+    <h2>{{"DIRECT_URL_TO_YOUR_QUIZ" | translate }}</h2>
+    <p>{{"SHAREABLE_URL_TO_QUIZ" | translate }}</p>
+    <br>
+    <p>{{"THE_URL_BELOW_CAN_BE_USED_TO_SHARE_YOUR_QUIZ_DIRECTLY." | translate }}</p>
+    <br>
+    <input type="text" [value]='quizURL'>
+    <br>
+    <button class="btn blue" type="button" ngxClipboard [cbContent]="quizURL">
+      {{"COPY_CODE_TO_CLIPBOARD" | translate}}</button>
+  </div>
+</ng-template>
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar" id="data-share">
+  <div #shareQuizTemplate></div>
+</div>

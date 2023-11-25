@@ -1,0 +1,100 @@
+<form [formGroup]='templateForm' class="horizontal-form fixed-fr-toolbar">
+    <div *ngIf="isEmailTemplate" class="ins">
+        <h2 class="email_template">{{"EMAIL_TEMPLATE" | translate }}</h2>
+        <div class="form-group">
+            <label class="control-label">{{"SUBJECT" | translate }} :</label>
+            <div class="fl-rgt" (click)="isProcess = true;addQuizNameText()">
+                <i class="zmdi zmdi-plus"></i> {{"ADD_QUIZ_NAME" | translate }}</div>
+            <input type="text" id='subject' [formControl]="templateForm.controls['ResultTemplateSubject']" name="text" class="form-control email-input" (click)="isProcess = true">
+        </div>
+        <div class="form-group beta">
+            <div class="fl-rgt" (click)="isProcess = true;addImageAttachment(shareTemplate)">{{"ADD_INLINE_IMAGE" | translate}}</div>
+            <!-- <small class="fl-rgt" cloud
+        (CU_whenImageInsertedUsingUploadWidget)="whenImageInsertedUsingUploadWidget($event,shareTemplate)"
+        [CM_accepted_formats]="CM_accepted_formats"
+        (CM_whenImageInsertedUsingMediaWidget)="whenImageInsertedUsingMediaWidget($event,shareTemplate)"
+        [C_tags]="C_tags" >{{"INLINE_IMAGE_ATTACHMENT" | translate}}</small> -->
+            <label class="control-label">{{"MESSAGE" | translate }} :</label>
+            <!-- <quill-editor [formControl]="templateForm.controls['ResultTemplateBody']" [modules]="defaultModules"></quill-editor> -->
+            <div id="froala-editor" class="email-body" [formControl]="templateForm.controls['ResultTemplateBody']" [froalaEditor]="options" (click)="isProcess = true">Loading...</div>
+            <app-result-multi-upload [form]="templateForm" (click)="isProcess = true"></app-result-multi-upload>
+        </div>
+    </div>
+    <hr/>
+    <div *ngIf="isSMSTemplate" class="ins">
+        <h2 class="sms_template">{{"SMS_TEMPLATE" | translate }}</h2>
+        <div class="form-group beta">
+            <div class="filterDemo" (clickOutside)="isFilterList=false">
+                <div class="filter-div">
+                    <div class="setting-icon" (click)="isProcess = true;onFilterList()">
+                        <i class="fa fa-cog" aria-hidden="true" style="margin-right: 5px;"></i>
+                        <i class="fa fa-caret-down" aria-hidden="true" *ngIf="!isFilterList"></i>
+                        <i class="fa fa-caret-up" aria-hidden="true" *ngIf="isFilterList"></i>
+                    </div>
+                </div>
+                <div *ngIf="isFilterList" class="filter-list">
+                    <!-- <div class="app-sub font-type mbottom-10 pointer" (click)="onSmsVariableSelect('Insert variable field','Insert variable field')">Insert variable field</div> -->
+                    <div class="filter-list-title font-type mbottom-10" *ngFor="let group of smsOptions">
+                        {{group.groupName}}
+                        <div class="app-sub font-type pleft-15 mtop-10 pointer" *ngFor="let option of group.options" (click)="isProcess = true;onSmsVariableSelect(option.value)">
+                            {{option.name | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="temp-box custom-text-area">
+                <div class="temp-botom text-div">
+                    <textarea id="sms-textarea" [formControl]="templateForm.controls['ResultTemplateSMSText']" class="text-sms app-sub font-type" (click)="isProcess = true"></textarea>
+                </div>
+            </div>
+            <!-- <div class="temp-box">
+        <div class="temp-top">
+          <div class="row row-info">
+            <div class="col-md-4 md-info">
+              <select id="dropdown1" class="form-control myDropdown ql-size" data-style="btn white" (change)="onSmsVariableSelect($event.target.value)">
+                <option value="">{{"ADD_VARIABLE" | translate }}</option>
+                <optgroup [label]="group.groupName" *ngFor="let group of smsOptions">
+                  <option *ngFor="let option of group.options" [value]="option.value">{{option.name | translate}}</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="temp-botom text-div">
+          <textarea id="sms-textarea" [formControl]="templateForm.controls['ResultTemplateSMSText']" class="text-sms"></textarea>
+        </div>
+      </div> -->
+        </div>
+    </div>
+    <!-- <div class="form-actions"> -->
+    <!-- <button type="button" class="btn line">{{"USE_DEFAULT_TEMPLATE" | translate }}</button> -->
+    <div *ngIf="isDefaultTemplate" class="form-actions">
+        <a href="javascript:void(0);" class="btn use-temp-btn" (click)='isProcess = true;openDefaultTemplateModal(defaultTemplate)'>
+      {{'USE_DEFAULT_TEMPLATE' | translate}}</a>
+    </div>
+    <!-- </div> -->
+</form>
+
+<ng-template #defaultTemplate>
+    <div class="modal-body text-center">
+        <p>{{"ARE_YOU_SURE_YOU_WANT_TO_USE_THE_DEFAULT_TEMPLATE_FOR_THIS_GROUP" | translate }}</p>
+        <br>
+        <button type="button" class="btn blue" (click)="confirmDefaultTemplate()">{{"YES" | translate }}</button>
+        <button type="button" class="btn btn-default" (click)="declineDefaultTemplate()">{{"NO" | translate }}</button>
+    </div>
+</ng-template>
+
+
+<ng-template #shareTemplate>
+    <div class="modal-body text-center">
+        <h2>{{"INLINE_IMAGE_URL" | translate}}</h2>
+        <p>{{"PLEASE_COPY_FOLLOWING_URL_AND_PASTE_IN_EMAIL_BODY_TO_SEND_IMAGE_AS_INLINE_IMAGE." | translate}}.</p>
+        <br>
+        <p>{{"YOU_CAN_USE_THIS_URL_IN_BOTH_EMAIL_BODY_AND_SIGNATURE_TEXT" | translate}}</p>
+        <br>
+        <input class="image-url-input" type="text" [value]='imageURL'>
+        <br>
+        <button type="button" class="btn blue" ngxClipboard [cbContent]="imageURL" (click)="declineDefaultTemplate()">Copy Image Url</button>
+        <button type=" button " class="btn btn-default " (click)="declineDefaultTemplate()">Cancel</button>
+    </div>
+</ng-template>

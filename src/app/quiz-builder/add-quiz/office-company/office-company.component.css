@@ -1,0 +1,109 @@
+:host ::ng-deep .ng-tns-c10-0.ng2-tag-input.ng2-tag-input--focused{
+    border-bottom: 2px solid #f9f9f9;
+}
+
+:host ::ng-deep .selected.highlighted{
+    background-color: #000000;
+    background-color: var(--secondary-color);
+    /* background-color: #00B7AB; */
+}
+
+:host ::ng-deep .highlighted{
+    background-color: #000000;
+    background-color: var(--secondary-color);
+    /* background-color: #00B7AB; */
+}
+
+:host ::ng-deep .ng2-tag-input__text-input{
+    background: transparent;
+}
+
+:host ::ng-deep .below{
+    z-index: 101;
+}
+
+:host ::ng-deep .temp-box{
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+:host ::ng-deep select-dropdown>div{
+    z-index: 999;
+}
+
+.childGrouping{
+    padding-left: 15px;
+  }
+
+  .app-radio input:checked ~ span {
+    border-color: #000000;
+    border-color:var(--secondary-color);
+    background: #000000;
+    background:var(--secondary-color);
+  }
+
+  .app-radio input:hover ~ span {
+    border-color: #000000;
+    border-color:var(--secondary-color);
+  }
+
+  .choose-quiz-type{
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    padding: 24px 0;
+    left: 0;
+    background: #000000;
+    background: var(--secondary-color);
+    height: 70px;
+    z-index: 1;
+    cursor: pointer;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  .app-title{
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .custom-header{
+      text-align: center;
+      margin: 200px 0 22px 0;
+  }
+
+  .company-info {
+    margin-left: 0px;
+    margin: 30px 5px 0px 5px;
+  }
+
+  .option-type{
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    color: #494949;
+  }
+
+  .seclect-option{
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    color: #494949;
+  }
+
+  .m-all{
+    margin: 0px !important;
+  }
+
+  .temp-box{
+    width: 270px !important;
+  }

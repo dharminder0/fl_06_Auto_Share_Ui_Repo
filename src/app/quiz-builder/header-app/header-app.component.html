@@ -1,0 +1,88 @@
+<!-- begin header -->
+<header class="app-header" style="display: none;">
+  <!-- begin top -->
+  <div [ngStyle]="padBottom" class="app-top padLeft">
+    <!-- begin logo -->
+    <div class="app-logo marginTop">
+      <a class="brand" [ngStyle]="style" href="javascript:void(0);">
+        <img [ngStyle]="styleImg" class="logo-image-container sizing" [src]="user.LogoUrl" alt="" />
+      </a>
+    </div>
+    <!-- end logo -->
+    <!-- begin toggler -->
+    <div class="menu-toggler"  (click)="changeBackColor()">
+      <i class="fa-line"></i>
+    </div>
+    <!-- end toggler -->
+    <!-- begin menu -->
+    <div class="top-menu">
+      <div class="dropdown">
+        <a href="javascript:void(0);" class="dropdown-toggle relative update-hover-cls" data-toggle="dropdown" data-hover="dropdown">
+          <cl-image *ngIf="user.LogoPublicId" public-id={{user.LogoPublicId}}>
+            <cl-transformation width="32" height="32" crop="thumb" radius="max" gravity="face" quality="auto"></cl-transformation>
+          </cl-image>
+          <img *ngIf="!user.LogoPublicId" [ngStyle]="sizeHeight_AT" class="img-circle img-cu stom min-image-size sizeHeight" [src]="user.Logo" alt="" wi />
+          <span  class="paddingLeft newFontFamily">
+            <span [ngStyle]="userContainer_AT" class="user-name-container">
+              {{user.FirstName}} {{user.LastName}}
+            </span>
+            <i [ngStyle]="newFontFamily_AT" class="fa fa-angle-down leftSp ace"></i>
+         </span>
+        </a>
+        <div class="dropdown-menu hold-on-click">
+          <ul class="nav">
+            <li *ngFor="let item of header.profileMenu">
+              <a class="styling color" href="{{ item.url.trim() }}">{{ item.name }}</a>
+            </li>
+            <li class="dropdown">
+              <a class="styling color" href="javascript:void(0);">{{"LANGUAGE" | translate }}
+                <i class="fa fa-angle-right"></i>
+              </a>
+              <ul class="dropdown-menu nav pull-right">
+                <li class="styling color">
+                  <a class="check-hover styling color" (click)="changeLanguage('nl-NL')" href="javascript:void(0);">{{"DUTCH" | translate }}</a>
+                  <i *ngIf="header.ActiveLanguage=='nl-NL'" class="fa fa-check check"></i>
+                </li>
+                <li >
+                  <a class="check-hover styling color" (click)="changeLanguage('en-US')" href="javascript:void(0);">{{"ENGLISH" | translate }}</a>
+                  <i *ngIf="header.ActiveLanguage=='en-US'" class="fa fa-check check"></i>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a class="styling color" href="javascript:void(0);" (click)="logOutUser()">{{ "Log Out" }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- end menu -->
+  </div>
+  <!-- begin top -->
+  <!-- end nav -->
+  <nav class="app-nav height">
+    <ul  class="nav setWidth">
+      <li class="dropdown paddingUpDown" *ngFor="let item of header.headerMenu">
+        <div class="custom-menu">  
+          <a  class="colorScheme" 
+          href="{{ item.url.trim() }}">
+          <span [ngClass]="{'decor': item.isHighlight}">{{ item.name }}</span>
+              <i *ngIf="item.subMenus && item.subMenus.length"  
+              href="javascript:void(0);" class="dropdown-toggle" 
+              [ngClass]="{'newdecor': item.isHighlight}" data-toggle="dropdown" 
+              class="fa fa-caret-down newPadding"></i>
+          </a>
+          <!-- <a  *ngIf="item.subMenus && item.subMenus.length"  href="javascript:void(0);" class="dropdown-toggle " [ngClass]="{'decor': item.isHighlight}" data-toggle="dropdown"> -->
+            <!-- <i *ngIf="item.subMenus && item.subMenus.length"  href="javascript:void(0);" class="dropdown-toggle " [ngClass]="{'decor': item.isHighlight}" data-toggle="dropdown" [ngClass]="{'newDecor': item.isHighlight}" class="fa fa-caret-down"></i> -->
+        <!-- </a> -->
+          <ul class="dropdown-menu boxShadow" *ngIf="item.subMenus && item.subMenus.length">
+            <li class="styling" *ngFor="let subMenu of item.subMenus">
+              <a  class="color newSize" [href]="subMenu.url.trim()">{{  subMenu.name }}</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <!-- end nav -->
+</header>

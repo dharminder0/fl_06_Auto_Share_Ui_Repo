@@ -1,0 +1,377 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Responsive 
+*/
+
+.menu-toggler{
+  display: none;
+} 
+
+.app-nav{
+  .dropdown-toggle{
+    display: none;
+    font-size: 20px;
+    color: $regular-color !important;
+    right: 0;
+    top: 5px;
+    position: absolute;
+  }
+}
+.menu-toggler-body{
+  overflow: hidden;
+}
+
+@media (max-width: 1100px) {
+  .app-sidebar{
+    &.large{
+      width: 900px;
+    }
+    .portlet-head {
+      .action {
+        a{
+          &.closet{
+            left: -110px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .app-sidebar{   
+    width: 100% !important;    
+    .portlet-head {
+      .action {
+        a{
+          &.closet{
+            left: auto;
+            right: 30px;
+            top: 10px;
+            width: 40px;
+            height: 40px;
+            &:before,
+            &:after{
+              top: 5px;
+              left: 20px;
+              height: 30px;
+            }
+          }
+        }
+      }
+    }
+    .day-list-container{      
+      .days-list{
+        height: auto;
+        padding: 12px;
+        display: block;
+        margin-bottom: 12px;
+        li{
+          width: 24%;
+          min-width: 94px;
+          margin: 6px 0;
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .app-sidebar{ 
+    .portlet-head {
+      .action {
+        a{
+          &.closet{
+            right: 14px;
+            top: 15px;
+            width: 30px;
+            height: 30px;
+            &:before,
+            &:after{
+              top: 5px;
+              left: 14px;
+              height: 20px;
+            }
+          }
+        }
+      }
+    }     
+    .portlet-body {
+      .app-grow {
+        padding: 0 20px;
+        .form-body{
+          .in{
+            padding: 22px 20px;
+            &.gutter{
+              padding: 22px 20px;
+            }
+          }
+        }
+      }
+    }
+    .form-actions,
+    .form-action{
+      height: auto;
+      margin-top: 20px;
+      padding: 10px 0;
+    }
+    .day-list-container{
+      display: block;
+      margin-bottom: 14px;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  header {
+    .app-top{     
+      @include box-shadow($regular-shadow);
+    }
+    .top-menu{
+      margin-right: 40px;
+    }
+    .app-nav{
+      top: 68px;
+      right: -600px;
+      bottom: 0;
+      z-index: 99;
+      width: 220px;
+      padding: 0;
+      position: fixed;
+      background: $base-bkg-1;
+      @include box-shadow($secondary-shadow);
+      @include transition(all 0.3s ease-in-out);
+      ul{
+        display: block;
+        li{
+          margin: 0;
+          a {
+            height: 40px;
+            color: $regular-color;
+            padding: 0 22px;
+            margin-bottom: 1px;
+            -webkit-box-pack: left;
+            -moz-box-pack: left;
+            -ms-flex-pack: left;
+            -webkit-justify-content: left;
+            justify-content: left;
+            &:hover {
+              color: #2a7ab0;
+            }
+          }
+          .dropdown-menu{
+            display: none;
+          }
+        }
+      }
+    } 
+    &.open{
+      .app-nav{
+        right: 0;
+      }   
+    }
+  } 
+  
+  /*start*/
+  .menu-toggler{
+    top: 26px;
+    right: 40px;
+    width: 20px;
+    height: 20px;
+    display: block;
+    cursor: pointer;
+    position: absolute;
+  }
+  .menu-toggler i.fa-line,
+  .menu-toggler i.fa-line:before,
+  .menu-toggler i.fa-line:after{
+    right: 0;
+    width: 18px;
+    height: 2px;  
+    position: absolute;
+    background: #000;
+    transition: 0.5s;
+  }
+
+  .menu-toggler i.fa-line:before{
+    top: 6px;
+    width: 16px;
+    content: "";
+  }
+
+  .menu-toggler i.fa-line:after{
+    top: 12px;
+    content: "";
+  }
+
+  .menu-toggler:hover i.fa-line,
+  .menu-toggler:hover i.fa-line:before,
+  .menu-toggler:hover i.fa-line:after{
+    width: 26px;
+  }
+
+  .menu-toggler:hover i.fa-line:before{
+    width: 24px;
+  }
+
+  .app-nav{
+    .dropdown-toggle{
+      display: block;      
+    }
+    .dropdown-menu{
+      margin-left: 18px;   
+      background: transparent !important;
+      li{
+        a{
+          height: 30px !important;
+          border: 0 !important; 
+          font-weight: normal !important;
+          color: $regular-color !important;
+        }
+      }
+    }
+  }
+
+  .app-head{
+    display: block;
+    h1{
+      margin-bottom: 36px !important;
+    }
+    .tabbable-box{
+      margin-bottom: 20px;
+    }
+  }
+
+  .tabbable-body{
+   .nav-tabs{
+    @include flex();
+    @include align-item();
+    overflow: auto;
+    a{
+      white-space: nowrap;
+    }
+  }
+ }
+} 
+
+
+@media (max-width: 767px) {
+  .menu-toggler{
+    right: 20px;
+  }
+  .app-side-menu{
+    display: none;
+  }
+  .table{
+    &.data-tabe{
+      tbody{
+        tr{
+          td{
+            &:first-child{
+              padding-left: 22px;
+            }
+            &:last-child{
+              padding-right: 22px;  
+            }
+          }
+        }
+      }
+    }
+  }
+  .app-radio-inline{
+    .app-radio{
+    margin-bottom: 15px !important; 
+    }  
+  }
+}
+
+@media (max-width: 700px) {  
+  .app-head {
+    .action{
+      .btn-group{
+        vertical-align: top;
+        margin: 0 10px 10px 0 !important;       
+        &:last-child{
+          margin-right: 0 !important; 
+        } 
+      } 
+      .ember-calendar{
+        width: 170px;
+      }
+    }
+  }
+  .form-actions,
+  .form-action{
+    display: block !important;
+    .btn{
+      min-width: 130px;
+      margin: 0 10px 10px 0 !important;     
+    }
+  }
+}
+
+@media (max-width: 599px) {
+  .app-head {
+    .action{
+      .ember-calendar,
+      .ember-office{
+        width: 47%;
+      }
+    }
+  }  
+  .ember-container{
+    display: block !important;  
+    .ember-sidebar{
+      margin-bottom: 10px;
+    }
+    .ember-sidebar,
+    .ember-content{
+      width: 100% !important;
+    }  
+  }
+
+  .leaduser-container{    
+   .cnt {
+      h2{
+        margin-bottom: 14px;
+      }
+    }
+  }
+  .ig{
+    display: block;
+  }  
+}
+
+
+
+
+@media (max-width: 360px) {
+  h1{
+    font-size: 16px;
+  }
+
+  .flex-memory{
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .ember-body .ember-container.info .ember-content .ins-body .inner{
+    padding: 20px;
+  }
+  
+  .form-action-group .btn {
+    margin: 6px 10px;
+  }
+}
+   
+
+
+
+
+
+
+
+
+

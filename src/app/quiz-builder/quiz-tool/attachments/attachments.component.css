@@ -1,0 +1,163 @@
+.attachment-title {
+  text-align: center;
+  margin-bottom: 12px;
+  font-size: 26px;
+  padding: unset;
+}
+
+.img-height {
+  min-height: 16em !important;
+  max-height: 16em !important;
+}
+
+.attach-container {
+  padding: 10px 80px 30px 10px !important;
+}
+
+.top-image-container {
+  margin: unset;
+}
+
+.image-text {
+  margin: 16px 0 8px 0;
+}
+
+.font-type{
+  font-family: Raleway;
+  font-style: normal;
+}
+
+.font-text2{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 125%;
+  color: #494949;
+}
+
+.portlet-head{
+  padding: 0 15px;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.content-bottom{
+  width: 100%;
+  height: 60px;
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
+  padding: 10px 40px;
+  position: absolute;
+}
+
+.save-btn{
+  background: #FFFFFF;
+  border: 1px solid #000000;
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 80px;
+  height: 40px;
+  color: #000000;
+  color: var(--secondary-color);
+}
+
+.save-btn:hover{
+  background: #000000;
+  background:  var(--secondary-color);
+  color: #FFFFFF;
+}
+
+.normal-text{
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.form-body{
+  height: calc(100vh - 121px);
+  background: #fff;
+  padding: 34px 40px;
+  overflow:auto;
+}
+
+.add-attach-body{
+  width: 340px;
+  height: 150px;
+  border: 1px dashed #E0E0E0;
+  box-sizing: border-box;
+  margin: 10px;
+  text-align: center;
+}
+
+.plus-icon{
+  height: 50px;
+  width: 50px;
+}
+
+.plus-padding{
+  padding:50px 145px 15px
+}
+
+.center{
+  text-align: center;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.default-image{
+  max-width: 340px;
+  max-height: 150px;
+}
+
+.display-block{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.img-edit{
+  border-radius: 5px;
+  position: absolute;
+  top: 62px;
+  height: 30px;
+  width: 30px;
+  padding: 5px 8px;
+}
+
+.image-pos{
+  position: relative;
+  overflow: hidden;
+}
+
+.left-135{
+  left: 135px;
+}
+
+.left-170{
+  left: 170px;
+}
+
+.left-191{
+  left: 191px;
+}
+
+.left-151{
+  left: 151px;
+}
+
+.left-107{
+  left: 107px;
+}
+
+.input-description{
+  border: none;
+  text-align: center;
+  box-shadow: none;
+}
+
+.pdf-image{
+  max-width: 340px;
+  max-height: 148px;
+  padding-left:96px ;
+  cursor: pointer;
+}

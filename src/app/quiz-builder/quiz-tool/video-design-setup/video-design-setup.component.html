@@ -1,0 +1,72 @@
+<span>Set Frame
+    <label class="switch">
+        <input type="checkbox" (change)="setFrameEnable()" class="boxid" [checked]="VideoFrameEnabled">
+       <span class="slider round"></span>
+   </label>
+</span>
+<div class="border-sec" *ngIf="VideoFrameEnabled">
+    <div class="msec">
+        <input type="text" class="form-control border-sec-input" *ngIf="hourTimeInput.disabled"(focus)="hourFocus= true" (focusout)="hourFocus=false"  min="0" [max]="hours"  [formControl]="hourTimeInput"  numberOnly>
+        <input type="number" class="form-control border-sec-input" *ngIf="!hourTimeInput.disabled" (focus)="hourFocus= true" (focusout)="hourFocus=false"  min="0" [max]="hours"  [formControl]="hourTimeInput"  numberOnly>
+        <span class="mleft">Hrs</span>
+        <div class="alert-Ignite"  *ngIf="hourTimeInput.touched && hourTimeInput.invalid">
+            <label  *ngIf="hourTimeInput.errors.min && hourFocus">
+                Please enter greater than  <span>0</span>
+            </label>
+            <label  *ngIf="hourTimeInput.errors.required && hourFocus">
+                Please enter valid input.
+            </label>
+            <label  *ngIf="hourTimeInput.errors.max && hourFocus">
+                Enter Input less than or equal to <span>{{hours}}</span>
+            </label>
+        </div>
+    </div>
+    <div class="msec">
+        <input type="number" *ngIf="!minuteTimeInput.disabled" class="form-control border-sec-input" min="0" (focus)="minuteFocus=true" (focusout)="minuteFocus=false" [max]="minutes" [formControl]="minuteTimeInput"  numberOnly>
+        <input type="text" *ngIf="minuteTimeInput.disabled" class="form-control border-sec-input" min="0" (focus)="minuteFocus=true" (focusout)="minuteFocus=false" [max]="minutes" [formControl]="minuteTimeInput"  numberOnly>
+        <span class="mleft">Min</span>
+
+        <div class="alert-Ignite"  *ngIf="minuteTimeInput.touched && minuteTimeInput.invalid">
+            <label  *ngIf="minuteTimeInput.errors.min && minuteFocus">
+                Please enter greater than  <span>0</span>
+            </label>
+            <label  *ngIf="minuteTimeInput.errors.required && minuteFocus">
+                Please enter valid input.
+            </label>
+            <label  *ngIf="minuteTimeInput.errors.max && minuteFocus">
+                Enter Input less than or equal to <span>{{minutes}}</span>
+            </label>
+        </div>
+    </div>
+    <div class="msec">
+        <input type="number" class="form-control border-sec-input" min="0" *ngIf="!secondTimeInput.disabled" (focus)="secondFocus=true" (focusout)="secondFocus=false" [max]="seconds" [formControl]="secondTimeInput"  numberOnly>
+        <input type="text" class="form-control border-sec-input" min="0" *ngIf="secondTimeInput.disabled" (focus)="secondFocus=true" (focusout)="secondFocus=false" [max]="seconds" [formControl]="secondTimeInput"  numberOnly>
+        <span class="mleft">Sec</span>
+            <div class="alert-Ignite"  *ngIf="secondTimeInput.touched && secondTimeInput.invalid">
+                <label  *ngIf="secondTimeInput.errors.min && secondFocus">
+                    Please enter greater than  <span>0</span>
+                </label>
+                <label  *ngIf="secondTimeInput.errors.required && secondFocus">
+                    Please enter valid input.
+                </label>
+                <label  *ngIf="secondTimeInput.errors.max && secondFocus">
+                    Enter Input less than or equal to <span>{{seconds}}</span>
+                </label>
+            </div>
+    </div>
+    <div class="msec">
+        <input type="number" class="form-control border-sec-input" min="0" (focus)="msecondFocus=true" (focusout)="msecondFocus=false" [max]="mseconds" [formControl]="msecondTimeInput"  numberOnly>
+        <span class="mleft">mSec</span>      
+        <div class="alert-Ignite"  *ngIf="msecondTimeInput.touched && msecondTimeInput.invalid">
+            <label  *ngIf="msecondTimeInput.errors.min && msecondFocus">
+                Please enter greater than  <span>0</span>
+            </label>
+            <label  *ngIf="msecondTimeInput.errors.required && msecondFocus">
+                Please enter valid input.
+            </label>
+            <label  *ngIf="msecondTimeInput.errors.max && msecondFocus">
+                Enter Input less than or equal to <span>{{mseconds}}</span>
+            </label>
+        </div>
+    </div>
+</div>

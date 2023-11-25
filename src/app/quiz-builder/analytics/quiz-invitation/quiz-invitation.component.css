@@ -1,0 +1,39 @@
+.view-start{
+    width: 350px;
+    height: 200px;
+    border: 1px solid #dddddd;
+}
+
+.active-button{
+    background-color: #000000;
+    background-color: var(--secondary-color);
+    color: #fff !important
+}
+
+.raphael-group-3-creditgroup{
+    display: none !important;
+}
+
+.rate-container{
+    display: flex;
+    align-items: center;
+    padding: 20px 10px 30px;   
+}
+
+.rate-container label{
+   flex: 1;
+}
+
+.rate-container .btn{
+    border: 0;
+    border-radius: 2px;
+ }
+
+ .rate-cnt{
+   text-align: center;
+ }
+
+
+ .rate-cnt h2{
+    font-size: 22px;
+  }

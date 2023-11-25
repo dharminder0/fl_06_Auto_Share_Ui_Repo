@@ -1,0 +1,283 @@
+<div class="m-background">
+
+    <!-- filter area -->
+    <div class="filter-area">
+        <div class="row">
+            <div class="col-xs-12 flex-display">
+                <div class="ellipsis-50px-w p-bottom-10" [ngClass]="{'bottom-line': !isUnlinkedAutomation}">
+                    <a class="filter-tab" [ngClass]="{'fw-bolder': !isUnlinkedAutomation}"
+                        (click)="getAutomationListLinkedWise(true)" onmouseover="style='color: var(--secondary-color)'"
+                        onmouseout="style='color:#494949'"
+                        title="{{'LINKED_AUTOMATIONS' | translate}}">{{"LINKED_AUTOMATIONS" | translate}}</a>
+                </div>
+                <div class="mright-10"></div>
+                <div class="ellipsis-50px-w p-bottom-10" [ngClass]="{'bottom-line': isUnlinkedAutomation}">
+                    <a class="filter-tab" [ngClass]="{'fw-bolder': isUnlinkedAutomation}"
+                        (click)="getAutomationListLinkedWise(false)" onmouseover="
+                    style='color: var(--secondary-color)'" onmouseout=" style='color:#494949'"
+                        title="{{'UNLINKED_AUTOMATIONS' | translate}}">{{"UNLINKED_AUTOMATIONS" | translate}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- search area -->
+    <div class="search-area m-search-box">
+        <!-- <input type="text" placeholder="Search and Filter ..." class="form-control search-box" />
+    <img alt="search icon" class="search-icon" src="assets/layouts/img/icon_search.png"> -->
+        <app-suggestion-panel [suggestionType]="suggestionType" [status]="status" [notificationType]="notificationType"
+            [templateId]="templateId" [isCompanyWise]="sharedWithMe" (linkedUnlinked)="getSeachMessage($event)">
+        </app-suggestion-panel>
+    </div>
+
+    <!-- Favorite filter area -->
+    <div class="filter-area">
+        <div class="row">
+            <div class="col-xs-12">
+                <span class="font-adjust">{{"SHOW" | translate }}:</span>
+                <!-- <span class="font-adjust" [ngClass]="{'fw-bolder': !isFavorited}">{{"ALL" | translate}}</span> -->
+                <label class="switch mright-10">
+                    <input type="checkbox" (change)="getFavoriteList()">
+                    <span class="slider round" checked></span>
+                </label>
+                <span class="font-adjust" [ngClass]="{'fw-bolder': isFavorited}">{{"FAVORITES" | translate }}</span>
+
+                <span class="toggle-menu" *ngIf="recordsPerData > 0">
+                    <span class="title mright-5"> {{startRecord}} - {{endRecord}} {{"OF" |translate}} {{recordsPerData}} </span>
+                    <a *ngIf="startRecord == 1" style="cursor: no-drop;">
+                      <svg class="left-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.18581 7.42828L6.90303 12.8229C7.1539 13.059 7.56035 13.059 7.81185 12.8229C8.06272 12.5867 8.06272 12.203 7.81185 11.9668L2.54811 7.0003L7.81121 2.03376C8.06208 1.79757 8.06208 1.41393 7.81121 1.17714C7.56035 0.940952 7.15327 0.940952 6.9024 1.17714L1.18518 6.57167C0.938167 6.80542 0.938167 7.19508 1.18581 7.42828Z" fill="#a9a9a940" stroke="#a9a9a940" stroke-width="0.5"/>
+                      </svg>
+                    </a>
+                    <a *ngIf="startRecord != 1" (click)="getTemplateDetails(pageIndex - 1)" class="hand-cursor">
+                      <svg class="left-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1.18581 7.42828L6.90303 12.8229C7.1539 13.059 7.56035 13.059 7.81185 12.8229C8.06272 12.5867 8.06272 12.203 7.81185 11.9668L2.54811 7.0003L7.81121 2.03376C8.06208 1.79757 8.06208 1.41393 7.81121 1.17714C7.56035 0.940952 7.15327 0.940952 6.9024 1.17714L1.18518 6.57167C0.938167 6.80542 0.938167 7.19508 1.18581 7.42828Z" fill="#494949" stroke="#494949" stroke-width="0.5"/>
+                      </svg>
+                    </a>
+                    <a *ngIf="endRecord == recordsPerData" style="cursor: no-drop;">
+                      <svg class="right-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.81418 6.57172L2.09697 1.17714C1.8461 0.940953 1.43965 0.940953 1.18815 1.17714C0.937283 1.41334 0.937283 1.79697 1.18815 2.03316L6.45189 6.9997L1.18878 11.9662C0.937917 12.2024 0.937917 12.5861 1.18879 12.8229C1.43965 13.059 1.84673 13.059 2.0976 12.8229L7.81482 7.42833C8.06183 7.19458 8.06183 6.80492 7.81418 6.57172Z" fill="#a9a9a940" stroke="#a9a9a940" stroke-width="0.5"/>
+                      </svg>
+                    </a>
+                    <a *ngIf="endRecord != recordsPerData" (click)="getTemplateDetails(pageIndex + 1)" class="hand-cursor">
+                      <svg class="right-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7.81418 6.57172L2.09697 1.17714C1.8461 0.940953 1.43965 0.940953 1.18815 1.17714C0.937283 1.41334 0.937283 1.79697 1.18815 2.03316L6.45189 6.9997L1.18878 11.9662C0.937917 12.2024 0.937917 12.5861 1.18879 12.8229C1.43965 13.059 1.84673 13.059 2.0976 12.8229L7.81482 7.42833C8.06183 7.19458 8.06183 6.80492 7.81418 6.57172Z" fill="#494949" stroke="#494949" stroke-width="0.5"/>
+                      </svg>
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card-mstart">
+
+    <div class="card-block" *ngIf="quizTemplateList">
+        <!-- card area -->
+        <div class="m-10 big-screen-display" *ngFor="let item of quizTemplateList">
+            <div class="card Atomation-card">
+
+                <!-- cover image -->
+                <div class="image-block" (mouseenter)="hoverOnPreview[item.Id] = true" (mouseleave)="hoverOnPreview[item.Id] = false">
+                    <img *ngIf="item.QuizCoverDetails.QuizCoverImage && item.isImage" class="bd-placeholder-img card-img-top"
+                        [src]="item.QuizCoverDetails.QuizCoverImage" />
+                    <img *ngIf="!item.QuizCoverDetails.QuizCoverImage && item.isImage" [src]="item.UsageTypes[0] != usageTypeEnum.WhatsApp_Chatbot ? largeScreenDefaultImage : defaultWhatsAppCover"
+                        class="bd-placeholder-img card-img-top" />
+                    <video class="video-placeholder-bd video-bg-color" *ngIf="item.QuizCoverDetails.QuizCoverImage && !item.isImage">
+                        <source [src]="item.QuizCoverDetails.QuizCoverImage">
+                    </video>
+                    <div class="overlay hand-cursor" (click)='onShowPreview(publishTemplate, item)'>
+                        <div class="text">Click to Preview</div>
+                    </div>
+                    <!-- <span class="half-circle">
+                        <span *ngIf="item.NoOfQusetions" class="haif-circle-txt">{{item.NoOfQusetions}}Q</span>
+                    </span> -->
+                    <span (click)="selectFavoriteList(item.Id, item.IsFavorited)"
+                    (mouseenter)="hoverOnFavorite[item.Id] = true" (mouseleave)="hoverOnFavorite[item.Id] = false"
+                    class="half-circle">
+                    <span class="haif-circle-txt"
+                        *ngIf="!hoverOnPreview[item.Id] && item.NoOfQusetions">{{item.NoOfQusetions}}Q</span>
+                    <!-- stars -->
+                    <i *ngIf="hoverOnPreview[item.Id] && !item.IsFavorited" class="fa fa-star-o star-icon"></i>
+                    <i *ngIf="hoverOnPreview[item.Id] && item.IsFavorited || (hoverOnFavorite[item.Id] && !item.IsFavorited)"
+                        class="fa fa-star star-icon"></i>
+                </span>
+                </div>
+
+                <div class="card-body p-card-body">
+                    <div class="font-type quiz-title center">
+                        <span class="ellipsis-1line" title="{{item.QuizTitle}}">
+                        {{item.QuizTitle}}</span>
+                    </div>
+                    <div class="card-level">
+                        <span class="card-level" *ngIf="item.QuizType==1"
+                            title="NPS">NPS</span>
+                        <span class="card-level" *ngIf="item.QuizType==2"
+                            title="{{'ASSESSMENT_SELECT_TEMPLATE' | translate}}">{{'ASSESSMENT_SELECT_TEMPLATE' | translate}}</span>
+                        <span class="card-level" *ngIf="item.QuizType==3"
+                            title="{{'PERSONALITY' | translate}}">{{'PERSONALITY' | translate}}</span>
+                        <span class="card-level" *ngIf="item.QuizType==4"
+                            title="{{'SCORED' | translate}}">{{'SCORED' | translate}}</span>
+                    </div>
+                    <div class="title-pad" *ngIf="item.UsageTypes[0] != usageTypeEnum.WhatsApp_Chatbot; else blankCoverTitle">
+                        <div class="card-text font-type ellipsis-2line" title="{{item.QuizCoverDetails.QuizCoverTitle | removeallTagPipe}}" [innerHTML]="item.QuizCoverDetails.QuizCoverTitle | removeallTagPipe">
+                        </div>
+                    </div>
+                    <ng-template #blankCoverTitle>
+                        <div class="blank-cover-title"></div>
+                    </ng-template>
+
+
+                    <div class="tag-block" *ngIf="item.Tag && item.Tag.length>0">
+                        <div class="tag-display">
+                        <div class="tag-outer" *ngFor="let tagDetail of item.Tag;index as i"
+                        (click)="selectTagToFilter(tagDetail)" [ngClass]="{'display-index':(i>0 && !item.isQuizTags) }">
+                            <span class="hand-cursor tag-contain">
+                            <i class="fa fa-tag tag-icon" aria-hidden="true"></i>{{tagDetail?.TagName}}</span>
+                        </div>
+                        <div class="tags-count btn" *ngIf="item.Tag.length > 1 && !item.isQuizTags"
+                            (click)="onShowTag(item.Id)" (mouseover)="isActiveIconOnHover[item.Id] = true"
+                            (mouseout)="isActiveIconOnHover[item.Id] = false">
+                            
+                            <svg class="plus-icon" width="11" height="10" viewBox="0 0 11 11" fill="#494949" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.3404 4.84032L6.06257 4.85325V0.659563C6.06257 0.294158 5.76841 0 5.40301 0C5.03772 0 4.74344 0.294158 4.74344 0.659563L4.75638 4.84044H0.659563C0.294158 4.84044 0 5.1346 0 5.5C0 5.86529 0.294158 6.15945 0.659563 6.15945H4.74991V10.3404C4.74991 10.7056 5.04407 11 5.40947 11C5.77488 11 6.06903 10.7056 6.06903 10.3404V6.15956H10.3404C10.7058 6.15956 11 5.86517 11 5.5C11 5.13448 10.7026 4.84032 10.3404 4.84032Z" fill="white"/>
+                            </svg>
+    
+                            <span class="tag-title" *ngIf="(item.Tag.length - 1)==1"
+                            [ngClass]="{'primary-color' : isActiveIconOnHover[item.Id] == true}">{{item.Tag.length - 1}}
+                            tag</span>
+                            <span class="tag-title" *ngIf="(item.Tag.length - 1)>1"
+                            [ngClass]="{'primary-color' : isActiveIconOnHover[item.Id] == true}">{{item.Tag.length - 1}}
+                            tags</span>
+                        </div>
+                        <div class="less-count btn" *ngIf="item.Tag.length > 1 && item.isQuizTags"
+                            (click)="onShowTag(item.Id)">
+                            <span class="tag-title" [ngClass]="{'primary-color' : isActiveIconOnHover[item.Id] == true}">{{"SHOW_LESS_TAGS" | translate}}</span>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="item.Tag && item.Tag.length == 0" class="tag-detail-blank"></div>
+
+                    <div *ngIf="!isUnlinkedAutomation" class="center">
+                        <a class="btn w-140 ellipsiss change-template-btn custom-pad" (click)="unlinkAutomation(item)">
+                            <span class="font-type font-btn" title="{{'UNLINK_AUTOMATION' | translate}}" >{{"UNLINK_AUTOMATION" | translate}}</span></a>
+                            <span class="link-icon">
+                                <svg class="link" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.80398 10.6707L4.15433 12.3204C3.47041 13.0043 2.36287 13.0043 1.67953 12.3205C0.996051 11.6371 0.996051 10.5294 1.67939 9.84607L4.97928 6.54618C5.66262 5.86281 6.77027 5.86281 7.45361 6.54618C7.68141 6.77398 8.05077 6.77398 8.27856 6.54618C8.50636 6.31838 8.50636 5.94902 8.27856 5.72123C7.1396 4.58226 5.29329 4.58226 4.15433 5.72123L0.854467 9.02111C-0.284497 10.1601 -0.284497 12.0064 0.854467 13.1453C1.99329 14.2849 3.83974 14.2849 4.97931 13.1453L6.62896 11.4957C6.85676 11.2679 6.85676 10.8985 6.62896 10.6707C6.40116 10.4429 6.03178 10.4429 5.80398 10.6707Z" fill="#00B7AB"/>
+                                    <path d="M13.1455 4.97871C14.2845 3.83974 14.2845 1.99343 13.1455 0.854464C12.0066 -0.284473 10.1603 -0.284473 9.02079 0.854328L7.04143 2.83369C6.81363 3.06149 6.81363 3.43085 7.04143 3.65865C7.26922 3.88645 7.63858 3.88645 7.86638 3.65865L9.8456 1.67942C10.5294 0.996049 11.6372 0.996049 12.3205 1.67942C13.0039 2.36276 13.0039 3.47041 12.3205 4.15376L8.69108 7.78322C8.00772 8.46659 6.90009 8.46659 6.21675 7.78322C5.98895 7.55542 5.61959 7.55542 5.3918 7.78322C5.164 8.01102 5.164 8.38037 5.3918 8.60817C6.53076 9.74714 8.37707 9.74714 9.51603 8.60817L13.1455 4.97871Z" fill="#00B7AB"/>
+                                    <path d="M10.9125 10.0877C10.6847 9.85992 10.3154 9.85992 10.0876 10.0877C9.8598 10.3155 9.8598 10.6849 10.0876 10.9127L11.837 12.6621C12.0648 12.8899 12.4341 12.8899 12.6619 12.6621C12.8897 12.4343 12.8897 12.0649 12.6619 11.8371L10.9125 10.0877Z" fill="#00B7AB"/>
+                                    <path d="M3.08827 3.91322C3.31607 4.14101 3.68542 4.14101 3.91322 3.91322C4.14102 3.68542 4.14102 3.31606 3.91322 3.08826L2.16206 1.33711C1.93426 1.10931 1.56491 1.10931 1.33711 1.33711C1.10931 1.56491 1.10931 1.93426 1.33711 2.16206L3.08827 3.91322Z" fill="#00B7AB"/>
+                                    <path d="M13.4166 8.74988H11.6666C11.3444 8.74988 11.0833 9.01104 11.0833 9.3332C11.0833 9.65536 11.3444 9.91651 11.6666 9.91651H13.4166C13.7387 9.91651 13.9999 9.65536 13.9999 9.3332C13.9999 9.01104 13.7387 8.74988 13.4166 8.74988Z" fill="#00B7AB"/>
+                                    <path d="M4.66657 2.91664C4.98873 2.91664 5.24989 2.65548 5.24989 2.33332V0.583345C5.24989 0.261157 4.98873 0 4.66657 0C4.34441 0 4.08325 0.261157 4.08325 0.583317V2.3333C4.08322 2.65546 4.34441 2.91664 4.66657 2.91664Z" fill="#00B7AB"/>
+                                    <path d="M0.583317 5.24995H2.3333C2.65546 5.24995 2.91661 4.98879 2.91661 4.66663C2.91661 4.34447 2.65546 4.08331 2.3333 4.08331H0.583317C0.261157 4.08331 0 4.34447 0 4.66663C0 4.98879 0.261157 5.24995 0.583317 5.24995Z" fill="#00B7AB"/>
+                                    <path d="M9.33332 11.0832C9.01116 11.0832 8.75 11.3443 8.75 11.6665V13.4165C8.75 13.7386 9.01116 13.9998 9.33332 13.9998C9.65548 13.9998 9.91663 13.7386 9.91663 13.4165V11.6665C9.91666 11.3444 9.65548 11.0832 9.33332 11.0832Z" fill="#00B7AB"/>
+                                </svg>
+                            </span> 
+                    </div>
+
+                    <div *ngIf="isUnlinkedAutomation" class="center">
+                        <a class="btn change-template-btn choose-button" (click)="linkAutomation(item)">
+                            <span class="font-type font-btn">{{"SELECT" | translate}}</span></a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- small screen -->
+
+    <div class="card small-atomation-card small-screen-dispaly" *ngFor="let item of quizTemplateList">
+        <div class="small-card small-card-margin">
+            <!-- cover image -->
+            <div class="small-image-block" (mouseenter)="hoverOnPreview[item.Id] = true" (mouseleave)="hoverOnPreview[item.Id] = false">
+                <img *ngIf="item.QuizCoverDetails.QuizCoverImage && item.isImage" class="small-bd-placeholder-img card-img-top"
+                    [src]="item.QuizCoverDetails.QuizCoverImage" />
+                <img *ngIf="!item.QuizCoverDetails.QuizCoverImage && item.isImage" [src]="item.UsageTypes[0] != usageTypeEnum.WhatsApp_Chatbot ? largeScreenDefaultImage : defaultWhatsAppCover"
+                    class="small-bd-placeholder-img card-img-top" />
+                <!-- <img *ngIf="!item.QuizCoverDetails.QuizCoverImage && item.isImage" [src]="smallScreenDefaultImage"
+                    class="small-bd-placeholder-img card-img-top" /> -->
+                <video class="small-bd-placeholder-img video-bg-color" *ngIf="item.QuizCoverDetails.QuizCoverImage && !item.isImage">
+                    <source [src]="item.QuizCoverDetails.QuizCoverImage">
+                </video>
+                <div class="overlay hand-cursor" (click)='onShowPreview(publishTemplate, item)'>
+                    <div class="text">Click to Preview</div>
+                </div>
+                <div>
+                <span (click)="selectFavoriteList(item.Id, item.IsFavorited)"
+                    (mouseenter)="hoverOnFavorite[item.Id] = true" (mouseleave)="hoverOnFavorite[item.Id] = false"
+                    class="half-circle">
+                    <span class="haif-circle-txt"
+                        *ngIf="!hoverOnPreview[item.Id] && item.NoOfQusetions">{{item.NoOfQusetions}}Q</span>
+                    <!-- stars -->
+                    <i *ngIf="hoverOnPreview[item.Id] && !item.IsFavorited" class="fa fa-star-o star-icon"></i>
+                    <i *ngIf="hoverOnPreview[item.Id] && item.IsFavorited || (hoverOnFavorite[item.Id] && !item.IsFavorited)"
+                        class="fa fa-star star-icon"></i>
+                </span>
+                </div>
+            </div>
+
+            <div class="small-card-body">
+                <div class="font-type small-quiz-title">
+                    <span class="ellipsis-1line" title="{{item.QuizTitle}}">
+                      {{item.QuizTitle}}</span>
+                </div>
+                <div class="card-level">
+                    <span *ngIf="item.QuizType==1" title="NPS">NPS</span>
+                    <span *ngIf="item.QuizType==2"
+                        title="{{'ASSESSMENT_SELECT_TEMPLATE' | translate}}">{{'ASSESSMENT_SELECT_TEMPLATE' | translate}}</span>
+                    <span *ngIf="item.QuizType==3"
+                        title="{{'PERSONALITY' | translate}}">{{'PERSONALITY' | translate}}</span>
+                    <span *ngIf="item.QuizType==4" title="{{'SCORED' | translate}}">{{'SCORED' | translate}}</span>
+                </div>
+                <div *ngIf="item.UsageTypes[0] != usageTypeEnum.WhatsApp_Chatbot; else smallblankCoverTitle" class="small-card-title font-type ellipsis-1line" title="{{item.QuizCoverDetails.QuizCoverTitle | removeallTagPipe}}" [innerHTML]="item.QuizCoverDetails.QuizCoverTitle | removeallTagPipe">
+                </div>
+                <ng-template #smallblankCoverTitle>
+                    <div class="small-card-title font-type ellipsis-1line"></div>
+                </ng-template>
+
+                <div class="w-195" *ngIf="!isUnlinkedAutomation">
+                    <a class="btn w-155 ellipsiss change-template-btn" (click)="unlinkAutomation(item)">
+                        <span class="font-type font-btn" title="{{'UNLINK_AUTOMATION' | translate}}">{{"UNLINK_AUTOMATION" | translate}} </span></a>
+                       <span class="link-icon">
+                        <svg class="link" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.80398 10.6707L4.15433 12.3204C3.47041 13.0043 2.36287 13.0043 1.67953 12.3205C0.996051 11.6371 0.996051 10.5294 1.67939 9.84607L4.97928 6.54618C5.66262 5.86281 6.77027 5.86281 7.45361 6.54618C7.68141 6.77398 8.05077 6.77398 8.27856 6.54618C8.50636 6.31838 8.50636 5.94902 8.27856 5.72123C7.1396 4.58226 5.29329 4.58226 4.15433 5.72123L0.854467 9.02111C-0.284497 10.1601 -0.284497 12.0064 0.854467 13.1453C1.99329 14.2849 3.83974 14.2849 4.97931 13.1453L6.62896 11.4957C6.85676 11.2679 6.85676 10.8985 6.62896 10.6707C6.40116 10.4429 6.03178 10.4429 5.80398 10.6707Z" fill="#00B7AB"/>
+                            <path d="M13.1455 4.97871C14.2845 3.83974 14.2845 1.99343 13.1455 0.854464C12.0066 -0.284473 10.1603 -0.284473 9.02079 0.854328L7.04143 2.83369C6.81363 3.06149 6.81363 3.43085 7.04143 3.65865C7.26922 3.88645 7.63858 3.88645 7.86638 3.65865L9.8456 1.67942C10.5294 0.996049 11.6372 0.996049 12.3205 1.67942C13.0039 2.36276 13.0039 3.47041 12.3205 4.15376L8.69108 7.78322C8.00772 8.46659 6.90009 8.46659 6.21675 7.78322C5.98895 7.55542 5.61959 7.55542 5.3918 7.78322C5.164 8.01102 5.164 8.38037 5.3918 8.60817C6.53076 9.74714 8.37707 9.74714 9.51603 8.60817L13.1455 4.97871Z" fill="#00B7AB"/>
+                            <path d="M10.9125 10.0877C10.6847 9.85992 10.3154 9.85992 10.0876 10.0877C9.8598 10.3155 9.8598 10.6849 10.0876 10.9127L11.837 12.6621C12.0648 12.8899 12.4341 12.8899 12.6619 12.6621C12.8897 12.4343 12.8897 12.0649 12.6619 11.8371L10.9125 10.0877Z" fill="#00B7AB"/>
+                            <path d="M3.08827 3.91322C3.31607 4.14101 3.68542 4.14101 3.91322 3.91322C4.14102 3.68542 4.14102 3.31606 3.91322 3.08826L2.16206 1.33711C1.93426 1.10931 1.56491 1.10931 1.33711 1.33711C1.10931 1.56491 1.10931 1.93426 1.33711 2.16206L3.08827 3.91322Z" fill="#00B7AB"/>
+                            <path d="M13.4166 8.74988H11.6666C11.3444 8.74988 11.0833 9.01104 11.0833 9.3332C11.0833 9.65536 11.3444 9.91651 11.6666 9.91651H13.4166C13.7387 9.91651 13.9999 9.65536 13.9999 9.3332C13.9999 9.01104 13.7387 8.74988 13.4166 8.74988Z" fill="#00B7AB"/>
+                            <path d="M4.66657 2.91664C4.98873 2.91664 5.24989 2.65548 5.24989 2.33332V0.583345C5.24989 0.261157 4.98873 0 4.66657 0C4.34441 0 4.08325 0.261157 4.08325 0.583317V2.3333C4.08322 2.65546 4.34441 2.91664 4.66657 2.91664Z" fill="#00B7AB"/>
+                            <path d="M0.583317 5.24995H2.3333C2.65546 5.24995 2.91661 4.98879 2.91661 4.66663C2.91661 4.34447 2.65546 4.08331 2.3333 4.08331H0.583317C0.261157 4.08331 0 4.34447 0 4.66663C0 4.98879 0.261157 5.24995 0.583317 5.24995Z" fill="#00B7AB"/>
+                            <path d="M9.33332 11.0832C9.01116 11.0832 8.75 11.3443 8.75 11.6665V13.4165C8.75 13.7386 9.01116 13.9998 9.33332 13.9998C9.65548 13.9998 9.91663 13.7386 9.91663 13.4165V11.6665C9.91666 11.3444 9.65548 11.0832 9.33332 11.0832Z" fill="#00B7AB"/>
+                            </svg>
+                       </span> 
+                </div>
+
+                <div *ngIf="isUnlinkedAutomation">
+                    <a class="btn change-template-btn choose-button w-btn" (click)="linkAutomation(item)">
+                        <span class="font-type font-btn">{{"SELECT" | translate}}</span></a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<ng-template #publishTemplate>
+    <div class="popup-modal">
+        <img class="cross-icon" src="assets/layouts/img/cross-icon.png" (click)="decline()" />
+        <div class="confirmation-title font-type">
+          <span>{{"THIS_QUIZ_HAS_UNPUBLISHED_CHANGES_AND_WILL_NEED_TO_BE_PUBLISHED_BEFORE_YOU_CAN_DUPLICATE_THE_QUIZ." | translate }}</span>
+        </div>
+        <div class="ptop-15 text-center">
+          <button type="button" class="btn cancle-btn font-type" (click)="decline()">{{"CANCEL" | translate }}</button>
+          <button type="button"  class="btn del-btn font-type" (click)="confirm()">{{"PUBLISH" | translate }}</button>
+        </div>
+      </div>
+</ng-template>

@@ -1,0 +1,12 @@
+<main class="app-wrapper">
+    <div [ngStyle]="{'display':isQuizTool?'none':'block'}">
+        <app-header-app></app-header-app>
+    </div>
+    <section class="app-contents">
+        <router-outlet></router-outlet>
+    </section>
+    <div [ngStyle]="{'display':isQuizTool?'none':'block'}">
+    <app-footer></app-footer>
+    </div>
+    <app-sidebar-right></app-sidebar-right>
+</main>

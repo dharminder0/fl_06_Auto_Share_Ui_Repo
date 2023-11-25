@@ -1,0 +1,187 @@
+.whatsapp-block{
+    text-align: left;
+    height: auto;
+    background: #fff;
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px;
+
+    .template-body{
+        max-height: 120px;
+        overflow: auto;
+        font-size: 12px;
+        color: #494949;
+        margin-bottom: 15px;
+    }
+     
+    .unslected-custombtn{
+        background: #fff;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        padding: 6px 10px;
+        border-radius: 5px;
+        width: auto;
+        height: 30px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 16px;
+        text-align: center;
+        margin: 5px;
+        outline: none;
+    }
+    .whatsapp-customBtn {
+        background: var(--secondary-color);
+        border: 0;
+        color: #fff;
+    }
+
+    .jr-template-list{
+        border-top: 1px solid #e0e0e0;
+        margin-right: 0;
+        margin-left:  0;
+        .jr-temp-tab{
+            border-right: 1px solid #e0e0e0;
+            padding-left: 5px;
+            .lang-dropdown{
+                margin-top: 5px;
+                border-width: 1px;
+                padding: 6px;
+            }
+        }
+    }
+    .template-options{
+        height: 38px;
+        overflow-y: hidden;
+        overflow-x: auto;
+        white-space: nowrap;
+        .template-message{
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #000;
+            font-weight: 500;
+            opacity: 0.6;
+            display: inline-block;
+            max-width: 150px;
+            .ellipsiss{
+                border-bottom: 1px solid transparent;
+              }
+        }
+
+        .msg-typing-area:not(:last-child){
+            border-right: 1px solid #e0e0e0;
+        }
+        .selected{
+            color: var(--secondary-color);
+            font-weight: 700;
+        }
+        .selected-border {
+            border-bottom: 1px solid var(--secondary-color) !important;
+          }
+
+    }
+}
+
+.card{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+
+    &.mbottom-20{
+        margin-bottom: 20px;
+    }
+
+    .card-body{
+        flex: 1 1 auto;
+        min-height: 1px;
+
+      &.p-0{
+        padding: 0!important;
+      }  
+    }
+
+    .fr-wrapper{
+        min-height: 250px;
+    }
+}
+.template-button{
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    width: auto;
+    height: 40px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    color: var(--secondary-color);
+    padding: 9px;
+    background: #fff;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+::ng-deep .custom-height .single{
+    height: 30px !important;
+}
+::ng-deep .custom-height>div>div.single>div.toggle{
+    line-height: 30px !important;
+}
+::ng-deep .custom-height>div>div.single>div.value{
+    line-height: 30px !important;
+}
+
+// @media screen and (max-width: 1280px) {
+//     .template-message{
+//         padding: 8px 8px !important;
+//         cursor: pointer !important;
+//         font-size: 8px !important;
+//         color: #000 !important;
+//         font-weight: 300 !important;
+//         opacity: 0.6 !important;
+//         display: inline-block !important;
+//         max-width: 70px !important;
+//        .ellipsiss{
+//            overflow: hidden;
+//            text-overflow: ellipsis;
+//        }
+//     }
+// }
+::-webkit-scrollbar-track {
+    background: #f5f7f8;
+    border-left: 1px solid #dadcde;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      background-color: inherit;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #c2c2c2;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b8b7b7;
+  }
+
+  .ellipsiss{
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .selected-language{
+    font-weight: bold;
+    background-color: #cacaca;
+}

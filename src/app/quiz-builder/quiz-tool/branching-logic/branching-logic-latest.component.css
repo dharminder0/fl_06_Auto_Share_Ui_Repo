@@ -1,0 +1,746 @@
+.logic-container {
+  overflow: hidden;
+}
+
+:host ::ng-deep .display-none {
+  display: none !important;
+}
+
+.question-container {
+  margin-bottom: 10px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #404040;
+  border-radius: 5px;
+  height: 40px;
+  background: #202020;
+  color: #FFFFFF;
+  white-space: nowrap;
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
+}
+
+.question-container .handle i {
+  cursor: pointer;
+  margin-right: 12px;
+}
+
+.question-container:hover{
+  box-shadow: 0 0 10px 3px var(--primary-color);
+}
+
+.logic-sidebar {
+  background:#202020;
+  width: 240px;
+  top: 58px;
+  left: 70px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
+  bottom: 0;
+  border-right: 1px solid #ccc;
+}
+
+.logic-sidebar .logic-ins {
+  font-family: Raleway;
+  font-style: normal;
+}
+
+.title {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logic-sidebar .btn {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.logic-data {
+  position: relative;
+  float: right;
+  overflow: auto;
+  height: calc(100vh - 60px);
+  width: calc(100% - 310px);
+  background-size: 100% 50px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 49px,
+      #ddd 50px),
+      repeating-linear-gradient(0deg, transparent, transparent 49px,#ddd 50px);
+      background-color: #efefef;
+}
+
+
+.expend-map-width {
+  top: 0;
+  left: 100%;
+  float: right;
+  right: 0;
+  bottom: 0;
+  width: 40px;
+  height: 100%;
+  color: #fff;
+  position: absolute;
+  background: #999;
+}
+
+.expend-map-width span {
+  transform: rotate(-90deg);
+  position: absolute;
+  right: -50px;
+}
+
+.expend-map-height {
+  left: 0;
+  right: 0;
+  top: 100%;
+  bottom: 0;
+  height: 40px;
+  width: 100%;
+  color: #fff;
+  position: absolute;
+  background: #999;
+}
+
+.svg-div {
+  border: 1px solid black;
+}
+
+.svg-content {
+  width: 100%;
+  height: 100%;
+}
+
+.start-div {
+  border: 2px solid #8c8989;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: #000000;
+  background: var(--secondary-color);
+}
+
+:host ::ng-deep .start {
+  color: #fff;
+  height: 100%;
+  width: 100%;
+  background: #0E3944;
+  border-radius: 3px;
+}
+
+:host ::ng-deep .box-gutter , :host ::ng-deep .tempbox-gutter {
+  height: 100%;
+  width: 100%;
+  color: #2c2c2c;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+:host ::ng-deep .box-gutter:hover , :host ::ng-deep .tempbox-gutter:hover{
+  box-shadow: 0 0 5px 1px var(--primary-color) inset !important;
+}
+
+:host ::ng-deep .box-result-gutter {
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  background: #4AB2B3;
+  border-radius: 2px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+:host ::ng-deep .box-result-gutter:hover {
+  box-shadow: 0 0 5px 1px var(--primary-color) inset !important;
+}
+
+:host ::ng-deep .result-gutter span {
+  display: block;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host ::ng-deep .result-gutter small {
+  display: block;
+  font-size: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host ::ng-deep .box-result-gutter * {
+  color: #fff;
+}
+
+:host ::ng-deep .quest-gutter , :host ::ng-deep .temp-gutter {
+  text-align: center;
+}
+
+:host ::ng-deep .quest-gutter span , :host ::ng-deep .temp-gutter span  {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+:host ::ng-deep .quest-gutter small {
+  display: block;
+  font-size: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 2px;
+}
+
+:host ::ng-deep .title-gutter{
+  padding: 5px;
+  font-size: .8em;
+}
+
+:host ::ng-deep .option-gutter{
+  background: #eee;
+    padding: 0 5px;
+    line-height: 30px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 12px;
+    height: 40px;
+    white-space: nowrap;
+}
+
+:host ::ng-deep .option-rating{
+  background: #eee;
+  padding-top: 10px;
+}
+
+:host ::ng-deep .link-to-block{
+  font-size: 12px;
+    line-height: 50px;
+    text-align: center;
+    top: 24px;
+    color: #666;
+    color: hsla(0,0%,59%,.8);
+    display: block;
+}
+
+:host ::ng-deep .option-container{
+  display: inline-block;
+  text-align: center;
+  margin: 5px 0;
+  width: 140px;
+}
+
+:host ::ng-deep .fig-gutter {
+  height: 48px;
+  text-align: center;
+  background: #dddddd;
+  border-radius: 2px;
+  margin: 0 8px;
+  display: flex;
+  font-size: 12px;
+  align-items: center;
+  overflow: hidden;
+}
+
+:host ::ng-deep .fig-gutter span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:host ::ng-deep .result-gutter {
+  text-align: center;
+  color: #fff;
+}
+
+:host ::ng-deep .call-gutter{
+  display: inline-block;
+    text-align: center;
+    margin: 5px;
+    width: 90px;
+}
+
+:host ::ng-deep .call{
+  background: #eee;
+  padding: 0 5px;
+  line-height: 30px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 12px;
+  height: 40px;
+  white-space: nowrap;
+}
+
+:host ::ng-deep .no-callto-action{
+  background: #4ab2b3;
+}
+
+:host ::ng-deep .next-btn-container{
+  display: inline-block;
+  text-align: center;
+  margin: 5px;
+  width: 90px;
+}
+
+:host ::ng-deep .text-type-option{
+  display: inline-block;
+  text-align: center;
+  margin: 5px;
+  width: 240px;
+}
+
+:host ::ng-deep .option-associated-score{
+  width: 30%;
+  bottom: 0;
+  right: 0;
+  position: static;
+  overflow: hidden;
+  background: #afadad;
+  text-overflow: ellipsis;
+  font-size: .9em;
+  border-top-left-radius: 5px;
+  margin: -18px 0 0 0;
+  float: right;
+}
+
+:host ::ng-deep .li {
+  top: -50px;
+  text-align: right;
+  display: flex;
+  margin-bottom: 8px;
+  white-space: nowrap;
+}
+
+:host ::ng-deep .li span {
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-right: 10px;
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  box-shadow: 0 0 22px 5px rgba(0, 0, 0, 0.2);
+}
+
+:host ::ng-deep .li i {
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  box-shadow: 0 0 22px 5px rgba(0, 0, 0, 0.2);
+}
+
+:host ::ng-deep .li:hover span {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+:host ::ng-deep .li:hover i {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+:host ::ng-deep .badge-container-gutter{
+  background: #fff;
+  display: inline-block;
+  width: 200px;
+  height: 60px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+:host ::ng-deep .badge-container-gutter:hover {
+  box-shadow: 0 0 5px 1px var(--primary-color) inset !important;
+}
+
+:host ::ng-deep .actionBG{
+  color: #fff;
+background: #F2C736 !important;
+}
+
+:host ::ng-deep .badgeBG{
+  color: #fff;
+  background: #E66950 !important;
+}
+
+:host ::ng-deep .badge-container{
+  background: transparent;
+  display: inline-block;
+  width: 140px;
+  height: 35px;
+}
+
+:host ::ng-deep .badge-gutter{
+  text-align: center;
+  color: #fff;
+    margin-bottom: 0;
+    max-width: 90%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+:host ::ng-deep circle {
+  filter: drop-shadow(0 0 7px rgba(0, 0, 0, 0.5));
+}
+
+:host ::ng-deep circle:hover{
+  filter: drop-shadow(0 0 7px var(--primary-color));
+}
+
+:host ::ng-deep .box-content-gutter {
+    height: 100%;
+    width: 100%;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+:host ::ng-deep .box-content-gutter:hover {
+  box-shadow: 0 0 5px 1px var(--primary-color) inset !important;
+}
+
+:host ::ng-deep .content-gutter{
+  text-align: center;
+}
+
+:host ::ng-deep .content-gutter span {
+  display: block;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host ::ng-deep .content-gutter small {
+  display: block;
+  font-size: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host ::ng-deep .option-image-container {
+  margin-right: 10px;
+}
+:host ::ng-deep .option-image {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  float: left;
+}
+
+:host ::ng-deep .logic-sidebar-head {
+  height: 40px;
+  display: flex;
+  color: #fff;
+  padding: 0 15px;
+  align-items: center;
+  background: #202020;
+}
+
+:host ::ng-deep .logic-sidebar-head h3 {
+  font-size: 15px;
+  margin: 0;
+  flex: 1;
+}
+
+.drag-drop-suggestion{
+  padding: 20px 0px;
+  min-height: 30px;
+}
+
+.drag-drop-suggestion i{
+  width: 2em;
+    height: 2em;
+    background: #eee;
+    border-radius: 50%;
+    line-height: 2em;
+    text-align: center;
+    color: #999;
+    font-size: 1.2em;
+    float: left;
+    margin-right: 10px;
+}
+
+.drag-drop-suggestion-text{
+  font-size: .9em;
+  color: #999;
+  margin: 0;
+  line-height: 30px;
+}
+
+:host ::ng-deep .drag-item{
+  box-shadow: 0 2px 40px rgba(0,0,0,.2);
+}
+
+:host ::ng-deep .correct-option{
+  margin: -8px 62px;
+  width: 16px;
+  height: 16px;
+  background: #32cd32;
+  border-radius: 50%;
+}
+
+:host ::ng-deep .correct-option i{
+  color: #fff;
+}
+
+.sidebar-head{
+  border-bottom: 2px solid #303030;
+  color: #fff;
+  padding: 13px 0 14px 15px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.b-bottom{
+  border-bottom: 2px solid #303030;
+}
+
+.pleft-right-15{
+  padding: 0 15px;
+}
+
+.mright-10{
+  margin-right: 10px;
+}
+
+.move-icon{
+  width: 9px;
+  height: 15px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.setting-width {
+  width: 50%;
+}
+
+.app-sidebar-overlay {
+  background: rgba(17, 17, 17, 0.4) !important;
+}
+
+.app-sidebar-overlay.open {
+  opacity: 0.1 !important;
+}
+
+
+/* left side change */
+
+.mright-5{
+  margin-right: 5px;
+}
+
+.add-btn{
+  font-size: 11px;
+  color: #fff;
+  opacity: .8;
+}
+
+.pTop-10{
+  padding-top: 10px;
+}
+
+.app-checkbox:hover input ~ .checkmark {
+  border: 1px solid #FFFFFF;
+}
+
+.app-checkbox input:checked ~ .checkmark {
+  border: 1px solid #FFFFFF;
+  background-color: transparent;
+}
+
+.app-checkbox{
+  margin-bottom: 0px;
+}
+
+.padding-subbox{
+  padding: 10px 15px;
+}
+
+.relative{
+  position: relative;
+}
+
+.cross-icon{
+  position: absolute;
+  right: 10px;
+}
+
+/* delete popup */
+.confirmation-title{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 125%;
+  text-align: center;
+  color: #494949;
+}
+.cancle-btn{
+  width: 120px;
+  height: 40px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+  background: #FFFFFF;
+  margin-right: 15px;
+}
+
+.del-btn{
+  width: 120px;
+  height: 40px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  color: #FFFFFF;
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+  background-color: var(--secondary-color);
+}
+
+.cross-icon-del{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.w-56{
+  width: 56% !important;
+}
+.w-80{
+  width: 80% !important;
+}
+
+:host ::ng-deep .cover-gutter{
+  text-align: center;
+  margin: auto;
+  width: 90%;
+}
+
+:host ::ng-deep .cover-gutter span {
+  display: block;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host ::ng-deep .cover-gutter small {
+  display: block;
+  font-size: .9em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 15px;
+  top: 2px;
+  margin: 0px 10px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  left: -1px;
+  bottom: -1px;
+  background: #E0E0E0;
+  transition: 0.4s;
+}
+
+input:checked + .slider:before {
+  background: #000000;
+  background: var(--secondary-color);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(15px);
+  -ms-transform: translateX(15px);
+  transform: translateX(15px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 10px;
+  border: 1px solid #FFFFFF;
+}
+
+input:checked + .slider.round {
+  background: #FFFFFF;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.quizsetting-icon{
+  width: 12px;
+  height: 12px;
+  margin-right: 10px;
+}
+
+/* whatsapp template */
+:host ::ng-deep .temp{
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  border-radius: 3px;
+}
+
+:host ::ng-deep .temp-btn-block{
+  text-align: center;
+  padding: 20px 0px;
+}
+
+:host ::ng-deep .temp-btn{
+  border-radius: 5px;
+  height: 35px;
+  background: #202020;
+  color: #FFFFFF;
+  width: 190px;
+}
+
+:host ::ng-deep .hide-duplicate{
+  pointer-events: none;
+  cursor: default;
+  display: none;
+}

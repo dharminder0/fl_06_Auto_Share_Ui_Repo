@@ -1,0 +1,6 @@
+<input type="text" class="form-control" id="checkKeyUp" [(ngModel)]="_searchTextModel"
+  placeholder="Search {{placeholder}}" (ngModelChange)="search($event)">
+<i class="fa-icon search"></i>
+<a href="javascript:void(0);" class="search-btn" (click)='onSearchBoxEmpty()'>
+  <i class="fa-icon close-1"></i>
+</a>

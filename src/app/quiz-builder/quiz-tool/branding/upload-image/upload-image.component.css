@@ -1,0 +1,89 @@
+/* :host ::ng-deep .customClass{
+    position: relative;
+    height: 207px;
+    }
+    
+    :host ::ng-deep .customClass .img-ul-file-upload.img-ul-hr-inline-group{
+    position: absolute;
+    top: 170px;
+ 
+    color: #fff;
+    background: #000000;
+    background: var(--secondary-color);
+    border-radius: 2px;
+    box-shadow: none;
+    padding: 8px 12px;
+    }
+    
+    :host ::ng-deep .customClass .img-ul-clear.img-ul-button {
+    display: none;
+    }
+    
+    :host ::ng-deep .customClass .img-ul-drag-box-msg{
+    display: none;
+    }
+    
+    :host ::ng-deep .customClass .img-ul-upload.img-ul-button{
+
+    border-color: #e5e5e5;
+    margin: 0;
+    box-shadow: none;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 400;
+    border: 1px solid transparent;
+    text-transform:none;
+    }
+    
+
+    
+    :host ::ng-deep .customClass .img-ul-container.img-ul-hr-inline-group{
+    width: 160px;
+    height: 160px;
+    padding: 2px 2px;
+    border: 1px solid #e5e5e5;
+    }
+    
+    :host ::ng-deep .customClass .img-ul-container.img-ul-hr-inline-group .img-ul-image{
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    }
+    
+    :host ::ng-deep .customClass .img-ul-close:before{
+    top: 2px;
+    }
+    
+    :host ::ng-deep .customClass .img-ul-close:after{
+    top: 2px;
+    }
+    
+    .no-image{
+    position: absolute;
+    top: 72px;
+    z-index: 1;
+    left: 59px;
+    color: #c3c3c3;
+    font-size: 16px;
+    font-weight: 500;
+    }
+
+    .disp{
+        display: none;
+    }
+
+    .image-uploader{
+        width: 55%;
+    }
+
+    .image-show{
+        width: 120px;
+    }
+
+    .color-picker-circle{
+        width: 40px;
+        height: 40px;
+        border-radius: 100px;
+        font-size: 0;
+        border: 2px solid #dbdbdb;
+    } */

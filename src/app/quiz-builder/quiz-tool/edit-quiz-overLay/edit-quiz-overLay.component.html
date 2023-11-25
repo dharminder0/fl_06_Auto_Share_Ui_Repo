@@ -1,0 +1,50 @@
+<div class="portlet-head">
+    <div class="heading-title">
+      <span *ngIf="editType == branchingLogicEnum.START">{{"COVER" | translate}}</span>
+      <span *ngIf="editType == branchingLogicEnum.QUESTION">{{"QUESTION" | translate}}</span>
+      <span *ngIf="editType == branchingLogicEnum.CONTENT">Content</span>
+      <span *ngIf="editType == branchingLogicEnum.RESULT">{{"RESULT" | translate}}</span>
+      <span *ngIf="editType == branchingLogicEnum.BADGE">{{"BADGE" | translate}}</span>
+      <span *ngIf="editType == multiResultEnum">{{"MUTIPLE_RESULTS" | translate }}</span>
+      <span *ngIf="editType == branchingLogicEnum.WHATSAPPTEMPLATE">Whatsapp template</span>
+    </div>
+    <div class="action">
+      <a href="javascript:void(0)" class="btn blue hide">Save Records</a>
+      <!-- <a href="javascript:void(0)" class="closet" (click)="onSaveAll()"></a> -->
+      <span class="jr-closet pointer" (click)="onSaveAll()"></span>
+    </div>
+</div>
+
+<div class="overlay-block">
+    <div class="form-body" [ngClass]="{'temp-body-height': editType == branchingLogicEnum.WHATSAPPTEMPLATE}">
+        <div *ngIf="editType == branchingLogicEnum.START && coverData">
+            <app-cover-page [coverPageDetail]="coverData" [isOpenBranchingLogicSide]="isOpenBranchingLogicSide" (updateBranchingLogic)="onUpdateBranchingLogic()" ></app-cover-page>
+        </div>
+        <div *ngIf="(editType == branchingLogicEnum.QUESTION || (editType == branchingLogicEnum.CONTENT && sameTableContentAndQuestion)) && questionData ">
+            <app-questions [questionData]="questionData" [isOpenBranchingLogicSide]="isOpenBranchingLogicSide" (updateBranchingLogic)="onUpdateBranchingLogic()"></app-questions>
+        </div>
+        <div *ngIf="editType == branchingLogicEnum.CONTENT && !sameTableContentAndQuestion && contentData">
+            <app-content [contentData]="contentData" [isOpenBranchingLogicSide]="isOpenBranchingLogicSide" (updateBranchingLogic)="onUpdateBranchingLogic()"></app-content>
+        </div>
+        <div *ngIf="editType == branchingLogicEnum.RESULT && resultData">
+            <app-results [resultData]="resultData" [isOpenBranchingLogicSide]="isOpenBranchingLogicSide" (updateBranchingLogic)="onUpdateBranchingLogic()"></app-results>
+        </div>
+        <div *ngIf="editType == branchingLogicEnum.BADGE && badgeData">
+            <app-badges [badgeData]="badgeData" [isOpenBranchingLogicSide]="isOpenBranchingLogicSide" (updateBranchingLogic)="onUpdateBranchingLogic()"></app-badges>
+        </div>
+        <div *ngIf="editType == multiResultEnum && personalResult">
+            <app-show-multiple-result [isOpenBranchingLogicSide]="isOpenBranchingLogicSide"></app-show-multiple-result>
+        </div>
+        <div *ngIf="editType == branchingLogicEnum.WHATSAPPTEMPLATE" class="pad-edit-bl">
+            <app-whatsapp-template-new-version [isOpenBranchingLogicSide]="isOpenBranchingLogicSide" (updateBranchingLogic)="onSetTemplateDetail($event)"></app-whatsapp-template-new-version>
+        </div>
+    </div>
+
+    <div *ngIf="editType == branchingLogicEnum.WHATSAPPTEMPLATE" class="content-bottom">
+        <button type="submit" class="btn save-btn" (click)="onSaveTemplate()">{{"SAVE" | translate }}</button>
+    </div>
+
+    <div>
+        <enable-media-setting [quizData]="quizData"></enable-media-setting>
+    </div>
+</div>

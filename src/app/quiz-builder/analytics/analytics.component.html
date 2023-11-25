@@ -1,0 +1,34 @@
+<!-- begin contents -->
+<section class="app-contents">
+  <!-- begin head -->
+  <div class="app-head">
+    <h1 class="title-7">{{ this.quizDetails?.QuizTitle }}</h1>
+  </div>
+  <!-- end head -->
+  <!-- begin page -->
+  <div class="tabbable-body">
+    <ul class="col-md-6" class="nav nav-tabs">
+      <li routerLinkActive="active">
+        <a [routerLink]="['invitation']" data-toggle="tab">{{"OVERVIEW" | translate }}</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['reminder']" data-toggle="tab">{{"LEADS" | translate }}</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['result']" data-toggle="tab">{{"STATISTICS" | translate }}</a>
+      </li>
+    </ul>
+    <ng-select class="col-md-6" placeholder="{{'SELECT_VERSION' | translate}}" (selected)="onVersionChange($event)" [options]="versionList" [noFilter]="10"
+      [(ngModel)]='selectedVersion'>
+    </ng-select>
+  </div>
+  <div class="ember-body">
+    <div class="ins">
+      <div class="tab-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+  <!-- end page -->
+</section>
+<!-- end contents -->

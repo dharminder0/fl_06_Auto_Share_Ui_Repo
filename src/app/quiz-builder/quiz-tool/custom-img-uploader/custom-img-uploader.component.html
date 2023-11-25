@@ -1,0 +1,76 @@
+<div class="modal fade" id="edit-cover-modal">
+  <div class="modal-dialog modal-medium tab-dialog">
+    <div class="modal-content">
+      <div class="tabbable-body">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="#tab-1" data-toggle="tab">
+              <i class="fa-icon crop tab"></i>{{"RESIZE" | translate }}</a>
+          </li>
+          <li>
+            <a href="#tab-2" data-toggle="tab">
+              <i class="zmdi zmdi-edit"></i>{{"EDIT_ATTRIBUTION" | translate }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-body">
+        <form [formGroup] = "imageUploaderForm" (submit) = "onCroppedIMage()" class="tab-content">
+          <div class="tab-pane active" id="tab-1">
+            <div class="crop-info">
+              <div class="top">
+                <p>{{"ADVANCE_OPTION:" | translate }}</p>
+                <div class="col">
+                  <span>{{"X" | translate }}</span>
+                  <input type="text" formControlName = 'QuizCoverImgXCoordinate' class="form-control" placeholder="0" />
+                </div>
+                <div class="col">
+                  <span>{{"Y" | translate }}</span>
+                  <input type="text" formControlName = 'QuizCoverImgYCoordinate' class="form-control" placeholder="149" />
+                </div>
+                <div class="col">
+                  <span>{{"W" | translate }}</span>
+                  <input type="text" formControlName = 'QuizCoverImgWidth' class="form-control" placeholder="1920" />
+                </div>
+                <div class="col">
+                  <span>{{"H" | translate }}</span>
+                  <input type="text" formControlName = 'QuizCoverImgHeight' class="form-control" placeholder="890" />
+                </div>
+              </div>
+              <figure>
+                <img [src]="imageUploaderForm.controls['QuizCoverImage'].value" alt="">
+              </figure>
+              <div class="form-action">
+                <button type="submit" class="btn blue">{{"CROP_&_SAVE" | translate }}</button>
+                <a href="" class="btn grey line">{{"DELETE" | translate }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="tab-2">
+            <div class="heading">
+              <h2 class="title-9">{{"IMAGE_ATTRIBUTION" | translate }}</h2>
+            </div>
+            <div class="form-group">
+              <label class="control-label">{{"IMAGE_ATTRIBUTION_LINK" | translate }}</label>
+              <div class="input-group">
+                <span class="input-group-addon">{{"HTTP://" | translate }}</span>
+                <input type="text" formControlName = 'QuizCoverImage' class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">{{"IMAGE_ATTRIBUTION_LABEL" | translate }}</label>
+              <input type="text" formControlName = 'QuizCoverImgAltTag' class="form-control" placeholder="Ex. Image Source">
+            </div>
+            <div class="form-group">
+              <label class="control-label">{{"IMAGE_ATTRIBUTION_LABEL" | translate }}</label>
+              <input type="text" formControlName = 'QuizCoverImgAttributionLabel' class="form-control" placeholder="Ex. Image Source">
+            </div>
+            <div class="form-action">
+              <button type="submit" class="btn blue">{{"SAVE" | translate }}</button>
+              <a href="" class="btn grey line">{{"DELETE" | translate }}</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

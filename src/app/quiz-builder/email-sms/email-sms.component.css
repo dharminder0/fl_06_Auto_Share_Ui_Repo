@@ -1,0 +1,154 @@
+:host ::ng-deep .selected.highlighted{
+    background-color: #000000;
+    background-color: var(--secondary-color);
+    /* background-color: #00b7ab; */
+}
+
+:host ::ng-deep .highlighted{
+    background-color: #000000;
+    background-color: var(--secondary-color);
+    /* background-color: #00B7AB; */
+}
+
+/* :host ::ng-deep ng-select{
+    background: #fff;
+} */
+
+.childGrouping{
+    padding-left: 15px;
+}
+
+.green-btn{
+    /* background: #00B7AB; */
+    background-color: #000000;
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+    color: #FFFFFF;
+    padding: 9px 29px !important;
+    height: 40px;
+}
+
+.btn-text{
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.app-header{
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 125%;
+    color: #494949;
+    /* display:contents; */
+}
+
+.flex-display{
+    display: inline-flex;
+}  
+
+.tabbable-body{
+    border-bottom: 1px solid #E0E0E0;
+    margin-bottom: 20px;
+}
+
+.arrow-icon{
+    width: 16px;
+    height: 10px;
+    position: absolute;
+    /* left: 30px; */
+    top: 30px;
+    background: #f7f7f7;
+}
+
+.arrow-left{
+    left: 135px;
+}
+
+.temp-body{
+    max-width: 1680px;
+    margin: auto;
+}
+
+.tabbable-body {
+    margin-left: 40px !important; 
+    margin-right: 40px !important;
+    max-width: 1520px;
+}
+
+.temp-head{
+    margin: 40px 0 10px 0;
+    padding: 0 25px;
+    -webkit-box-align: center;
+    align-items: center;
+    max-width: 1600px;
+}
+
+.btn-group{
+    margin: 0 5px;
+}
+
+.float-right{
+    float:right;
+}
+
+.green{
+    /* color: #00B7AB !important; */
+    color: #000000 !important;
+    color: var(--secondary-color) !important;
+}
+
+.nav-padding{
+    padding: 10px 20px 0 0;
+    color: #494949;
+}
+
+.nav-padding:hover{
+    color: #000000;
+    color: var(--secondary-color);
+}
+
+.padding-0{
+    padding: 0;
+}
+
+.app-checkbox:hover input ~ .checkmark {
+    /* border: 1px solid #00A99E; */
+    border: 1px solid #000000;
+    border: 1px solid var(--secondary-color);
+  }
+
+  .app-checkbox input:checked ~ .checkmark {
+    /* background-color: #00A99E;
+    border: 1px solid #00A99E; */
+    border: 1px solid #000000;
+    border: 1px solid var(--secondary-color);
+    background-color: #000000;
+    background-color: var(--secondary-color);
+  }
+
+  .checkmark{
+      background-color: white;
+  }
+
+  .nav-font-family{
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .company-wise-text{
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .setting-width{
+      width: 720px;
+  }

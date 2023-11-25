@@ -1,0 +1,23 @@
+/*
+# Author : Finoit
+#	Date : 6 Dec 2017
+#	Description : Badges
+*/
+
+.badges{
+	display:inline-block;
+	font-size:0.786em;
+	background-color:#e0e0e0;
+	white-space:nowrap;
+	border-radius:4px;
+	color:#494949;
+	cursor:default;
+	padding:5px 10px;
+	margin:0 10px 10px 0;
+	line-height:1;
+	font-weight:600;
+	&:hover{
+		background:$primary-color;
+		color:$white;
+	}
+}

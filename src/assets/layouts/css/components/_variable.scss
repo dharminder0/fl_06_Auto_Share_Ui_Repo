@@ -1,0 +1,168 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Variable 
+*/
+
+$font-stack: arial;
+
+$regular-bkg: #494949;
+$primary-bkg: #00b7ab;
+$secondary-bkg: #00b7ab;
+$base-bkg-1: #fff;
+$base-bkg-2: #f6f6f6;
+$base-bkg-3: #7d7d7d;
+$base-bkg-4: #f9f9f9;
+$base-bkg-5: #000;
+$base-bkg-6: #ececec;
+$base-bkg-7: #ddd;
+$base-bkg-8: #f7f7f7;
+$base-bkg-9: #e3e3e3;
+$base-bkg-10: #a4a4a4;
+$base-bkg-11: #e4e6ec;
+$no-bkg: transparent;
+
+$base-theme-1: #c5f4a8;
+$base-theme-2: #d518d7;
+$base-theme-3: #112cfa;
+$base-theme-4: #479a13;
+$base-theme-5: #f4a8a8;
+$base-theme-6: #c5f4a8;
+$base-theme-7: #f4d7a8;
+$base-theme-8: #a8f4f3;
+$base-theme-6: #c5f4a8;
+
+$regular-color: #2c2c2c;
+$primary-color: #00b7ab;
+$secondary-color: #00b7ab;
+$base-color-1: #fff;
+$base-color-2: #bebebe;
+$base-color-3: #e4e6ec;
+$base-color-4: #dbdbdb;
+$base-color-5: #848585;
+$base-color-6: #e0e0e0;
+$base-color-7: #dfe4e9;
+$base-color-8: #494949;
+$base-color-9: #ececec;
+
+$font-size-xsm: 12px;
+$font-size-small: 13px;
+$font-size-regular: 14px;
+$font-size-medium: 16px;
+$font-size-large: 18px;
+$font-size-lg: 20px;
+
+$regular-shadow: 1px 0 6px rgba(0,0,0,.16);
+$primary-shadow: 1px 0 4px rgba(0,0,0,.06);
+$secondary-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 1px 6px rgba(0,0,0,.12);
+$base-shadow-1: -12px 0 16px rgba(0,0,0,.18);
+$base-shadow-2: 0 2px 6px 0 rgba(0,0,0,.18), 0 1px 30px rgba(0,0,0,.16);
+$no-shadow: none;
+
+$regular-container: 0 80px;
+$outline: 0 !important;
+
+@mixin border-radius($radius) {  
+  -webkit-border-radius: $radius;  
+  -moz-border-radius: $radius;  
+  border-radius: $radius;  
+} 
+
+@mixin box-shadow($regular-shadow) {  
+  -moz-box-shadow: $regular-shadow;  
+  -webkit-box-shadow: $regular-shadow;
+  box-shadow: $regular-shadow;  
+} 
+
+@mixin box-shadow($secondary-shadow) {  
+  -moz-box-shadow: $secondary-shadow;  
+  -webkit-box-shadow: $secondary-shadow;
+  box-shadow: $secondary-shadow;  
+} 
+
+@mixin box-shadow($primary-shadow) {  
+  -moz-box-shadow: $primary-shadow;  
+  -webkit-box-shadow: $primary-shadow;
+  box-shadow: $primary-shadow;  
+} 
+
+@mixin box-shadow($no-shadow) {  
+  -moz-box-shadow: $no-shadow;  
+  -webkit-box-shadow: $no-shadow;
+  box-shadow: $no-shadow;  
+} 
+
+@mixin transition($ease-in-out) {  
+  -webkit-transition: $ease-in-out;
+  -moz-transition: $ease-in-out;
+  -o-transition: $ease-in-out;
+  -ms-transition: $ease-in-out;
+  transition: $ease-in-out;
+}
+
+@mixin flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@mixin inline-flex {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+
+@mixin align-item {
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+@mixin justify-center {
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+@mixin flex-group {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+
+@mixin flex-value-1 {
+  -webkit-box-flex: 1; 
+  -moz-box-flex: 1; 
+  -webkit-flex: 1;
+  -ms-flex: 1; 
+  flex: 1;
+}
+
+@mixin flex-value-auto {
+  -webkit-box-flex: 0 auto; 
+  -moz-box-flex: 0 auto; 
+  -webkit-flex: 0 auto;
+  -ms-flex: 0 auto; 
+  flex: 0 auto;
+}

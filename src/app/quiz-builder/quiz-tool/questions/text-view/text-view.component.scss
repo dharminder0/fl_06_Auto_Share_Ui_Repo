@@ -1,0 +1,151 @@
+.tag-listing{
+    margin-top: -16px;
+    margin-bottom: -16px;
+    &.is-inpt-count{
+        margin-top: 0px !important;
+    }
+   .cat-row{
+       margin-bottom: 4px;
+       span{
+           &.title{
+            font-size: 12px;
+           }
+           &.tag{
+            color: #fff;
+            background: #fb6412;
+            border-radius: 2px;
+            font-size: 11px;
+            padding: 2px 4px;
+            margin: 2px 2px;
+           }
+       }
+   } 
+}
+
+.short-long-anstype-text{
+    width: 100%;
+    height: 40px;
+    background-color: #F6F6F6;
+    font-family: 'Arial';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
+    text-decoration: none;
+    color: #333333;
+    text-align: left;
+    // border-color: transparent;
+    border: 1px solid #D0D0D0;
+    border-radius: 5px;
+    padding-top: 5px;
+    // border-bottom: 2px dotted #cacaca;
+    &:hover{
+        border: 1px solid #000000;
+        border: 1px solid var(--secondary-color);  
+    }
+    &.input-type{
+        padding: 5px 18px;
+    }
+}
+
+.suggestion-text-note{
+    font-family:'Raleway Bold', 'Raleway';
+    font-weight:700;
+}
+
+.suggestion-text-holder{
+    color: #494949;
+    margin-top: 8px;
+}
+
+.suggestion-text{
+    font-family:'Raleway';
+    font-weight:600;
+}
+
+.makeVisible{
+    z-index: 8;
+}
+.setVisibility{
+    z-index: 0;
+}
+
+// new style
+
+.admin .question .is-question-row .form-control{
+    padding-left: 0;
+}
+
+.admin .question .is-question-row{
+    .inpt-count{
+        position: absolute;
+        top: 44px;
+        display: none;
+    }
+    &:focus-within{
+        .inpt-count{
+            display: block;
+        }
+    }
+}
+
+.admin .question .is-question-row input.form-control{
+    padding-left: 12px;
+}
+
+.admin .question{
+    margin-bottom: 0em;
+}
+
+.boder-none{
+    border: none;
+}
+
+.add-btn{
+    font-family:'Raleway';
+    color: #494949;
+    &:hover{
+        color:var(--secondary-color);
+    }
+}
+
+.p-right-8{
+    padding-right: 8px;
+}
+
+.pre-question{
+    padding-left: 12px !important;
+    height: 40px;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.p-left-8{
+    padding-left: 8px;
+}
+
+.disabled{
+    pointer-events: none;
+    opacity: .4;
+}
+
+.wht-ap-cstm-pad{
+    padding: 22px 12px !important;
+}
+
+.desbtn{
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    border: none;
+    background: transparent;
+    width: fit-content;
+    padding: 0;
+    z-index: 10;
+}
+::ng-deep .has-ans-desc-variable{
+   .fr-view{
+        color: #aaa !important;
+    }
+}

@@ -1,0 +1,101 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Tabbable 
+*/
+
+.tabbable-box{
+ .nav-tabs {
+    border: 0;
+    li{
+      margin: 0;
+      a {  
+        color: $regular-color;
+        min-width: 76px;
+        padding: 6px 12px;
+        margin-right: -1px;
+        text-align: center;
+        background: $base-bkg-1;
+        @include border-radius(0);
+        border-color: $base-color-2;
+        @include box-shadow($regular-shadow);
+        @include transition(all 0.2s ease-in-out);
+        &:hover {
+          color: $base-color-1;
+          background: $primary-bkg;
+          border-color: $primary-color;
+        }             
+      }
+      &.active {
+        a {
+          color: $base-color-1;
+          background: $primary-bkg;
+          border-color: $primary-color;
+        }
+      }    
+    } 
+  }
+}
+
+.tabbable-body{
+  @include flex();
+  @include align-item();
+  margin: $regular-container;
+  position: relative;
+  @media all and (min-width: 768px) and (max-width: 1024px) {
+    margin: 0 40px;
+  }
+  @media (max-width: 767px) {
+    margin: 0 20px;
+  }
+  &.beta{
+    margin: 0;
+  }
+  p{
+    margin: 0 20px 0 0;
+  }
+ .nav-tabs {
+    border: 0;
+    li{
+      margin: 0;
+      a {  
+        border: 0 !important;
+        color: $regular-color;
+        padding: 12px 30px;
+        text-align: center;
+        background: $base-bkg-7;
+        @include border-radius(4px 4px 0 0); 
+        @include transition(all 0.2s ease-in-out);
+        @media (max-width: 400px) {
+          padding: 10px 20px;
+        }
+        &:hover {
+          color: $base-color-1;
+          background: $secondary-bkg;
+        }             
+      }
+      &.active {
+        a {
+          color: $base-color-1;
+          background: $secondary-bkg;
+        }
+      }    
+    } 
+  }
+  .action{
+    right: 0;
+    top: 13px;
+    position: absolute;
+    a{
+      &.orange{
+        color: $primary-color;
+        @media (max-width: 580px) {
+          font-size: 0;
+        }
+      }
+      i{
+        font-size: $font-size-medium;
+      }
+    }
+  }
+}

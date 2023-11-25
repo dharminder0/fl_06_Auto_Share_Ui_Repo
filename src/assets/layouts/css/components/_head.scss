@@ -1,0 +1,163 @@
+/*
+#	Author : Finoit
+#	Date : 6 Dec 2017
+#	Description : Head 
+*/
+.app-head {    
+  padding: $regular-container; 
+  margin: 40px 0 22px 0; 
+  @include flex(); 
+  @include align-item(); 
+  &.cntr{    
+    @include justify-center();
+    h1{
+      @include flex-value-auto();
+    }
+  } 
+  &.alpha{
+    padding: 0;
+  }
+  @media all and (min-width: 768px) and (max-width: 1024px) {
+    padding: 0 40px;
+  }
+  @media (max-width: 767px) {
+    padding: 0 20px;
+  }   
+  h1 {
+    position: relative;    
+    margin: 8px 0 0 0; 
+    @include flex-value-1();
+    &:before{
+      left: 0;
+      top: 0;
+      bottom: 0;    
+      content: "";  
+      margin: auto;          
+      position: absolute;
+      margin-right: 14px;
+      background: url(../img/icon1.svg) no-repeat 0 0;  
+    }
+    span{
+      display:block;
+      font-size: 14px;
+      margin-top: 5px;
+      font-weight: normal;
+    }
+    &.title-1{
+      padding-left: 79px;
+      margin-bottom: 14px;
+      &:before{
+        width: 64px;
+        height: 60px;
+        background-position: -1px 0px;
+      }
+    }
+    &.title-2{
+      padding-left: 72px;
+      margin-bottom: 12px;
+      &:before{
+        width: 62px;
+        height: 47px;
+        background-position: -1px -346px;
+      }
+    }
+    &.title-3{
+      padding-left: 72px;
+      margin-bottom: 8px;
+      &:before{
+        width: 51px;
+        height: 56px;
+        background-position: -1px -401px;
+      }
+    }
+    &.title-4{
+      padding-left: 72px;
+      margin-bottom: 18px;
+      &:before{
+        width: 65px;
+        height: 58px;
+        background-position: -1px -464px;
+      }
+    }
+    &.title-5{
+      padding-left: 72px;
+      margin-bottom: 22px;
+      &:before{
+        width: 65px;
+        height: 65px;
+        background-position: -1px -528px;
+      }
+    }
+    &.title-6{
+      padding-left: 78px;
+      margin-bottom: 22px;
+      &:before{
+        width: 66px;
+        height: 70px;
+        background-position: -1px -601px;
+      }
+    }
+    &.title-7{
+      padding-left: 78px;
+      margin-bottom: 12px;
+      &:before{
+        width: 70px;
+        height: 44px;
+        background-position: -1px -672px;
+      }
+    }
+    &.title-8{
+      padding-left: 68px;
+      margin-bottom: 6px;
+      &:before{
+        width: 50px;
+        height: 52px;
+        background-position: -1px -724px;
+      }
+    }
+    &.title-9{
+      padding-left: 80px;
+      margin-bottom: 12px;
+      &:before{
+        width: 65px;
+        height: 66px;
+        background-position: -1px -782px;
+      }
+    }
+  }
+  .action{ 
+    .btn-group{
+    + .btn-group{
+        margin-left: 20px;                
+      } 
+    }
+    .ember-calendar{ 
+      width: 220px;      
+      .dropdown-menu{
+        width: 100%;        
+      }      
+    } 
+    .ember-office{
+      width: 140px;
+    }
+    .btn{
+      padding: 6px 12px;
+      &.blue{ 
+        .fa-icon{
+          height: 19px;
+          margin-right: 4px;  
+        }
+      }  
+    }
+  }
+  .tabbable-box{
+    @include flex-value-1();  
+  }
+
+  li:hover .app-checkbox span:after, 
+  li:hover .app-radio span:after,
+  li:hover .app-checkbox input:checked ~ span, 
+  li:hover .app-radio input:checked ~ span{
+    border-color: $base-color-1 !important;
+  }
+}  

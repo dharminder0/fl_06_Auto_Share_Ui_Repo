@@ -1,0 +1,25 @@
+<div class="tab-pane" id="tab-2">
+  <div class="box-layout">
+    <h2>{{"LEAD_COLLECTED" | translate }}</h2>
+    <div class="table-container">
+      <table class="table data-tabe odd-even">
+        <thead>
+          <tr>
+            <th>{{"DATE" | translate }}</th>
+            <th>{{"EMAIL_ID" | translate }}</th>
+            <th>{{"NAME" | translate }}</th>
+            <th>{{"PHONE_NUMBER" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor = 'let leadStats of quizLeadsCollection;'>
+            <td>{{ leadStats?.AddedOn }}</td>
+            <td>{{ leadStats?.LeadUserEmail }}</td>
+            <td>{{ leadStats?.LeadUserName }}</td>
+            <td>{{ leadStats?.LeadUserPhone }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

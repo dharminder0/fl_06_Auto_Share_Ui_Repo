@@ -1,0 +1,51 @@
+<ng-template #deleteTemplate>
+  <div class="modal-body text-center">
+    <p>{{"ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_TEMPLATE" | translate }}</p><br>
+    <button type="button"  class="btn blue" (click)="confirm()">{{"YES" | translate }}</button>
+    <button type="button" class="btn btn-default" (click)="decline()">{{"NO" | translate }}</button>
+  </div>
+</ng-template>
+
+<!-- pagination -->
+
+<span class="toggle-menu" *ngIf="recordsPerData > 0">
+  <span class="title mright-5"> {{startRecord}} - {{endRecord}} {{"OF" |translate}} {{recordsPerData}} </span>
+  <a *ngIf="startRecord == 1" style="cursor: no-drop;">
+    <svg class="left-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1.18581 7.42828L6.90303 12.8229C7.1539 13.059 7.56035 13.059 7.81185 12.8229C8.06272 12.5867 8.06272 12.203 7.81185 11.9668L2.54811 7.0003L7.81121 2.03376C8.06208 1.79757 8.06208 1.41393 7.81121 1.17714C7.56035 0.940952 7.15327 0.940952 6.9024 1.17714L1.18518 6.57167C0.938167 6.80542 0.938167 7.19508 1.18581 7.42828Z" fill="#a9a9a940" stroke="#a9a9a940" stroke-width="0.5"/>
+    </svg>
+  </a>
+  <a *ngIf="startRecord != 1" (click)="getTemplateDetails(pageIndex - 1)" class="pointer">
+    <svg class="left-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1.18581 7.42828L6.90303 12.8229C7.1539 13.059 7.56035 13.059 7.81185 12.8229C8.06272 12.5867 8.06272 12.203 7.81185 11.9668L2.54811 7.0003L7.81121 2.03376C8.06208 1.79757 8.06208 1.41393 7.81121 1.17714C7.56035 0.940952 7.15327 0.940952 6.9024 1.17714L1.18518 6.57167C0.938167 6.80542 0.938167 7.19508 1.18581 7.42828Z" fill="#494949" stroke="#494949" stroke-width="0.5"/>
+    </svg>
+  </a>
+  <a *ngIf="endRecord == recordsPerData" style="cursor: no-drop;">
+    <svg class="right-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7.81418 6.57172L2.09697 1.17714C1.8461 0.940953 1.43965 0.940953 1.18815 1.17714C0.937283 1.41334 0.937283 1.79697 1.18815 2.03316L6.45189 6.9997L1.18878 11.9662C0.937917 12.2024 0.937917 12.5861 1.18879 12.8229C1.43965 13.059 1.84673 13.059 2.0976 12.8229L7.81482 7.42833C8.06183 7.19458 8.06183 6.80492 7.81418 6.57172Z" fill="#a9a9a940" stroke="#a9a9a940" stroke-width="0.5"/>
+    </svg>
+  </a>
+  <a *ngIf="endRecord != recordsPerData" (click)="getTemplateDetails(pageIndex + 1)" class="pointer">
+    <svg class="right-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7.81418 6.57172L2.09697 1.17714C1.8461 0.940953 1.43965 0.940953 1.18815 1.17714C0.937283 1.41334 0.937283 1.79697 1.18815 2.03316L6.45189 6.9997L1.18878 11.9662C0.937917 12.2024 0.937917 12.5861 1.18879 12.8229C1.43965 13.059 1.84673 13.059 2.0976 12.8229L7.81482 7.42833C8.06183 7.19458 8.06183 6.80492 7.81418 6.57172Z" fill="#494949" stroke="#494949" stroke-width="0.5"/>
+    </svg>
+  </a>
+</span>
+
+<!-- new style -->
+
+<div class="template-list-body">
+  <div class="searchBoxForDropdown font-type">
+    <input type="text" class="someinput" placeholder="{{'SEARCH_TEMPLATES' | translate}}" [(ngModel)]="searchTemplate" />
+    <img alt="search icon" class="search-icon" src="assets/layouts/img/icon_search.png">
+  </div>
+  <div (click)="chooseTemplate(template)"  [ngClass]="{'b-left':template.Id == templateId}" *ngFor="let template of quizTemplateList?.NotificationTemplateList | templateSearchPipe: searchTemplate;let i = index">
+    <div class="template-list-text pointer ellipsiss" [ngClass]="{'p-left':template.Id != templateId,'template-active':template.Id == templateId}">
+      <span class="p-right">
+        {{i+1}}
+      </span>
+        <span *ngIf="!template.TemplateTitle" title="{{template.templates}}">{{template.templates}}</span>
+        <span *ngIf="template.TemplateTitle" title="{{template.TemplateTitle}}">{{template.TemplateTitle}}</span>
+    </div>
+  </div>
+</div>

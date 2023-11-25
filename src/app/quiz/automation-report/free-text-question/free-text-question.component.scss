@@ -1,0 +1,55 @@
+.portlet-head{
+    padding: 0 40px;
+    border-bottom: 1px solid #E0E0E0;
+  }
+
+  .font-type{
+    font-family: Raleway;
+    font-style: normal;
+  }
+  
+  .font-text2{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 125%;
+    color: #494949;
+  }
+
+  .form-body{
+    height: calc(100% - 60px);
+    background: #fff;
+    position: relative;
+    padding: 0 40px 34px;
+    overflow: auto;
+  }
+
+  .ans-text{
+    padding: 20px 0;
+    border-bottom: 1px solid #E0E0E0;
+  }
+
+  .ellipsiss{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .flex-dis{
+    display: flex;
+  }
+
+  .mLeft-15{
+    margin-left: 15px
+  }
+
+  .less-more{
+    color: var(--primary-color);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .answer-count{
+    width: 85px;
+    color: #A9A9A9;
+    margin: auto;
+  }

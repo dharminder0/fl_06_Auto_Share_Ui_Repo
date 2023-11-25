@@ -1,0 +1,141 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Header 
+*/
+
+header {
+  .app-top {
+    height: 68px;
+     z-index: 9;
+    position: relative;
+    padding: $regular-container;
+    background: $base-bkg-1;
+    @include flex();
+    @include align-item();
+    @media all and (min-width: 768px) and (max-width: 1024px) {
+      padding: 0 40px;
+    }
+    @media (max-width: 767px) {
+      padding: 0 20px;
+    }
+
+    .app-logo {  
+      @include flex-value-1();  
+    }
+
+    .top-menu {  
+      a {
+        color: $regular-color;
+        img { 
+          margin: 0 6px; 
+        }        
+      }
+      .dropdown-menu{
+        margin-top: 14px;
+        .nav{
+          li{
+            a{
+              i{
+                float: right;
+                font-size: $font-size-medium;
+                margin: 1px 30px 0 0;
+              }
+            }
+            .dropdown-menu{
+              right: 160px;
+              min-width: 120px;
+              margin: -38px 0 0 0;
+              li{
+                a{
+                  position: relative;
+                  &:before{
+                    right: 24px;
+                    top: 14px;
+                    width: 5px;
+                    height: 10px;
+                    border: solid $base-color-1;
+                    border-width: 0 1px 1px 0;
+                    content: '';
+                    position: absolute;
+                    transform: rotate(45deg);
+                  }
+                }
+              }
+            }
+          }  
+        }
+      }
+    }
+  }
+
+  .app-nav {
+    padding: $regular-container;
+    background: $regular-bkg;
+    @media all and (min-width: 768px) and (max-width: 1024px) {
+      padding: 0 40px;
+    }
+
+    @media (max-width: 767px) {
+      padding: 0 20px;
+    }
+
+    > ul{  
+      @include flex();
+      > li {
+        margin-right: 30px;
+        @media (min-width: 768px) {
+          margin-right: 26px;
+          &:last-child{
+            margin-right: 0;
+          }
+        }        
+        > a {  
+          height: 40px;
+          padding: 0;
+          font-size: $font-size-small;
+          color : $base-color-1;
+          font-weight: bold;
+          position: relative;     
+          background: $no-bkg !important;     
+          @include flex-group();
+          @include transition(all 0.3s ease-in-out);           
+          &:before {
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 0px;
+            height: 3px;
+            margin: auto;
+            content: "";
+            display: none;
+            position: absolute;
+            background: $base-bkg-1; 
+            @include transition(all 0.3s ease-in-out); 
+            @include box-shadow($regular-shadow);  
+          }          
+        }
+        a:hover{
+          &:before {
+            width: 100%;
+          }
+        }
+      }
+    } 
+
+    ul.dropdown-menu{
+      box-shadow: none;
+      background: $regular-bkg;
+      > li{
+        > a{
+          color : $base-color-1;
+          font-size: $font-size-small;
+          font-weight: bold;
+          border-top: 1px solid #696969;
+          padding: 12px 20px 12px 14px;
+          background: $no-bkg !important;     
+        }
+      }
+    } 
+  }
+}

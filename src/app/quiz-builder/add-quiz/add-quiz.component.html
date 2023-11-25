@@ -1,0 +1,108 @@
+  <div class="template-header hearder-margin">
+    <p>{{"SELECT_AUTOMATION_TYPE" | translate}}</p>
+  </div>
+  <div class="ember-body-container">
+    <div class="choose-quiz sm-2">
+      <div class="row row-info choose-quiz-row">
+
+        <div class="card template-card">
+          <div class="card-body">
+            <div class="template-icon-padding">
+              <div class="template-icon">
+                <img src="assets/layouts/img/quiz-icon.png" />
+              </div>
+            </div>
+            <div class="template-title" title="Assessment">{{"BASIC" | translate}}</div>
+            <div class="template-text-padding">
+              <div class="template-text ellipsis-6line" title="{{'BASIC_FLOW_BUILDER_A_FOLLOW_UP_QUESTION_DEPENDS_ON_A_PREVIOUS_QUESTION_USEFUL_FOR_SIMPLE_QUESTIONAIRES_OR_JUST_TO_INFORM_CANDIDATES_AT_ANY_TIME_DURING_THE_PROCES' | translate}}">{{"BASIC_FLOW_BUILDER_A_FOLLOW_UP_QUESTION_DEPENDS_ON_A_PREVIOUS_QUESTION_USEFUL_FOR_SIMPLE_QUESTIONAIRES_OR_JUST_TO_INFORM_CANDIDATES_AT_ANY_TIME_DURING_THE_PROCES" | translate}}</div>
+            </div>
+            <a
+            href="javascript:void(0);"
+            [routerLink]="['add-quiz']"
+            class="btn template-button"
+            (mouseover)="isActiveIcon = true" (mouseout)="isActiveIcon = false"
+            >
+              <svg class="plus-icon" width="11" height="10" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.3404 4.84032L6.06257 4.85325V0.659563C6.06257 0.294158 5.76841 0 5.40301 0C5.03772 0 4.74344 0.294158 4.74344 0.659563L4.75638 4.84044H0.659563C0.294158 4.84044 0 5.1346 0 5.5C0 5.86529 0.294158 6.15945 0.659563 6.15945H4.74991V10.3404C4.74991 10.7056 5.04407 11 5.40947 11C5.77488 11 6.06903 10.7056 6.06903 10.3404V6.15956H10.3404C10.7058 6.15956 11 5.86517 11 5.5C11 5.13448 10.7026 4.84032 10.3404 4.84032Z" fill="white"/>
+            </svg>
+               {{"SELECT" | translate}}</a>
+          </div>
+        </div>
+        <div class="card template-card">
+          <div class="card-body">
+            <div class="template-icon-padding">
+              <div class="template-icon">
+                <img src="assets/layouts/img/personality-icon.png" />
+              </div>
+            </div>
+            <div class="template-title" title="Personality">{{"PROFILE" | translate}}</div>
+            <div class="template-text-padding">
+              <div class="template-text ellipsis-6line" title="{{'PROFILE_YOUR_CANDIDATE_ANSWERS_WILL_RESULT_INTO_CLEAR_CATEGORIES_USEFUL_WHEN_BUILDING_A_CAREER_SELECTION_TEST_SOMEBODIES_PERSONALITY' | translate}}">{{"PROFILE_YOUR_CANDIDATE_ANSWERS_WILL_RESULT_INTO_CLEAR_CATEGORIES_USEFUL_WHEN_BUILDING_A_CAREER_SELECTION_TEST_SOMEBODIES_PERSONALITY" | translate}}</div>
+            </div>
+            <a
+            href="javascript:void(0);"
+            [routerLink]="['add-personality']"
+            class="btn template-button"
+            (mouseover)="isPersonalityActionIcon = true" (mouseout)="isPersonalityActionIcon = false"
+            >
+              <svg class="plus-icon" width="11" height="10" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.3404 4.84032L6.06257 4.85325V0.659563C6.06257 0.294158 5.76841 0 5.40301 0C5.03772 0 4.74344 0.294158 4.74344 0.659563L4.75638 4.84044H0.659563C0.294158 4.84044 0 5.1346 0 5.5C0 5.86529 0.294158 6.15945 0.659563 6.15945H4.74991V10.3404C4.74991 10.7056 5.04407 11 5.40947 11C5.77488 11 6.06903 10.7056 6.06903 10.3404V6.15956H10.3404C10.7058 6.15956 11 5.86517 11 5.5C11 5.13448 10.7026 4.84032 10.3404 4.84032Z" fill="white"/>
+            </svg>
+              {{"SELECT" | translate}}</a>
+          </div>
+        </div>
+
+        <div class="card template-card">
+          <div class="card-body">
+            <div class="template-icon-padding">
+              <div class="template-icon">
+                <img src="assets/layouts/img/scored-icon.png" />
+              </div>
+            </div>
+            <div class="template-title" title="Scored">{{"SCORED" | translate}}</div>
+            <div class="template-text-padding">
+              <div class="template-text ellipsis-6line" title="{{'ANSWERS_ARE_WRONG_RIGHT_OR_SOMEWHERE_IN_BETWEEN_DOES_YOUR_CANDODATE_ACHIEVE_THE_SCORE_YOU_ARE_LOOKING_FOR_USEFUL_FOR_THE_MORE_ADVANCED_ASSESSMENTS' | translate}}">{{"ANSWERS_ARE_WRONG_RIGHT_OR_SOMEWHERE_IN_BETWEEN_DOES_YOUR_CANDODATE_ACHIEVE_THE_SCORE_YOU_ARE_LOOKING_FOR_USEFUL_FOR_THE_MORE_ADVANCED_ASSESSMENTS" | translate}}</div>
+            </div>
+            <a
+            href="javascript:void(0);"
+            [routerLink]="['add-scored']"
+            class="btn template-button"
+            (mouseover)="isScoredActionIcon = true" (mouseout)="isScoredActionIcon = false"
+            >
+              <svg class="plus-icon" width="11" height="10" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.3404 4.84032L6.06257 4.85325V0.659563C6.06257 0.294158 5.76841 0 5.40301 0C5.03772 0 4.74344 0.294158 4.74344 0.659563L4.75638 4.84044H0.659563C0.294158 4.84044 0 5.1346 0 5.5C0 5.86529 0.294158 6.15945 0.659563 6.15945H4.74991V10.3404C4.74991 10.7056 5.04407 11 5.40947 11C5.77488 11 6.06903 10.7056 6.06903 10.3404V6.15956H10.3404C10.7058 6.15956 11 5.86517 11 5.5C11 5.13448 10.7026 4.84032 10.3404 4.84032Z" fill="white"/>
+            </svg>
+               {{"SELECT" | translate}}</a>
+          </div>
+        </div>
+
+        <div *ngIf="isNpsPermission" class="card template-card">
+          <div class="card-body">
+            <div class="template-icon-padding">
+              <div class="template-icon">
+                <img src="assets/layouts/img/pre-hiring-icon.png" />
+              </div>
+            </div>
+            <div class="template-title" title="NPS">NPS</div>
+            <div class="template-text-padding">
+              <div class="template-text ellipsis-6line" title="{{'NPS_SUBTITLE' | translate}}">
+                {{"NPS_SUBTITLE" | translate}}
+              </div>
+            </div>
+            <a
+            href="javascript:void(0);"
+            [routerLink]="['add-NPS']"
+            class="btn template-button"
+            (mouseover)="isNPSActionIcon = true" (mouseout)="isNPSActionIcon = false"
+            >
+              <svg class="plus-icon" width="11" height="10" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.3404 4.84032L6.06257 4.85325V0.659563C6.06257 0.294158 5.76841 0 5.40301 0C5.03772 0 4.74344 0.294158 4.74344 0.659563L4.75638 4.84044H0.659563C0.294158 4.84044 0 5.1346 0 5.5C0 5.86529 0.294158 6.15945 0.659563 6.15945H4.74991V10.3404C4.74991 10.7056 5.04407 11 5.40947 11C5.77488 11 6.06903 10.7056 6.06903 10.3404V6.15956H10.3404C10.7058 6.15956 11 5.86517 11 5.5C11 5.13448 10.7026 4.84032 10.3404 4.84032Z" fill="white"/>
+            </svg>
+               {{"SELECT" | translate}}</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <router-outlet></router-outlet>

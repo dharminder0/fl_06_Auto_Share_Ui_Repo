@@ -1,0 +1,29 @@
+.content-box{
+    min-height: calc(100vh - 250px);
+    max-height: calc(100vh - 50px);
+  }
+
+ .container{
+    min-width: 1000px;
+  }
+
+  @media (min-width: 1200px) {
+    .container {
+      min-width: 1000px !important;
+    }
+  }
+
+/* scrollbar */
+
+::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e4e6ec;
+}

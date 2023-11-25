@@ -1,0 +1,228 @@
+.whatsapp-block{
+    text-align: left;
+    height: auto;
+    background: #fff;
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px;
+
+    .template-body{
+        max-height: 120px;
+        overflow: auto;
+        font-size: 12px;
+        color: #494949;
+        margin-bottom: 15px;
+    }
+     
+    .unslected-custombtn{
+        background: #fff;
+        color: #000;
+        border: 1px solid #000;
+        padding: 6px 10px;
+        border-radius: 5px;
+        width: auto;
+        height: 30px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 16px;
+        text-align: center;
+        margin: 5px;
+        outline: none;
+    }
+    .whatsapp-customBtn {
+        background: #000;
+        border: 0;
+        color: #fff;
+    }
+
+    .jr-template-list{
+        border-top: 1px solid #e0e0e0;
+        margin-right: 0;
+        margin-left:  0;
+        .jr-temp-tab{
+            padding-left: 5px;
+            .lang-dropdown{
+                margin-top: 5px;
+                border-width: 1px;
+                padding: 6px;
+            }
+        }
+    }
+}
+
+.card{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+
+    &.mbottom-20{
+        margin-bottom: 20px;
+    }
+
+    .card-body{
+        flex: 1 1 auto;
+        min-height: 1px;
+
+      &.p-0{
+        padding: 0!important;
+      }  
+    }
+
+    .fr-wrapper{
+        min-height: 250px;
+    }
+}
+.template-button{
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    width: auto;
+    height: 40px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    color: #000;
+    padding: 9px;
+    background: #fff;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+::ng-deep .custom-height .single{
+    height: 30px !important;
+}
+::ng-deep .custom-height>div>div.single>div.toggle{
+    line-height: 30px !important;
+}
+::ng-deep .custom-height>div>div.single>div.value{
+    line-height: 30px !important;
+}
+
+@media screen and (max-width: 1280px) {
+    .template-message{
+        padding: 8px 8px !important;
+        cursor: pointer !important;
+        font-size: 8px !important;
+        color: #000 !important;
+        font-weight: 300 !important;
+        opacity: 0.6 !important;
+        display: inline-block !important;
+        max-width: 70px !important;
+       .ellipsiss{
+           overflow: hidden;
+           text-overflow: ellipsis;
+       }
+    }
+}
+::-webkit-scrollbar-track {
+    background: #f5f7f8;
+    border-left: 1px solid #dadcde;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      background-color: inherit;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #c2c2c2;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b8b7b7;
+  }
+  
+.display-flex{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.right-side-body{
+    width: calc(100% - 280px);
+    margin-left: 40px;
+}
+
+.temp-block{
+    width: 240px;
+    border: 1px solid #dbdbdb;
+    min-height: 150px;
+    border-radius: 4px;
+
+    .searchBoxForDropdown{
+        border-bottom: 1px solid #E0E0E0;
+        position: relative;
+    }
+
+    .search-icon{
+        position: absolute;
+        left: 15px;
+        top: 17px;
+        width: 14px;
+    }
+
+    .someinput{
+        width: 100%;
+        height: 49px;
+        border: 0;
+        box-shadow: none;
+        outline: 0;
+        padding: 10px 10px 10px 41px;
+        ::-ms-clear {
+            display: none;
+        }
+    }
+
+    .p-right{
+        padding-right: 14px;
+    }
+      
+    .p-left{
+        padding-left: 18px!important;
+    }
+
+    .b-left{
+        border-left: 3px solid #000000;
+    }
+
+    .template-list-text{
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 16px;
+        font-family: Raleway;
+        font-style: normal;
+        padding: 9px 15px;
+        cursor: pointer;
+        :hover{
+            color: #000000;
+        }
+    }
+    .selected{
+        color: #000;
+        font-weight: 800;
+    }
+}
+
+.no-temp{
+    text-align: center;
+    margin-top: 40px;
+}
+
+.mtop-20per{
+    margin-top: 20%;  
+}
+
+.ellipsiss{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

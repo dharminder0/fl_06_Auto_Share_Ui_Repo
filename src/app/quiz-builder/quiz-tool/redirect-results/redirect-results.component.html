@@ -1,0 +1,55 @@
+<div class="portlet-head">
+  <div class="font-type font-text2">
+    <span>{{"REDIRECT_RESULTS" | translate}}</span>
+  </div>
+  <div class="action">
+    <a href="javascript:void(0)" class="btn blue hide">{{"SAVE_RECORDS" | translate }}</a>
+    <a href="javascript:void(0)" class="closet"></a>
+  </div>
+</div>
+<div class="portlet-body horizontal-form app-calc">
+  <div class="app-grow">
+    <div class="heading">
+      <!-- <h2 class="no-title-space">{{"REDIRECT_RESULTS" | translate }}</h2> -->
+      <p>{{'THIS_OPTION_ALLOWS_YOU_TO_REDIRECT_QUIZ_RESULTS_TO_YOUR_WEBSITE_OR_TO_LANDING_PAGES_YOU_SET_UP_FOR_EACH_RESULT._BELOW_YOULL_PASTE_IN_THE_URLS_OF_THE_PAGES_YOU_WANT_TO_REDIRECT_TO_WHEN_YOUR_QUIZ_TAKERS_GET_EACH_RESULT' | translate}}.</p>
+    </div>
+    <form [formGroup] = 'resultRedirectForm' (submit) = 'updateResultRedirect()' class="form-body">
+      <div class="in white-bkg" formArrayName="resultRedirect" >
+        <div class="form-group">
+          <label class="app-checkbox bold beta">{{"REDIRECT_ALL" | translate}}
+            <input type="checkbox" value="0" name="0">
+            <span></span>
+          </label>
+        </div>
+        <div class="redirect-results-group" *ngFor = 'let redirectQuiz of resultRedirectForm?.get("resultRedirect")?.controls; let i = index;'>
+          <div class="row" [formGroupName] = "i">
+            <div class="col-sm-2">
+              <label class="app-checkbox">{{"REDIRECT" | translate}}
+                <input formControlName = 'IsRedirectOn' type="checkbox" value="0">
+                <span></span>
+              </label>
+            </div>
+            <div class="col-sm-9">
+              <div class="rs-input-group">
+                <input type="text" formControlName = 'ResultTitle' class="form-control">
+                <div class="input-groups">
+                  <span class="input-group-addons">{{"TO" | translate }}</span>
+                  <div class="input-group">
+                    <span class="input-group-addon">{{"HTTP://" | translate }}</span>
+                    <input type="text" formControlName = 'RedirectResultTo' class="form-control">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn blue closet" [disabled]="!resultRedirectForm.valid">{{"SAVE" | translate }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- <div class="content-bottom">
+  <button type="submit" class="btn save-btn font-type normal-text" (click) = "updateResultRedirect()" [disabled]="!resultRedirectForm.valid">{{"SAVE" | translate }}</button>
+</div> -->

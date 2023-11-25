@@ -1,0 +1,114 @@
+.quiz-preview-popup {
+    background-size: cover !important;
+    /* height: 100vh; */
+    height: auto;
+    min-height: 100vh;
+    width: 100%;
+    /* position: fixed; */
+    background-position-x: 100% !important;
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.logo-body {
+    position: absolute;
+    bottom: 0;
+    height: 81px;
+    width: 201px;
+    border: 1px solid #E0E0E0;
+    box-sizing: border-box;
+    padding: 2px;
+    z-index: 1;
+}
+
+.vertically-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.automation-align-left {
+    left: 25%;
+}
+
+.automation-align-right {
+    left: 75%;
+}
+
+.left-logo {
+    border-radius: 0px 80px 0px 0px;
+    padding: 10px 45px 10px 20px;
+    left: 0;
+}
+
+.right-logo {
+    padding: 10px 20px 10px 45px;
+    border-radius: 80px 0px 0px 0px;
+    right: 0;
+}
+
+.logo-image {
+    max-width: 130px;
+    max-height: 40px;
+}
+
+.mobile-view-logo-body {
+    position: relative;
+    height: 50px;
+    text-align: center;
+    padding: 5px;
+    border-top: 2px solid #E0E0E0;
+}
+
+.mobile-view-logo-image {
+    max-width: 132px;
+    max-height: 30px;
+}
+
+.pre-scroll {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+@media all and (max-width: 768px) {
+    .vertically-center {
+        top: 47%;
+    }
+    .pre-scroll{
+        overflow: auto;
+        overflow-x: hidden;
+    }
+}
+
+@media all and (max-width: 750px) {
+    .islogo {
+        position: relative;
+        /* height: calc(100% - 52px); */
+    }
+}
+
+@media all and (max-width: 1699px) and (min-width: 1250px) {
+    .automation-align-left {
+        left: 32%;
+    }
+    .automation-align-right {
+        left: 71%;
+    }
+}
+
+@media all and (max-width: 1249px) {
+    .automation-align-left {
+        left: 42%;
+    }
+    .automation-align-right {
+        left: 58%;
+    }
+}

@@ -1,0 +1,9 @@
+.builder-action-content{
+    visibility: none;
+}
+
+.open-tooltip {
+    opacity: 1;
+    z-index: 91;
+    visibility: visible;
+  }

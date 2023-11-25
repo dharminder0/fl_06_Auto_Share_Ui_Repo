@@ -1,0 +1,108 @@
+<!-- <span *ngIf="quizTypeID == 2"> -->
+<span *ngIf="result.MaxScore == result.MinScore" (click)="$event.stopPropagation()" class="ques-res-division-container" [ngStyle]="{'right':branchingLogicSide == true ? '24px' : ''}" outsideClick="true" placement="bottom"
+  [popover]="resultRange" data-placement="top" container="body" [isOpen]="isOpenTooltip" (onShown)="onTooltipShown(result)" (onHidden)="onTooltipHidden()">
+  {{result.MinScore}}
+</span>
+
+<span  *ngIf="result.MaxScore != result.MinScore" (click)="$event.stopPropagation()" class="ques-res-division-container" [ngStyle]="{'right':branchingLogicSide == true ? '24px' : ''}" outsideClick="true" placement="bottom"
+   [popover]="resultRange" data-placement="top" container="body" [isOpen]="isOpenTooltip" (onShown)="onTooltipShown(result)" (onHidden)="onTooltipHidden()">
+  {{result?.MinScore}} to {{result?.MaxScore}}
+</span>
+
+<!-- <ng-template #resultRange>
+  <form [formGroup]="rangeForm" (submit)='saveRange()'>
+    <div>
+      <div class="row">
+        <div class="col-sm-4">From </div>
+        <div class="col-sm-8">
+          <div *ngIf="quizTypeID == 2">
+          <input maxlength="9" [attr.disabled]="isUpperLimitReach ? isUpperLimitReach : null" placeholder="Start" OnlyDecimal="true" type="text" class="form-control" formControlName="MinScore">
+        </div>
+        <div *ngIf="quizTypeID == 4">
+            <input maxlength="9" [attr.disabled]="isUpperLimitReach ? isUpperLimitReach : null" placeholder="Start" Negative="true" type="text" class="form-control" formControlName="MinScore">
+          </div>
+          <div class="range-error" *ngIf="rangeForm.controls.MinScore.invalid && (rangeForm.controls.MinScore.dirty || rangeForm.controls.MinScore.touched)">
+            <small *ngIf="rangeForm.controls.MinScore.errors.required">
+              Required
+            </small>
+            <small *ngIf="rangeForm.controls.MinScore.errors.rangeMisMatch">
+              Range Mismatch
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">To </div>
+        <div class="col-sm-8">
+          <div *ngIf="quizTypeID == 2">
+          <input maxlength="9" [attr.disabled]="isLowerLimitReach ? isLowerLimitReach : null" placeholder="End"  OnlyDecimal="true" type="text" class="form-control" formControlName="MaxScore">
+          </div>
+          <div *ngIf="quizTypeID == 4">
+              <input maxlength="9" [attr.disabled]="isLowerLimitReach ? isLowerLimitReach : null" placeholder="End"  Negative="true" type="text" class="form-control" formControlName="MaxScore">
+              </div>
+          <div class="range-error" *ngIf="rangeForm.controls.MaxScore.invalid && (rangeForm.controls.MaxScore.dirty || rangeForm.controls.MaxScore.touched)">
+            <small *ngIf="rangeForm.controls.MaxScore.errors.required">
+              Required
+            </small>
+            <small *ngIf="rangeForm.controls.MaxScore.errors.rangeMisMatch">
+              Range Mismatch
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-8">
+          <button class="btn btn-default btn-save saveColor" type="submit" [disabled]="!rangeForm.valid">Save</button>
+          <button class="btn btn-default cancelColor" type="button" (click)="isOpenTooltip = !isOpenTooltip">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-template> -->
+<!-- </span> -->
+<ng-template #resultRange>
+  <form [formGroup]="rangeForm" (submit)='saveRange()' style="width: 145px;">
+    <div>
+      <div style="display: flex;">
+        <div>
+          <input *ngIf="quizTypeID == 2" maxlength="9" [attr.disabled]="isUpperLimitReach ? isUpperLimitReach : null" OnlyDecimal="true" type="text" class="form-control input-text" formControlName="MinScore">
+          <input *ngIf="quizTypeID == 4" maxlength="9" [attr.disabled]="isUpperLimitReach ? isUpperLimitReach : null" Negative="true" type="text" class="form-control input-text" formControlName="MinScore">
+          <input *ngIf="quizTypeID == 1" maxlength="9" [attr.disabled]="true" Negative="true" type="text" class="form-control input-text" formControlName="MinScore">
+        </div>
+        <div style="margin: 9px 15px;">To </div>
+        <div>
+          <input *ngIf="quizTypeID == 2" maxlength="9" [attr.disabled]="isLowerLimitReach ? isLowerLimitReach : null" OnlyDecimal="true" type="text" class="form-control input-text" formControlName="MaxScore">
+          <input *ngIf="quizTypeID == 4" maxlength="9" [attr.disabled]="isLowerLimitReach ? isLowerLimitReach : null" Negative="true" type="text" class="form-control input-text" formControlName="MaxScore">
+          <input *ngIf="quizTypeID == 1" maxlength="9" [attr.disabled]="true" Negative="true" type="text" class="form-control input-text" formControlName="MaxScore">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="range-error" *ngIf="rangeForm.controls.MinScore.invalid && (rangeForm.controls.MinScore.dirty || rangeForm.controls.MinScore.touched)">
+            <small *ngIf="rangeForm.controls.MinScore.errors.required">
+              Required
+            </small>
+            <small *ngIf="rangeForm.controls.MinScore.errors.rangeMisMatch">
+             Start Range Mismatch
+            </small>
+          </div>
+          <div class="range-error" *ngIf="rangeForm.controls.MaxScore.invalid && (rangeForm.controls.MaxScore.dirty || rangeForm.controls.MaxScore.touched)">
+            <small *ngIf="rangeForm.controls.MaxScore.errors.required">
+              Required
+            </small>
+            <small *ngIf="rangeForm.controls.MaxScore.errors.rangeMisMatch">
+             End Range Mismatch
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <button class="btn popup-save-btn" type="submit" [disabled]="!rangeForm.valid">Save</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-template>

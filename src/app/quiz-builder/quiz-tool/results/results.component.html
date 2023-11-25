@@ -1,0 +1,337 @@
+<div class="h-auto fixed-fr-toolbar" (click)="openEnableMediaSetiing('closeTab')" [ngClass]="{'ins-body':!isOpenBranchingLogicSide,'pad-edit-bl':isOpenBranchingLogicSide}">
+    <form [formGroup]="resultForm" (ngSubmit)="saveResult()">
+        <div class="result-box font-type">
+            <input type="text" formControlName="InternalTitle" class="form-control quiz-input-title" placeholder="{{'ENTER_RESULT_NAME_HERE' | translate}}" />
+        </div>
+        <div *ngIf="!isWhatsappEnable" class="inner result-gutter-rs form-div pointer" [ngStyle]="{'background': brandingColor.BackgroundColor}" (click)="openEnableMediaSetiing('main')" (mouseenter)="hoverOnMainDiv = true" (mouseleave)="hoverOnMainDiv = false" [ngClass]="{'hover-main-div':hoverOnMainDiv == true}">
+            <div class="default-header">
+                <i class="fa fa-circle dot-icon" style="color: #FB403E;" aria-hidden="true"></i>
+                <i class="fa fa-circle dot-icon" style="color: #FEC414;" aria-hidden="true"></i>
+                <i class="fa fa-circle dot-icon" style="color: #04C95A;" aria-hidden="true"></i>
+            </div>
+            <div class="form-padding font-type">
+                <div *ngFor="let reOrder of resultElementReorder">
+                    <ng-container [ngTemplateOutlet]="questionImage" *ngIf="resultForm.get('ShowResultImage').value && reOrder.key == elementReorderKey.media"></ng-container>
+                    <div *ngIf="reOrder.key == elementReorderKey.title"
+                         class="has-title-variable des"
+                         (mouseenter)="hoverOnMainDiv = false;froalaEditorFor['Title'].isShowVarBtn = true" 
+                         (mouseleave)="hoverOnMainDiv = true;froalaEditorFor['Title'].isShowVarBtn = false">
+                        <div ccFocus 
+                             [id]="'res_title_'+resultId" 
+                             [froalaEditor]="froalaEditorFor['Title'].options" 
+                             autocomplete="off" 
+                             [ngStyle]="{'color': brandingColor.FontColor, 'background': brandingColor.BackgroundColor,'font-family': brandingColor.FontType}"
+                             formControlName="Title" 
+                             class="form-control question-title fr-prop editMode-inner-div mheight-41 mbottom-10 pright-20"
+                             (froalaModelChange)="updateVarListFor('Title')">
+                        </div>
+                        <i *ngIf="config.isQuizVarPopupEnable && reOrder.key == elementReorderKey.title && froalaEditorFor['Title'].isShowVarBtn && isQuesAndContentInSameTable" 
+                            id="title-btn-variable" 
+                            class='fa fa-plus mleft-5 f-20 pointer desbtn'
+                            title="{{'Lbl_AddVariable' | translate}}"
+                            (click)="openVariablePopup('Title')">
+                        </i>
+                    </div>
+
+                    
+                    <div *ngIf="isDescription && reOrder.key == elementReorderKey.description" 
+                        class="result-description-container has-des-variable" 
+                        (mouseenter)="hoverOnMainDiv = false;froalaEditorFor['Description'].isShowVarBtn = true" 
+                        (mouseleave)="hoverOnMainDiv = true;froalaEditorFor['Description'].isShowVarBtn = false">
+
+                        <div ccFocus 
+                            [id]="'res_desc_'+resultId" 
+                            [froalaEditor]="froalaEditorFor['Description'].options" 
+                            autocomplete="off" 
+                            [ngStyle]="{'color': brandingColor.FontColor, 'background': brandingColor.BackgroundColor,'font-family': brandingColor.FontType}" 
+                            formControlName="Description" 
+                            class="form-control result-description fr-prop editMode-inner-div mheight-41"
+                            (froalaModelChange)="updateVarListFor('Description')">
+                        </div>
+                        <i *ngIf="config.isQuizVarPopupEnable && isDescription && reOrder.key == elementReorderKey.description && froalaEditorFor['Description'].isShowVarBtn && isQuesAndContentInSameTable" 
+                            id="des-btn-variable" 
+                            class='fa fa-plus mleft-5 f-20 pointer desbtn'
+                            title="{{'Lbl_AddVariable' | translate}}"
+                            (click)="openVariablePopup('Description')">
+                        </i>
+                    </div>
+
+                    <div *ngIf="resultForm.get('EnableCallToActionButton').value && reOrder.key == elementReorderKey.button && !isWhatsappEnable" class="form-actions" [ngStyle]="{'display':isOpenBranchingLogicSide ? 'block' : '','background': brandingColor.BackgroundColor}">
+
+                        <div class="builder-element" ccFocus [id]="'res_btn_'+resultId" (mouseenter)="hoverOnMainDiv = false" (mouseleave)="hoverOnMainDiv = true">
+                            <input autocomplete="off" maxlength="40" class="btn blue next-btn" [style.color]="brandingColor.ButtonFontColor" [style.background]="brandingColor.ButtonColor" [ngStyle]="{'font-family': brandingColor.FontType ? brandingColor.FontType:'' }" formControlName="ActionButtonText"
+                                [placeholder]="brandingColor.ActionBtnPlaceholderText ? brandingColor.ActionBtnPlaceholderText : ('Lbl_ClickHere' | translate)" />
+                        </div>
+                        <div class="mbottom-20 mTop-20">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a class="text-btn-icon" href="javascript:void(0);" [outsideClick]="true" [popover]="urlTooltip" container="body">
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5.80396 10.6708L4.15424 12.3205C3.4703 13.0044 2.36271 13.0044 1.67935 12.3206C0.995844 11.6371 0.995845 10.5294 1.67921 9.84608L4.97922 6.54614C5.66259 5.86277 6.77029 5.86277 7.45365 6.54614C7.68146 6.77395 8.05083 6.77395 8.27863 6.54614C8.50644 6.31834 8.50644 5.94898 8.27863 5.72118C7.13963 4.5822 5.29325 4.5822 4.15424 5.72118L0.854255 9.02112C-0.284752 10.1601 -0.284752 12.0064 0.854255 13.1454C1.99312 14.285 3.83964 14.285 4.97925 13.1454L6.62897 11.4957C6.85678 11.2679 6.85678 10.8986 6.62897 10.6708C6.40116 10.443 6.03177 10.443 5.80396 10.6708Z" fill="#494949"/>
+                                            <path d="M13.1455 4.97879C14.2846 3.83981 14.2846 1.99346 13.1455 0.854478C12.0066 -0.284478 10.1603 -0.284478 9.02069 0.854342L7.04125 2.83374C6.81344 3.06154 6.81344 3.4309 7.04125 3.65871C7.26906 3.88651 7.63843 3.88651 7.86623 3.65871L9.84553 1.67944C10.5294 0.996065 11.6372 0.996065 12.3206 1.67944C13.0039 2.3628 13.0039 3.47047 12.3206 4.15382L8.69097 7.78334C8.00758 8.46672 6.89991 8.46672 6.21654 7.78334C5.98873 7.55554 5.61937 7.55554 5.39156 7.78334C5.16375 8.01115 5.16375 8.38051 5.39156 8.60831C6.53056 9.74729 8.37695 9.74729 9.51595 8.60831L13.1455 4.97879Z" fill="#494949"/>
+                                        </svg> {{"URL" | translate }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isWhatsappEnable" class="inner result-gutter-rs form-div pointer wht-app-div" [ngStyle]="{'background': brandingColor.BackgroundColor}" (click)="openEnableMediaSetiing('main')" (mouseenter)="hoverOnMainDiv = true" (mouseleave)="hoverOnMainDiv = false" [ngClass]="{'hover-main-div':hoverOnMainDiv == true}">
+            <div class="form-padding font-type">
+
+                <ng-container [ngTemplateOutlet]="questionImage" *ngIf="resultForm.get('ShowResultImage').value" ></ng-container>
+    
+                <div class="mbottom-20" style="display: flex;">
+                    <div class="des  has-title-variable has-ques-variable mright-20" [ngClass]="{'whats-app-ques': isWhatsappEnable}"
+                        (mouseenter)="hoverOnMainDiv = false;froalaEditorFor['Title'].isShowVarBtn = true" 
+                        (mouseleave)="hoverOnMainDiv = true;froalaEditorFor['Title'].isShowVarBtn = false">
+                        <div [id]="'res_title_'+resultId" 
+                            [froalaEditor]="froalaEditorFor['Title'].options"
+                            autocomplete="off" 
+                            [ngStyle]="{'color': brandingColor.FontColor,'background': brandingColor.BackgroundColor,'font-family':brandingColor.FontType }"
+                            formControlName='Title'
+                            class="form-control fr-prop mheight-41 editMode-inner-div question-title pright-20 wt-ques-title text-view jr-fw-600"
+                            (froalaModelChange)="updateVarListFor('Title')">
+                        </div>
+                        <i *ngIf="config.isQuizVarPopupEnable && froalaEditorFor['Title'].isShowVarBtn && isQuesAndContentInSameTable" 
+                            id="title-btn-variable" 
+                            class='fa fa-plus mleft-5 f-20 pointer desbtn'
+                            title="{{'Lbl_AddVariable' | translate}}"
+                            (click)="openVariablePopup('Title')">
+                        </i>
+                    </div>
+                    <div>
+                        <label class="switch mright-10" >
+                            <input type="checkbox" class="boxid" formControlName="ShowExternalTitle">
+                            <span class="slidermedia round"></span>
+                        </label> 
+                        <span>{{"Lbl_ShowInWhatsapp" | translate}}</span>
+                    </div>
+                </div>
+                <!-- <div class="result-box font-type mbottom-25 cstm-pd">                    
+                    <input type="text"
+                            formControlName="Title" 
+                            [maxlength]="60"
+                            [ngClass]="{'jr-fw-600':resultForm.get('ShowExternalTitle').value}" 
+                            class="form-control quiz-input-title d-inline-block mright-50 jr-w-400p" 
+                            placeholder="{{'ENTER_RESULT_NAME_HERE' | translate}}" />
+                    <label class="switch mright-10">
+                        <input type="checkbox" class="boxid" formControlName="ShowExternalTitle" >
+                        <span class="slidermedia round"></span>
+                    </label> 
+                    <span>{{"Show"}}</span>
+                    <div class="QT-count" *ngIf="resultForm.get('Title').value != null || resultForm.get('Title').value != undefined">
+                        {{resultForm.get('Title').value.length+'/'+60}}
+                    </div>
+                </div> -->
+
+                <div *ngIf="isDescription" 
+                        class="result-description-container has-des-variable" [ngClass]="{'whats-app-ques':isWhatsappEnable}"
+                        (mouseenter)="hoverOnMainDiv = false;froalaEditorFor['Description'].isShowVarBtn = true" 
+                        (mouseleave)="hoverOnMainDiv = true;froalaEditorFor['Description'].isShowVarBtn = false">
+
+                        <div ccFocus 
+                            [id]="'res_desc_'+resultId" 
+                            [froalaEditor]="froalaEditorFor['Description'].options" 
+                            autocomplete="off" 
+                            [ngStyle]="{'color': brandingColor.FontColor, 'background': brandingColor.BackgroundColor,'font-family': brandingColor.FontType}"
+                            formControlName="Description" 
+                            class="form-control result-description fr-prop editMode-inner-div mheight-41 text-view"
+                            [ngClass]="{'whats-app-desc':isWhatsappEnable}"
+                            (froalaModelChange)="updateVarListFor('Description')">
+                        </div>
+                        <i *ngIf="config.isQuizVarPopupEnable && isDescription && froalaEditorFor['Description'].isShowVarBtn && isQuesAndContentInSameTable" 
+                            id="des-btn-variable" 
+                            class='fa fa-plus mleft-5 f-20 pointer desbtn'
+                            title="{{'Lbl_AddVariable' | translate}}"
+                            (click)="openVariablePopup('Description')">
+                        </i>
+                    </div>                
+                <!-- <div *ngIf="isDescription">
+                    <textarea
+                        ccFocus 
+                        [id]="'reslt_desc_'+resultId"
+                        autocomplete="off" 
+                        [ngStyle]="!isWhatsappEnable ? {'color': brandingColor.FontColor,'background': brandingColor.BackgroundColor,'font-family':brandingColor.FontType } : {'border-color': '#fff'}"
+                        formControlName='Description' 
+                        [maxlength]="1024"
+                        class="form-control fr-prop mheight-41 mbottom-5 editMode-inner-div descrp-text-view"
+                        (keyup)="setAutoHeightOfTextArea('reslt_desc_'+resultId)"
+                        (mouseenter)="hoverOnMainDiv = false" 
+                        (mouseleave)="hoverOnMainDiv = true">
+                    </textarea> 
+                    <div class="p-l-r-15 QT-count" *ngIf="isWhatsappEnable && resultForm.get('Description').value != null || resultForm.get('Description').value != undefined">
+                        {{resultForm.get('Description').value.length+'/'+1024}}
+                    </div>   
+                </div> -->
+
+            </div>
+
+        </div>
+
+        <!-- Question image template -->
+        <ng-template #questionImage>
+            <div ccFocus [id]="'res_coverImage_'+resultId" class="fileinput-ember large margin-bottom-30" (mouseenter)="hoverOnMainDiv = false" (mouseleave)="hoverOnMainDiv = true">
+                <div class="builder-action">
+                    <a *ngIf='!resultForm.controls["Image"].value' href="javascript:void(0);" [tooltip]="popTemplate" (click)="isProcess = true;onUseMedia()" class="btn grey line add-btn" data-toggle="modal" data-target="#edit-cover-modal">
+                        <i class="zmdi zmdi-plus"></i>{{"ADD_MEDIA" | translate }}</a>
+                    <a *ngIf='resultForm.controls["Image"].value' href="javascript:void(0);" [tooltip]="popTemplate" (click)="onUseMedia()" class="btn grey line action-btn" data-toggle="modal" data-target="#edit-cover-modal">
+                        <svg class="svg-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.8718 4.19094L11.8095 1.12865C11.6386 0.957769 11.3618 0.957769 11.1909 1.12865L1.12903 11.1905C1.047 11.2726 1.00086 11.3836 1.00086 11.4998L1 14.563C1 14.6788 1.04614 14.7903 1.12817 14.8723C1.2102 14.9543 1.32169 15.0005 1.43748 15.0005L4.50064 14.9996C4.61683 14.9996 4.72792 14.9535 4.80995 14.8714L14.8718 4.80956C15.0427 4.63868 15.0427 4.36185 14.8718 4.19094ZM4.31881 14.1254L1.8741 14.1263L1.87496 11.6816L9.09371 4.46282L11.5376 6.90668C11.5375 6.90668 4.31881 14.1254 4.31881 14.1254ZM12.1562 6.28803L9.71236 3.8442L11.5 2.0566L13.9438 4.50045L12.1562 6.28803Z" fill="#494949" stroke="#494949" stroke-width="0.25"/>
+                        </svg> {{"EDIT_MEDIA" | translate }}</a>
+                    <a *ngIf='resultForm.controls["Image"].value' (click)="removeImagePopup()" id="upload_widget_opener" class="btn grey line action-btn" data-toggle="modal" data-target="#edit-cover-modal">
+                        <svg class="svg-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.9566 4.12926L14.5781 3.20267C14.434 2.84976 14.0311 2.61264 13.5757 2.61264H10.3948V1.7668C10.3948 1.34404 9.97395 1 9.45647 1H6.54353C6.02618 1 5.60521 1.34404 5.60521 1.7668V2.61264H2.42444C1.96895 2.61264 1.56602 2.84976 1.42191 3.20267L1.04344 4.12926C0.957254 4.34021 1.00093 4.57381 1.16009 4.75421C1.31925 4.93462 1.57675 5.04239 1.84902 5.04239H2.24463L3.11534 13.8363C3.18007 14.4888 3.85802 15 4.65903 15H11.5176C12.3185 15 12.9966 14.4888 13.0612 13.8362L13.9319 5.04239H14.151C14.4233 5.04239 14.6808 4.93462 14.8399 4.75432C14.9991 4.57391 15.0427 4.34021 14.9566 4.12926ZM6.60958 1.82031H9.39042V2.61264H6.60958V1.82031ZM12.0601 13.7701C12.0374 13.9998 11.7991 14.1797 11.5176 14.1797H4.65903C4.3776 14.1797 4.13933 13.9998 4.11657 13.7701L3.25226 5.04239H12.9243L12.0601 13.7701ZM2.06441 4.22208L2.37475 3.46222C2.38181 3.4447 2.40182 3.43295 2.42444 3.43295H13.5757C13.5983 3.43295 13.6182 3.4447 13.6254 3.46222L13.9357 4.22208H2.06441Z" fill="#494949" stroke="#494949" stroke-width="0.1"/>
+                            <path d="M10.3428 13.741C10.3517 13.7414 10.3604 13.7415 10.3693 13.7415C10.6347 13.7415 10.8565 13.5717 10.8703 13.3527L11.3419 5.95904C11.3563 5.73282 11.1434 5.53981 10.8665 5.52806C10.5889 5.51599 10.3534 5.69009 10.3388 5.91632L9.86739 13.31C9.853 13.5363 10.0658 13.7293 10.3428 13.741Z" fill="#494949" stroke="#494949" stroke-width="0.1"/>
+                            <path d="M5.22796 13.3537C5.24261 13.5724 5.46414 13.7416 5.72897 13.7416C5.73812 13.7416 5.74754 13.7413 5.75682 13.7409C6.03368 13.7286 6.24593 13.5353 6.23089 13.3091L5.73694 5.91537C5.72191 5.68915 5.4852 5.51579 5.20822 5.52818C4.93136 5.54047 4.71911 5.73379 4.73415 5.96002L5.22796 13.3537Z" fill="#494949" stroke="#494949" stroke-width="0.1"/>
+                            <path d="M8.0056 13.7415C8.28298 13.7415 8.50779 13.5579 8.50779 13.3314V5.93768C8.50779 5.71114 8.28298 5.52753 8.0056 5.52753C7.72822 5.52753 7.50342 5.71114 7.50342 5.93768V13.3314C7.50342 13.5579 7.72822 13.7415 8.0056 13.7415Z" fill="#494949" stroke="#494949" stroke-width="0.1"/>
+                        </svg> {{"DELETE_MEDIA" | translate }}</a>
+                </div>
+                <div class="fileinput-preview"></div>
+                <figure (click)="openEnableMediaSetiing('img')" class="builder-fig center">
+                    <img *ngIf="imageORvideo === 'image' && !resultForm.controls.Image.value" [ngStyle]="{'border': !resultForm.controls.Image.value ? '1px dashed #E0E0E0' : 'none' }" [src]="defaultCoverImage" />
+                    <cl-image *ngIf="imageORvideo === 'image' && resultForm.controls.Image.value" public-id={{resultForm.controls.PublicIdForResult?.value}}>
+                        <cl-transformation width="720" height="350" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
+                    </cl-image>
+                    <div *ngIf="imageORvideo === 'video'">
+                        <cl-video id='update' public-id={{resultForm.controls.PublicIdForResult?.value}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposter()'>
+                            <cl-transformation quality="auto" effect="sharpen" crop="fill"></cl-transformation>
+                        </cl-video>
+                    </div>
+                </figure>
+            </div>
+        </ng-template>
+    </form>
+</div>
+
+<div *ngIf="isVisibleMediaLibrary">
+    <app-media-library [automationId]=[quizId] [isWhatsappEnable]="isWhatsappEnable" (changeValue)='changeUploadedUrl($event)'></app-media-library>
+</div>
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar w-result-setting" id="data-add">
+    <div #resultSettingsTemplate></div>
+</div>
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar large" id="data-url">
+    <div #urlsizecolorTemplate></div>
+</div>
+
+<ng-template #urlTooltip>
+    <div class="builder-action-content" data-position="top" [formGroup]="resultForm" style="width: 230px;">
+        <div class="builder-action-properties">
+            <div class="builder-action-property" data-property="url">
+                <div class="builder-property-group-outer">
+                    <div class="builder-property-group" data-property-type="input">
+                        <span class="error" *ngIf="resultForm.controls.ActionButtonURL.invalid">
+              <i class="fa fa-warning fa-fw"></i>{{"INVALID_URL" | translate }}</span>
+                        <span *ngIf="resultForm.controls.ActionButtonURL.valid">{{"URL" | translate }}</span>
+                        <input type="text" formControlName='ActionButtonURL' class="form-control url-popup" placeholder="{{'HTTP' | translate}}://">
+                    </div>
+                </div>
+            </div>
+            <div class="builder-action-property" data-property="blank">
+                <button type="button" class="btn builder-action-save url-save-btn" (click)="saveActionButtonURL()" [disabled]="resultForm.controls.ActionButtonURL.invalid || resultForm.invalid">
+            {{"SAVE" | translate }}</button>
+                <div class="clearfix"></div>
+                <div class="builder-property-group-outer">
+                    <div class="builder-property-group" data-property-type="checkbox">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" formControlName="OpenLinkInNewTab" data-property="" checked="">{{"OPEN_IN_NEW_TAB" | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #sizeTooltip>
+    <div class="builder-action-content" [formGroup]="resultForm" style="width: 230px;">
+        <div class="builder-action-properties">
+            <div class="builder-action-property">
+                <div class="builder-property-group-outer">
+                    <div class="builder-property-group">
+                        <div class="form-box">
+                            <div class="range-suffix">{{"PX" | translate }}</div>
+                            <input type="text" class="form-control range-input-val url-popup" [(ngModel)]="ActionButtonTxtSize" [ngModelOptions]="{standalone: true}" (ngModelChange)="onActionButtonTxtSizeChange($event)">
+                        </div>
+                        <span>{{"SIZE" | translate }}</span>
+                        <div class="range-container">
+                            <input type="range" min="1" max="72" [(ngModel)]="ActionButtonTxtSize" (ngModelChange)="onActionButtonTxtSizeChange($event)" class="slider" [ngModelOptions]="{standalone: true}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn builder-action-save url-save-btn" (click)="saveActionButtonTxtSize()">
+     {{"SAVE" | translate }}</button>
+        <div class="clearfix"></div>
+    </div>
+</ng-template>
+<ng-template #colorTooltip>
+    <div class="builder-action-content" data-position="top" style="width: 230px;">
+        <div class="builder-action-properties">
+            <div class="builder-action-property" data-property="btnColor">
+                <div class="builder-property-group-outer">
+                    <div class="builder-property-group colorpicker-element" data-property-type="color">
+                        <div class="builder-styles-color" data-property="btnColor" style="background: #62afe0"></div>
+                        <span>{{"BUTTON_COLOR" | translate }}</span><br/>
+                        <input [(colorPicker)]="ActionButtonColor" [style.background]="ActionButtonColor" [cpCancelButton]="false" (colorPickerChange)="onActionButtonColorChange($event)" [cpSaveClickOutside]="true" class="url-popup" />
+                    </div>
+                </div>
+            </div>
+            <div class="builder-action-property" data-property="fontColor">
+                <div class="builder-property-group-outer">
+                    <div class="builder-property-group colorpicker-element" data-property-type="color">
+                        <div class="builder-styles-color" data-property="fontColor" style="background: #ffffff"></div>
+                        <span>{{"BUTTON_FONT_COLOUR" | translate }}</span><br/>
+                        <input [(colorPicker)]="ActionButtonTitleColor" [style.background]="ActionButtonTitleColor" [cpCancelButton]="false" (colorPickerChange)="onActionButtonTitleColorChange($event)" [cpSaveClickOutside]="true" class="url-popup" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn-action setAlign">
+            <button class="btn btn-default btn-save saveColor miniWidth" (click)="saveActionButtonColorConfig()" type="button">{{"SAVE" | translate}}</button>
+            <button class="btn btn-default btn-close cancel-btn-color miniWidth" (click)="resetColor()" type="button">Reset</button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</ng-template>
+
+<ng-template #template>
+    <div class="modal-body text-center">
+        <textarea [(ngModel)]="DescriptionModel" maxlength="2000"></textarea>
+        <button type="button" class="btn blue" (click)="confirm()">{{"YES" | translate }}</button>
+        <button type="button" class="btn btn-default" (click)="decline()">{{"NO" | translate }}</button>
+    </div>
+</ng-template>
+
+<ng-template #popTemplate>
+    <div *ngIf="isWhatsappEnable">
+        {{"Lbl_AcceptedFormats" | translate}}:
+        <div>
+            <span>JPEG, PNG, MP4, 3GP</span>
+        </div>
+        Media Size:
+        <div>
+            <span>Less than 64 MB</span>
+        </div>
+    </div>
+    <div *ngIf="!isWhatsappEnable">
+        {{"Lbl_AcceptedFormats" | translate}}:
+        <div>
+            <span>JPEG, PNG, TIFF, GIF</span>
+        </div>
+        {{"Lbl_Dimensions" | translate}}:
+        <div>
+            <span>900px {{"Lbl_By" | translate}} 400px</span>
+        </div>
+    </div>    
+</ng-template>
+
+<app-message-variable-popup (updateIsOpenPopup)="UpdatePopUpStatus($event)"></app-message-variable-popup>

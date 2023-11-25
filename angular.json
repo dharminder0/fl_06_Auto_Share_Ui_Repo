@@ -1,0 +1,232 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "Automation": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "assets": [
+              "src/assets",
+              "src/favicon.ico",
+              "src/web.config",
+              {
+                "glob": "index.js",
+                "input": "src/server",
+                "output": "/"
+              },
+              {
+                "glob": "app.js",
+                "input": "src/server",
+                "output": "/"
+              },
+              {
+                "glob": "package.json",
+                "input": "src/server",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "node_modules/@mobiscroll/angular/dist/css/mobiscroll.angular.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/fontawesome.css",
+              "node_modules/@fortawesome/fontawesome-free/css/regular.css",
+              "node_modules/@fortawesome/fontawesome-free/css/solid.css",
+              "node_modules/@fortawesome/fontawesome-free/css/brands.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/layouts/css/spell-check.css",
+              "src/styles.css",
+              "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "src/assets/layouts/css/app.css",
+              "node_modules/dragula/dist/dragula.css",
+              "node_modules/froala-editor/css/froala_editor.pkgd.min.css",
+              "node_modules/froala-editor/css/froala_style.min.css",
+              "node_modules/video.js/dist/video-js.min.css",
+              "node_modules/video.js/dist/video-js.css",
+              "node_modules/videojs-record/dist/css/videojs.record.css",
+              "src/assets/layouts/css/app.scss"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/jquery-slimscroll/jquery.slimscroll.min.js",
+              "src/assets/layouts/js/upload-widget.js",
+              "src/assets/layouts/js/owl.carousel.min.js",
+              "node_modules/moment/min/moment.min.js",
+              "src/assets/layouts/js/app.min.js",
+              "src/assets/layouts/js/custom.js",
+              "src/assets/layouts/js/custom-app.js",
+              "node_modules/froala-editor/js/froala_editor.pkgd.min.js",
+              "node_modules/snapsvg/dist/snap.svg-min.js",
+              "src/assets/layouts/js/spell-check.js",
+              "node_modules/video.js/dist/video.min.js",
+              "node_modules/recordrtc/RecordRTC.js",
+              "node_modules/videojs-record/dist/videojs.record.js",
+              "node_modules/webrtc-adapter/out/adapter.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "Automation:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "Automation:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "Automation:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/jquery-slimscroll/jquery.slimscroll.min.js",
+              "src/assets/layouts/js/upload-widget.js",
+              "src/assets/layouts/js/owl.carousel.min.js",
+              "node_modules/moment/min/moment.min.js",
+              "src/assets/layouts/js/app.min.js",
+              "src/assets/layouts/js/custom.js",
+              "src/assets/layouts/js/custom-app.js",
+              "node_modules/froala-editor/js/froala_editor.pkgd.min.js",
+              "node_modules/snapsvg/dist/snap.svg-min.js",
+              "src/assets/layouts/js/spell-check.js",
+              "node_modules/video.js/dist/video.min.js",
+              "node_modules/recordrtc/RecordRTC.js",
+              "node_modules/videojs-record/dist/videojs.record.js",
+              "node_modules/webrtc-adapter/out/adapter.js"
+            ],
+            "styles": [
+              "node_modules/@mobiscroll/angular/dist/css/mobiscroll.angular.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/fontawesome.css",
+              "node_modules/@fortawesome/fontawesome-free/css/regular.css",
+              "node_modules/@fortawesome/fontawesome-free/css/solid.css",
+              "node_modules/@fortawesome/fontawesome-free/css/brands.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/layouts/css/spell-check.css",
+              "src/styles.css",
+              "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "src/assets/layouts/css/app.css",
+              "node_modules/dragula/dist/dragula.css",
+              "node_modules/froala-editor/css/froala_editor.pkgd.min.css",
+              "node_modules/froala-editor/css/froala_style.min.css",
+              "node_modules/video.js/dist/video-js.min.css",
+              "node_modules/video.js/dist/video-js.css",
+              "node_modules/videojs-record/dist/css/videojs.record.css",
+              "src/assets/layouts/css/app.scss"
+            ],
+            "assets": [
+              "src/assets",
+              "src/favicon.ico",
+              "src/web.config",
+              {
+                "glob": "index.js",
+                "input": "src/server",
+                "output": "/"
+              },
+              {
+                "glob": "app.js",
+                "input": "src/server",
+                "output": "/"
+              },
+              {
+                "glob": "package.json",
+                "input": "src/server",
+                "output": "/"
+              }
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "Automation-e2e": {
+      "root": "e2e",
+      "sourceRoot": "e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "Automation:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "Automation",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "styleext": "css"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
+  }
+}

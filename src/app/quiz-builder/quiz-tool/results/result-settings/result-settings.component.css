@@ -1,0 +1,172 @@
+.reveal-time-input{
+  width: 60px;
+  height: 40px;
+  display: inline-block;
+  border: 1px solid #D0D0D0;
+  border-radius: 5px 0px 0px 5px;
+  box-shadow:none;
+  margin-left: 15px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+ng-select { 
+    /* background-color: buttonface; */
+    width: 100px;
+    height: auto;
+    border-width: 2px;
+    border-color: #dbdbdb;
+    border-radius: 4px;
+    box-shadow: none;
+    /* margin: 0px 7px; */
+    margin-right: 17px;
+    vertical-align: middle;
+  }
+
+  :host ::ng-deep ng-select > div {
+    height: 40px;
+    border: 1px solid #D0D0D0;
+    border-radius: 0px 5px 5px 0px;
+    border-left: none;
+    width: 100px;
+}
+
+:host ::ng-deep ng-select > div > div.single > div.toggle {
+  line-height: 38px;
+  height: 40px;
+  font-size: 10px;
+}
+
+:host ::ng-deep ng-select > div > div.single > div.value {
+  line-height: 38px;
+  height: 40px;
+}
+
+  .time-config-div{
+    margin-bottom: 17px;
+  }
+
+  .answers
+{
+    width: 40%;
+    display :unset;
+}
+
+.input-flex-group{
+  line-height: 3;
+  text-align: center;
+}
+
+/* new design */
+.portlet-head{
+  padding: 0 40px;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.font-type{
+  font-family: Raleway;
+  font-style: normal;
+}
+
+.font-text2{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 125%;
+  color: #494949;
+}
+
+.content-bottom{
+  width: 100%;
+  height: 60px;
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
+  padding: 10px 40px;
+  position: absolute;
+}
+
+.save-btn{
+  background: #FFFFFF;
+  border: 1px solid #000000;
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 80px;
+  height: 40px;
+  color: #000000;
+  color: var(--secondary-color);
+}
+
+.save-btn:hover{
+  background: #000000;
+  background:  var(--secondary-color);
+  color: #FFFFFF;
+}
+
+.normal-text{
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.form-body{
+  height: calc(100% - 120px);
+  background: #fff;
+  position: relative;
+  padding: 34px 40px;
+  overflow: auto;
+}
+
+.some-icon{
+  width: 16px;
+  height: 16px;
+  margin-top:-3px;
+}
+
+.eye-icon{
+  width: 16px;
+  height: 12px;
+  margin-top:-3px;
+}
+
+.answer-container .form-group {
+  margin-bottom: 15px;
+}
+
+.mbottom-17{
+  margin-bottom: 17px;
+}
+
+.score-value-text{
+  width: 120px;
+  height: 40px;
+  border: 1px solid #D0D0D0;
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+.correct-anw-field{
+  height: 40px;
+  border: 1px solid #D0D0D0;
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+.answer-container .child label{
+  font-weight: normal;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.mright-10{
+  margin-right: 10px;
+}

@@ -1,0 +1,58 @@
+.iframe-div{
+width: 100%;
+border: none;
+}
+
+.container-single .ins.no{
+    display: block;
+    width: 100%;
+    overflow: auto;
+} 
+
+.ins.no{
+    display: block;
+    padding: 0px !important;
+}
+
+.ellipsiss{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.take-personality-btn{
+  width: 100%;
+  min-height: 38px;
+  background: #00B7AB;
+  border-radius: 5px;
+ color: #FFFFFF;
+ font-family: Raleway;
+ font-style: normal;
+ font-size: 14px;
+ padding: 0;
+ line-height: 34px;
+}
+
+/* scrollbar */
+
+::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e4e6ec;
+}
+
+.default-loader{
+  background: #FFF;
+  width: 100%;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  height: 100%;
+}

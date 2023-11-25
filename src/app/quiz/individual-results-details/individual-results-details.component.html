@@ -1,0 +1,56 @@
+<div class="fixed-fr-toolbar" *ngIf="!resultLeadForm">
+    <div [ngClass]="{'vertically-preview-center': isMobileView }">
+        <div class="container-single page" #previewContainer>
+            <div class="ins no" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType
+    }">
+                <button (click)='onDestroyIndividualResult()' aria-label="Close" class="close floatPos" type="button">
+      <span  aria-hidden="true"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>
+    </button>
+                <div class="popup-container-attempt" [ngClass]="{'popup-container': addClass}">
+                    <div class="ember-answer-key container-position">
+                        <div *ngIf="individualResultData.ShowExternalTitle" class="next-line-string" [froalaEditor]="options" contenteditable="false" [ngModel]="individualResultData.Title"></div>
+                        <div *ngIf="individualResultData.ShowDescription" class="next-line-string" [froalaEditor]="options" contenteditable="false" [ngModel]="individualResultData.Description"></div>
+                        <div class="share-result" *ngIf="ResultScore.ShowFacebookBtn || ResultScore.ShowTwitterBtn || ResultScore.ShowLinkedinBtn">
+                            <p>{{"SHARE_YOUR_RESULTS" | translate }}</p>
+                        </div>
+                        <div *ngIf='!resultDetails?.QuizSocialShare.HideSocialShareButtons'>
+                            <button *ngIf='resultDetails?.QuizSocialShare.EnableFacebookShare' shareButton="facebook" [sbUrl]="sharedURL">
+              <i class="fa fa-facebook-square"></i>
+              Facebook</button>
+                            <button *ngIf='resultDetails?.QuizSocialShare.EnableTwitterShare' shareButton="twitter" [sbUrl]="sharedURL">
+              <i class="fa fa-twitter-square"></i>
+              Twitter</button>
+                            <button *ngIf='resultDetails?.QuizSocialShare.EnableLinkedinShare' shareButton="linkedIn" [sbUrl]="sharedURL">
+              <i class="fa fa-linkedin-square"></i>
+              LinkedIn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fixed-fr-toolbar" *ngIf="resultLeadForm">
+    <button (click)='onBackMultipleResult()' aria-label="Close" class="close floatPos" type="button">
+    <span  aria-hidden="true"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>
+  </button>
+    <div class="ember-answer-key container-position">
+        <div *ngIf="individualResultData.ShowExternalTitle" class="next-line-string" [froalaEditor]="options" contenteditable="false" [ngModel]="individualResultData.Title"></div>
+        <div *ngIf="individualResultData.ShowDescription" class="next-line-string" [froalaEditor]="options" contenteditable="false" [ngModel]="individualResultData.Description"></div>
+        <div class="share-result" *ngIf="ResultScore.ShowFacebookBtn || ResultScore.ShowTwitterBtn || ResultScore.ShowLinkedinBtn">
+            <p>{{"SHARE_YOUR_RESULTS" | translate }}</p>
+        </div>
+        <div *ngIf='!resultDetails?.QuizSocialShare.HideSocialShareButtons'>
+            <button *ngIf='resultDetails?.QuizSocialShare.EnableFacebookShare' shareButton="facebook" [sbUrl]="sharedURL">
+                <i class="fa fa-facebook-square"></i>
+                Facebook</button>
+            <button *ngIf='resultDetails?.QuizSocialShare.EnableTwitterShare' shareButton="twitter" [sbUrl]="sharedURL">
+                <i class="fa fa-twitter-square"></i>
+                Twitter</button>
+            <button *ngIf='resultDetails?.QuizSocialShare.EnableLinkedinShare' shareButton="linkedIn" [sbUrl]="sharedURL">
+                <i class="fa fa-linkedin-square"></i>
+                LinkedIn</button>
+        </div>
+    </div>
+</div>

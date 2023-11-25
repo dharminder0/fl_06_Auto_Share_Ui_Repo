@@ -1,0 +1,18 @@
+{
+  "AutomationApiURL": "https://automation-api-test.jobrock.com/api/",
+  "AppointmentApiURL": "https://appointments-api-test.jobrock.com/api/",
+  "AutomationApiSecret": "9a597082778a42268b33e56ce96dd45a",
+  "AppointmentApiSecret": "9a597082778a42268b33e56ce96dd45a",
+  "FroalaEditorKey": "hB2C1G2I2A4C4D-17D2E2F2C1E4G1C4B8E7E6nc1QXIa2QZe1UOXATEX==",
+  "sso": {
+    "login": "https://accounts-test.jobrock.com/account/login",
+    "logout": "https://accounts-test.jobrock.com/account/logout"
+  },
+  "MediaSiteUrl": "https://media-test.jobrock.com",
+  "AppointmentSlotUrl": "https://appointments-test.jobrock.com",
+  "WebUrl": "automation-test.jobrock.com",
+  "CoreUrl": "https://core-test.jobrock.com",
+  "EnableWhatsAppTemplate": true,
+  "DisableMedia": false,
+  "isQuizVarPopupEnable": true
+}

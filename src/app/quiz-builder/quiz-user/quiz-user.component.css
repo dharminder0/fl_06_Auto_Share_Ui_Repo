@@ -1,0 +1,132 @@
+
+*{
+  -webkit-overflow-scrolling: touch;
+}
+.hover-tag {
+  display: none;
+}
+
+.show-tag:hover .hover-tag {
+  display: block;
+}
+
+.xs-info .txt span{
+  margin-top: 2px;
+}
+
+.display-tag {
+  height: 17px;
+  /* width: 17px; */
+  width: 100%;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.color {
+  height: 17px;
+  width: 17px;
+  /* float: left; */
+  display: inline-block;
+  cursor: pointer;
+  border: 2px transparent solid;
+}
+
+.active {
+  border-color: black;
+}
+
+.width-resize {
+  width: max-content;
+}
+
+.flex-value-1 {
+  flex: 1;
+}
+.sort-engine a {
+  margin-left: 10px;
+}
+.break-word {
+  word-break: break-word;
+}
+
+.total-automation-count {
+  margin: 0 80px;
+  padding: 12px;
+  text-align: right;
+  font-size: 12px;
+}
+
+.automation-type-filter{
+    width: 200px;
+    margin: 0 15px;
+}
+
+.sub-head{
+  margin-bottom: unset;
+}
+
+.checkbox-dropdown{
+  min-width: 140px;
+  left: 0;
+}
+
+.office-checkbox-ul{
+  max-height: 250px;
+  overflow-y: auto;
+  /* overflow: hidden; */
+}
+
+.overflow-data{
+  overflow-x: auto !important;
+}
+
+.dropdown-container{
+  overflow: auto;
+}
+
+.dropdown-container span{
+  float: left;
+}
+
+.dropdown-container i {
+  margin-top: 3px;
+}
+.newPadding
+{
+  padding: 6px 1px !important;
+  padding: 9px 12px !important;
+    border: 1px solid #eee;
+    /* width: 121px; */
+    width: 220px;
+    height: 34px;
+    margin-left:-9%;
+}
+.newPadding::-webkit-input-placeholder
+{
+  font-size : 13px !important; 
+}
+.navbar-fixed-top
+{
+  position: absolute;
+  margin-top: -4%;
+    width: 127px;
+    background: #fff;
+    padding-bottom: 5px !important;
+}
+.navbar-fixed-top:hover
+{
+background: none !important;
+color: black !important;
+}
+.topMargin
+{
+  margin-top:43px;
+}
+
+.childGrouping{
+  padding-left: 20px;
+}
+
+.pointer{
+  cursor: pointer;
+}

@@ -1,0 +1,31 @@
+.no-active-template-heading{
+    font-size: 30px;
+}
+
+.ember-body .ember-container.temp .ember-content{
+    margin: auto;
+}
+.marginSet
+{
+    margin: 0 !important;
+}
+
+.ember-body{
+    margin: 0 40px !important;
+}
+
+.w-linked{
+    width: 492px !important;
+}
+
+.w-temp-body{
+    width: 785px !important;
+}
+
+.w-drop{
+    max-width: 1520px;
+}
+
+.em-body{
+    max-width: 1680px; margin: auto;
+}

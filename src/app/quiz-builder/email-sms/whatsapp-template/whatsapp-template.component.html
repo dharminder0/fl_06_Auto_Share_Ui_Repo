@@ -1,0 +1,42 @@
+<div class="whatsapp-block">
+    <div class="template-body">
+        <form [formGroup]="whatsappTemplateForm">
+                <span *ngFor="let dataObj of whatsappTemplateStructureList" [ngClass]="{'mleft-5' : dataObj.fieldCode === 'inputField'}">
+                    <span *ngIf="dataObj.fieldCode === 'text'">{{dataObj.fieldValue}}</span>
+                <input *ngIf="dataObj.fieldCode === 'inputField'" type="text" formControlName="{{dataObj.fieldValue}}" placeholder="{{dataObj.fieldPlaceholder | translate}}" style="border: 0;border-bottom: 1px solid;padding-left: 5px;font-weight: 600;height: auto;outline: none;margin:5px 0"
+                />
+                </span>
+        </form>
+        <!-- <div *ngIf="!showTemplateForm">
+            {{"Msg_NoTemplateForLangCode" | translate}}
+        </div> -->
+    </div>
+    <div *ngIf="selectedTempDetails && selectedTempDetails.customComponents && selectedTempDetails.customComponents.length > 0">
+        <div *ngFor="let customComponent of selectedTempDetails.customComponents">
+            <div *ngIf="customComponent.type == 'buttons'" class="flex-dis">
+                <div *ngFor="let item of customComponent.items" class="d-inline-block">
+                    <button class="unslected-custombtn" [ngClass]="{'whatsapp-customBtn' : (selectedTempDetails.allowedAnswersList && selectedTempDetails.allowedAnswersList.includes(item.text))}">{{item.text}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row jr-template-list">
+        <div class="col-sm-3 d-inline-block jr-temp-tab pleft-5">
+            <select class="form-control lang-dropdown" [(ngModel)]="selectedTemplateLangCode" (ngModelChange)="getWhatsappHsmTemplates()">
+                <option title="{{languageNameByCode[option]}}" [ngClass]="{'selected-language': languageNameByCode[option] == languageNameByCode[selectedTemplateLangCode]}"
+                  [ngValue]="option" *ngFor="let option of clientLanguageList">{{languageNameByCode[option]}}</option>
+            </select>
+        </div>
+        
+        <div class="col-sm-9 d-inline-block">
+            <div class="template-options">
+                    <div *ngFor="let template of availableHsmTemplateList" class="template-message msg-typing-area" (mouseenter)="hoverOnTempName[template.id] = true" (mouseleave)="hoverOnTempName[template.id] = false" (click)="onSelectedTemp(template)">
+                        <div class="ellipsiss" title="{{template.displayName}}" [ngClass]="{'selected-border': hoverOnTempName[template.id]==true,'selected': selectedTempDetails && selectedTempDetails.id == template.id}">
+                            {{template.displayName}}
+                        </div>
+                    </div> 
+            </div>
+        </div>
+    </div> 
+</div>
+

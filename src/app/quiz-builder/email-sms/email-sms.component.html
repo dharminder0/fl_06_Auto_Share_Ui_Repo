@@ -1,0 +1,83 @@
+<!-- begin contents -->
+<section class="app-contents">
+  <div class="temp-body">
+    <!-- begin head -->
+    <!-- <div class="app-head"> -->
+      <div class="temp-head row">
+      <!-- <h1 class="title-4">{{"EMAIL_&_SMS_TEMPLATES" | translate }}</h1> -->
+      <div class="app-header col-sm-12 col-md-3">{{"COMMUNICATION_TEMPLATES" | translate }}</div>
+      <div class="col-sm-12 col-md-9">
+      <form [formGroup] = 'templateHeadForm' class="action float-right">
+        <div *ngIf="!isNotification" class="btn-group">
+            <a (click) = 'onReminderSetting()' class="btn btn-text green-btn app-data" app-data="reminder-setting">{{"REMINDER_SETTINGS" | translate }}</a>
+        </div>
+        <div class="btn-group">
+          <!-- <a href="javascript:void(0);" (click) = 'addNewTemplate()' class="btn line blue app-data" app-data="data-add">
+            <i class="zmdi zmdi-plus plan"></i>{{"ADD_NEW_TEMPLATE" | translate }}</a> -->
+            <a (click) = 'addNewTemplate()' class="btn btn-text green-btn">
+              <i class="zmdi zmdi-plus plan"></i>{{"ADD_NEW_TEMPLATE" | translate }}</a>
+        </div>
+        <div class="btn-group ember-office">
+          <ng-select class="custom"
+            placeholder="{{'SELECT_OFFICE' | translate}}"
+            [disabled] = 'templateHeadForm.controls["officeId"].value === ""'
+            formControlName= 'officeId'
+            (selected)="onOfficeChange($event)"
+            [options]="officeList"
+            [noFilter]="10">
+          <ng-template
+          #optionTemplate
+          let-option="option">
+          <div [ngClass]="{'childGrouping': option.type == 'Child'}">{{ option.label }}</div>
+          </ng-template>
+        </ng-select>
+        </div>
+        <div class="btn-group">
+          <label class="app-checkbox beta company-wise-text" [ngClass]="{'unchecked':!templateHeadForm.controls.sharedWithMe.value}">{{"COMPANY_WIDE_AUTOMATION" | translate}}
+            <input type="checkbox" [value]='true' name="1" (click) = "onSharedWithMe()">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </form>
+      </div>
+    </div>
+    <!-- end head -->
+    <!-- begin page -->
+    <div class="tabbable-body">
+      <!-- <ul class="nav nav-tabs">
+        <li routerLinkActive = "active" >
+          <a  [routerLink] = "['quiz-invitation']" data-toggle="tab">{{"INITIAL_QUIZ_INVITATION" | translate }}</a>
+        </li>
+        <li routerLinkActive = "active">
+          <a  [routerLink] = "['quiz-reminder']" data-toggle="tab">{{"QUIZ_REMINDER" | translate }}</a>
+        </li>
+      </ul> -->
+      <ul class="padding-0">
+        <li class="flex-display" routerLinkActive = "active" >
+          <a class="nav-padding nav-font-family" [ngClass]="{'green': !isNotification}" [routerLink] = "['quiz-invitation']" data-toggle="tab">{{"INITIAL_INVITE" | translate }}</a>
+          <img *ngIf="isNotification" src="assets/layouts/img/arrow.png" class="arrow-icon"/>
+        </li>
+        <li class="flex-display" routerLinkActive = "active">
+          <a class="nav-padding nav-font-family" [ngClass]="{'green': isNotification}" [routerLink] = "['quiz-reminder']" data-toggle="tab">{{"REMINDER" | translate }}</a>
+          <img *ngIf="!isNotification" src="assets/layouts/img/arrow.png" class="arrow-icon"/>
+        </li>
+      </ul>
+      <!-- <img src="assets/layouts/img/arrow.png" class="arrow-icon" [ngClass]="{'arrow-left': !isNotification}"/> -->
+    </div>
+  </div>
+  <!-- end page -->
+  <div class="tab-content">
+  <router-outlet></router-outlet>
+  </div>
+</section>
+<!-- end contents -->
+
+<!-- <div #_ref></div>
+
+<div class="app-sidebar-overlay" #addTemplate>
+</div> -->
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar setting-width" id="reminder-setting">
+  <div #reminderSettingTemplate></div>
+</div>

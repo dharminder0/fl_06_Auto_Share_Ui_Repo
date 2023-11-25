@@ -1,0 +1,28 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Search 
+*/
+.search-engine{
+  position: relative;
+  margin-bottom: 20px;
+  .search{
+    top: 0;
+    bottom: 0;
+    left: 12px;
+    margin: auto;
+    position: absolute;    
+  }
+  .search-btn{
+    top: 0;
+    bottom: 0;
+    right: 4px;
+    height: 22px;   
+    margin: auto;
+    position: absolute;
+  }
+  .form-control{
+    padding-left: 34px;
+    padding-right: 34px;  
+  }  
+}

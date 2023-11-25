@@ -1,0 +1,39 @@
+<div class="portlet-head">
+        <a href="javascript:void(0)" class="back closet">
+          <i class="fa fa-chevron-left"></i>{{ "BACK" | translate }}</a>
+        <div class="action"><a href="javascript:void(0)" class="closet"></a></div>
+      </div>
+      <div class="portlet-body horizontal-form app-calc">
+          <div class="app-grow">
+        <form [formGroup]="coverSettingForm" (submit)="onUpdateContentSetting()" class="tab-content">
+          <div class="tab-pane active" id="tab-1">
+            <div class="info-box">
+                <div class="form-group">
+                  <p>
+                    <b>{{"COVER_SETTINGS" | translate }}</b>
+                  </p>
+                  <br>
+
+                  <div class="form-group">
+                  <div class="control-label col-sm-6">
+                    <p>
+                      {{"VIDEO_PLAY_PAUSE_CONTROLS" | translate }}
+                     </p>
+                   </div>
+                  <div class="switch-bar-col">
+                    <label class="switch-bar sm control-label"> 
+                      <input type="checkbox" formControlName="AutoPlay"  [(ngModel)]="videoControls" [checked]="videoControls == true" />
+                      <span class="switch-slider round"></span>
+                    </label>
+                  </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn blue">{{"SAVE" | translate }}</button>
+          </div>
+        </form>
+        </div>
+      </div>
+      

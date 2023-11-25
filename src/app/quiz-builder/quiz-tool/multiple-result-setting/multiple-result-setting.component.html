@@ -1,0 +1,89 @@
+<div class="portlet-head">
+  <div class="font-type font-text2">
+    <span>{{"MULTIPLE_RESULT_SETTINGS" | translate}}</span>
+  </div>
+    <div class="action"><a href="javascript:void(0)" class="closet"></a></div>
+  </div>
+  <!-- <div class="portlet-body horizontal-form app-calc">
+    <div class="app-grow"> -->
+      <!-- <div class="heading">
+        <h2 class="title-11">{{ "MULTIPLE_RESULT_SETTINGS" | translate }}</h2>
+      </div> -->
+      
+      <form class="form-body font-type">
+        <div class="in white-bkg" >
+          <div class="answer-container">
+              <div class="form-group">
+                  <h3>
+                    <!-- <i class="fa-icon check-o"></i> -->
+                    <img src="assets/layouts/img/circle-check.png" class="some-icon" />
+                    {{"LEAD_FORM_SETTINGS" | translate}}
+                  </h3>
+                  <div>
+                    <span>{{"BE_AWARE_YOU_HAVE_TO_CONFIGURE_THIS_FOR_EACH_RESULT" | translate}}
+                    </span>
+                  </div>
+                </div>
+            <div class="form-group">
+                <p clas="bold">
+                    {{"LIKE_TO_SHOW_LEAD_FORM" | translate}}
+                  </p>
+                  <label class="app-radio">
+                    {{"YES_DISPLAY_THE_LEAD_FORM" | translate}}
+                    <input  class="form-control" type="radio" [(ngModel)]="showLeadForm" [ngModelOptions]="{standalone: true}" [value]="true" checked="" />
+                    <span></span>
+                  </label>
+                  <br>
+                  <label class="app-radio">
+                    {{"NO_DO_NOT_DISPLAY_THE_LEAD_FORM" | translate}}
+                    <input class="form-control" type="radio" [(ngModel)]="showLeadForm" [ngModelOptions]="{standalone: true}" [value]="false" checked="" />
+                    <span></span>
+                  </label>
+              <h3>
+                <!-- <i class="fa-icon check-o"></i> -->
+                <img src="assets/layouts/img/circle-check.png" class="some-icon" />
+                {{ "MAX_NO_OF_RESULTS_SHOWN" | translate }}
+              </h3>
+              
+              <a class="m-10" role="button" (click)="decrement()"
+                      ><i class="zmdi zmdi-minus plusminus"></i> </a>
+                      
+                      <input
+                      type="number"
+                      placeholder="1"
+                      class="form-control associated-answers" 
+                      [(ngModel)]="max"
+                      [ngModelOptions]="{standalone: true}"
+                      Negative="true"
+                    />
+
+                    <a class="m-10" role="button" (click)="increment()">
+                      <i class="zmdi zmdi-plus plusminus"></i></a>
+                      <div>{{ "NUMBER_OF_AVAILABLE_RESULTS" | translate}}{{ curResults }}</div>
+              
+            </div>
+            <!-- <span>CURRENT_NO_OF_RESULTS_AVALIABLE</span> -->
+              
+          </div>
+          <!-- <div class="form-actions">
+              <button
+                class="btn blue closet"
+                (click)="onSave()"
+                [disabled]="max>curResults ||  max == null || max<1">
+                {{ "SAVE" | translate }}
+              </button>
+              <a class="btn line closet">{{ "CANCEL" | translate }}</a>
+            </div> -->
+        </div>
+      </form>
+    <!-- </div>
+  </div> -->
+  
+  <!-- <div *ngIf="quizTypeId == 4">
+                      <input type="text" class="form-control answers"  formControlName = 'YouScoredA' placeholder="{{'YOU_SCORED_A' | translate}}" >
+                      <span>(score goes here)</span>
+                  </div>
+                  </div> -->
+<div class="content-bottom">
+  <button type="submit" class="btn save-btn font-type normal-text" [disabled]="max>curResults ||  max == null || max<1" (click) = "onSave()">{{"SAVE" | translate }}</button>
+</div>

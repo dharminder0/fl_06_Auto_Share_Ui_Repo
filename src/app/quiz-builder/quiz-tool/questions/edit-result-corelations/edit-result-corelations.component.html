@@ -1,0 +1,145 @@
+<div class="portlet-head">
+  <div class="font-type font-text2">
+    <span>{{"RESULT_RELATION_SETTINGS" | translate}}</span>
+  </div>
+  <div class="action"><a href="javascript:void(0)" class="closet" (click)="onClose()"></a></div>
+</div>
+<!-- <div class="portlet-body horizontal-form app-calc">
+  <div class="app-grow"> -->
+    <!-- <div class="heading">
+      <h2 class="title-10">{{ "RESULT_RELATION_SETTINGS" | translate }}</h2>
+    </div> -->
+    <div class="form-body disp lay font-type">
+      <form>
+        <div class="in white-bkg">
+          <div class="answer-container">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-4">
+                  <h3>
+                    <!-- <i class="fa-icon check-o"></i> -->
+                    <img src="assets/layouts/img/circle-check.png" class="some-icon"/>
+                    {{ "ANSWERS" | translate }}
+                  </h3>
+                  <span>{{
+                    "CLICK_AN_ANSWER_TO_LINK_IT_TO_ONE_AUTOMATION_RESULTS"
+                      | translate
+                  }}</span>
+                </div>
+                <div class="col-md-4">
+                  <h3 class="middle">
+                    {{ "CORRELATES_TO" | translate }}
+                    <!-- <i class="fa fa-arrow-right"></i> -->
+                    <img src="assets/layouts/img/long-arrow-right.png" class="long-arrow" />
+                  </h3>
+                </div>
+                <div class="col-md-4">
+                  <h3>
+                    <!-- <i class="fa-icon check-o"></i> -->
+                    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                    {{ "RESULTS" | translate }}
+                  </h3>
+                  <span class="middle"
+                    >{{
+                      "CLICK_A_RESULT_TO_LINK/UNLINK_IT_TO/FROM_THE_SELECTED_ANWSER"
+                        | translate
+                    }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <ul class="nav">
+                    <li
+                      class="item"
+                      *ngFor="
+                        let answer of questionData.AnswerList;
+                        let i = index
+                      "
+                    >
+                      <a
+                        [ngClass]="{
+                          backCol: i == 0,
+                          back: i != 0
+                        }" [ngStyle]="calculatedColor"
+                        appActive
+                        (click)="onAnswerClick(answer.AnswerId)"
+                        href="javascript:void(0);"
+                      >
+                        <span>{{ i + 1 }}</span
+                        >{{ answer.AnswerText }} <i class="fa fa-check"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-4">
+                  <svg width="240" [attr.height]="answers" id="my-svg"></svg>
+                </div>
+                <div class="col-md-4">
+                  <ul class="nav">
+                    <li
+                      class="item"
+                      *ngFor="let res of resultData; let i = index"
+                    >
+                      <a
+                      [ngStyle]="calculatedColor"
+                        class="back def"
+                        appActive2
+                        (click)="onResultClick(res.ResultId)"
+                        href="javascript:void(0);"
+                      >
+                        <span>{{ i + 1 }}</span
+                        >{{ res.Title }} <i class="fa fa-check"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form *ngIf="answerTypeData == 2" [formGroup]="setMaxForm">
+            <ul class="nav selected-answer-limit">
+              <li>
+                <div class="answer-number-container">
+                  <span>Required Answers (Min)</span>
+                  <input
+                    type="text" class="answer-number min-max-text"
+                    formControlName="MinAnswer"
+                    OnlyNumber="true"
+                  />
+                </div>
+                <small *ngIf="setMaxForm.controls['MinAnswer'].invalid" class="error-message">
+                  please enter a valid required answers
+                </small>
+              </li>
+              <li>
+                <div class="answer-number-container">
+                  <span>Select Limit (Max)</span>
+                  <input
+                  type="text" class="answer-number min-max-text"
+                  formControlName="MaxAnswer"
+                    OnlyNumber="true"
+                  />
+                </div>
+                <small *ngIf="setMaxForm.controls['MaxAnswer'].invalid" class="error-message">
+                    please enter a valid select limit
+                </small>
+              </li>
+            </ul>
+          </form>
+        </div>
+        <!-- <div class="form-actions">
+          <button class="btn blue closet" [disabled]="questionData.AnswerType != answerTypeData || !setMaxForm.valid || setMaxForm.get('MinAnswer').value > setMaxForm.get('MaxAnswer').value || setMaxForm.get('MinAnswer').value < 1 " (click)="onSave()">
+            {{ "SAVE" | translate }}
+          </button>
+          <a class="btn line closet">{{ "CANCEL" | translate }}</a>
+        </div> -->
+      </form>
+    </div>
+  <!-- </div>
+</div> -->
+
+<div class="content-bottom">
+  <button type="submit" class="btn save-btn font-type normal-text" (click) = "onSave()"  [disabled]="questionData.AnswerType != answerTypeData || !setMaxForm.valid || setMaxForm.get('MinAnswer').value > setMaxForm.get('MaxAnswer').value || setMaxForm.get('MinAnswer').value < 1 ">{{"SAVE" | translate }}</button>
+</div>

@@ -1,0 +1,32 @@
+.floatPos
+{
+    float: left !important;
+    font-size: 25px;
+    margin-left: -20px;
+}
+
+.fa-arrow-left{
+  font-size: 22px !important;
+}
+.pull-right.close{
+    z-index: 2;
+}
+/* .close{
+    margin-top: -2px;
+    z-index: 2;
+    position: absolute;
+    left: 0;
+} */
+.ins.no{
+    display: block;
+  }
+  /* .popup-container-attempt{
+    height: calc(100vh - 180px);
+  } */
+
+  .container-single .ins.no{
+    display: block;
+    /* height: calc(100vh - 48px); */
+    width: 100%;
+    overflow: auto;
+  } 

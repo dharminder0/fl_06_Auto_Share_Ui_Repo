@@ -1,0 +1,18 @@
+<div class="container-single page container" #previewContainer>
+    <div class="ins no" [ngClass]="{'content-box': !isMobileView}" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+        <div class="row">
+            <div *ngIf="!ResultScore.PersonalityResultList" class="col-sm-12 col-md-6">
+                <app-result-details [ResultScore]="ResultScore" [quizType]="quizType" [QuizBrandingAndStyle]="QuizBrandingAndStyle" [resultLeadForm]="resultLeadForm"></app-result-details>
+            </div>
+            <div *ngIf="ResultScore.PersonalityResultList && ResultScore.PersonalityResultList.length && !individualResult" class="col-sm-12 col-md-6">
+                <app-multiple-results [ResultScore]="ResultScore" [QuizBrandingAndStyle]="QuizBrandingAndStyle" [resultLeadForm]="resultLeadForm" (isSelectedResultIndex)="onSelectedResultIndex($event)"></app-multiple-results>
+            </div>
+            <div *ngIf="ResultScore.PersonalityResultList && ResultScore.PersonalityResultList.length && individualResult" class="col-sm-12 col-md-6">
+                <app-individual-results-details [ResultScore]="ResultScore" [QuizBrandingAndStyle]="QuizBrandingAndStyle" [resultLeadForm]="resultLeadForm" [index]="index" (isBackMultiResult)="onBackMultpleResults()"></app-individual-results-details>
+            </div>
+            <div class="col-sm-12 col-md-6" [ngStyle]="{'margin-top': isMobileView ? '20px': ''}">
+                <app-lead-form [ResultScore]="ResultScore" [companycode]="companycode" [QuizBrandingAndStyle]="QuizBrandingAndStyle" [resultLeadForm]="resultLeadForm"></app-lead-form>
+            </div>
+        </div>
+    </div>
+</div>

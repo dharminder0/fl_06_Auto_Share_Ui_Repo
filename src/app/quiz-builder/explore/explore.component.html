@@ -1,0 +1,416 @@
+<ng-template #publishTemplate>
+  <div class="popup-modal">
+    <img class="cross-icon" src="assets/layouts/img/cross-icon.png" (click)="decline()" />
+    <div class="confirmation-title font-type">
+      <span>{{"THIS_QUIZ_HAS_UNPUBLISHED_CHANGES_AND_WILL_NEED_TO_BE_PUBLISHED_BEFORE_YOU_CAN_DUPLICATE_THE_QUIZ." | translate }}</span>
+    </div>
+    <div class="btn-p text-center">
+      <button type="button" class="btn cancle-btn font-type" (click)="decline()">{{"CANCEL" | translate }}</button>
+      <button type="button" class="btn del-btn font-type" (click)="confirm()">{{"PUBLISH" | translate }}</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<!-- new style -->
+<div class="background-margin">
+  <div class="quiz-header">
+    <div class="btn-group add-btn-body">
+      <a [routerLink]="['/quiz-builder/add-automation/select-automation']" class="btn add-automation-btn">
+        <i class="zmdi zmdi-plus"></i>{{"NEW_AUTOMATION" | translate }}</a>
+    </div>
+    <div class="font-type ex-header">
+      {{"EXPLORE-ALL" | translate}}
+    </div>
+
+    <!-- search area -->
+    <div class="search-area m-search-box">
+
+      <app-suggestion-panel [selectedOffice]="selectedOffice" [connectedOffice]="allOfficeIds"
+        [isCompanyWise]="isCompanyWise" [suggestionType]="suggestionType"></app-suggestion-panel>
+
+    </div>
+
+    <!-- filter area -->
+    <div class="filter-area">
+      <div class="row">
+
+        <div class="col-xs-12 col-sm-6">
+          <a class="filter-tab mright-10" [ngClass]="{'bottom-line fw-bolder': isCompanyWise}"
+            (click)="getAutomationListCompanyWise(true)" onmouseover="style='color: var(--secondary-color)'"
+            onmouseout="style='color:#494949'">{{"STANDARD" | translate}}</a>
+          <a class="filter-tab" [ngClass]="{'bottom-line fw-bolder': !isCompanyWise}"
+            (click)="getAutomationListCompanyWise(false)" onmouseover="
+                style='color: var(--secondary-color)'"
+            onmouseout=" style='color:#494949'">{{"MY_TEAM" | translate}}</a>
+          <!-- office filter -->
+          <div class="officeFilterBlock" (clickOutside)="showOptionsForFilter=false">
+            <div class="filterOptionsHolder d-inline-block pointer" *ngIf="!isCompanyWise"
+              (click)="startOfficeFilter()">
+              <div class="ellipsiss font-type" title="{{selectedOffice.officeName}}">
+                {{selectedOffice.officeName?selectedOffice.officeName: "SELECT" | translate}}</div>
+                <i class="zmdi drop-icon" [ngClass]="{'zmdi-caret-down': !showOptionsForFilter, 'zmdi-caret-up':showOptionsForFilter }"></i>
+            </div>
+            <!-- filter list box -->
+            <div *ngIf="showOptionsForFilter" class="filterList">
+              <div class="searchBoxForDropdown font-type">
+                <input type="text" placeholder="{{'SEARCH_TEAMS' | translate}}" [(ngModel)]="searchOffice" />
+                <img alt="search icon" class="search-icon" src="assets/layouts/img/icon_search.png">
+              </div>
+              <div class="filterMenuOptionBox">
+                <!-- <div class="item ellipsiss" (click)="selectOfficeToFilter('', '')">Selecter</div> -->
+
+                <div class="item ellipsiss font-type">
+                  <label class="app-checkbox beta">{{"ALL" | translate}}
+                    <input type="checkbox" value="1" name="1"
+                    [checked]="selectAll" (click)="onSelectAll()">
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+
+                <div *ngFor="let list of getOfficeData | searchPipe: 'name': searchOffice">
+
+                  <div class="item ellipsiss font-type" title="{{list.name}}">
+                    <label class="app-checkbox beta">{{list.name}}
+                      <input type="checkbox" [value]='true' name="1"  [checked]="allOfficeIds.includes(list.id)" (click)="selectOfficeToFilter(list.name, list.id)">
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+
+                  <div *ngIf="list.children && list.children.length > 0">
+                    <div class="item ellipsiss office-Child font-type"
+                      *ngFor="let currChild of list.children | searchPipe : 'name' : searchOffice"
+                      title="{{currChild.name}}">
+                      <label class="app-checkbox beta">{{currChild.name}}
+                        <input type="checkbox" [value]='true' name="1"  [checked]="allOfficeIds.includes(currChild.id)" (click)="selectOfficeToFilter(currChild.name, currChild.id)">
+                        <span class="checkmark"></span>
+                      </label>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 toggle-menu">
+          <span *ngIf="recordsPerData > 0">
+            <span class="title mright-5"> {{startRecord}} - {{endRecord}} {{"OF" |translate}} {{recordsPerData}} </span>
+            <a *ngIf="startRecord == 1" style="cursor: no-drop;">
+              <svg class="left-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.18581 7.42828L6.90303 12.8229C7.1539 13.059 7.56035 13.059 7.81185 12.8229C8.06272 12.5867 8.06272 12.203 7.81185 11.9668L2.54811 7.0003L7.81121 2.03376C8.06208 1.79757 8.06208 1.41393 7.81121 1.17714C7.56035 0.940952 7.15327 0.940952 6.9024 1.17714L1.18518 6.57167C0.938167 6.80542 0.938167 7.19508 1.18581 7.42828Z" fill="#a9a9a940" stroke="#a9a9a940" stroke-width="0.5"/>
+              </svg>
+            </a>
+            <a *ngIf="startRecord != 1" (click)="getQuizListdetail(pageIndex - 1)" class="pointer">
+              <svg class="left-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.18581 7.42828L6.90303 12.8229C7.1539 13.059 7.56035 13.059 7.81185 12.8229C8.06272 12.5867 8.06272 12.203 7.81185 11.9668L2.54811 7.0003L7.81121 2.03376C8.06208 1.79757 8.06208 1.41393 7.81121 1.17714C7.56035 0.940952 7.15327 0.940952 6.9024 1.17714L1.18518 6.57167C0.938167 6.80542 0.938167 7.19508 1.18581 7.42828Z" fill="#494949" stroke="#494949" stroke-width="0.5"/>
+              </svg>
+            </a>
+            <a *ngIf="endRecord == recordsPerData" style="cursor: no-drop;">
+              <svg class="right-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.81418 6.57172L2.09697 1.17714C1.8461 0.940953 1.43965 0.940953 1.18815 1.17714C0.937283 1.41334 0.937283 1.79697 1.18815 2.03316L6.45189 6.9997L1.18878 11.9662C0.937917 12.2024 0.937917 12.5861 1.18879 12.8229C1.43965 13.059 1.84673 13.059 2.0976 12.8229L7.81482 7.42833C8.06183 7.19458 8.06183 6.80492 7.81418 6.57172Z" fill="#a9a9a940" stroke="#a9a9a940" stroke-width="0.5"/>
+              </svg>
+            </a>
+            <a *ngIf="endRecord != recordsPerData" (click)="getQuizListdetail(pageIndex + 1)" class="pointer">
+              <svg class="right-arrow" width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.81418 6.57172L2.09697 1.17714C1.8461 0.940953 1.43965 0.940953 1.18815 1.17714C0.937283 1.41334 0.937283 1.79697 1.18815 2.03316L6.45189 6.9997L1.18878 11.9662C0.937917 12.2024 0.937917 12.5861 1.18879 12.8229C1.43965 13.059 1.84673 13.059 2.0976 12.8229L7.81482 7.42833C8.06183 7.19458 8.06183 6.80492 7.81418 6.57172Z" fill="#494949" stroke="#494949" stroke-width="0.5"/>
+              </svg>
+            </a>
+          </span>
+
+          <!-- <span class="title">{{"SHOW" | translate}}:</span> -->
+          <!-- <span class="title mleft-20" [ngClass]="{'bolder': !isPublished}">{{"ALL" | translate}}</span> -->
+          <!-- <i *ngIf="userInfo.BusinessUserId == '2453'" class="fa fa-camera" aria-hidden="true"  style="margin-left: 20px;color: #e0e0e0;" (click)="onRecoding()"></i> -->
+          <!-- <i *ngIf="userInfo.BusinessUserId == '2453'" class="fa fa-camera" aria-hidden="true"  style="margin-left: 20px;color: #e0e0e0;" (click)="onRecodings()"></i> -->
+          <label class="switch">
+            <input type="checkbox" (click)="onPublished()">
+            <span class="slider round"></span>
+          </label>
+          <span class="title" [ngClass]="{'bolder': isPublished}">{{"EXPLORE_ALL_PUBLISH" | translate}}</span>
+
+          <!-- for favorite toggle -->
+          <!-- <span class="title mleft-20" [ngClass]="{'bolder': !isFavorited}">{{"ALL" | translate}}</span> -->
+          <label class="switch">
+            <input type="checkbox" (click)="getFavoriteList()">
+            <span class="slider round"></span>
+          </label>
+          <span class="title" [ngClass]="{'bolder': isFavorited}">{{"FAVORITES" | translate}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="quiz-margin">
+  <div class="quiz-body" *ngIf="quizList">
+    <div class="quiz-card-margin" *ngFor="let item of quizList">
+      <div class="card quiz-card">
+        <!-- <span class="half-circle">
+          <span class="haif-circle-txt font-type">{{item.NoOfQusetions}}Q</span>
+        </span> -->
+
+        <div class="quiz-coveimage">
+          <div class="favorite-circle" (click)="selectFavoriteList(item.Id, item.IsFavorited)"
+            (mouseenter)="hoverOnFavorite[item.Id] = true" (mouseleave)="hoverOnFavorite[item.Id] = false">
+            <i *ngIf="!hoverOnFavorite[item.Id] && !item.IsFavorited" class="fa fa-star-o star-icon"
+              aria-hidden="true"></i>
+            <i *ngIf="hoverOnFavorite[item.Id] || item.IsFavorited" class="fa fa-star star-icon" aria-hidden="true"></i>
+          </div>
+          <img *ngIf="item.QuizCoverDetail.QuizCoverImage && item.isImage"
+            [src]="item.QuizCoverDetail.QuizCoverImage" />
+          <img *ngIf="!item.QuizCoverDetail.QuizCoverImage && item.isImage" [src]="item.UsageTypes[0] != usageTypeEnum.WhatsApp_Chatbot ? defaultImage : defaultWhatsAppCover" />
+          <!-- <video class="coveimage video-bg-color" *ngIf="item.QuizCoverDetail.QuizCoverImage && !item.isImage">
+            <source [src]="item.QuizCoverDetail.QuizCoverImage">
+          </video> -->
+          <div *ngIf="item.QuizCoverDetail.PublicId && !item.isImage" class="video-bg-color">
+            <cl-video  public-id={{item.QuizCoverDetail.PublicId}} height="134" width="275">
+              <cl-transformation></cl-transformation>
+            </cl-video>
+          </div>
+
+          <div *ngIf="item.PublishedCode" class="overlay" (click)='onShowPreview(publishTemplate, item)'>
+            <div class="text">Click to Preview</div>
+          </div>
+        </div>
+
+        <div class="quiz-detail-margin">
+          <div class="display-flex">
+            <div class="font-type quiz-title display-flex w-92">
+              <span class="ellipsiss" title="{{item.QuizTitle}}"
+                [ngClass]="{'quiz-titles ': (isCompanyWise && isStandard) || !isCompanyWise }"
+                (click)="setPermissionDataToGuardService(item)">
+                {{item.QuizTitle}}</span>
+              <span class="font-type question-text">({{item.NoOfQusetions}}Q)</span>
+            </div>
+            <div class="float-right doted-icon" (click)="onAction(item.Id)" (clickOutside)="item.isAction=false">
+              <!-- <img class="action-image" src="assets/layouts/img/action.png" /> -->
+              <i class="zmdi zmdi-more-vert three-dot-icon"></i>
+            </div>
+            <div *ngIf="item.isAction" class="action-list">
+              <div class="action-margin">
+                <div *ngIf="(isCompanyWise && isStandard) || !isCompanyWise "
+                  class="font-type action-list-text ellipsiss mbottom-12"
+                  (click)="setPermissionDataToGuardService(item)">
+                  <img class="action-icon" src="assets/layouts/img/edit.png" />
+                  <span class="pleft-10" title="{{'EDIT' | translate}}">{{"EDIT" | translate}}</span>
+                </div>
+                <div *ngIf="(isCompanyWise && isStandard) || !isCompanyWise"
+                  class="font-type action-list-text mbottom-12 ellipsiss"
+                  (click)='onDuplicatedQuiz(publishOnDuplicateTemplate, item)'>
+                  <img class="action-icon" src="assets/layouts/img/duplicate.png" />
+                  <span class="pleft-10" title="{{'DUPLICATE' | translate}}">{{"DUPLICATE" | translate }}</span>
+                  <!-- <span  class="pleft-10" *ngIf="item.QuizTypeId === 2" title="{{'DUPLICATE_QUIZ' | translate}}">{{"DUPLICATE_QUIZ" | translate }}</span>
+                  <span  class="pleft-10" *ngIf="item.QuizTypeId === 5" title="{{'DUPLICATE_COURSE' | translate}}">{{"DUPLICATE_COURSE" | translate }}</span>
+                  <span  class="pleft-10" *ngIf="item.QuizTypeId === 3" title="{{'DUPLICATE_PERSONALITY' | translate}}">{{"DUPLICATE_PERSONALITY" | translate }}</span>
+                  <span  class="pleft-10" *ngIf="item.QuizTypeId === 4" title="{{'DUPLICATE_SCORED' | translate}}">{{"DUPLICATE_SCORED" | translate }}</span> -->
+                </div>
+                <div *ngIf="((isCompanyWise && isStandard) || !isCompanyWise) && item.IsPublished"
+                  class="font-type action-list-text mbottom-12 ellipsiss app-data" (click)='dynamicTemplateShare(item)'
+                  app-data="data-share">
+                  <img class="action-icon" src="assets/layouts/img/share.png" />
+                  <span class="pleft-10" title="{{'SHARE' | translate}}">{{"SHARE" | translate}}</span>
+                </div>
+                <div class="font-type action-list-text mbottom-12 ellipsiss"
+                  (click)="onStatistic(item)">
+                  <img class="action-icon" src="assets/layouts/img/statistic.png" />
+                  <span class="pleft-10" title="{{'STATISTICS' | translate}}">{{"STATISTICS" | translate}}</span>
+                </div>
+                <div *ngIf="(isCompanyWise && isStandard) || !isCompanyWise"
+                  class="font-type action-list-text mbottom-12 ellipsiss"
+                  (click)='onRemovedQuiz(deleteQuizTemplate, item)'>
+                  <img class="action-icon" src="assets/layouts/img/delete.png" />
+                  <span class="pleft-10" title="{{'DELETE' | translate}}">{{"DELETE" | translate }}</span>
+                  <!-- <span class="pleft-10" *ngIf="item.QuizTypeId === 2"  title="{{'DELETE_QUIZ' | translate}}">{{"DELETE_QUIZ" | translate }}</span>
+                  <span class="pleft-10" *ngIf="item.QuizTypeId === 5"  title="{{'DELETE_COURSE' | translate}}">{{"DELETE_COURSE" | translate }}</span>
+                  <span class="pleft-10" *ngIf="item.QuizTypeId === 3"  title="{{'DELETE_PERSONALITY' | translate}}">{{"DELETE_PERSONALITY" | translate }}</span>
+                  <span class="pleft-10" *ngIf="item.QuizTypeId === 4"  title="{{'DELETE_SCORED' | translate}}">{{"DELETE_SCORED" | translate }}</span> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="font-type" *ngIf="item.UsageTypes[0] != usageTypeEnum.WhatsApp_Chatbot">
+            <div class="quiz-pad ellipsis-1line"><span title="{{item.QuizCoverDetail.QuizCoverTitle | removeallTagPipe}}"
+                [innerHTML]="item.QuizCoverDetail.QuizCoverTitle | removeallTagPipe"></span></div>
+          </div>
+
+          <div class="m-xy-11" *ngIf="item.Tag.length>0">
+            <div class="tag-display">
+              <div class="tag-outer" *ngFor="let tagDetail of item.Tag;index as i"
+                (click)="selectTagToFilter(tagDetail)" [ngClass]="{'display-index':(i>1 && !item.isQuizTags) }">
+                <span class="pointer tag-contain">
+                  <i class="fa fa-tag tag-icon" aria-hidden="true"></i>{{tagDetail?.TagName}}</span>
+              </div>
+              <div *ngIf="item.Tag.length > 2">
+                <div class="tags-count btn" *ngIf="!item.isQuizTags" (click)="item.isQuizTags = !item.isQuizTags">
+                  <svg class="plus-icon" width="11" height="10" viewBox="0 0 11 11" fill="#494949"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M10.3404 4.84032L6.06257 4.85325V0.659563C6.06257 0.294158 5.76841 0 5.40301 0C5.03772 0 4.74344 0.294158 4.74344 0.659563L4.75638 4.84044H0.659563C0.294158 4.84044 0 5.1346 0 5.5C0 5.86529 0.294158 6.15945 0.659563 6.15945H4.74991V10.3404C4.74991 10.7056 5.04407 11 5.40947 11C5.77488 11 6.06903 10.7056 6.06903 10.3404V6.15956H10.3404C10.7058 6.15956 11 5.86517 11 5.5C11 5.13448 10.7026 4.84032 10.3404 4.84032Z"
+                      fill="white" />
+                  </svg>
+                  <span class="tag-title" *ngIf="(item.Tag.length - 2)==1">{{item.Tag.length - 2}}
+                    tag</span>
+                  <span class="tag-title" *ngIf="(item.Tag.length - 2)>1">{{item.Tag.length - 2}}
+                    tags</span>
+                </div>
+                <div class="less-count btn" *ngIf="item.isQuizTags"
+                (click)="item.isQuizTags = !item.isQuizTags">
+                <span class="tag-title"
+                  [ngClass]="{'primary-color' : isActiveIconOnHover[item.Id] == true}">{{"SHOW_LESS_TAGS" | translate}}</span>
+              </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <div *ngIf="item.Tag && item.Tag.length == 0" class="ptop-15"></div>
+
+          <div class="info-block-display">
+            <div class="w-50" [ngClass]="{'w-100': isCompanyWise}">
+              <div class="ellipsis-1line">
+                <!-- <img src="assets/layouts/img/JobRock - Default profile image.jpg" class="img-set" /> -->
+                <i class="fa fa-user img-set" aria-hidden="true"></i>
+                <span class="create-title font-type"
+                  title="{{'CREATED_BY' | translate}}">{{"CREATED_BY" | translate}}:</span>
+                <span class="create-text font-type" title="{{item.CreatedByName}}">{{item.CreatedByName}}</span>
+              </div>
+              <div class="ellipsis-1line small-display">
+                <span class="small-create-text font-type" title="{{item.CreatedByName}}">{{item.CreatedByName}}</span>
+              </div>
+            </div>
+            <div *ngIf="!isCompanyWise" class="w-50">
+              <div class="ellipsis-1line">
+                <img src="assets/layouts/img/office-icon.png" class="img-set" />
+                <span class="create-tilte font-type" title="{{'TEAM' | translate}}">{{"TEAM" | translate}}:</span>
+                <span class="create-text font-type" title="{{item.OfficeName}}">{{item.OfficeName}}</span>
+              </div>
+              <div class="ellipsis-1line small-display">
+                <span class="small-create-text font-type" title="{{item.OfficeName}}">{{item.OfficeName}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="info-block-display">
+            <div class="w-50">
+              <div class="m-top-8 ellipsis-1line">
+                <img src="assets/layouts/img/calender-icon.svg" class="img-set" />
+                <span class="create-title font-type"
+                  title="{{'CREATED_ON' | translate}}">{{"CREATED_ON" | translate}}:</span>
+                <span class="create-text font-type" title="{{item.createdOnFormat}}">{{item.createdOnFormat}}</span>
+              </div>
+              <div class="ellipsis-1line small-display">
+                <span class="small-create-text font-type"
+                  title="{{item.createdOnFormat}}">{{item.createdOnFormat}}</span>
+              </div>
+            </div>
+            <div class="w-50">
+              <div class="m-top-8 ellipsis-1line">
+                <img src="assets/layouts/img/clock-icon.svg" class="img-set" />
+                <span class="create-tilte font-type"
+                  title="{{'LAST_EDITED_ON' | translate}}">{{"LAST_EDITED_ON" | translate}}:</span>
+                <span class="create-text font-type" title="{{item.lastEditOnFormat}}">{{item.lastEditOnFormat}}</span>
+              </div>
+              <div class="ellipsis-1line small-display">
+                <span class="small-create-text font-type"
+                  title="{{item.lastEditOnFormat}}">{{item.lastEditOnFormat}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="info-block-display">
+            <div class="w-50">
+              <div class="m-top-8 ellipsis-1line">
+                <i class="fa fa-bookmark img-set" aria-hidden="true"></i>
+                <span class="create-title font-type"
+                  title="{{'Lbl_Usage' | translate}}">{{"Lbl_Usage" | translate}}:</span>
+                <span class="create-text font-type" title="{{item.UsageTypes[0] == usageTypeEnum.WhatsApp_Chatbot ? ('WhatsappChatbot' | translate) : ('Lbl_WebFlow' | translate)}}">
+                  {{item.UsageTypes[0] == usageTypeEnum.WhatsApp_Chatbot ? ('WhatsappChatbot' | translate) : ('Lbl_WebFlow' | translate)}}
+                </span>
+              </div>
+              <div class="ellipsis-1line small-display">
+                <span class="small-create-text font-type"
+                  title="{{item.UsageTypes[0] == usageTypeEnum.WhatsApp_Chatbot ? ('WhatsappChatbot' | translate) : ('Lbl_WebFlow' | translate)}}">
+                  {{item.UsageTypes[0] == usageTypeEnum.WhatsApp_Chatbot? ('WhatsappChatbot' | translate) : ('Lbl_WebFlow' | translate)}}
+                </span>
+              </div>
+            </div>
+            <div class="w-50">
+              <div class="m-top-8 ellipsis-1line">
+                <i class="fa fa-check-square-o img-set" aria-hidden="true"></i>
+                <span class="create-tilte font-type"
+                  title="{{'TYPE' | translate}}">{{"TYPE" | translate}}:</span>
+                <ng-container [ngSwitch]="item.QuizTypeId">
+                  <ng-container *ngSwitchCase="quizTypeEnum.Nps"><span class="create-text font-type" title="{{'NPS'| translate}}">{{'NPS'| translate}}</span></ng-container>
+                  <ng-container *ngSwitchCase="quizTypeEnum.Assessment"><span class="create-text font-type" title="{{'BASIC' | translate}}">{{'BASIC' | translate}}</span></ng-container>
+                  <ng-container *ngSwitchCase="quizTypeEnum.Personality"><span class="create-text font-type" title="{{'PROFILE' | translate}}">{{'PROFILE' | translate}}</span></ng-container>
+                  <ng-container *ngSwitchCase="quizTypeEnum.Score"><span class="create-text font-type" title="{{'SCORED' | translate}}">{{'SCORED' | translate}}</span></ng-container>
+                </ng-container>
+              </div>
+              <div class="ellipsis-1line small-display">
+                <ng-container [ngSwitch]="item.QuizTypeId">
+                  <ng-container *ngSwitchCase="quizTypeEnum.Nps"><span class="small-create-text font-type" title="{{'NPS'| translate}}">{{'NPS'| translate}}</span></ng-container>
+                  <ng-container *ngSwitchCase="quizTypeEnum.Assessment"><span class="small-create-text font-type" title="{{'BASIC' | translate}}">{{'BASIC' | translate}}</span></ng-container>
+                  <ng-container *ngSwitchCase="quizTypeEnum.Personality"><span class="small-create-text font-type" title="{{'PROFILE' | translate}}">{{'PROFILE' | translate}}</span></ng-container>
+                  <ng-container *ngSwitchCase="quizTypeEnum.Score"><span class="small-create-text font-type" title="{{'SCORED' | translate}}">{{'SCORED' | translate}}</span></ng-container>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="no-quiz" *ngIf="isQuizList && !quizList.length">
+  <span class="template-header">{{"SORRY_WE_COULDNOT_FIND_ANY_AUTOMATIONS" | translate}}</span>
+</div>
+
+<ng-template #permissionQuizTemplate>
+  <div class="modal-body text-center">
+    <p>{{"EDITING_RIGHTS_DISABLED." | translate}}</p>
+    <br>
+  </div>
+</ng-template>
+
+<ng-template #publishOnDuplicateTemplate>
+  <div class="popup-modal">
+    <img class="cross-icon" src="assets/layouts/img/cross-icon.png" (click)="decline()" />
+    <div class="confirmation-title font-type">
+      <span>{{"THIS_QUIZ_HAS_UNPUBLISHED_CHANGES_AND_WILL_NEED_TO_BE_PUBLISHED_BEFORE_YOU_CAN_DUPLICATE_THE_QUIZ." | translate }}</span>
+    </div>
+    <div class="ptop-15 text-center">
+      <button type="button" class="btn cancle-btn font-type" (click)="decline()">{{"CANCEL" | translate }}</button>
+      <button type="button" class="btn del-btn font-type" (click)="confirm()">{{"PUBLISH" | translate }}</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #deleteQuizTemplate>
+  <div class="popup-modal">
+    <img class="cross-icon" src="assets/layouts/img/cross-icon.png" (click)="cancel()" />
+    <div class="confirmation-title font-type">
+      <span>{{"YOU_ARE_ABOUT_TO_DELETE_THE_FOLLOWING_AUTOMATION._THIS_IS_A" | translate}}</span>
+      <span>{{" " + (automationType | translate) + " automation. "}}</span>
+      <span>{{"ARE_YOU_SURE_YOU_WOULD_LIKE_TO_DELETE_THIS_AUTOMATION?" | translate }}</span>
+    </div>
+    <div class="ptop-15 text-center">
+      <button type="button" class="btn cancle-btn font-type" (click)="cancel()">{{"NO" | translate }}</button>
+      <button type="button" class="btn del-btn font-type" (click)="delete()">{{"YES" | translate }}</button>
+    </div>
+  </div>
+</ng-template>
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar" id="data-share">
+  <div #shareQuizTemplate></div>
+</div>
+
+<div *ngIf="isRecoding">
+  <app-recording (closePopup)='closeRecording($event)'></app-recording>
+</div>
+
+<div *ngIf="isRecoding2">
+  <app-video-recording (closePopup2)='closeRecordings($event)'></app-video-recording>
+</div>

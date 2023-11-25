@@ -1,0 +1,66 @@
+<div class="portlet-head">
+  <a href="javascript:void(0)" class="closet pright-10">
+    <img src="assets/layouts/img/cross-icon.png" />
+  </a>
+  <div class="font-style font-text2">
+    <span>{{"REMINDER_SETTINGS" | translate }}</span>
+  </div>
+</div>
+
+<div class="ember-body">
+<div class="reminder-body">
+ <form [formGroup]='reminderSettingForm'>
+   <ul class="list-unstyled limit-list">
+     <li class="m-list">
+       <label class="app-checkbox font-text1 font-style pright-10">{{"SEND_THIS_REMINDER" | translate}}
+         <input formControlName='FirstCheckBox' type="checkbox" value="1" name="1" checked="">
+         <span class="checkmark"></span>
+       </label>
+       <div class="limit-gutter">
+         <div class="input-group-1">
+           <input formControlName='FirstReminder' OnlyDecimal="true" OnlyNumber="true" type="text" min="1" name="quant[1]" class="form-control input-number input-body font-style font-text1"
+             [required]='reminderSettingForm.controls["FirstCheckBox"].value==true'>
+         </div>
+       </div>
+        <span class="pleft-10 font-text1 font-style">{{"DAY(S)_AFTER_THE_INITIAL_E_MAIL_AND/OR_TEXT_iNVITE" | translate}}</span>
+     </li>
+     <li class="m-list">
+       <label class="app-checkbox font-text1 font-style pright-10">{{"SEND_THIS_REMINDER" | translate}}
+         <input formControlName='SecondCheckBox' type="checkbox" value="1" name="1">
+         <span class="checkmark"></span>
+       </label>
+       <div class="limit-gutter">
+         <div class="input-group-1">
+           <input formControlName='SecondReminder' OnlyDecimal="true" OnlyNumber="true" type="text" min="1" name="quant[2]" class="form-control input-number input-body font-style font-text1"
+             [required]='reminderSettingForm.controls["SecondCheckBox"].value==true'>
+         </div>
+       </div>
+       <span class="pleft-10 font-text1 font-style">{{"DAY(S)_AFTER_THE_INITIAL_E_MAIL_AND/OR_TEXT_iNVITE" | translate}}</span>
+     </li>
+     <li class="m-list">
+       <label class="app-checkbox font-text1 font-style pright-10">{{"SEND_THIS_REMINDER" | translate}}
+         <input formControlName='ThirdCheckBox' type="checkbox" value="1" name="1">
+         <span class="checkmark"></span>
+       </label>
+       <div class="limit-gutter">
+         <div class="input-group-1">
+           <input formControlName='ThirdReminder' OnlyDecimal="true" OnlyNumber="true" type="text" min="1" name="quant[3]" class="form-control input-number input-body font-style font-text1"
+             [required]='reminderSettingForm.controls["ThirdCheckBox"].value==true'>
+         </div>
+       </div>
+       <span class="pleft-10 font-text1 font-style">{{"DAY(S)_AFTER_THE_INITIAL_E_MAIL_AND/OR_TEXT_iNVITE" | translate}}</span>
+     </li>
+   </ul>
+
+ </form>
+</div>
+</div>
+
+<div class="content-bottom">
+  <a href="javascript:void(0)" class="closet">
+    <i class="fa fa-chevron-left green"></i><span class="cancel-text"> {{"CANCEL" | translate}}</span>
+  </a>
+  <div class="float-right">
+    <button type="submit" [disabled]='!reminderSettingForm.valid' class="btn save-btn font-style save-btn-text"  (click)='updateReminderSettings()'>{{"SAVE" | translate }}</button>
+  </div>
+</div>

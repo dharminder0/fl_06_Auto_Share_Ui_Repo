@@ -1,0 +1,152 @@
+<div class="portlet-head">
+  <div class="font-type font-text2">
+    <span>{{"RESULT&SCORE_SETTINGS" | translate}}</span>
+  </div>
+  <div class="action"><a href="javascript:void(0)" class="closet" (click)="onClose()"></a></div>
+</div>
+    <div class="form-body font-type">
+
+    <form *ngIf="quizTypeId !== 3" [formGroup]="resultSettingsForm">
+      <div class="in white-bkg">
+        <div class="answer-container">
+          <div class="form-group">
+            <p>
+              {{
+                "CHOOSE_IF_YOU_WOULD_LIKE_TO_SHOW_THE_SCORE_IN_THE_RESULTS_OF_THE_AUTOMATION"
+                  | translate
+              }}
+            </p>
+            <label class="app-radio">
+              {{ "YES,_SHOW_THE_SCORE_VALUE_IN_THE_RESULTS" | translate }}
+              <input type="radio" formControlName="ShowScoreValue" [value]="true" checked="" />
+              <span></span>
+            </label>
+            <div class="row">
+              <div *ngIf="quizTypeId == 2 || quizTypeId == 5" class="col-md-8 margin-bottom-20">
+                <div class="input-flex-group">
+                  <input type="text" class="form-control score-value-text" formControlName="IGOT" placeholder="{{ 'YOU_ANSWERED' | translate }}"
+                    #focusField />
+                  <span class="input-group-addon">1</span>
+                  <input type="text" class="form-control score-value-text" formControlName="OUTOF"
+                    placeholder="{{ 'OUT_OF' | translate }}" />
+                  <span class="input-group-addon">10</span>
+                  <input type="text" class="form-control score-value-text" formControlName="CORRECT"
+                    placeholder="{{ 'QUESTIONS_CORRECT' | translate }}" />
+                </div>
+              </div>
+              <div *ngIf="(quizTypeId == 4 || quizTypeId == 6) && resultSettingsForm.controls['ShowScoreValue'].value"
+                class="col-md-8 margin-bottom-20">
+                <div class="input-flex-group">
+                  <input type="text" class="form-control answers score-value-text mright-10" formControlName="YouScoredA"
+                    placeholder="{{ 'YOU_SCORED_A' | translate }}" />
+                  <span>{{"THE_SCORE_IS_DISPLAYED_HERE" | translate}}</span>
+                </div>
+              </div>
+            </div>
+            <label class="app-radio">
+              {{
+                "NO,_DO_NOT_SHOW_THE_SCORE_VALUE_IN_THE_RESULTS" | translate
+              }}
+              <input type="radio" formControlName="ShowScoreValue" [value]="false" checked="" />
+              <span></span>
+            </label>
+          </div>
+          <hr *ngIf="quizTypeId == 2 || quizTypeId == 5" />
+          <div *ngIf="quizTypeId == 2 || quizTypeId == 5" class="form-group">
+            <h3>
+              <img src="assets/layouts/img/eye-icon.png" class="eye-icon" />
+              {{ "CORRECT_ANSWERS" | translate }}
+            </h3>
+            <p class="margin-bottom-20">
+              {{
+                  "CHOOSE_IF_YOU_WOULD_LIKE_TO_SHOW_THE_CORRECT_ANSWERS_IN_THE_RESULT_OF_THE_AUTOMATION"
+                    | translate
+                }}
+            </p>
+            <label class="app-radio">
+              {{
+                  "YES,_SHOW_THE_CORRECT_ANSWERS_IN_THE_RESULTS" | translate
+                }}
+              <input type="radio" formControlName="ShowCorrectAnswer" [value]="true" checked="" />
+              <span></span>
+            </label>
+            <div class="child">
+              <div class="form-group">
+                <label class="control-label">{{
+                    "EDIT_THE_TEXT_THE_ANSWERS" | translate
+                  }}</label>
+                <input type="text" formControlName="CustomTxtForAnswerKey" class="form-control correct-anw-field"
+                  placeholder="{{'THE_ANSWERS' | translate}}" />
+              </div>
+              <div class="form-group">
+                <label class="control-label">{{
+                    "EDIT_THE_TEXT_YOUR_ANSWERS" | translate
+                  }}</label>
+                <input type="text" formControlName="CustomTxtForYourAnswer" class="form-control correct-anw-field"
+                  placeholder="{{'YOUR_ANSWER' | translate}}" />
+              </div>
+              <div class="form-group">
+                <label class="control-label">{{
+                    "EDIT_THE_TEXT_CORRECT_ANSWERS" | translate
+                  }}</label>
+                <input type="text" formControlName="CustomTxtForCorrectAnswer" class="form-control correct-anw-field"
+                  placeholder="{{'CORRECT_ANSWER_IN_RESULT_SETTING' | translate}}" />
+              </div>
+              <div class="form-group">
+                <label class="control-label">{{
+                    "CUSTOM_TEXT_FOR_'EXPLANATION'" | translate
+                  }}</label>
+                <input type="text" formControlName="CustomTxtForExplanation" class="form-control correct-anw-field"
+                  placeholder="{{'EXPLANATION' | translate}}" />
+              </div>
+            </div>
+            <label class="app-radio">
+              {{
+                  "NO,_DO_NOT_SHOW_THE_CORRECT_ANSWERS_IN_THE_RESULTS"
+                    | translate
+                }}
+              <input type="radio" formControlName="ShowCorrectAnswer" [value]="false" checked="" />
+              <span></span>
+            </label>
+          </div>
+      </div>
+      </div>
+    </form>
+    <form *ngIf="quizTypeId == 3 || quizTypeId == 7" [formGroup]="resultSettingsForm">
+      <div class="in white-bkg">
+        <div class="answer-container">
+          <div class="form-group">
+            <h3>
+              <img src="assets/layouts/img/eye-icon.png" class="eye-icon" />
+             {{"VIDEO_AUTOPLAY_SETTING" | translate }}
+            </h3>
+            <p class="margin-bottom-20">
+              {{
+                  "CHOOSE_WHETHER_VIDEOS_IN_RESULTS_SHOULD_AUTOMATICALLY_START_PLAYING"
+                    | translate
+                }}
+            </p>
+            <label class="app-radio">
+              {{
+                  "YES,_AUTOPLAY_VIDEOS_IN_RESULTS" | translate
+                }}
+                <input type="radio" formControlName="AutoPlay" [value]="true" checked="" />
+                <span></span>
+            </label>
+            <br>
+            <label class="app-radio">
+              {{
+                  "NO,_AUTOPLAY_VIDEOS_IN_RESULTS" | translate
+                }}
+                <input type="radio" formControlName="AutoPlay" [value]="false" checked="" />
+                <span></span>
+            </label>
+            </div>
+          </div>
+        </div>
+          </form>
+</div>
+
+<div class="content-bottom">
+  <button type="submit" class="btn save-btn font-type normal-text" (click) = "updateResultSettings()">{{"SAVE" | translate }}</button>
+</div>

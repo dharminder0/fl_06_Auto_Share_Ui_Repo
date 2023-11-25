@@ -1,0 +1,99 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Modal 
+*/
+
+.progress *{
+  box-shadow: none !important;  
+}
+.progress{
+  box-shadow: none;
+  @include border-radius(2px);
+  border: 1px solid #e1e1e1;
+  .progress-bar{
+    background: $primary-bkg;
+  }
+}
+
+.progress{
+  .progress-bar.light{
+    background: $regular-bkg;
+  }
+}
+
+.progress-box{
+  margin: 0 20px;  
+  position: relative;
+  @include flex-value-1();
+  span{
+    &.value{
+      font-weight: bold;
+    }
+  }
+  .progress{
+    margin: 4px 0;    
+  }
+} 
+
+.progress-col{
+  margin: 35px 0 72PX;
+  position: relative;
+  &.last{
+    margin-bottom: 50px;
+  }  
+  .progress {
+    height: 10px;
+  }  
+  .left{    
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    position: relative;  
+    .top-view{
+      left: 0;
+    }
+    .bottom-view{
+      left: 0;
+    }
+  }
+  .right{    
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    position: absolute; 
+    .top-view{
+      right: 0;
+    }
+    .bottom-view{
+      right: 0;
+    }   
+  }
+  .top-view{
+    top: -25px;
+    position: absolute;
+    @include flex();
+    @include align-item(); 
+  }
+  .bottom-view{    
+    bottom: -35px;
+    position: absolute;
+    @include flex();
+    @include align-item();
+  }
+  small{
+    font-size: inherit;
+  }
+  .opacity{
+    opacity: 0.5;
+  }
+  .n{
+    margin-right: 8px;
+    display: inline-block;
+  }
+  .nn{
+    width: 50px;
+  }
+}

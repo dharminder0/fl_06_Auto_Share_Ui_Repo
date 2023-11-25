@@ -1,0 +1,94 @@
+<div class="portlet-head">
+  <div class="font-type font-text2">
+    <span>{{"SHARE_YOUR_AUTOMATION" | translate }}</span>
+  </div>
+    <div class="action">
+      <a href="javascript:void(0)" class="btn blue hide">Save Records</a>
+      <a href="javascript:void(0)" class="closet"></a>
+    </div>
+</div>
+
+<div *ngIf="quizData.IsPublished" class="form-body">
+  <!-- <div class="portlet-body horizontal-form app-calc"> -->
+    <!-- <div class="app-grow"> -->
+      <!-- <div class="heading">
+        <h2 class="title-13">{{"SHARE_YOUR_AUTOMATION" | translate}}</h2>
+      </div> -->
+      <div [formGroup]="shareQuizForm">
+        <div class="in white-bkg">
+          <div class="app-checkbox-list">
+
+            <label *ngIf="!disableELearning" class="app-checkbox font-type normal-text">{{"E_LEARNING" | translate}}
+              <input formControlName="Recruiter" type="checkbox" value="0" name="0">
+              <span></span>
+            </label>
+
+            <label class="app-checkbox font-type normal-text">{{"LEADS" | translate}}
+              <input formControlName="Lead" type="checkbox" value="0" name="0">
+              <span></span>
+            </label>
+            
+            <label *ngIf="!disableJobrock" class="app-checkbox font-type normal-text" [ngStyle]="style">{{"E_RECRUITER_ACADEMY" | translate}}
+              <input formControlName="JobRockAcademy" type="checkbox" value="0" name="0">
+              <span></span>
+            </label>
+            <label *ngIf="!disableTechnical"  class="app-checkbox font-type normal-text" [ngStyle]="recruiterStyle">{{"TECHNICAL_RECRUITER" | translate}}
+                <input formControlName="TechnicalRecruiter" value="0" (ngModelChange)='onSearchChange($event)' type="checkbox"  name="0">
+                <span></span>
+              </label>
+              
+                <ng-container *ngIf="dropdownDisable && !disableTechnical">
+                    <div [ngStyle]="recruiterStyle" class="form-group">
+                <ng-select class="font-type normal-text" formControlName="Module" [options]="permissionModuleType" (selected)="onselectModule($event)"
+                 placeholder= "Module Type">
+                </ng-select>
+              </div>
+              </ng-container>
+              
+            <!-- <label class="app-checkbox copyc">{{"PUBLIC_URL" | translate}}
+              <input formControlName="Public"  type="checkbox" value="0" name="0">
+              <span></span>
+            </label>
+          
+              <div class="form-group" *ngIf="shareQuizForm.controls['Public'].value != false">
+                <ng-select class="option-alignment" (selected)="onselect($event)" [options]="sourceType" 
+                 [placeholder]= "placeholder ? placeholder : 'SOURCE_TYPE' | translate">
+                </ng-select>
+              </div> 
+            <div *ngIf="shareQuizForm.controls['Public'].value !== false" class="copy-checkbox">
+                <input type="text" (keyup)='onLabelChange($event)' [value]="campId" 
+                [(ngModel)]='id' [ngModelOptions]="{standalone: true}" class="form-control grey margin-bottom-10 c lip"
+                [placeholder]="placeholder ? placeholder + ' Id' : 'ENTER_ID_HERE' | translate" (keyup)="id = removeSpaces(id)">
+
+              <input formControlName="shareURL" type="text" class="form-control grey margin-bottom-10 clip" placeholder="http://www.abcdefg.com">
+              <button *ngIf = "!isURLCopied" class="btn blue copy-link-btn" (click)="onCopyButtonClicked()" type="button" 
+              ngxClipboard [cbContent]="shareQuizForm.controls['shareURL'].value"> {{"COPY_TO_CLIPBOARD" | translate}}
+              </button>  
+
+             <button *ngIf="isURLCopied" class="btn blue copy-link-btn" (click)="onCopyButtonClicked()" type="button" 
+                ngxClipboard [cbContent]="shareQuizForm.controls['shareURL'].value">{{"COPIED!" | translate}}
+              </button>
+
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="form-group">
+        <button href="javascript:void(0);" (click)="saveQuizShare()" class="btn blue closet">{{"SAVE" | translate}}</button>
+        <a href="javascript:void(0);" class="btn grey line closet leftPad">{{"CANCEL" | translate}}</a>
+      </div> -->
+    <!-- </div> -->
+</div>
+
+<div *ngIf="!quizData.IsPublished" class="modal-body text-center form-body">
+    <p>{{"THIS_QUIZ_HAS_UNPUBLISHED_CHANGES_AND_WILL_NEED_TO_BE_PUBLISHED_BEFORE_YOU_CAN_SHARE_THE_QUIZ." | translate }}</p>
+    <!-- <br>
+    <button type="button" class="btn blue" (click)="publish()">{{"PUBLISH" | translate }}</button>
+    <button type="button" class="btn btn-default closet leftPad">{{"CANCEL" | translate }}</button> -->
+</div>
+
+<div class="content-bottom">
+  <button *ngIf="!quizData.IsPublished" type="submit" class="btn save-btn font-type normal-text" (click) = "publish()" > {{"PUBLISH" | translate }}</button>
+  <button href="javascript:void(0);" *ngIf="quizData.IsPublished" type="submit" class="btn save-btn font-type normal-text" (click) = "saveQuizShare()" > {{"SAVE" | translate }}</button>
+</div>

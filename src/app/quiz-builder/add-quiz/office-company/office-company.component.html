@@ -1,0 +1,78 @@
+  <!-- begin head -->
+  <div class="app-head custom-header">
+      <!-- <h1 class="title-2">{{"WHO_CAN_ACCESS_THIS_AUTOMATION?" | translate }}</h1> -->
+      <h1 class="app-title">{{"WHO_HAS_ACCESS_TO_THIS_AUTOMATION?" | translate }}</h1>
+    </div>
+    <!-- end head -->
+    <!-- begin page -->
+    <div class="row m-all">
+    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+      <form [formGroup] = "addQuizForm" (ngSubmit) = "onAddNewQuiz()" action="testing.html" class="horizontal-form margin-bottom-30">
+        <div class="ins addquiz">
+          <div class="row">
+            <div class="col-sm-6 col-lg-5 col-lg-offset-1">
+              <div class="company-info">
+              <label class="app-radio option-type">{{"TEAM" | translate}}
+                <input type="radio" formControlName = "access" name="access" [value]='1' checked="">
+                <span></span>
+              </label><br/>
+              <ng-select 
+                class="office-drop-down"
+                placeholder="{{'SELECT_OFFICE' | translate}}" 
+                formControlName = "AccessibleOfficeId" 
+                (selected)="onOfficeChange($event)" 
+                [options]="officeList" 
+                [(ngModel)]="officeId"
+                [noFilter]="10" 
+                [required]="addQuizForm.controls['access'].value==1" 
+                [disabled]="addQuizForm.controls['access'].value==2">
+                <ng-template
+                  #optionTemplate
+                  let-option="option">
+                  <div class="seclect-option" [ngClass]="{'childGrouping': option.type == 'Child'}">{{ option.label }}</div>
+                </ng-template>
+              </ng-select>
+              <small class="error-field" *ngIf="addQuizForm.controls.access?.invalid && addQuizForm.controls.access?.touched && addQuizForm.controls.access?.hasError('OfficeIdRequired')">*</small>
+            </div>
+            </div>
+            <div class="col-sm-6 col-lg-5">
+              <div *ngIf="isStandard" class="company-info">
+                <label class="app-radio option-type">{{"STANDARD" | translate}}
+                  <input type="radio" formControlName = "access" name="access" [value]="2">
+                  <span></span>
+                </label><br/>
+                <!-- <ng-select class="seclect-option office-drop-down" formControlName = "tempCompanyAccessibleLevel" [options]="companyReqList"
+                 (selected)="CompanyAccessibleLevelSelected($event)" [(ngModel)]="RequireId"
+                [noFilter]="10" [required]="addQuizForm.controls['access'].value==2"
+                [disabled]="addQuizForm.controls['access'].value==1">
+                <ng-template
+                #optionTemplate
+                let-option="option">
+                <div class="seclect-option" title="{{option.label | translate}}">{{ option.label | translate }}</div>
+              </ng-template>
+                </ng-select>
+                <small class="error-field" *ngIf="addQuizForm.controls.access?.invalid && addQuizForm.controls.access?.touched && addQuizForm.controls.access?.hasError('CompanyLevelRequired')">*</small>
+                <div class="temp-box" *ngIf="!userAccess">
+                  <div *ngIf = "addQuizForm.controls['access'].value==2">
+                    <tag-input
+                    [placeholder]="placeholderData"
+                    [secondaryPlaceholder] = "placeholderData"
+                    formControlName = "usersEmail" 
+                    [errorMessages]="errorMessages"
+                    [validators]="validators" 
+                    (onAdd) = "onAdding($event)"
+                    [separatorKeyCodes] = [32,9]
+                    [required]="addQuizForm.controls['access'].value==2"></tag-input>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn blue choose-quiz-type" [disabled] = "!addQuizForm.valid">{{"SAVE_&_CONTINUE" | translate }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+    <!-- end page -->

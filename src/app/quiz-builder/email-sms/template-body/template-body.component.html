@@ -1,0 +1,178 @@
+<form [formGroup]='templateBodyForm' class="horizontal-form">
+    <div *ngIf="templateBodyForm.controls.Id.value != -1">
+        <div class="ins p-top-18">
+            <div class="app-title font-type">{{"EMAIL_TEMPLATE" | translate }}</div>
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <label class="control-label app-sub font-type">Template :</label>
+                    <input type="text" formControlName='TemplateTitle' name="text" class="form-control input-text app-sub font-type">
+                </div>
+                <div class="col-sm-12 form-group">
+                    <label class="control-label app-sub font-type ellipsis-1line">{{"SUBJECT" | translate }}</label>
+                    <small class="f-rgt add-automation-text font-type color-green ellipsis-1line" (click)="addQuizNameText()" title="{{'ADD_QUIZ_NAME' | translate }}">
+          <i class="zmdi zmdi-plus"></i>
+          {{"ADD_QUIZ_NAME" | translate }}</small>
+                    <input id='subject' type="text" formControlName='Subject' name="text" class="form-control input-text app-sub font-type">
+                </div>
+                <div class="col-sm-12 form-group">
+                    <label class="control-label app-sub font-type">{{"LINK_VARIABLE" | translate}}
+      </label>
+                    <div class="linkAline">
+                        <input type="text" name="text" (paste)="onPaste($event)" (keypress)="omit_special_char($event)" formControlName="EmailLinkVariable" class="form-control input-text app-sub font-type w-50">
+                        <p class="link-right ellipsiss w-50" title="https://{{clientDomain}}/{{ templateBodyForm.controls['EmailLinkVariable'].value }}-a818693"> https://{{clientDomain}}/{{ templateBodyForm.controls['EmailLinkVariable'].value }}<span *ngIf="templateBodyForm.controls['EmailLinkVariable'].value != ''">-</span>a818693 </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group beta template">
+                <small class="fl-rgt" (click)="openPreviewEmailModal(previewEmail)">{{"PREVIEW" | translate}}</small>
+                <label class="control-label m-bottom-11 app-sub font-type">{{"MESSAGE" | translate }}</label>
+                <div id="froala-editor" formControlName="Body" [froalaEditor]="options" class="app-sub font-type text-area-text break-word">Loading...</div>
+            </div>
+            <div class="position-relative">
+                <div style="display: flex;">
+                    <button id="btn-variable" class="btn template-button w-auto onHover" (click)="openVariablePopupNew(communicationModes.EmailTemplateMsg)">
+                        <span>{{"Lbl_Variables" | translate}}</span>
+                    </button>
+                    <app-multi-upload [form]="templateBodyForm"></app-multi-upload>
+                </div>
+            </div>
+
+        </div>
+
+        <hr/>
+        <div class="ins p-top-33">
+            <div class="sms-editor has-variable">
+                <div class="app-title font-type">{{"SMS_TEMPLATE" | translate }}</div>
+                <div id="froala-editor-sms" formControlName="SMSText" [froalaEditor]="optionsSMS" class="app-sub font-type text-area-text break-word">Loading...</div>
+            </div>
+            <div class="position-relative">
+                <div style="display: flex;">
+                    <button id="btn-variable-sms" class="btn template-button w-auto onHover" (click)="openVariablePopupNew(communicationModes.SmsTemplateMsg)">
+                        <span>{{"Lbl_Variables" | translate}}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="templateBodyForm.controls.Id.value == -1">
+        <h3 class="noTemplate"> {{"NO_ACTIVE_TEMPLATE_FOUND" | translate}}</h3>
+    </div>
+</form>
+
+<hr/>
+<div *ngIf="isEnableWhatsappTemplate && whatsAppTemplateDataAvailable && templateBodyForm.controls.Id.value != -1" class="whatsApp-width">
+    <div *ngIf="isLoaderEnable" class="center">
+        <div class="loader" id="loading"></div>
+    </div>
+    <div *ngIf="!isLoaderEnable" class="ins p-top-18">
+        <div class="app-title font-type">{{"Lbl_WhatsApp" | translate}}:</div>
+        <app-whatsapp-template [templateBodyForm]="templateBodyForm"></app-whatsapp-template>
+    </div>
+    <div *ngIf="!isLoaderEnable && showFollowUpMsg" class="ins p-top-18">
+        <div class="form-group beta template has-followUp-variable">
+            <div class="app-title font-type">{{"Lbl_WhatsappFollowupMsg" | translate}}:</div>
+            <div id="froala-editor-followUp" [(ngModel)]="followUpMessage" [froalaEditor]="optionsWhatsapp" class="app-sub font-type text-area-text break-word">
+            </div>
+        </div>
+        <div class="position-relative">
+            <button id="btn-variable-followUp" class="btn template-button" (click)="openVariablePopupNew(communicationModes.WhatsappTemplateMsg)">
+              <span>{{"Lbl_Variables" | translate}}</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="templateBodyForm.controls.Id.value != -1" class="action-padding">
+    <button class="btn btn-margin delete-btn app-sub font-type" (click)="openModalDelete(deleteTemplate,templateId)">{{"DELETE" | translate}}</button>
+    <button type="button" (click)='openDefaultTemplateModal(defaultTemplate)' class="btn use-default-template-btn btn-margin app-sub font-type">{{"USE_DEFAULT_TEMPLATE" | translate }}</button>
+    <button type="submit" (click)="updateTemplateDetails()" class="btn save-btn add-automation-text btn-margin font-type">{{"SAVE" | translate }}</button>
+</div>
+
+<ng-template #preview>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">{{"PREVIEW_-_TEMPLATE" | translate }}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="ql-snow">
+        <div class="ql-editor" [innerHTML]="templateBodyForm.controls.Body.value"></div>
+    </div>
+    <hr>
+    <div class="modal-header" style="padding-top:2px;">
+        <h4 class="modal-title pull-left">{{"PREVIEW_-_SMS" | translate }}</h4>
+    </div>
+    <div class="ql-snow">
+        <div class="text-view">{{templateBodyForm.controls.SMSText.value}}</div>
+    </div>
+</ng-template>
+
+<ng-template #defaultTemplate>
+    <div class="popup-modal">
+        <img class="cross-icon" src="assets/layouts/img/cross-icon.png" (click)="declineDefaultTemplate()" />
+        <div class="confirmation-title font-type">
+            <span>{{"ARE_YOU_SURE_YOU_WANT_TO_USE_THE_DEFAULT_TEMPLATE_FOR_THIS_GROUP" | translate }}</span>
+        </div>
+        <div class="ptop-15 text-center">
+            <button type="button" class="btn cancle-btn font-type" (click)="declineDefaultTemplate()">{{"NO" | translate }}</button>
+            <button type="button" class="btn del-btn font-type" (click)="confirmDefaultTemplate()">{{"YES" | translate }}</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #previewEmail>
+    <div class="popup-modal mh-300 font-type">
+        <svg class="cross-icon" aria-label="Close" (click)="modalRef.hide()" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.06127 6.00088L11.7801 1.28203C12.0733 0.989104 12.0733 0.513817 11.7801 0.22089C11.4869 -0.0722872 11.0122 -0.0722872 10.719 0.22089L6.00012 4.93974L1.28102 0.22089C0.987847 -0.0722872 0.51306 -0.0722872 0.219883 0.22089C-0.0732943 0.513817 -0.0732943 0.989104 0.219883 1.28203L4.93898 6.00088L0.219883 10.7197C-0.0732943 11.0127 -0.0732943 11.4879 0.219883 11.7809C0.366471 11.9272 0.558587 12.0005 0.750453 12.0005C0.942319 12.0005 1.13444 11.9272 1.28102 11.7806L6.00012 7.06177L10.719 11.7806C10.8656 11.9272 11.0577 12.0005 11.2495 12.0005C11.4414 12.0005 11.6335 11.9272 11.7801 11.7806C12.0733 11.4877 12.0733 11.0124 11.7801 10.7195L7.06127 6.00088Z" fill="#494949"/>
+        </svg>
+        <div class="text-center temp-title">
+            <span>{{"PREVIEW" | translate}}</span>
+            <span *ngIf="templateBodyForm.controls.TemplateTitle.value"> - {{templateBodyForm.controls.TemplateTitle.value}}</span>
+        </div>
+        <div class="preview-content">
+            <div *ngIf="automationTemObjPreview.subject" class="mtop-10">
+                <span class="sub-title">{{"SUBJECT" | translate}} : </span>
+                <!-- <span> {{automationTemObjPreview.subject}}</span> -->
+                <span [innerHTML]="automationTemObjPreview.subject | safeHtml"></span>
+            </div>
+            <div *ngIf="automationTemObjPreview.messageText" class="mtop-10">
+                <span class="sub-title">{{"MESSAGE" | translate}} : </span>
+                <div class="mtop-10" [innerHTML]="automationTemObjPreview.messageText | safeHtml"></div>
+            </div>
+        </div>
+        <div *ngIf="!automationTemObjPreview.messageText && !automationTemObjPreview.subject" class="text-center temp-title mtop-50">
+            No data to template.
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #shareTemplate>
+    <div class="modal-body text-center">
+        <h2>{{"INLINE_IMAGE_URL" | translate}}</h2>
+        <p>{{"PLEASE_COPY_FOLLOWING_URL_AND_PASTE_IN_EMAIL_BODY_TO_SEND_IMAGE_AS_INLINE_IMAGE." | translate}}.</p>
+        <br>
+        <p>{{"YOU_CAN_USE_THIS_URL_IN_BOTH_EMAIL_BODY_AND_SIGNATURE_TEXT" | translate}}</p>
+        <br>
+        <input class="image-url-input" type="text" [value]='imageURL'>
+        <br>
+        <button type="button" class="btn blue" ngxClipboard [cbContent]="imageURL" (click)="declineDefaultTemplate()">Copy Image Url</button>
+        <button type=" button " class="btn btn-default " (click)="declineDefaultTemplate()">Cancel</button>
+    </div>
+</ng-template>
+
+
+<ng-template #deleteTemplate>
+    <div class="popup-modal">
+        <img class="cross-icon" src="assets/layouts/img/cross-icon.png" (click)="decline()" />
+        <div class="confirmation-title font-type">
+            <span>{{"ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_TEMPLATE" | translate }}</span>
+        </div>
+        <div class="ptop-15 text-center">
+            <button type="button" class="btn cancle-btn font-type" (click)="decline()">{{"CANCEL" | translate }}</button>
+            <button type="button" class="btn del-btn font-type" (click)="confirm()">{{"DELETE" | translate }}</button>
+        </div>
+    </div>
+</ng-template>
+
+<app-message-variable-popup (updateIsOpenPopup)="UpdatePopUpStatus($event)"></app-message-variable-popup>

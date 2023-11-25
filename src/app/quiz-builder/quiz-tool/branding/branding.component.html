@@ -1,0 +1,287 @@
+<div class="portlet-head">
+  <div class="font-type font-text2">
+    <span>{{"BRANDING_STYLE" | translate}}</span>
+  </div>
+  <div class="action">
+    <a href="javascript:void(0)" class="btn blue hide">Save Records</a>
+    <a href="javascript:void(0)" (click)="onClose()" class="closet"></a>
+  </div>
+</div>
+
+<div class="form-body">
+  <div class="inner">
+    <form [formGroup]="brandingForm" class="tab-content">
+      <div class="tab-pane active" id="tab-1">
+        <div class="info-box">
+          <div class="form-horizontal color-engine">
+            <h2 class="views font-type font-text2">{{"PAGE" | translate }}</h2>
+            <div class="form-group">
+                <label class="control-label col-sm-4 normal-text font-type" title="{{'BACKGROUND' | translate }}">{{"BACKGROUND" | translate }}</label>
+                <div class="col-sm-5">
+                    <span>
+                      <label class="app-radio font-type normal-text" [ngStyle]="{'font-weight':isBackType == 1?'600':''}">{{"IMAGE" | translate}}
+                        <input type="radio" (click)="changeDesktopType(1)" name="access" [checked]="isBackType == 1">
+                        <span></span>
+                      </label>
+                    </span>
+                    <span class="pleft-40">
+                      <label class="app-radio font-type normal-text" [ngStyle]="{'font-weight':isBackType == 2?'600':''}">{{"COLOR" | translate}}
+                        <input type="radio" (click)="changeDesktopType(2)" name="access" [checked]="isBackType == 2">
+                        <span></span>
+                      </label>
+                    </span>
+                
+                  </div>
+            </div>
+            <div *ngIf="isBackType == 2" class="form-group">
+                <label class="control-label col-sm-4 normal-text font-type" title="{{'BACKGROUND_COLOR' | translate }}">{{"BACKGROUND_COLOR" | translate }}</label>
+                <div class="col-sm-4">
+                  <input type="text" formControlName="BackColor" name="text" class="form-control font-type normal-text" [(ngModel)]="backColor">
+                </div>
+                <div class="col-sm-3">
+                  <input [(colorPicker)]="backColor" class="color-box colour-circle" formControlName="BackColor" [style.background]="backColor"
+                    [cpCancelButton]="false" [cpSaveClickOutside]="true" />
+                </div>
+            </div>
+            <div *ngIf="isBackType == 1" class="form-group">
+                <label class="control-label col-sm-4 normal-text font-type">{{"OVERLAY" | translate }}</label>
+                <div class="col-sm-4">
+                  <input type="text" formControlName="Opacity" name="text" class="form-control font-type normal-text" [(ngModel)]="opacity">
+                </div>
+                <div class="col-sm-3">
+                  <input [(colorPicker)]="opacity" class="color-box colour-circle" formControlName="Opacity" [style.background]="opacity"
+                    [cpCancelButton]="false" [cpSaveClickOutside]="true" [cpPosition]="'bottom'" [cpOutputFormat]='rgba' (cpSliderChange)="setOpacity($event)"
+                    (colorPickerChange)="setOpacity($event)"
+                    [cpPositionOffset]="'70%'"
+                    [cpPositionRelativeToArrow]="true" />
+                </div>
+            </div>
+            <div *ngIf="isBackType == 1" class="form-group">
+                <label class="control-label col-sm-4 normal-text font-type">{{"IMAGE" | translate }}</label>
+                <div class="col-sm-6" (mouseenter)="hoverOnImage = true" (mouseleave)="hoverOnImage = false">
+                  <input class="img-upload-box" [style.background]="'url('+ backImageFileURL +')'">
+                  <div *ngIf="hoverOnImage && !isBackgroundImage">
+                    <div class="btn blue img-edit left-140" (click)="onBackgroundMedia()">
+                      <i class="zmdi zmdi-edit"></i>
+                    </div>
+                  </div>
+                  <div *ngIf="hoverOnImage && isBackgroundImage">
+                    <div class="btn blue img-edit left-115" (click)="onBackgroundMedia()">
+                      <i class="zmdi zmdi-edit"></i>
+                    </div>
+                    <div class="btn blue img-edit left-160" (click)="removeBackgroundImage()">
+                      <i class="zmdi zmdi-close"></i>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div *ngIf="isBackType == 1" class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'FLIP_HORIZONTALLY' | translate}}">{{"FLIP_HORIZONTALLY" | translate}}</label>
+              <div class="col-sm-3">
+                  <div class="switch-bar-col">
+                    <label class="switch">
+                      <input type="checkbox" formControlName="Flip" class="boxid" [(ngModel)]="filpBackGround" [checked]="filpBackGround == true">
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+              </div>
+            </div>
+            <hr>
+            <h2 class="views font-type font-text2">{{"AUTOMATION" | translate }}</h2>
+            <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'BACKGROUND_COLOR' | translate }}">{{"BACKGROUND_COLOR" | translate }}</label>
+              <div class="col-sm-4">
+                <input type="text" formControlName="BackgroundColor" name="text" class="form-control font-type normal-text" [(ngModel)]="backgroundColor">
+              </div>
+              <div class="col-sm-3">
+                <input [(colorPicker)]="backgroundColor" class="color-box colour-circle" formControlName="BackgroundColor" [style.background]="backgroundColor"
+                  [cpCancelButton]="false" [cpSaveClickOutside]="true" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'FONT_COLOUR' | translate }}">{{"FONT_COLOUR" | translate }}</label>
+              <div class="col-sm-4">
+                <input type="text" name="text" formControlName="FontColor" [(ngModel)]="fontcolor" class="form-control font-type normal-text">
+              </div>
+              <div class="col-sm-3">
+                <input [(colorPicker)]="fontcolor" class="color-box colour-circle" formControlName="FontColor" [style.background]="fontcolor" [cpCancelButton]="false"
+                  [cpSaveClickOutside]="true" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'FONT_TYPE' | translate }}">{{"FONT_TYPE" | translate }}</label>
+              <div class="col-sm-4">
+                <ng-select class="custom" placeholder='Font Type' formControlName="FontType" [options]="fontFamilyArray" [(ngModel)]="selectedFontType"
+                [noFilter]="10">
+                <ng-template #optionTemplate let-option="option">
+                  <span [ngStyle]="{'font-family': option?.label}">{{option?.label}}</span>
+                </ng-template>
+              </ng-select>
+              </div>
+            </div>
+            <div class="form-group mbottom-34">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'ALIGNMENT' | translate}}" >{{"ALIGNMENT" | translate}}</label>
+              <div class="col-sm-4">
+                <ng-select class="custom" placeholder='Select Alignment Type' formControlName="AutomationAlignment" [options]="alignment" [(ngModel)]="selectedAlignment" [noFilter]="10">
+                  <ng-template #optionTemplate let-option="option">
+                    <span>{{option?.label | translate}}</span>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+            <hr>
+            <h2 class="views font-type font-text2">{{"ANSWERS" | translate }}</h2>
+            <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'BACKGROUND_COLOUR(STANDARD)' | translate }}">{{"BACKGROUND_COLOUR(STANDARD)" | translate }}</label>
+              <div class="col-sm-4">
+                <input type="text" name="text" formControlName="OptionColor" [(ngModel)]="optioncolor" class="form-control font-type normal-text">
+              </div>
+              <div class="col-sm-3">
+                <input [(colorPicker)]="optioncolor" class="color-box colour-circle" formControlName="OptionColor" [style.background]="optioncolor" [cpCancelButton]="false"
+                  [cpSaveClickOutside]="true" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'BACKGROUND_COLOUR(MOUSE_OVER)' | translate}}">{{"BACKGROUND_COLOUR(MOUSE_OVER)" | translate}}</label>
+              <div class="col-sm-4">
+                <input type="text" name="text" formControlName="BackgroundColorofAnsweronHover" [(ngModel)]="backgroundColorofAnsweronHover" class="form-control font-type normal-text">
+              </div>
+              <div class="col-sm-3">
+                <input [(colorPicker)]="backgroundColorofAnsweronHover" class="color-box colour-circle" formControlName="BackgroundColorofAnsweronHover" [style.background]="backgroundColorofAnsweronHover" [cpCancelButton]="false"
+                  [cpSaveClickOutside]="true" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'BACKGROUND_COLOUR(SELECTED_ANSWER)' | translate}}">{{"BACKGROUND_COLOUR(SELECTED_ANSWER)" | translate}}</label>
+              <div class="col-sm-4">
+                <input type="text" name="text" formControlName="BackgroundColorofSelectedAnswer" [(ngModel)]="backgroundColorofSelectedAnswer" class="form-control font-type normal-text">
+              </div>
+              <div class="col-sm-3">
+                <input [(colorPicker)]="backgroundColorofSelectedAnswer" class="color-box colour-circle" formControlName="BackgroundColorofSelectedAnswer" [style.background]="backgroundColorofSelectedAnswer" [cpCancelButton]="false"
+                  [cpSaveClickOutside]="true" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'FONT_COLOUR(STANDARD)' | translate }}">{{"FONT_COLOUR(STANDARD)" | translate }}</label>
+              <div class="col-sm-4">
+                <input type="text" name="text" formControlName="OptionFontColor" [(ngModel)]="optionFontColor" class="form-control font-type normal-text">
+              </div>
+              <div class="col-sm-3">
+                <input [(colorPicker)]="optionFontColor" class="color-box colour-circle" formControlName="OptionFontColor" [style.background]="optionFontColor" [cpCancelButton]="false"
+                  [cpSaveClickOutside]="true" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'FONT_COLOUR(SELECTED_AND_MOUSE_OVER)' | translate}}">{{"FONT_COLOUR(SELECTED_AND_MOUSE_OVER)" | translate}}</label>
+              <div class="col-sm-4">
+                <input type="text" name="text" formControlName="AnswerTextColorofSelectedAnswer" [(ngModel)]="answerTextColorofSelectedAnswer" class="form-control font-type normal-text">
+              </div>
+              <div class="col-sm-3">
+                <input [(colorPicker)]="answerTextColorofSelectedAnswer" class="color-box colour-circle" formControlName="AnswerTextColorofSelectedAnswer" [style.background]="answerTextColorofSelectedAnswer" [cpCancelButton]="false"
+                  [cpSaveClickOutside]="true" />
+              </div>
+            </div>
+            <hr>
+            <h2 class="views font-type font-text2">{{"BUTTONS" | translate }}</h2>
+            <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'BUTTON_COLOR' | translate }}">{{"BUTTON_COLOR" | translate }}</label>
+              <div class="col-sm-4">
+                <input type="text" name="text" formControlName="ButtonColor" [(ngModel)]="buttoncolor" class="form-control font-type normal-text">
+              </div>
+              <div class="col-sm-3">
+                <input [(colorPicker)]="buttoncolor" class="color-box colour-circle" formControlName="ButtonColor" [style.background]="buttoncolor" [cpCancelButton]="false"
+                  [cpSaveClickOutside]="true" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'BUTTON_TEXT_COLOUR' | translate }}">{{"BUTTON_TEXT_COLOUR" | translate }}</label>
+              <div class="col-sm-4">
+                <input type="text" name="text" formControlName="ButtonFontColor" [(ngModel)]="buttonFontColor" class="form-control font-type normal-text">
+              </div>
+              <div class="col-sm-3">
+                <input [(colorPicker)]="buttonFontColor" class="color-box colour-circle" formControlName="ButtonFontColor" [style.background]="buttonFontColor" [cpCancelButton]="false"
+                  [cpSaveClickOutside]="true" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="control-label col-sm-7 normal-text font-type">
+                <p>
+                    {{"USE_OVER_COLOUR_SETTINGS_FOR_ALL_BUTTONS_IN_THIS_AUTOMATION" | translate }}
+                  </p>
+              </div>
+              <div class="switch-bar-col">
+                <label class="switch">
+                  <input type="checkbox" formControlName="ApplyToAll" class="boxid" [(ngModel)]="applyToAll" [checked]="applyToAll == true">
+                  <span class="slider round"></span>
+                </label>
+            </div>
+            </div>
+
+          <hr> 
+          <h2 class="views font-type font-text2">{{"FORM" | translate }}</h2>
+          <div class="form-group mbottom-34">
+            <label class="control-label col-sm-4 normal-text font-type" title="{{'LANGUAGE_FROM_FIELDS' | translate }}">{{"LANGUAGE_FROM_FIELDS" | translate }}</label>
+            <div class="col-sm-4">
+              <ng-select class="custom" placeholder="{{'LANGUAGE' | translate }}" formControlName="Language" [options]="languages" [(ngModel)]="selectedLanguage" [noFilter]="10">
+                <ng-template #optionTemplate let-option="option">
+                  <span>{{option?.label | translate}}</span>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          <hr>
+          <h2 class="views font-type font-text2">{{"LOGO" | translate}}</h2>
+          <div class="form-group">
+            <label class="control-label col-sm-4 normal-text font-type" title="{{'BACKGROUND_COLOR' | translate }}">{{"BACKGROUND_COLOR" | translate }}</label>
+            <div class="col-sm-4">
+              <input type="text" formControlName="BackgroundColorofLogo" name="text" class="form-control font-type normal-text" [(ngModel)]="backgroundColorofLogo">
+            </div>
+            <div class="col-sm-3">
+              <input [(colorPicker)]="backgroundColorofLogo" class="color-box colour-circle" formControlName="BackgroundColorofLogo" [style.background]="backgroundColorofLogo"
+                [cpCancelButton]="false" [cpSaveClickOutside]="true" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4 normal-text font-type">{{"IMAGE" | translate }}</label>
+            <div class="col-sm-6" (mouseenter)="hoverOnImage = true" (mouseleave)="hoverOnImage = false">
+              <input class="img-upload-box" [style.background]="'url('+ logoUrl +')'">
+              <div *ngIf="hoverOnImage && !isLogoImage">
+                <div class="btn blue img-edit left-140" (click)="onUseMedia()">
+                  <i class="zmdi zmdi-edit"></i>
+                </div>
+              </div>
+              <div *ngIf="hoverOnImage && isLogoImage">
+                <div class="btn blue img-edit left-115" (click)="onUseMedia()">
+                  <i class="zmdi zmdi-edit"></i>
+                </div>
+                <div class="btn blue img-edit left-160" (click)="removeBackgroundLogo()">
+                  <i class="zmdi zmdi-close"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="form-group mbottom-34">
+          <label class="control-label col-sm-4 normal-text font-type" title="{{'ALIGNMENT' | translate}}">{{"ALIGNMENT" | translate}}</label>
+          <div class="col-sm-4">
+            <ng-select class="custom" formControlName="LogoAlignment" [options]="logoAlignment" [(ngModel)]="selectedLogoAlignment" [noFilter]="10">
+              <ng-template #optionTemplate let-option="option">
+                <span>{{option?.label | translate}}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="content-bottom">
+  <button type="submit" class="btn save-btn font-type normal-text" (click) = "onUpdateBranding()">{{"SAVE" | translate }}</button>
+</div>
+
+<div *ngIf="isVisibleMediaLibrary || isBackgroundMediaLibrary">
+  <app-media-library [section]="section" [backgroundImage]="selectBackgroundImage" [automationId]=[quizId] (changeValue)='changeUploadedUrl($event)'></app-media-library>
+</div>

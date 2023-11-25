@@ -1,0 +1,101 @@
+<!-- begin head -->
+<div class="template-header hearder-margin">
+  <!-- <h1 class="title-1">Automation</h1> -->
+  <p> {{"AUTOMATION" | translate }}</p>
+</div>
+<!-- end head -->
+<!-- begin page -->
+<div class="ember-body-container">
+  <div class="choose-quiz sm-2">
+    <div class="row row-info choose-quiz-row">
+
+      <div class="card template-card">
+        <div class="card-body">
+          <div class="template-icon-padding">
+            <div class="template-icon">
+              <img src="assets/layouts/img/template-icon.png" />
+            </div>
+          </div>
+          <div class="template-title" title="Template">{{"TEMPLATE" | translate}}</div>
+          <div class="template-text-padding">
+            <div class="template-text ellipsis-3line" title="{{'USE_AN_EXISTING_TEMPLATE_FOR_YOUR_AUTOMATION' | translate}}">{{"USE_AN_EXISTING_TEMPLATE_FOR_YOUR_AUTOMATION" | translate}}</div>
+          </div>
+          <a
+          href="javascript:void(0);"
+          [routerLink]="['/quiz-builder/add-automation/use-template']"
+          class="btn template-button" (click)="setTypeCategory('Template')"
+          (mouseover)="isActiveIcon = true" (mouseout)="isActiveIcon = false"
+          >
+          <!-- <span *ngIf="!isActiveIcon"><img class="img-set" (mouseover)="isActiveIcon = true" 
+            src="assets/layouts/img/plus-icon.png" /></span>
+            <span *ngIf="isActiveIcon"><img class="img-set" (mouseout)="isActiveIcon = false"
+            src="assets/layouts/img/whiteplus-icon.png" /></span>  -->
+            <svg class="plus-icon" width="11" height="10" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.3404 4.84032L6.06257 4.85325V0.659563C6.06257 0.294158 5.76841 0 5.40301 0C5.03772 0 4.74344 0.294158 4.74344 0.659563L4.75638 4.84044H0.659563C0.294158 4.84044 0 5.1346 0 5.5C0 5.86529 0.294158 6.15945 0.659563 6.15945H4.74991V10.3404C4.74991 10.7056 5.04407 11 5.40947 11C5.77488 11 6.06903 10.7056 6.06903 10.3404V6.15956H10.3404C10.7058 6.15956 11 5.86517 11 5.5C11 5.13448 10.7026 4.84032 10.3404 4.84032Z" fill="white"/>
+          </svg>
+            {{"SELECT" | translate}}</a>
+        </div>
+      </div>
+      <div class="card template-card">
+        <div class="card-body">
+          <div class="template-icon-padding">
+            <div class="template-icon">
+              <img src="assets/layouts/img/scratch-icon.png" />
+            </div>
+          </div>
+          <div class="template-title" title="From Scratch">{{"FROM_SCRATCH" | translate}}</div>
+          <div class="template-text-padding">
+            <div class="template-text ellipsis-3line" title="{{'START_WITH_AN_EMPTY_AUTOMATION' | translate}}">{{"START_WITH_AN_EMPTY_AUTOMATION" | translate}}</div>
+          </div>
+          <a
+          href="javascript:void(0);"
+          [routerLink]="['/quiz-builder/add-automation/select-automation']"
+          class="btn template-button" (click)="setTypeCategory('Scratch')"
+          (mouseover)="isActiveIconScratch = true" (mouseout)="isActiveIconScratch = false"
+          >
+          <!-- <img class="m-top-4 m-right-4" src="assets/layouts/img/plus-icon.png" /> Choose</a -->
+          <!-- <span *ngIf="!isActiveIconScratch"><img class="img-set" (mouseover)="isActiveIconScratch = true"
+            src="assets/layouts/img/plus-icon.png" /></span>
+            <span *ngIf="isActiveIconScratch"><img class="img-set" (mouseout)="isActiveIconScratch = false"
+            src="assets/layouts/img/whiteplus-icon.png" /></span>  -->
+            <svg class="plus-icon" width="11" height="10" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.3404 4.84032L6.06257 4.85325V0.659563C6.06257 0.294158 5.76841 0 5.40301 0C5.03772 0 4.74344 0.294158 4.74344 0.659563L4.75638 4.84044H0.659563C0.294158 4.84044 0 5.1346 0 5.5C0 5.86529 0.294158 6.15945 0.659563 6.15945H4.74991V10.3404C4.74991 10.7056 5.04407 11 5.40947 11C5.77488 11 6.06903 10.7056 6.06903 10.3404V6.15956H10.3404C10.7058 6.15956 11 5.86517 11 5.5C11 5.13448 10.7026 4.84032 10.3404 4.84032Z" fill="white"/>
+          </svg>
+            {{"SELECT" | translate}}</a>
+        </div>
+      </div>
+
+      <!-- <div class="md-info">
+        <div class="box">
+          <div class="ins">
+            <h3>Template</h3>
+            <i class="icon chat2"></i>
+          </div>
+          <a
+            href="javascript:void(0);"
+            [routerLink]="['/quiz-builder/add-automation/use-template']"
+            class="btn line blue" (click)="setTypeCategory('Template')"
+          >
+            <i class="fa fa-check"></i> Choose</a
+          >
+        </div>
+      </div> -->
+      <!-- <div class="md-info">
+        <div class="box">
+          <div class="ins">
+            <h3>From Scratch</h3>
+            <i class="icon scrach"></i>
+          </div>
+          <a
+            href="javascript:void(0);"
+            [routerLink]="['/quiz-builder/add-automation/select-automation']"
+            class="btn line blue" (click)="setTypeCategory('Scratch')"
+          >
+            <i class="fa fa-check"></i> Choose</a
+          >
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
+<!-- end page -->

@@ -1,0 +1,85 @@
+.hover-tag {
+    display: none;
+  }
+  
+  .show-tag:hover .hover-tag {
+    display: block;
+  }
+  
+  .display-tag {
+    height: 17px;
+    /* width: 17px; */
+    width: 100%;
+    cursor: pointer;
+    background-color: transparent;
+  }
+  
+  .color {
+    height: 17px;
+    width: 17px;
+    float: left;
+    display: inline-block;
+    cursor: pointer;
+    border: 2px transparent solid;
+  }
+  
+  .active {
+    border-color: black;
+  }
+  
+  .width-resize {
+    width: max-content;
+  }
+  
+  .flex-value-1 {
+    flex: 1;
+  }
+  .sort-engine a {
+    margin-left: 10px;
+  }
+  .break-word {
+    word-break: break-all;
+  }
+  
+  .total-automation-count {
+    margin: 0 80px;
+    padding: 12px;
+    text-align: right;
+    font-size: 12px;
+  }
+  
+  .automation-type-filter{
+      width: 200px;
+      margin: 0 15px;
+  }
+  
+  .sub-head{
+    margin-bottom: unset;
+  }
+  
+  .checkbox-dropdown{
+    min-width: 140px;
+    left: 0;
+  }
+  
+  .office-checkbox-ul{
+    max-height: 250px;
+    overflow-y: auto;
+    /* overflow: hidden; */
+  }
+  
+  .overflow-data{
+    overflow-x: unset !important;
+  }
+  
+  .dropdown-container{
+    overflow: auto;
+  }
+  
+  .dropdown-container span{
+    float: left;
+  }
+  
+  .dropdown-container i {
+    margin-top: 3px;
+  }

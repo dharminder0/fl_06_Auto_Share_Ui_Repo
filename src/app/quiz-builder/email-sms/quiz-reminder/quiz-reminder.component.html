@@ -1,0 +1,44 @@
+<!-- <div class="tab-pane" id="tab-2">
+  <div class="ember-body">
+    <app-reminder-settings [notificationType]="3"></app-reminder-settings>
+    <hr />
+    <div class="ember-container temp">
+      <app-dragdrop-notification
+        [notificationType]="3"
+      ></app-dragdrop-notification>
+      <div class="ember-content">
+        <div class="no-data" *ngIf="!activeTemplateId; else emailTemplate">
+          <div class="no-active-template-container">
+            <h1 class="no-active-template-heading">
+              No Active Template Available
+            </h1>
+          </div>
+        </div>
+        <ng-template #emailTemplate>
+          <app-template-body [notificationType]="3"></app-template-body>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="tab-pane reminder-block" id="tab-2">
+  <!-- <div class="ember-body">
+    <div class="ember-container temp">
+      <app-reminder-settings [notificationType]="3"></app-reminder-settings>
+    </div>
+  </div> -->
+  <div class="ember-body mtop-21">
+    <div class="ember-container temp">
+      <app-dragdrop-notification
+        [notificationType]="3"
+      ></app-dragdrop-notification>
+      <div class="ember-content w-temp-body">
+          <app-template-body [notificationType]="3"></app-template-body>
+      </div>
+      <div class="ember-content w-linked">
+        <linked-unlinked-automation [notificationType]="3"></linked-unlinked-automation>
+    </div>
+    </div>
+  </div>
+</div>

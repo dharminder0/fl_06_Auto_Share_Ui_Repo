@@ -1,0 +1,111 @@
+<div *ngIf="!!attachmentData">
+
+  <div class="portlet-head">
+    <div class="font-type font-text2">
+      <span>{{"ATTACHMENTS" | translate}}</span>
+    </div>
+    <div class="action">
+      <a href="javascript:void(0)" class="btn blue hide">Save Records</a>
+      <a href="javascript:void(0)" class="closet"></a>
+    </div>
+  </div>
+
+<div class="ins-body form-body">
+  <div class="inner">
+    <div class="tab-content">
+      <div class="tab-pane active">
+        <div class="admin" [formGroup]="attachmentsForm">
+          <div class="imgtype">
+            <div class="display-block" formArrayName="Attachments">
+              <div *ngFor="let attachment of getAttachmentsList(attachmentsForm); let i=index">
+                <div [formGroupName]="i">
+                  <div class="add-attach-body">
+                  <figure class="image-pos" (mouseenter)="hoverOnImage[i] = true" (mouseleave)="hoverOnImage[i] = false">
+                    <img class="default-image" *ngIf="attachment.controls.imageORvideo.value === 'image'" src="{{attachment.controls.Description.value | defaultImage:defaultImage}}"
+                      alt="">
+                    <img class="pdf-image" *ngIf="attachment.controls.imageORvideo.value === 'pdf'"
+                      src="../assets/layouts/img/pdf-icon.png" alt="" (click)="doc.click()">
+                      <a [href]="attachment.controls.Description.value" target=”_blank” #doc download hidden></a>
+                    <cl-video width="338" height="148" *ngIf="attachment.controls.imageORvideo.value === 'video'" [public-id]="attachment.controls.Description.value"
+                      secure="true" class="my-videos" controls="true">
+                      <cl-transformation fetch-format="auto"></cl-transformation>
+                    </cl-video>
+                    <div *ngIf="hoverOnImage[i] && !attachment.controls.Description.value">
+                      <div class="btn blue img-edit left-135" (click)="onUseMedia(attachment, i)">
+                        <i class="zmdi zmdi-edit"></i>
+                      </div>
+                      <div class="btn blue img-edit left-170" (click)="removeAttachmentsImage(attachment, i)">
+                        <i class="zmdi zmdi-close"></i>
+                      </div>
+                    </div>
+                    <div *ngIf="hoverOnImage[i] && attachment.controls.Description.value">
+                      <div class="btn blue img-edit left-107" (click)="onUseMedia(attachment, i)">
+                        <i class="zmdi zmdi-edit"></i>
+                      </div>
+                      <div class="btn blue img-edit left-151" (click)="removeAttachmentImage(attachment, i)">
+                        <i class="zmdi zmdi-delete"></i>
+                      </div>
+                      <div class="btn blue img-edit left-191" (click)="removeAttachmentsImage(attachment, i)">
+                        <i class="zmdi zmdi-close"></i>
+                      </div>
+                    </div>
+                  </figure>
+                  </div>
+                  <div>
+                    <input maxlength="2000" formControlName="Title" type="text" class="form-control input-description font-type normal-text"
+                    placeholder="{{'ENTER_A_DESCRIPTION_HERE' | translate}}" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="add-attach-body pointer" (click)="addAttachments()">
+                <figure class="plus-padding">
+                  <img class="plus-icon" src="assets/layouts/img/add-attachment-icon.png" alt="">
+                </figure>
+                <div class="font-type normal-text center">
+                  {{"ADD_ATTACHMENT" | translate}}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="isVisibleMediaLibrary">
+  <app-media-library [automationId]=[quizId] (changeValue)='changeUploadedUrl($event)'></app-media-library>
+</div>
+
+<div class="content-bottom">
+  <button type="submit" class="btn save-btn font-type normal-text" (click) = "saveAttachments()" [disabled] = "attachmentsForm.invalid">{{"SAVE" | translate }}</button>
+</div>
+
+<ng-template #publishTemplate>
+  <div class="modal-body text-center">
+    <p>{{"THIS_QUIZ_HAS_UNPUBLISHED_CHANGES_AND_WILL_NEED_TO_BE_PUBLISHED_BEFORE_YOU_CAN_SHARE_THE_QUIZ." | translate
+      }}</p>
+    <br>
+    <button type="button" class="btn blue" (click)="publish()">{{"PUBLISH" | translate }}</button>
+    <button type="button" class="btn btn-default" (click)="cancel()">{{"CANCEL" | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #shareTemplate>
+  <div class="modal-body text-center">
+    <h2>{{"DIRECT_URL_TO_YOUR_QUIZ" | translate }}</h2>
+    <p>{{"SHAREABLE_URL_TO_QUIZ" | translate }}</p>
+    <br>
+    <p>{{"THE_URL_BELOW_CAN_BE_USED_TO_SHARE_YOUR_QUIZ_DIRECTLY." | translate }}</p>
+    <br>
+    <input type="text" [value]='quizURL'>
+    <br>
+    <button class="btn blue" type="button" ngxClipboard [cbContent]="quizURL">
+      {{"COPY_CODE_TO_CLIPBOARD" | translate}}</button>
+  </div>
+</ng-template>
+
+</div>

@@ -1,0 +1,208 @@
+<div *ngIf="!resultLeadForm">
+    <div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !leftSlide, 'left-quiz-silder':isMobileView && leftSlide}">
+        <div class="container-single page fixed-fr-toolbar" #previewContainer>
+            <div class="ins no" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [ngClass]="{'content-box': !isMobileView}">
+                <div class="popup-container-attempt" [ngClass]="{'popup-container': addClass}">
+                    <div class="ember-answer-key container-position">
+                        <div *ngIf="ResultScore.ShowScoreValue" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" class="higherLevelStyle font-type mbottom-10" [froalaEditor]="options" contenteditable="false" [ngModel]="ResultScore.ResultScoreValueTxt"></div>
+                        <div *ngFor="let reOrder of resultElementReorder">
+                            <div *ngIf="ResultScore.Title && ResultScore.ShowExternalTitle && reOrder.key == 'title'" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" class="content-title higherLevelStyle font-type" [froalaEditor]="options"
+                                contenteditable="false" [ngModel]="ResultScore.Title"></div>
+                            <div *ngIf="reOrder.key == 'media' && (ResultScore.Image || ResultScore.PublicIdForResult)" class="media-block">
+                                <figure>
+                                    <img class="img-align-center" *ngIf="imageORvideo === 'image'" [src]="ResultScore.Image" alt="">
+                                    <ng-container *ngIf="imageORvideo === 'video'">
+                                        <cl-video id="autoPlayVideo" public-id={{ResultScore.PublicIdForResult}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposter()'>
+                                            <cl-transformation gravity="north" y="20"></cl-transformation>
+                                        </cl-video>
+                                    </ng-container>
+                                </figure>
+                            </div>
+                            <div *ngIf="ResultScore.ShowDescription && reOrder.key == 'description'" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" class="next-line-string higherLevelStyle font-type" [froalaEditor]="options"
+                                contenteditable="false" [ngModel]="ResultScore.Description"></div>
+                            <div *ngIf="ResultScore.EnableCallToActionButton && ResultScore.ActionButtonText && !isMobileView && reOrder.key == 'button'">
+                                <a [href]="ResultScore.ActionButtonURL ? ResultScore.ActionButtonURL : 'javascript:void(0);'" [attr.target]="ResultScore.OpenLinkInNewTab && ResultScore.ActionButtonURL ? '_blank':'_self'" [ngStyle]="{
+              'cursor' : ResultScore.ActionButtonURL?'pointer':'default',
+              'color': QuizBrandingAndStyle.ButtonFontColor ,
+              'background': QuizBrandingAndStyle.ButtonColor,
+              'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" class="btn next-btn ellipsiss mbottom-10" [innerHTML]="ResultScore.ActionButtonText | safeHtml"></a>
+                            </div>
+                        </div>
+                        <h2 class="defualt-text font-type" *ngIf="ResultScore.ShowCorrectAnswer && ResultScore.AttemptedQuestionAnswerDetails.length && (quizType == 2 || quizType == 5)" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">{{ResultScore.AnswerKeyCustomTxt}}</h2>
+                        <div class="answer-key" *ngIf="ResultScore.ShowCorrectAnswer">
+                            <div class="initial-text mbottom-40" *ngFor="let answer of ResultScore.AttemptedQuestionAnswerDetails;let i = index">
+                                <div *ngIf="quizType == 2 || quizType == 5">
+                                    <div class="display-flex">
+                                        <div class="quiz-question mbottom-15" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{i+1}}: </div>
+                                        <div class="quiz-question mbottom-15 inner-div" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" [froalaEditor]="options" contenteditable="false" [ngModel]="answer.Question"></div>
+                                    </div>
+                                    <div class="center mbottom-15">
+                                        <img *ngIf="answer.IsCorrect != null && !answer.IsCorrect" class="incorrect-icon mbottom-20" src="assets/layouts/img/incorrect-icon.png" />
+                                        <img *ngIf="answer.IsCorrect != null && answer.IsCorrect" class="incorrect-icon mbottom-20" src="assets/layouts/img/correct-icon.png" />
+                                        <div class="incorrect-text font-type" *ngIf="answer.IsCorrect != null && answer.IsCorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                            <span>{{"YOUR_ANSWER_IS_CORRECT" | translate}}</span>
+                                        </div>
+                                        <div class="incorrect-text font-type" *ngIf="answer.IsCorrect != null && !answer.IsCorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                            <span>{{"YOUR_ANSWER_IS_INCORRECT" | translate}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="quiz-anwser" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                        {{ResultScore.YourAnswerCustomTxt}} :
+                                        <div class="sub-text-body anwser-text" [ngStyle]="{'background':QuizBrandingAndStyle.OptionColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color':QuizBrandingAndStyle.OptionFontColor}">
+                                            {{answer.YourAnswer}}
+                                        </div>
+                                    </div>
+                                    <div class="quiz-anwser" *ngIf="ResultScore.ShowCorrectAnswer && answer.CorrectAnswer" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                        {{ResultScore.CorrectAnswerCustomTxt}} :
+                                        <div class="sub-text-body anwser-text" [ngStyle]="{'background':QuizBrandingAndStyle.OptionColor, 'font-family':QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color':QuizBrandingAndStyle.OptionFontColor}">
+                                            {{answer.CorrectAnswer}}
+                                        </div>
+                                    </div>
+                                    <div *ngIf="ResultScore.ShowCorrectAnswer && answer.AnswerExplanation" class="quiz-anwser" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                        {{ResultScore.ExplanationCustomTxt}}
+                                        <img class="explanation-icon" src="assets/layouts/img/explanation-icon.png" />
+                                        <div class="mtop-12 explanation-text">
+                                            {{answer.AnswerExplanation}}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="isMobileView && logoImage" [style.background]="logoBackgroundColor" class="mobile-logo">
+                    <div>
+                        <cl-image public-id={{logoImage}}>
+                            <cl-transformation width="100" height="60" crop="lpad" fetch-format="auto"></cl-transformation>
+                        </cl-image>
+                    </div>
+                </div>
+                <div *ngIf="(flowOrder && flowOrder == 1) || appointmentCode" class="mtop-12 mbottom-10">
+                    <button class="btn take-next-btn ellipsiss" (click)="onleadForm()" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+                        data-dismiss="modal">
+                        <svg *ngIf="!flowOrder && appointmentCode" class="cal-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.10071 7.7237C5.10071 7.54833 4.95846 7.40625 4.78294 7.40625H3.67404C3.49872 7.40625 3.35645 7.54833 3.35645 7.7237V8.83246C3.35645 9.00806 3.49872 9.1502 3.67404 9.1502H4.78294C4.95846 9.1502 5.10071 9.00806 5.10071 8.83246V7.7237Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M7.87201 7.7237C7.87201 7.54833 7.72973 7.40625 7.55456 7.40625H6.44552C6.27021 7.40625 6.12793 7.54833 6.12793 7.7237V8.83246C6.12793 9.00806 6.27021 9.1502 6.44552 9.1502H7.55456C7.72973 9.1502 7.87201 9.00806 7.87201 8.83246V7.7237Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M10.6437 7.7237C10.6437 7.54833 10.5014 7.40625 10.3261 7.40625H9.21718C9.04166 7.40625 8.89941 7.54833 8.89941 7.7237V8.83246C8.89941 9.00806 9.04166 9.1502 9.21718 9.1502H10.3261C10.5014 9.1502 10.6437 9.00806 10.6437 8.83246V7.7237Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M5.10071 10.4954C5.10071 10.3197 4.95846 10.1777 4.78294 10.1777H3.67404C3.49872 10.1777 3.35645 10.3197 3.35645 10.4954V11.6039C3.35645 11.7794 3.49872 11.9215 3.67404 11.9215H4.78294C4.95846 11.9215 5.10071 11.7794 5.10071 11.6039V10.4954Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M7.87201 10.4954C7.87201 10.3197 7.72973 10.1777 7.55456 10.1777H6.44552C6.27021 10.1777 6.12793 10.3197 6.12793 10.4954V11.6039C6.12793 11.7794 6.27021 11.9215 6.44552 11.9215H7.55456C7.72973 11.9215 7.87201 11.7794 7.87201 11.6039V10.4954Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M10.6437 10.4954C10.6437 10.3197 10.5014 10.1777 10.3262 10.1777H9.21718C9.04166 10.1777 8.89941 10.3197 8.89941 10.4954V11.6039C8.89941 11.7794 9.04166 11.9215 9.21718 11.9215H10.3262C10.5014 11.9215 10.6437 11.7794 10.6437 11.6039V10.4954Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M12.6264 1.55881V3.25235C12.6264 4.01781 12.0054 4.63465 11.2401 4.63465H10.3656C9.60015 4.63465 8.97095 4.01781 8.97095 3.25235V1.55273H5.02923V3.25235C5.02923 4.01781 4.40005 4.63465 3.63477 4.63465H2.76007C1.99475 4.63465 1.37381 4.01781 1.37381 3.25235V1.55881C0.704918 1.57898 0.155273 2.13247 0.155273 2.81278V12.7377C0.155273 13.4308 0.717049 14 1.41015 14H12.59C13.2821 14 13.8449 13.4296 13.8449 12.7377V2.81278C13.8449 2.13247 13.2953 1.57898 12.6264 1.55881ZM12.2202 12.1196C12.2202 12.4192 11.9773 12.6622 11.6777 12.6622H2.29859C1.99894 12.6622 1.75608 12.4192 1.75608 12.1196V6.99307C1.75608 6.69342 1.99891 6.45042 2.29859 6.45042H11.6777C11.9773 6.45042 12.2202 6.69342 12.2202 6.99307L12.2202 12.1196Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M2.7567 3.72677H3.62173C3.8843 3.72677 4.09718 3.5142 4.09718 3.25163V0.475307C4.09718 0.212717 3.8843 0 3.62173 0H2.7567C2.49411 0 2.28125 0.212717 2.28125 0.475307V3.25163C2.28125 3.5142 2.49411 3.72677 2.7567 3.72677Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M10.3543 3.72677H11.2194C11.4818 3.72677 11.6946 3.5142 11.6946 3.25163V0.475307C11.6947 0.212717 11.4818 0 11.2194 0H10.3543C10.0918 0 9.87891 0.212717 9.87891 0.475307V3.25163C9.87891 3.5142 10.0918 3.72677 10.3543 3.72677Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                        </svg>
+                        <span *ngIf="!flowOrder && appointmentCode">{{"BookAnAppointment" | translate}}</span>
+                        <span *ngIf="flowOrder && flowOrder == 1">{{"EnterYourDetails" | translate}}</span>
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf="ResultScore.EnableCallToActionButton && ResultScore.ActionButtonText && isMobileView" class="next-btn-container">
+                <div *ngIf="buttonShow">
+                    <a [href]="ResultScore.ActionButtonURL ? ResultScore.ActionButtonURL : 'javascript:void(0);'" [attr.target]="ResultScore.OpenLinkInNewTab && ResultScore.ActionButtonURL ? '_blank':'_self'" [ngStyle]="{
+                        'cursor' : ResultScore.ActionButtonURL?'pointer':'default',
+                        'color': QuizBrandingAndStyle.ButtonFontColor ,
+                        'background': QuizBrandingAndStyle.ButtonColor,
+                        'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" class="btn next-btn ellipsiss mobile-next-btn" [innerHTML]="ResultScore.ActionButtonText | safeHtml"></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="fixed-fr-toolbar" *ngIf="isMobileView" class="mobile-view-logo-body" style="bottom: 0;width: 100%;padding: 0 20px;">
+        <div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !leftSlide, 'left-quiz-silder':isMobileView && leftSlide}">
+            <div *ngIf="(isMobileView && !buttonShow) && ResultScore.EnableCallToActionButton && ResultScore.ActionButtonText" class="next-btn-container">
+                <a style="width: 100%;border-radius: 0px;" [href]="ResultScore.ActionButtonURL ? ResultScore.ActionButtonURL : 'javascript:void(0);'" [attr.target]="ResultScore.OpenLinkInNewTab && ResultScore.ActionButtonURL ? '_blank':'_self'" [ngStyle]="{
+      'cursor' : ResultScore.ActionButtonURL?'pointer':'default',
+      'color': QuizBrandingAndStyle.ButtonFontColor ,
+      'background': QuizBrandingAndStyle.ButtonColor,
+      'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" class="btn next-btn ellipsiss" [innerHTML]="ResultScore.ActionButtonText | safeHtml"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fixed-fr-toolbar" *ngIf="resultLeadForm">
+    <div class="popup-container-attempt" [ngClass]="{'popup-container': addClass}">
+        <div class="ember-answer-key container-position">
+            <div *ngIf="ResultScore.ShowScoreValue" class="higherLevelStyle font-type mbottom-10" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" [froalaEditor]="options" contenteditable="false" [ngModel]="ResultScore.ResultScoreValueTxt"></div>
+            <div *ngFor="let reOrder of resultElementReorder">
+                <div *ngIf="ResultScore.Title && ResultScore.ShowExternalTitle && reOrder.key == 'title'" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" class="content-title higherLevelStyle font-type" [froalaEditor]="options"
+                    contenteditable="false" [ngModel]="ResultScore.Title"></div>
+                <div *ngIf="reOrder.key == 'media' && (ResultScore.Image || ResultScore.PublicIdForResult)" class="media-block">
+                    <figure>
+                        <img class="img-align-center" *ngIf="imageORvideo === 'image'" [src]="ResultScore.Image" alt="">
+                        <ng-container *ngIf="imageORvideo === 'video'">
+                            <cl-video public-id={{ResultScore.PublicIdForResult}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposter()'>
+                                <cl-transformation gravity="north" y="20"></cl-transformation>
+                            </cl-video>
+                        </ng-container>
+                    </figure>
+                </div>
+                <div *ngIf="ResultScore.ShowDescription && reOrder.key == 'description'" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" class="next-line-string higherLevelStyle font-type" [froalaEditor]="options"
+                    contenteditable="false" [ngModel]="ResultScore.Description"></div>
+                <div *ngIf="ResultScore.EnableCallToActionButton && ResultScore.ActionButtonText && !isMobileView && reOrder.key == 'button'">
+                    <a [href]="ResultScore.ActionButtonURL ? ResultScore.ActionButtonURL : 'javascript:void(0);'" [attr.target]="ResultScore.OpenLinkInNewTab && ResultScore.ActionButtonURL ? '_blank':'_self'" [ngStyle]="{
+                'cursor' : ResultScore.ActionButtonURL?'pointer':'default',
+                'color': QuizBrandingAndStyle.ButtonFontColor ,
+                'background': QuizBrandingAndStyle.ButtonColor,
+                'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" class="btn next-btn ellipsiss mbottom-10" [innerHTML]="ResultScore.ActionButtonText | safeHtml"></a>
+                </div>
+            </div>
+            <div class="defualt-text font-type" *ngIf="ResultScore.ShowCorrectAnswer && ResultScore.AttemptedQuestionAnswerDetails.length && (quizType == 2 || quizType == 5)" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">{{ResultScore.AnswerKeyCustomTxt}}</div>
+            <div class="answer-key" *ngIf="ResultScore.ShowCorrectAnswer">
+
+                <div class="initial-text mbottom-40" *ngFor="let answer of ResultScore.AttemptedQuestionAnswerDetails;let i = index">
+                    <div *ngIf="quizType == 2 || quizType == 5">
+                        <div class="display-flex">
+                            <div class="quiz-question mbottom-15" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{i+1}}: </div>
+                            <div class="quiz-question mbottom-15 inner-div" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}" [froalaEditor]="options" contenteditable="false" [ngModel]="answer.Question"></div>
+                        </div>
+                        <div class="center mbottom-15">
+                            <img *ngIf="answer.IsCorrect != null && !answer.IsCorrect" class="incorrect-icon mbottom-20" src="assets/layouts/img/incorrect-icon.png" />
+                            <img *ngIf="answer.IsCorrect != null && answer.IsCorrect" class="incorrect-icon mbottom-20" src="assets/layouts/img/correct-icon.png" />
+                            <div class="incorrect-text font-type" *ngIf="answer.IsCorrect != null && answer.IsCorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                <span>{{"YOUR_ANSWER_IS_CORRECT" | translate}}</span>
+                            </div>
+                            <div class="incorrect-text font-type" *ngIf="answer.IsCorrect != null && !answer.IsCorrect" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                <span>{{"YOUR_ANSWER_IS_INCORRECT" | translate}}</span>
+                            </div>
+                        </div>
+                        <div class="quiz-anwser" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{ResultScore.YourAnswerCustomTxt}} :
+                            <div class="sub-text-body anwser-text" [ngStyle]="{'background':QuizBrandingAndStyle.OptionColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color':QuizBrandingAndStyle.OptionFontColor}">
+                                {{answer.YourAnswer}}
+                            </div>
+                        </div>
+                        <div class="quiz-anwser" *ngIf="ResultScore.ShowCorrectAnswer && answer.CorrectAnswer" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{ResultScore.CorrectAnswerCustomTxt}} :
+                            <div class="sub-text-body anwser-text" [ngStyle]="{'background':QuizBrandingAndStyle.OptionColor, 'font-family':QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color':QuizBrandingAndStyle.OptionFontColor}">
+                                {{answer.CorrectAnswer}}
+                            </div>
+                        </div>
+                        <div *ngIf="ResultScore.ShowCorrectAnswer && answer.AnswerExplanation" class="quiz-anwser" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{ResultScore.ExplanationCustomTxt}}
+                            <img class="explanation-icon" src="assets/layouts/img/explanation-icon.png" />
+                            <div class="mtop-12 explanation-text">
+                                {{answer.AnswerExplanation}}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!ResultScore.HideActionButton && ResultScore.ActionButtonText && isMobileView" class="next-btn-container">
+        <a [href]="ResultScore.ActionButtonURL ? ResultScore.ActionButtonURL : 'javascript:void(0);'" [attr.target]="ResultScore.OpenLinkInNewTab && ResultScore.ActionButtonURL ? '_blank':'_self'" [ngStyle]="{
+          'cursor' : ResultScore.ActionButtonURL?'pointer':'default',
+          'color': QuizBrandingAndStyle.ButtonFontColor ,
+          'background': QuizBrandingAndStyle.ButtonColor,
+          'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" class="btn next-btn ellipsiss mobile-next-btn" [innerHTML]="ResultScore.ActionButtonText | safeHtml"></a>
+    </div>
+</div>

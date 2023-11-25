@@ -1,0 +1,50 @@
+.has-des-variable{
+  &.whats-app-ques{
+    &:focus-within .fr-ss-counter{
+      display: block !important;
+    }
+    .fr-ss-counter{
+      bottom: -25px !important;
+    }
+  }
+  .whats-app-desc{
+    text-align: left !important;
+    font-size: 14px !important;
+    padding-left: 0px !important;
+    .fr-element{
+      padding-left: 9px !important;
+    }
+  }
+}
+
+.has-ques-variable{
+  &.whats-app-ques{
+    padding-left: 9px;
+    width: 400px;
+    .wt-ques-title{
+      border-bottom: 1px solid #dbdbdb!important;
+      text-align: left !important;
+      font-size: 14px !important;
+      padding-left: 0px !important;
+      padding-top: 0;
+      padding-bottom: 0px;
+      .fr-element{
+        padding-left: 0px !important;
+      }
+      &:focus-within .fr-ss-counter{
+        display: block !important;
+      }
+    }
+  }  
+}
+
+.has-ans-variable, .has-ans-desc-variable{
+  &.whats-app-ans{
+    &:focus-within .fr-ss-counter{
+      display: block !important;
+    }
+    .fr-ss-counter{
+      bottom: -23px !important;
+    }
+  }
+}

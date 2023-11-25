@@ -1,0 +1,419 @@
+<div *ngIf="!resultLeadForm">
+    <div
+    [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !leftSlide, 'left-quiz-silder':isMobileView && leftSlide && !isStartQuiz,'right-quiz-silder':isMobileView && isStartQuiz}">
+    <div class="container-single page">
+        <div class="ins no cover-height" [ngClass]="{'bbottom-none':isMobileView,'content-box': !isMobileView}" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+            <div class="popup-container">
+                <div class="lead-header-text font-type center">
+                    <span
+                        [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                        {{leadFormTitle}}
+                    </span>
+                </div>
+                <div class="ember-ic">
+                    <form [formGroup]="leadUserForm">
+                        <div *ngIf="formId == 1" class="row">
+                            <div class="form-group col-md-6">
+                                <label for="firstname"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"FIRST_NAME_NL" | translate}}
+                                </label>
+                                <input formControlName="Voornaam" type="text"
+                                    class="form-control input-text font-type sub-text" id="firstname" maxlength="20"
+                                    placeholder="{{'ENTER_YOUR_FIRST_NAME' | translate}}">
+                                <small class="invalid-input"
+                                    *ngIf="leadUserForm.get('Voornaam').touched && leadUserForm.get('Voornaam').invalid"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"FirstNameIsRequired" | translate}}
+                                </small>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lastname"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"LAST_NAME_NL" | translate}}
+                                </label>
+                                <input formControlName="Achternaam" type="text"
+                                    class="form-control input-text font-type sub-text" id="lastname" maxlength="20"
+                                    placeholder="{{'ENTER_YOUR_LAST_NAME' | translate}}">
+                                <small class="invalid-input"
+                                    *ngIf="leadUserForm.get('Achternaam').invalid && leadUserForm.get('Achternaam').touched"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"LastNameIsRequired" | translate}}
+                                </small>
+                            </div>
+                        </div>
+                        <div *ngIf="formId == 2" class="row">
+                            <div class="form-group col-md-12">
+                                <label for="firstname"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"FIRST_NAME_NL" | translate}}
+                                </label>
+                                <input formControlName="Voornaam" type="text"
+                                    class="form-control input-text font-type sub-text" id="firstname" maxlength="20"
+                                    placeholder="{{'ENTER_YOUR_FIRST_NAME' | translate}}">
+                                <small class="invalid-input"
+                                    *ngIf="leadUserForm.get('Voornaam').touched && leadUserForm.get('Voornaam').invalid"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"FirstNameIsRequired" | translate}}
+                                </small>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="lastname"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"LAST_NAME_NL" | translate}}
+                                </label>
+                                <input formControlName="Achternaam" type="text"
+                                    class="form-control input-text font-type sub-text" id="lastname" maxlength="20"
+                                    placeholder="{{'ENTER_YOUR_LAST_NAME' | translate}}">
+                                <small class="invalid-input"
+                                    *ngIf="leadUserForm.get('Achternaam').invalid && leadUserForm.get('Achternaam').touched"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"LastNameIsRequired" | translate}}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="email"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"EMAIL_NL" | translate}}
+                                </label>
+                                <input formControlName="Email" type="text"
+                                    class="form-control input-text font-type sub-text" id="email"
+                                    placeholder="{{'ENTER_YOUR_EMAIL_ADDRESS' | translate}}">
+                                <small class="invalid-input"
+                                    *ngIf="leadUserForm.get('Email').hasError('pattern')">{{"INVALID_EMAIL" | translate }}</small>
+                                <small class="invalid-input"
+                                    *ngIf="leadUserForm.get('Email').hasError('required') && leadUserForm.get('Email').touched"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"EmailAddressIsRequired" | translate}}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="phoneno"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"PHONE_NUMBER_NL" | translate}}
+                                </label>
+                            </div>
+                            <div class="form-group mbottom-25 col-xs-5 col-md-3">
+                                <ng-select [items]="countryCodeList" 
+                                        placeholder="{{countryCode ? '' : ('SELECT_COUNTRY' | translate) }}"
+                                        [searchable]="true"
+                                    class="custom-select search" bindLabel="label" bindValue="value" [(ngModel)]="countryCode" [ngModelOptions]="{standalone: true}" [dropdownPosition]="'top'" (selected)="onCountryCodeChange($event)">                             
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-xs-7 col-md-9">
+                                <input maxlength="10" OnlyNumber="true" formControlName="PhoneNr" type="text"
+                                    class="form-control input-text font-type sub-text" id="phoneno"
+                                    placeholder="{{'ENTER_YOUR_PHONE_NUMBER' | translate}}">
+                                <small class="invalid-input"
+                                    *ngIf="leadUserForm.get('PhoneNr').invalid && leadUserForm.get('PhoneNr').touched"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"PhoneNumberIsRequired" | translate}}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="isCVMandatory">
+                            <div class="form-group col-md-12">
+                                <label [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"Resume:" | translate}}
+                                </label>
+                                <button id="inputBtn" class="form-control input-text font-type sub-text pointer" (click)="fileInput.click();checkValidationOnCancel()" *ngIf="!isResumeObjValid()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" class="mright-5">
+                                        <g clip-path="url(#clip0)">
+                                            <path
+                                                d="M9.87235 3.14023C9.78193 3.35781 9.56901 3.50015 9.33335 3.50015H7.58335V9.33348C7.58335 9.65548 7.32202 9.91681 7.00002 9.91681C6.67802 9.91681 6.41669 9.65548 6.41669 9.33348V3.50015H4.66669C4.43103 3.50015 4.21811 3.35781 4.1277 3.14023C4.03728 2.92206 4.08745 2.67123 4.25428 2.5044L6.58761 0.171063C6.81569 -0.0570208 7.18435 -0.0570208 7.41244 0.171063L9.74576 2.5044C9.9126 2.67123 9.96276 2.92206 9.87235 3.14023Z"
+                                                
+                                            />
+                                            <path
+                                                d="M12.25 13.9997H1.75C0.785167 13.9997 0 13.2145 0 12.2497V9.91634C0 9.59434 0.261333 9.33301 0.583333 9.33301C0.905333 9.33301 1.16667 9.59434 1.16667 9.91634V12.2497C1.16667 12.5711 1.42858 12.833 1.75 12.833H12.25C12.5714 12.833 12.8333 12.5711 12.8333 12.2497V9.91634C12.8333 9.59434 13.0947 9.33301 13.4167 9.33301C13.7387 9.33301 14 9.59434 14 9.91634V12.2497C14 13.2145 13.2148 13.9997 12.25 13.9997Z"
+                                                
+                                            />
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0">
+                                                <rect width="14" height="14" fill="white" />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <span>{{"Upload Your CV"}}</span>
+                                    <input id="cvFile" type="file" #fileInput (change)="onFileSelected($event)" class="hidden">
+                                </button>
+                                <span *ngIf="isResumeObjValid()" [title]="this.leadUserForm.get('resume').value.file.fileName">
+                                    <button class="form-control input-text font-type sub-text jr-cv-selected">
+                                        <div class="ellipsiss jr-d-inline-block jr-cv-fname-w text-left">
+                                            {{this.leadUserForm.get('resume').value.file.fileName}}
+                                        </div>
+                                        <div class="jr-d-inline-block text-right pointer-all">
+                                            <i (click)="removeResume()" class="fa fa-times"></i>
+                                        </div>
+                                    </button>
+                                </span>
+                                <small class="invalid-input"
+                                    *ngIf="leadUserForm.get('resume').invalid && leadUserForm.get('resume').touched"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"Msg_PleaseUploadYourCV" | translate}}
+                                </small>
+                            </div>
+                        </div>
+                        <!-- <div *ngIf="privacyLink && privacyLink != 'undefined'" class="row"> -->
+                        <div *ngIf="privacyStatementEnable" class="row">
+                            <div class="form-group col-md-12">
+                                <label
+                                    class="app-checkbox normal-text font-type">
+                                   {{"IAgreeToThe" | translate}}
+                                    <a class="link-test" href="{{privacyLink}}" target="_blank">
+                                        {{"PrivacyPolicy" | translate}}
+                                    </a>
+                                    <input type="checkbox" formControlName="Privacy" required />
+                                    <span></span>
+                                </label>
+                                <small class="invalid-input"
+                                    *ngIf="leadUserForm.get('Privacy').hasError('required') && leadUserForm.get('Privacy').touched"
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    {{"PrivacyPolicyContinue" | translate}}
+                                </small>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div *ngIf="isMobileView && logoImage" [style.background]="logoBackgroundColor" class="mobile-logo">
+                <div>
+                    <cl-image public-id={{logoImage}}>
+                        <cl-transformation width="100" height="60" crop="lpad" fetch-format="auto"></cl-transformation>
+                    </cl-image>
+                </div>
+            </div>
+            <div class="next-btn-container" *ngIf="!isMobileView">
+                <button type="submit" (click)="submitLeadInfo()"
+                    [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor,'color': QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
+                    [disabled]="leadUserForm.invalid" class="btn next-btn ellipsiss">
+                    {{"SUBMIT_NL" | translate}}
+                </button>
+            </div>
+        </div>
+        <div class="next-btn-container" *ngIf="isMobileView">
+            <div *ngIf="buttonShow">
+                <button type="submit" (click)="submitLeadInfo()"
+                    [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor,'color': QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
+                    [disabled]="leadUserForm.invalid" class="btn next-btn ellipsiss mobile-next-btn">
+                    {{"SUBMIT_NL" | translate}}
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="isMobileView" class="mobile-view-logo-body" style="bottom: 0;width: 100%;padding: 0 20px;">
+    <div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !leftSlide, 'left-quiz-silder':isMobileView && leftSlide && !isStartQuiz,'right-quiz-silder':isMobileView && isStartQuiz}">
+        <div *ngIf="isMobileView && !buttonShow" class="next-btn-container">
+            <button style="width: 100%;border-radius: 0px;" type="submit"
+                [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor,'color': QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
+                [disabled]="leadUserForm.invalid" class="btn next-btn ellipsiss" (click)="submitLeadInfo()">
+                {{"SUBMIT_NL" | translate}}
+            </button>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div *ngIf="resultLeadForm">
+    <div class="popup-container">
+        <div class="lead-header-text font-type center">
+            <span
+                [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                {{leadFormTitle}}
+            </span>
+        </div>
+        <div class="ember-ic">
+            <form [formGroup]="leadUserForm">
+                <div *ngIf="formId == 1" class="row">
+                    <div class="form-group col-md-6">
+                        <label for="firstname"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"FIRST_NAME_NL" | translate}}
+                        </label>
+                        <input formControlName="Voornaam" type="text"
+                            class="form-control input-text font-type sub-text" id="firstname" maxlength="20"
+                            placeholder="{{'ENTER_YOUR_FIRST_NAME' | translate}}">
+                        <small class="invalid-input"
+                            *ngIf="leadUserForm.get('Voornaam').touched && leadUserForm.get('Voornaam').invalid"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"FirstNameIsRequired" | translate}}
+                        </small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="lastname"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"LAST_NAME_NL" | translate}}
+                        </label>
+                        <input formControlName="Achternaam" type="text"
+                            class="form-control input-text font-type sub-text" id="lastname" maxlength="20"
+                            placeholder="{{'ENTER_YOUR_LAST_NAME' | translate}}">
+                        <small class="invalid-input"
+                            *ngIf="leadUserForm.get('Achternaam').invalid && leadUserForm.get('Achternaam').touched"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"LastNameIsRequired" | translate}}
+                        </small>
+                    </div>
+                </div>
+                <div *ngIf="formId == 2" class="row">
+                    <div class="form-group col-md-12">
+                        <label for="firstname"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"FIRST_NAME_NL" | translate}}
+                        </label>
+                        <input formControlName="Voornaam" type="text"
+                            class="form-control input-text font-type sub-text" id="firstname" maxlength="20"
+                            placeholder="{{'ENTER_YOUR_FIRST_NAME' | translate}}">
+                        <small class="invalid-input"
+                            *ngIf="leadUserForm.get('Voornaam').touched && leadUserForm.get('Voornaam').invalid"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"FirstNameIsRequired" | translate}}
+                        </small>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="lastname"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"LAST_NAME_NL" | translate}}
+                        </label>
+                        <input formControlName="Achternaam" type="text"
+                            class="form-control input-text font-type sub-text" id="lastname" maxlength="20"
+                            placeholder="{{'ENTER_YOUR_LAST_NAME' | translate}}">
+                        <small class="invalid-input"
+                            *ngIf="leadUserForm.get('Achternaam').invalid && leadUserForm.get('Achternaam').touched"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"LastNameIsRequired" | translate}}
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label for="email"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"EMAIL_NL" | translate}}
+                        </label>
+                        <input formControlName="Email" type="text"
+                            class="form-control input-text font-type sub-text" id="email"
+                            placeholder="{{'ENTER_YOUR_EMAIL_ADDRESS' | translate}}">
+                        <small class="invalid-input"
+                            *ngIf="leadUserForm.get('Email').hasError('pattern')">{{"INVALID_EMAIL" | translate }}</small>
+                        <small class="invalid-input"
+                            *ngIf="leadUserForm.get('Email').hasError('required') && leadUserForm.get('Email').touched"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"EmailAddressIsRequired" | translate}}
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="phoneno"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"PHONE_NUMBER_NL" | translate}}
+                        </label>
+                    </div>
+                    <div class="form-group phone-number-container col-xs-5 col-md-4">
+                        <ng-select [items]="countryCodeList" 
+                                placeholder="{{countryCode ? '' : ('SELECT_COUNTRY' | translate) }}"
+                                [searchable]="true"
+                            class="custom-select search" bindLabel="label" bindValue="value" [(ngModel)]="countryCode" [ngModelOptions]="{standalone: true}" [dropdownPosition]="'top'" (selected)="onCountryCodeChange($event)">                             
+                        </ng-select>
+                    </div>
+                    <div class="form-group col-xs-7 col-md-8">
+                        <input maxlength="10" OnlyNumber="true" formControlName="PhoneNr" type="text"
+                            class="form-control input-text font-type sub-text" id="phoneno"
+                            placeholder="{{'ENTER_YOUR_PHONE_NUMBER' | translate}}">
+                        <small class="invalid-input"
+                            *ngIf="leadUserForm.get('PhoneNr').invalid && leadUserForm.get('PhoneNr').touched"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"PhoneNumberIsRequired" | translate}}
+                        </small>
+                    </div>
+                </div>
+                <div class="row" *ngIf="isCVMandatory">
+                    <div class="form-group col-md-12">
+                        <label [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"Resume:" | translate}}
+                        </label>
+                        <button id="inputBtn" class="form-control input-text font-type sub-text pointer" (click)="fileInput.click();checkValidationOnCancel()" *ngIf="!isResumeObjValid()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" class="mright-5">
+                                <g clip-path="url(#clip0)">
+                                    <path
+                                        d="M9.87235 3.14023C9.78193 3.35781 9.56901 3.50015 9.33335 3.50015H7.58335V9.33348C7.58335 9.65548 7.32202 9.91681 7.00002 9.91681C6.67802 9.91681 6.41669 9.65548 6.41669 9.33348V3.50015H4.66669C4.43103 3.50015 4.21811 3.35781 4.1277 3.14023C4.03728 2.92206 4.08745 2.67123 4.25428 2.5044L6.58761 0.171063C6.81569 -0.0570208 7.18435 -0.0570208 7.41244 0.171063L9.74576 2.5044C9.9126 2.67123 9.96276 2.92206 9.87235 3.14023Z"
+                                        
+                                    />
+                                    <path
+                                        d="M12.25 13.9997H1.75C0.785167 13.9997 0 13.2145 0 12.2497V9.91634C0 9.59434 0.261333 9.33301 0.583333 9.33301C0.905333 9.33301 1.16667 9.59434 1.16667 9.91634V12.2497C1.16667 12.5711 1.42858 12.833 1.75 12.833H12.25C12.5714 12.833 12.8333 12.5711 12.8333 12.2497V9.91634C12.8333 9.59434 13.0947 9.33301 13.4167 9.33301C13.7387 9.33301 14 9.59434 14 9.91634V12.2497C14 13.2145 13.2148 13.9997 12.25 13.9997Z"
+                                        
+                                    />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0">
+                                        <rect width="14" height="14" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <span>{{"Upload Your CV"}}</span>
+                            <input id="cvFile" type="file" #fileInput (change)="onFileSelected($event)" class="hidden">
+                        </button>
+                        <span *ngIf="isResumeObjValid()" [title]="this.leadUserForm.get('resume').value.file.fileName">
+                            <button class="form-control input-text font-type sub-text jr-cv-selected">
+                                <div class="ellipsiss jr-d-inline-block jr-cv-fname-w text-left">
+                                    {{this.leadUserForm.get('resume').value.file.fileName}}
+                                </div>
+                                <div class="jr-d-inline-block text-right pointer-all">
+                                    <i (click)="removeResume()" class="fa fa-times"></i>
+                                </div>
+                            </button>
+                        </span>
+                        <small class="invalid-input"
+                            *ngIf="leadUserForm.get('resume').invalid && leadUserForm.get('resume').touched"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"Msg_PleaseUploadYourCV" | translate}}
+                        </small>
+                    </div>
+                </div>
+                <!-- <div *ngIf="privacyLink && privacyLink != 'undefined'" class="row"> -->
+                <div *ngIf="privacyStatementEnable" class="row">
+                    <div class="form-group col-md-12">
+                        <label
+                            class="app-checkbox normal-text font-type">
+                            {{"IAgreeToThe" | translate}}
+                            <a class="link-test" href="{{privacyLink ? privacyLink : 'javascript:void(0);'}}" target="_blank">
+                                {{"PrivacyPolicy" | translate}}
+                            </a>
+                            <input type="checkbox" formControlName="Privacy" required />
+                            <span></span>
+                        </label>
+                        <small class="invalid-input"
+                            *ngIf="leadUserForm.get('Privacy').hasError('required') && leadUserForm.get('Privacy').touched"
+                            [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            {{"PrivacyPolicyContinue" | translate}}
+                        </small>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div *ngIf="isMobileView && logoImage" [style.background]="logoBackgroundColor" class="mobile-logo">
+        <div>
+            <cl-image public-id={{logoImage}}>
+                <cl-transformation width="100" height="60" crop="lpad" fetch-format="auto"></cl-transformation>
+            </cl-image>
+        </div>
+    </div>
+    <div class="next-btn-container mtop-10">
+        <button type="submit" (click)="submitLeadInfo()"
+            [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor,'color': QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
+            [disabled]="leadUserForm.invalid" class="btn next-btn ellipsiss">
+            {{"SUBMIT_NL" | translate}}
+        </button>
+    </div>
+</div>

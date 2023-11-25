@@ -1,0 +1,83 @@
+<div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !isNextStatus, 'left-quiz-silder':isMobileView && isNextStatus}">
+    <div class="container-single page fixed-fr-toolbar" #previewContainer>
+        <div class="ins no cover-height" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType}" [ngClass]="{'content-box': !isMobileView}">
+
+            <div *ngIf="IsBackButtonEnable" (click)="previousQuestion()">
+                <a class="close previous_button pre-btn" title="Go back" href="javascript:void(0)">
+                    <svg width="30" height="14" viewBox="0 0 30 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.52416 13.7894C6.80611 14.0702 7.25 14.0702 7.53195 13.7894C7.80438 13.5182 7.80438 13.0667 7.53195 12.7961L2.42185 7.70787L29.2843 7.70787C29.6774 7.70787 30 7.39677 30 7.00537C30 6.61397 29.6774 6.29276 29.2843 6.29276L2.42185 6.29276L7.53195 1.21404C7.80438 0.933294 7.80438 0.481191 7.53195 0.210562C7.25 -0.0701844 6.80611 -0.0701843 6.52415 0.210562L0.204321 6.50332C-0.0681078 6.77458 -0.0681077 7.22605 0.204321 7.49668L6.52416 13.7894Z" fill="#00B7AB"/>
+                        </svg>
+                </a>
+            </div>
+
+            <div class="popup-container-attempt" [ngClass]="{'popup-container': addClass}">
+                <div *ngFor="let reOrder of contentElementReorder">
+                    <div *ngIf="reOrder.key == 'title' && ContentData.ContentTitle && ContentData.ShowTitle" class="content-title inner-div" [froalaEditor]="options" contenteditable="false" [ngModel]="ContentData.ContentTitle"></div>
+                    <div *ngIf="reOrder.key == 'media' && ContentData.ShowContentTitleImage" class="screen-sec">
+                        <figure class="media-block">
+                            <img class="img-align-center" *ngIf="imageORvideo === 'image'" [src]="ContentData.ContentTitleImage" alt="">
+                            <ng-container *ngIf="imageORvideo === 'video'">
+                                <cl-video id="autoPlayVideo" public-id={{ContentData.PublicIdForContentTitle}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposter()'>
+                                    <cl-transformation gravity="north" y="20"></cl-transformation>
+                                </cl-video>
+                            </ng-container>
+                        </figure>
+                    </div>
+                    <div *ngIf="reOrder.key == 'description' && ContentData.ShowDescription" class="next-line-string" [froalaEditor]="options" contenteditable="false" [ngModel]="ContentData.ContentDescription"></div>
+                    <div *ngIf="reOrder.key == 'description' && ContentData.ShowContentDescriptionImage && ContentData.ShowDescription" class="screen-sec">
+                        <figure class="media-block">
+                            <img class="img-align-center" *ngIf="imageORvideoDescription === 'image'" [src]="ContentData.ContentDescriptionImage" alt="">
+                            <ng-container *ngIf="imageORvideoDescription === 'video'">
+                                <cl-video id="autoplayDes" public-id={{ContentData.PublicIdForContentDescription}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposterDes()'>
+                                    <cl-transformation gravity="north" y="20"></cl-transformation>
+                                </cl-video>
+                            </ng-container>
+                        </figure>
+                    </div>
+
+
+
+                    <div *ngIf="reOrder.key == 'button' && !isMobileView && ContentData.EnableNextButton" class="next-btn-container mbottom-10">
+                        <button class="next-question-btn" style="margin: 0;" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': QuizBrandingAndStyle.ButtonFontColor}" (click)="next()" *ngIf="ContentData.AliasTextForNextButton else other_content"
+                            [innerHTML]="ContentData.AliasTextForNextButton|safeHtml">
+        </button>
+                    </div>
+                    <ng-template #other_content>
+                        <div *ngIf="reOrder.key == 'button' && !isMobileView && ContentData.EnableNextButton" class="next-btn-container mbottom-10">
+                            <button class="next-question-btn" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': QuizBrandingAndStyle.ButtonFontColor}" (click)="next()">   
+                {{"Next"}}  </button>
+                        </div>
+                    </ng-template>
+                </div>
+                <div *ngIf="isMobileView && logoImage" [style.background]="logoBackgroundColor" class="mobile-logo">
+                    <div>
+                        <cl-image public-id={{logoImage}}>
+                            <cl-transformation width="100" height="60" crop="lpad" fetch-format="auto"></cl-transformation>
+                        </cl-image>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="isMobileView && ContentData.EnableNextButton" style="position: relative;">
+            <div class="next-btn-container">
+                <div *ngIf="buttonShow">
+                    <button class="next-question-btn mobile-next-btn" style="width: 100%;border-radius: 0px;margin: 0;" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': QuizBrandingAndStyle.ButtonFontColor}"
+                    (click)="next()" [innerHTML]="ContentData.AliasTextForNextButton ? ContentData.AliasTextForNextButton : 'Next'|safeHtml">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="isMobileView && !buttonShow && ContentData.EnableNextButton" class="mobile-view-logo-body" style="bottom: 0;width: 100%;padding: 0 20px;z-index: 10;">
+    <div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !isNextStatus, 'left-quiz-silder':isMobileView && isNextStatus}">
+        <div class="next-btn-container">
+            <button class="next-question-btn" style="width: 100%;border-radius: 0px;margin: 0;" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': QuizBrandingAndStyle.ButtonFontColor}" (click)="next()"
+                [innerHTML]="ContentData.AliasTextForNextButton ? ContentData.AliasTextForNextButton : 'Next'|safeHtml">
+            </button>
+        </div>
+    </div>
+</div>

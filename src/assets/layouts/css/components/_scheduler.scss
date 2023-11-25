@@ -1,0 +1,529 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Scheduler 
+*/
+
+.scheduler-container {
+  clear: left;
+  overflow: hidden;
+  height: calc(100vh - 208px);  
+  .tab-pane{
+    height: 100%;  
+  }  
+  .appointment-scheduler{
+    float: left;
+    height: 100%;
+    width: calc(100% - 536px);
+    .scheduler-head-action{
+      height: 60px;
+      padding: 0 30px;
+      @include flex();
+      @include align-item();
+      h2{
+        font-weight: normal;
+        @include flex-value-1();  
+      }
+      .action{
+        .btn-group{
+          @include flex();
+          @include align-item();  
+          .item-group{
+            @include flex();
+            @include align-item();  
+          }
+          .no-btn{
+            padding: 6px;
+            color: $regular-color;
+            background: $no-bkg !important;
+            box-shadow: $no-shadow;
+            i{
+              font-size: 22px;  
+            }
+          } 
+        }  
+      }
+    }
+    .scheduler-table{
+      width: 100%;  
+      tr{
+        td{
+          font-size: $font-size-small;
+          min-width: 0; 
+          text-align: center;
+          vertical-align: middle;
+          border: 1px solid $base-color-3;
+          border-top: 0;
+          border-left: 0;          
+          &:last-child{
+            border-right: 0; 
+          } 
+        }  
+      }
+    }
+    .content {
+      clear: left; 
+      overflow: hidden;
+      .scheduler-left {
+        float: left;
+        width: 64px;
+        background: #fff;        
+        .scheduler-table{    
+          tr{
+            td{               
+              border-bottom: 1px solid $base-color-1;  
+              border-right: 1px solid $base-color-3;             
+            }  
+          }
+        }  
+
+      }
+      .scheduler-right {
+        float: left;
+        width: calc(100% - 64px);
+      }
+      .scheduler-head{
+        height: 36px;
+        position: relative; 
+        .scheduler-left{
+          height: 37px;
+          @include flex-group();  
+          border: 1px solid $base-color-3;          
+          border-left: 0; 
+        }           
+        td{
+          height: 36px;
+          border-top: 1px solid $base-color-3;
+        } 
+        .nav-control{
+          a{
+            font-size: 26px;
+            color: $primary-color;
+            top: 1px;
+            width: 30px;
+            height: 35px;
+            text-align: center;
+            position: absolute;
+            background: $base-bkg-1;                     
+            &.prev{
+              left: 64px;
+              border-right: 1px solid $base-color-3;    
+            }
+            &.next{
+              right: 0;
+              border-left: 1px solid $base-color-3;    
+            }
+            &.disabled{
+              display: none;
+            }
+          }
+        }       
+      }
+      .scheduler-cnt{  
+        clear: left;
+        @include flex();   
+        .scheduler-left{
+          overflow: hidden;
+        }
+        .scheduler-right{
+          overflow: hidden;
+          overflow-y: auto;
+        }
+        .scheduler-table{
+          td{             
+            .cell{
+              cursor: pointer;  
+              position: relative;
+            }
+          }
+        }
+      }     
+    }
+    .month-ember{
+      .scheduler-table{
+        td{  
+          width: 12%;
+        }  
+      }
+      .scheduler-head{ 
+        margin-bottom: 1px;        
+        .scheduler-table{
+          td{  
+            border-color: $base-color-1;                        
+          } 
+        }
+      }
+      .scheduler-cnt{
+        .scheduler-table{
+          height: calc(100vh - 302px);
+          td{
+            border-top: 1px solid $base-color-3;
+          }
+          .cell{
+            font-size: $font-size-regular;
+            min-height: 100%;  
+            font-weight: 600;
+            border: 1px solid $base-color-1; 
+            @include flex-group();
+            &.current{
+              border-color: $secondary-color;  
+            }
+            &.today{
+              background: $base-color-3;
+              border-color: $base-color-3;
+            }
+            &.disabled{  
+              opacity: 0.5;
+              cursor: inherit !important;
+              &:hover{
+                border: $base-color-1;
+              }          
+            }
+            .count{
+              width: 18px;
+              height: 18px;
+              top: 5px;
+              right: 5px;
+              font-size: $font-size-xsm;
+              color: $base-color-1;
+              font-weight: normal;
+              position: absolute;
+              background: $primary-bkg; 
+              @include border-radius(100%); 
+              @include flex-group();
+            }
+          }  
+        }       
+      }        
+    }   
+    .week-ember, .day-ember{   
+      .scheduler-head{         
+        .scheduler-right{
+          padding-right: 0;
+        }
+      }
+      .scheduler-cnt{
+        height: calc(100vh - 302px);
+        .scheduler-table{        
+          td{ 
+            border-bottom-style: dashed; 
+            .cell{ 
+              min-height: 66px;
+            }
+            .cell-time{
+              min-height: 66px;                
+            } 
+          }                          
+        } 
+        .scheduler-is{
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          z-index: 2;
+          text-align: left;          
+          position: absolute;  
+          span{
+            display: block;
+          }        
+          .in{
+            height: 100%;
+            padding: 4px 2px;
+            &.red-bkg{
+              background: $base-theme-5;
+            } 
+            &.green-bkg{
+              background: $base-theme-6;
+            }   
+            &.yellow-bkg{
+              background: $base-theme-7;
+            } 
+            &.blue-bkg{
+              background: $base-theme-8;
+            } 
+            span{
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;              
+            }        
+          }
+          .view-ember{
+            top: 12px;            
+            padding: 10px;
+            opacity: 0;
+            visibility: hidden;
+            position: absolute; 
+            background: $base-bkg-1;             
+            border: 1px solid $base-color-3;  
+            box-shadow: $primary-shadow;   
+            @include transition(all 0.4s ease-in-out); 
+            &.right{
+              right: -130px;
+            }  
+            &.left{
+              left: -130px;
+            }              
+          }
+          &:hover{
+            .view-ember{
+              opacity: 1;              
+              visibility: visible;
+              &.right{
+                right: -124px;
+              }
+              &.left{
+                left: -124px;
+              }
+            }
+          }
+        }      
+      }     
+    } 
+
+    .week-ember{      
+      .scheduler-right{
+        .scheduler-table{
+          td{ 
+            min-width: 86px;           
+          } 
+        }
+      }
+    }   
+
+    .day-ember{      
+      .scheduler-right{
+        .scheduler-table{
+          td{ 
+            min-width: 132px;           
+          } 
+        }
+      }
+    }  
+  }
+  .appointment-details{
+    float: left;
+    height: 100%;
+    width: 536px;    
+    .head{
+      height: 62px;
+      padding: 0 20px;
+      color: $base-color-1;
+      background: $regular-bkg;
+      @include flex-group();
+      h2{      
+        @include flex-value-1();
+      }
+    }
+    .cnt{
+      height: calc(100% - 62px);  
+      border-left: 1px solid $base-color-3;
+      ul{
+        li{
+          position: relative;
+          padding: 18px 20px;
+          border-bottom: 1px solid $base-color-3;
+          &:before{
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            height: 30px;
+            content: "";  
+            margin: auto;          
+            position: absolute;             
+          }
+          &.ember-group{
+            &:before{
+              top: 25px;
+              bottom: auto;
+            }  
+          } 
+
+
+          &.theme-ember-1{
+            &:before{
+              background: $base-theme-1;  
+            }  
+          } 
+          &.theme-ember-2{
+            &:before{
+              background: $base-theme-2;  
+            }  
+          } 
+          &.theme-ember-3{
+            &:before{
+              background: $base-theme-3;  
+            }  
+          } 
+          &.theme-ember-4{
+            &:before{
+              background: $base-theme-4;  
+            }  
+          } 
+          .ember-item{
+            display: inline-block;
+            width: calc(100% - 120px);
+            p{
+              margin-bottom: 2px;
+              @include flex();
+              @include align-item();
+              span{
+                min-width: 94px;
+                padding-right: 24px;
+                display: inline-block;
+              } 
+              &.top{
+                font-size: $font-size-medium; 
+                font-weight: bold;                   
+                span{
+                                           
+                }  
+              }
+              &.mid{
+                margin-bottom: 5px;
+              }
+
+              &.bottom{
+                margin-bottom: 0;
+              }
+              a{
+                text-decoration: underline;                
+              }    
+              i.fa-icon{
+                margin-right: 6px;
+              }          
+            }   
+          } 
+          .ember-action {
+            width: 100px;
+            display: inline-block;
+            vertical-align: top;
+            p {
+              margin-bottom: 0;  
+              text-align: right;
+              &.top {              
+               margin-bottom: 30px;  
+              }
+
+              a {
+                display: inline-block;
+                + a{ 
+                  margin-left: 16px;                  
+                }
+              } 
+            }
+          } 
+        }  
+      }
+    }
+  }
+}
+
+.portlet-body{
+  h2{
+    margin-bottom: 22px;
+  }  
+}
+
+
+.app-sidebar{
+  &.app-calendar-quick{
+    .app-calc{
+      height: calc(100% - 170px);
+      .heading{
+        margin-bottom: 4px;
+      }
+      .form-actions{
+        height: 130px;
+        display: block;
+        margin-top: 10px;       
+        padding-left: 50px;
+        text-align: left;
+      }
+    }  
+  }
+}
+.reschedule-ember{
+  .action{
+    margin-bottom: 8px;
+    .btn-group{
+      @include flex();
+      @include align-item();       
+      .no-btn{
+        padding: 6px;
+        color: $regular-color;
+        background: $no-bkg !important;
+        box-shadow: $no-shadow;
+        i{
+          font-size: 22px;  
+        }
+      } 
+    }  
+  }
+  .scheduler-table{
+    width: 100%;
+    td{  
+      width: 12%;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid $base-color-3;
+    }  
+  }
+  .scheduler-head{ 
+    margin-bottom: 1px;        
+    .scheduler-table{
+      td{  
+        height: 36px;
+        border-color: $no-bkg;
+      } 
+    }    
+  }   
+  .scheduler-cnt{
+    .scheduler-table{
+      height: calc(100vh - 340px);
+      .cell{        
+        min-height: 100%;  
+        font-weight: 600;
+        cursor: pointer;        
+        border: 1px solid $no-bkg; 
+        @include flex-group();
+        &.current{
+          border-color: $secondary-color;  
+        }
+        &.today{
+          background: $base-color-3;
+          border-color: $base-color-3;
+        }
+        &.disabled{  
+          opacity: 0.5;
+          cursor: inherit !important;
+          &:hover{
+            border: $no-bkg;
+          }          
+        }       
+      }  
+    }       
+  } 
+}
+
+.timeslot-ember{
+  margin-top: 58px;
+  h4{
+    height: 26px;
+    margin: 0;
+    font-size: $font-size-regular;  
+    line-height: 1;
+  }
+  .timeslot-calc{
+    padding: 8px 1px;
+    border: 1px solid $base-color-3;
+    height: calc(100vh - 340px);
+    .app-radio-list{
+      padding: 10px 20px;
+      .app-radio{
+        margin-bottom: 12px;
+      }
+    }
+  }
+  
+}

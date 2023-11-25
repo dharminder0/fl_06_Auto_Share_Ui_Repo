@@ -1,0 +1,113 @@
+<!-- begin head -->
+<div class="choose-quiz-head">
+  <!-- <h1 class="title-1">Perfect!</h1>
+  <h2>
+    Let’s find the right templates for you. What industry are you in?
+  </h2> -->
+  <div class="template-header">
+    <p>{{"SELECT_AUTOMATION_TYPE" | translate}}</p>
+  </div>
+  <!-- <div *ngIf="mode == 'use-template'" class="selectable-actions">
+    <div class="btn-group">
+      <label *ngIf="!check" class="app-checkbox beta"
+        >Unselect All
+        <input [checked]="!check" type="checkbox" class="ng-valid ng-dirty ng-touched" (click)="onUnSelectAll()">
+        <span></span>
+      </label>
+      <label *ngIf="check" class="app-checkbox beta"
+      >Select All
+      <input type="checkbox" class="ng-valid ng-dirty ng-touched" (click)="onSelectAll()">
+      <span></span>
+    </label>
+    </div>
+  </div> -->
+</div>
+<!-- end head -->
+<!-- begin page -->
+<!-- <div class="ember-body-container"  
+infiniteScroll
+[infiniteScrollDistance]="0"
+[infiniteScrollThrottle]="50"
+(scrolled)="onScroll()"> -->
+<!-- <div class="selectable-actions--Ldovk0"><a>Select All</a> | <a>Unselect All</a></div> -->
+<div class="ember-body-container">
+  <div class="choose-quiz sm-2">
+    <div class="row row-info choose-quiz-row">
+
+      <div class="card template-card" *ngFor="let category of categoryList">
+        <div class="card-body">
+          <div class="template-icon-padding">
+            <div class="template-icon">
+              <img [src]="category.ImageUrl" />
+            </div>
+          </div>
+          <div class="template-title" title="{{ category.categoryNameTranslate | translate }}">{{ category.categoryNameTranslate | translate }}</div>
+          <div class="template-text-padding">
+            <div class="template-text ellipsis-3line">
+              
+            </div>
+          </div>
+          <a
+          href="javascript:void(0);"
+          [routerLink]="['/quiz-builder/add-automation/use-template']"
+          class="btn template-button ellipsiss"  (click)="addOrRemoveCategory(category.Id)"
+          [ngClass]="{
+            selectedCategoriesCss: selectedCategories.includes(category.Id)
+          }"
+          (mouseover)="isActiveIcon[category.Id] = true" (mouseout)="isActiveIcon[category.Id] = false"
+          >
+          <!-- <span *ngIf="!isActiveIcon[category.Id] && !selectedCategories.includes(category.Id)"><img class="img-set"
+            (mouseover)="isActiveIcon[category.Id] = true"
+            src="assets/layouts/img/plus-icon.png" /></span>
+          <span *ngIf="isActiveIcon[category.Id] && !selectedCategories.includes(category.Id)"><img class="img-set"
+            (mouseout)="isActiveIcon[category.Id] = false"
+            src="assets/layouts/img/whiteplus-icon.png" /></span> -->
+            <svg *ngIf="!selectedCategories.includes(category.Id)" class="plus-icon" width="11" height="10" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.3404 4.84032L6.06257 4.85325V0.659563C6.06257 0.294158 5.76841 0 5.40301 0C5.03772 0 4.74344 0.294158 4.74344 0.659563L4.75638 4.84044H0.659563C0.294158 4.84044 0 5.1346 0 5.5C0 5.86529 0.294158 6.15945 0.659563 6.15945H4.74991V10.3404C4.74991 10.7056 5.04407 11 5.40947 11C5.77488 11 6.06903 10.7056 6.06903 10.3404V6.15956H10.3404C10.7058 6.15956 11 5.86517 11 5.5C11 5.13448 10.7026 4.84032 10.3404 4.84032Z" fill="white"/>
+          </svg>
+            <span *ngIf="selectedCategories.includes(category.Id)"><img class="img-set"
+              src="assets/layouts/img/check-icon.png" /></span>
+          <span *ngIf="!selectedCategories.includes(category.Id)" title="{{'SELECT' | translate}}">{{"SELECT" | translate}}</span>
+          <span *ngIf="selectedCategories.includes(category.Id)" title="{{'SELECTED' | translate}}">{{"SELECTED" | translate}}</span></a
+          >
+        </div>
+      </div>
+
+      <!-- <div class="md-info" *ngFor="let category of categoryList">
+        <div
+          class="box pointer"
+          (click)="addOrRemoveCategory(category.Id)"
+          [ngClass]="{
+            selectedCategoriesCss: selectedCategories.includes(category.Id)
+          }"
+        >
+          <div class="ins">
+            <h3>{{ category.CategoryName }}</h3>
+            <i class="icon {{ category.icon }}"></i>
+            <p>{{ category.CategoryName }}</p>
+            <p>
+              Test Knowledge in fun ways. Each automation question will have one
+              correct answer.
+            </p>
+          </div>
+          <a href="javascript:void(0);" class="btn line blue">
+            <i class="fa fa-check"></i> Choose</a
+          >
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <!-- <h1 *ngIf="showLoading">Loader</h1> -->
+  <!-- <div class="choose-quiz-actions" *ngIf="selectedCategories.length">
+    <button class="btn green" (click)="onSubmit()">
+      Go to Next Step: Select Automation Type
+    </button>
+  </div>
+</div> -->
+
+<div class="choose-category" *ngIf="selectedCategories.length" (click)="onSubmit()">
+  <span class="save-text">{{"PROCEED_TO_NEXT_STEP" | translate}}</span>
+</div>
+</div>
+
+<!-- end page -->

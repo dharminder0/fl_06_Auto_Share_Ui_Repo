@@ -1,0 +1,22 @@
+<p>
+  <i class="fa-icon crop"></i> Recommended Image Dimensions
+  <b>{{"250PX" | translate }}</b> by
+  <b>{{"150PX" | translate }}</b>
+</p>
+<div class="info-box" [formGroup]="formName">
+  <label>{{"IMAGE_LINK_FROM_THE_WEB" | translate }}</label>
+  <div class="input-group">
+    <span class="input-group-addon">{{"HTTP://" | translate }}</span>
+    <input type="text" class="form-control" formControlName='ImageFileURL' />
+  </div>
+  <div class="margin-top-10">
+    <p>
+      <span class="hint">{{"IMAGE_FORMATS_ACCEPTED:" | translate }}</span> JPEG, PNG, TIFF, GIF
+      <br/>
+      <span class="hint">{{"MAX_IMAGE_SIZE:" | translate }}</span>{{"2_MB" | translate }}</p>
+  </div>
+  <a href="javascript:void(0);" class="btn blue">
+    <span>
+      <i class="fa-icon upload"></i>{{"UPLOAD_IMAGE" | translate }}</span>
+  </a>
+</div>

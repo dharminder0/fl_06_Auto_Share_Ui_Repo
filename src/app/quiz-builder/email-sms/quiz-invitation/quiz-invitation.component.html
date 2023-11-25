@@ -1,0 +1,26 @@
+<!-- <div class="tab-content"> -->
+<div class="tab-pane em-body" id="tab-1">
+  <div class="ember-body w-drop">
+    <div class="ember-container temp">
+      <app-dragdrop-notification
+        [notificationType]="2"
+      ></app-dragdrop-notification>
+
+      <div class="ember-content marginSet w-temp-body">
+        <!-- <div class="no-data" *ngIf="!activeTemplateId; else emailTemplate">
+          <div class="no-active-template-container">
+            <h1 class="no-active-template-heading">
+              No Active Template Available
+            </h1>
+          </div>
+        </div>
+        <ng-template #emailTemplate> -->
+          <app-template-body [notificationType]="2"></app-template-body>
+        <!-- </ng-template> -->
+      </div>
+      <div class="ember-content marginSet w-linked">
+        <linked-unlinked-automation [notificationType]="2"></linked-unlinked-automation>
+      </div>
+    </div>
+  </div>
+</div>

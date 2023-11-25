@@ -1,0 +1,372 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Steps 
+*/
+.steps-container{
+  padding: $regular-container; 
+  margin: 10px 0;
+  @media all and (min-width: 768px) and (max-width: 1024px) {
+    padding: 0 40px;
+  }
+  @media (max-width: 767px) {
+    padding: 0 20px;
+  }
+  .steps-list{
+    height: 78px;
+    overflow: hidden;
+    @include flex();
+    @include align-item();
+    border: 1px solid $base-color-6;
+    li{
+      width: 35%;
+      height: 100%;
+      font-size: $font-size-medium;
+      padding-left: 12px;
+      font-weight: bold;
+      position: relative;
+      background: $base-bkg-1;
+      @include flex-group();
+      @media (max-width: 500px) {
+        font-size: 14px;
+        padding-left: 20px;
+      }
+      @media (max-width: 360px) {
+        font-size: 11px;
+      }
+      &:before{
+        right: -2px;
+        top: 0; 
+        bottom: 0;
+        margin: auto;
+        margin-right: -18px;
+        z-index: 2;
+        content: "";
+        position: absolute;
+        width: 0px;
+        height: 0px;
+        border-top: 42px solid transparent;
+        border-bottom: 42px solid transparent;
+        border-left: 19px solid #e0e0e0;
+      }
+      &:after{
+        right: 0;
+        top: 0; 
+        bottom: 0;
+        margin: auto;
+        z-index: 2;
+        margin-right: -18px;
+        content: "";
+        position: absolute;
+        width: 0px;
+        height: 0px;
+        border-top: 40px solid transparent;
+        border-bottom: 40px solid transparent;
+        border-left: 18px solid $base-color-1;
+      }
+      &.active{
+        color: $base-color-1;
+        background: $secondary-bkg;
+        &:after{
+          border-left-color: $secondary-color;
+        }
+      }
+      &.actived{
+        color: $base-color-1;
+        background: $regular-bkg;
+        &:after{
+          border-left-color: $base-color-8;
+        }
+      }
+    }  
+  }
+}
+
+.leaduser-container{
+  .head{
+    padding: 30px;
+    background: $base-bkg-6;
+    h1{
+      position: relative;
+      padding-left: 62px;
+      &:before{
+        left: 0;
+        top: -8px;
+        content: "";
+        width: 50px;
+        height: 66px;
+        position: absolute;
+        margin-right: 14px;
+        background: url(../img/sprites2.png) no-repeat -1px -225px;
+      }
+      span{
+        display: block;
+        font-size: $font-size-regular;
+        font-weight: normal;
+        line-height: 20px;
+        margin-top: 12px;
+      }
+    }
+    .right{      
+      line-height: 22px;
+      padding-left: 62px;
+      @media (min-width: 1024px) {
+        float: right;
+      }
+
+      h2{
+        margin-bottom: 10px;
+        @media (max-width: 800px) {
+          margin-top: 30px;
+        }
+      }
+    }    
+  }
+  .cnt{
+    h2{
+      text-align: center;
+    }
+    .form-body{
+      @media (min-width: 801px) {
+        padding: 0 50px;
+      }      
+    }
+    .timeslot{
+      background: $base-bkg-2;
+      border-top: 1px solid $base-color-3;
+      border-bottom: 1px solid $base-color-3;
+      ul{
+        margin: 0 -15px;
+        padding: 0 40px;
+        @media (max-width: 800px) {
+          text-align: center;
+        }
+        li{
+          padding: 0 15px;
+          display: inline-block;
+          margin: 15px 0;
+          a{
+            min-width: 155px;
+          }
+        }  
+      }
+    } 
+    .mind{
+      h2{
+        margin-bottom: 36px;
+      }
+    }
+  }
+}
+
+
+.selectday{
+  position: relative;
+  padding: 18px 30px 26px;
+  &.top{
+    background: $base-bkg-8;
+    &.active{
+      @include box-shadow($secondary-shadow);   
+    }    
+  }
+  &.bottom{
+    max-height: 360px;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0;
+    overflow: hidden;
+    overflow-y: auto;
+  } 
+  .item{
+    width: 19.5%;
+    text-align: center;
+    vertical-align: top;
+    display: inline-block;
+    .date-heading{
+      z-index: 2;
+      position: relative;
+      p{
+        margin: 0;
+        opacity: 0.8;
+      }
+      h4{
+        font-size: $font-size-regular;
+        font-weight: bold;
+        margin-bottom: 2px;
+      }    
+    }
+    .data{
+      position: relative;
+      padding-bottom: 12px;  
+      .time{
+        color: $regular-color;
+        box-shadow: $no-shadow;
+        @include border-radius(2px);             
+      }
+      .blue{
+        top: 0;
+        opacity: 0;
+        margin-left: 5px;
+        position: absolute;
+      }
+      &:hover{
+        .blue{
+          opacity: 1;        
+        }
+      } 
+
+      &:hover{
+        .time{
+          border-color: $secondary-color;
+        }                    
+      }  
+    }
+  }
+  .owl-nav{
+    position: relative;
+    div{
+      top: 48px;
+      z-index: 9;
+
+      &.owl-prev{
+        left: 0;
+      }
+
+      &.owl-next{
+        right: 0;
+      }
+    }
+  }    
+}
+
+.ins{
+  &.grey{
+    background: $base-bkg-2;
+  }
+}
+
+.selectday2{
+  position: relative;
+  padding: 18px 30px 26px;
+  &:before{
+    left: -1px;
+    right: -1px;
+    top: 0;
+    height: 92px;
+    content: "";
+    position: absolute;
+    background: $base-bkg-8;
+  } 
+
+  &:after1{
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 92px;
+    content: "";
+    position: absolute;
+    @include box-shadow($secondary-shadow);    
+  }  
+
+  .item{
+    width: 19.5%;
+    text-align: center;
+    vertical-align: top;
+    display: inline-block;
+    .date-heading{
+      z-index: 2;
+      position: relative;
+      padding-bottom: 40px;
+      p{
+        margin: 0;
+        opacity: 0.8;
+      }
+      h4{
+        font-size: $font-size-regular;
+        font-weight: bold;
+        margin-bottom: 2px;
+      }    
+    }
+    .data{
+      position: relative;
+      padding-bottom: 12px;  
+      .time{
+        color: $regular-color;
+        box-shadow: $no-shadow;
+        @include border-radius(2px);             
+      }
+      .blue{
+        top: 0;
+        opacity: 0;
+        margin-left: 5px;
+        position: absolute;
+      }
+      &:hover{
+        .blue{
+          opacity: 1;        
+        }
+      } 
+
+      &:hover{
+        .time{
+          border-color: $secondary-color;
+        }                    
+      }  
+    }
+  }
+  .owl-nav{
+    position: relative;
+    div{
+      top: 48px;
+      z-index: 9;
+
+      &.owl-prev{
+        left: 0;
+      }
+
+      &.owl-next{
+        right: 0;
+      }
+    }
+  }    
+}
+
+.selectday1{
+  padding: 22px 48px 16px;
+  .in{
+    text-align: center;
+    height: 96px;
+    cursor: pointer;
+    border: 1px solid $base-color-6;  
+    @include flex-group();
+    flex-direction: column;
+    &:hover{
+      border-color: $secondary-color;  
+    }
+    p{
+      margin: 0;
+      opacity: 0.8;
+    }
+    h4{
+      font-size: $font-size-medium;
+      font-weight: bold;
+    }
+
+  }
+}
+.book-me{
+  text-align: center;
+  h3{
+    color: $secondary-color;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: $font-size-regular;
+    display: inline-block;
+  }
+  .form-group{
+    margin: 10px 0 20px;  
+    .btn{
+      min-width: 228px;     
+    }
+  }  
+}

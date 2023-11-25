@@ -1,0 +1,96 @@
+<div class="portlet-head">
+  <!-- <a href="javascript:void(0)" class="closet pright-15">
+    <img src="assets/layouts/img/cross-icon.png" />
+  </a> -->
+  <div class="font-style font-text2">
+    <span>{{"ACCESSS_SETTING" | translate}}</span>
+  </div>
+  <div class="action">
+    <a href="javascript:void(0)" class="btn blue hide">Save Records</a>
+    <a href="javascript:void(0)" class="closet"></a>
+  </div>
+</div>
+  <!-- begin head -->
+  <!-- <div class="app-head">
+      <h1 class="title-2">{{"WHO_HAS_ACCESS_TO_THIS_AUTOMATION?" | translate }}</h1>
+    </div> -->
+    <!-- end head -->
+    <!-- begin page -->
+    <div class="form-body">
+      <div class="font-style font-text2 mbottom-17">
+        <span>{{"WHO_HAS_ACCESS_TO_THIS_AUTOMATION?" | translate }}</span>
+      </div>
+      <form [formGroup] = "editQuizForm" action="testing.html" class="horizontal-form">
+          <div class="row">
+            <div class="col-sm-6">
+              <label class="app-radio font-style normal-text" [ngStyle]="{'font-weight':editQuizForm.controls['access'].value==1?'600':''}">{{"TEAM" | translate}}
+                <input type="radio" formControlName = "access" name="access" [value]='1' checked="">
+                <span></span>
+              </label><br/>
+              <!-- <select class="form-control select2">
+                <option selected="" value="Dakota">{{"DAKOTA" | translate }}</option>
+                <option value="Ohio">{{"OHIO" | translate }}</option>
+                <option value="California">{{"CALIFORNIA" | translate }}</option>
+              </select> -->
+              <ng-select  class="custom"
+                placeholder="{{'SELECT_OFFICE' | translate}}" 
+                formControlName = "AccessibleOfficeId" 
+                (selected)="onOfficeChange($event)" 
+                [options]="officeList"
+                [noFilter]="10" 
+                [required]="editQuizForm.controls['access'].value==1"
+                [disabled]="editQuizForm.controls['access'].value==2">
+                <ng-template
+                  #optionTemplate
+                  let-option="option">
+                  <div [ngClass]="{'childGrouping': option.type == 'Child'}">{{ option.label }}</div>
+                </ng-template>
+              </ng-select>
+              <small class="error-field" *ngIf="editQuizForm.controls.access?.invalid && editQuizForm.controls.access?.touched && editQuizForm.controls.access?.hasError('OfficeIdRequired')">*</small>
+            </div>
+            <div class="col-sm-6">
+              <div *ngIf="isStandard" class="company-info">
+                <label class="app-radio font-style normal-text" [ngStyle]="{'font-weight':editQuizForm.controls['access'].value==2?'600':''}">{{"STANDARD" | translate}}
+                  <input type="radio" formControlName = "access" name="access" [value]="2">
+                  <!-- <input type="radio" formControlName = "access" name="access" (change) = 'onCompanySelected()' [value]="2"> -->
+                  <span></span>
+                </label>
+                <!-- <ng-select formControlName = "tempCompanyAccessibleLevel" [options]="companyReqList" (selected)="CompanyAccessibleLevelSelected($event)"
+                [noFilter]="10" [required]="editQuizForm.controls['access'].value==2"
+                [disabled]="editQuizForm.controls['access'].value==1">
+                <ng-template
+                #optionTemplate
+                let-option="option">
+                <div class="seclect-option" title="{{option.label | translate}}">{{ option.label | translate }}</div>
+              </ng-template>
+                </ng-select>
+                <small class="error-field" *ngIf="editQuizForm.controls.access?.invalid && editQuizForm.controls.access?.touched && editQuizForm.controls.access?.hasError('CompanyLevelRequired')">*</small>
+                <div class="temp-box">
+                  <div *ngIf = "editQuizForm.controls['access'].value==2 && !userAccess">
+                      <tag-input
+                      [placeholder]="placeholderData"
+                      [secondaryPlaceholder] = "placeholderData"
+                      formControlName = "usersEmail" 
+                      [errorMessages]="errorMessages"
+                      [validators]="validators" 
+                      [separatorKeyCodes] = [32,9]
+                      (onAdd) = "onAdding($event)"
+                      [required]="editQuizForm.controls['access'].value==2 && !userAccess"></tag-input>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        <!-- <div class="form-actions">
+          <button type="submit" class="btn blue" [disabled] = "!editQuizForm.valid">{{"SAVE_&_CONTINUE" | translate }}</button>
+        </div> -->
+      </form>
+    </div>
+    <!-- end page -->
+
+    <div class="content-bottom">
+      <button type="submit" class="btn save-btn font-style normal-text" (click) = "onAddNewQuiz()" [disabled] = "!editQuizForm.valid">{{"SAVE" | translate }}</button>
+      <!-- <a href="javascript:void(0)" class="closet cancel-btn font-style normal-text">
+      <span>{{"CANCEL" | translate}}</span>
+      </a> -->
+    </div>

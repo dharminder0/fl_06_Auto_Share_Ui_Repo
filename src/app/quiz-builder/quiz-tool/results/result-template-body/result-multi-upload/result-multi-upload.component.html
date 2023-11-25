@@ -1,0 +1,32 @@
+<div class="row">
+   <div class="col-md-12 margin-top-20">
+     <label for="multiselect" class="upload-btn">
+          <svg class="svg-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M12.9062 8.54883V12.3496C12.9062 12.6512 12.6609 12.8965 12.3594 12.8965H1.64062C1.33908 12.8965 1.09375 12.6512 1.09375 12.3496V8.54883H0V12.3496C0 13.2543 0.735984 13.9902 1.64062 13.9902H12.3594C13.264 13.9902 14 13.2543 14 12.3496V8.54883H12.9062Z"/>
+               <path d="M6.99995 0.00982666L3.60156 3.40822L4.37495 4.18161L6.45308 2.10348V10.627H7.54683V2.10348L9.62495 4.18161L10.3983 3.40822L6.99995 0.00982666Z"/>
+          </svg>  
+          {{"BROWSE_FILE" | translate}}</label>
+           <input type="file" title="Choose File"
+           ng2FileSelect
+           style="display:none"
+           [uploader]="uploader"  multiple
+           (change)="onFileSelected()" id="multiselect"/>       
+   </div>
+
+   <div class="col-md-12 margin-top-20">
+         <form [formGroup]="form">
+              <div>
+                 <ul class="upload-list list-unstyled">
+                      <li *ngFor="let fGroup of form.get('TemplateAttachmentList').value; let i=index">
+                          <span title="{{fGroup.FileName}}">{{fGroup.FileName}}</span> 
+                          <a href="javascript:void(0)"><i class="fa fa-times" (click)="removeFromQueue(i)"></i></a>
+                     </li>
+                 </ul>
+             </div>
+        </form>
+   </div>
+</div>
+
+    
+
+

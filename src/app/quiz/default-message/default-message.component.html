@@ -1,0 +1,12 @@
+<div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !leftSlide, 'left-quiz-silder':isMobileView && leftSlide}">
+    <div class="container-single page" #previewContainer>
+        <div class="ins no cover-height content-box" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType}">
+            <div class="text-div">
+               <span>
+                {{"Thanks" | translate}} <br/>
+                {{"WeReceivedYourDetailsSuccessfully" | translate}}
+               </span>
+            </div>
+        </div>
+    </div>
+</div>

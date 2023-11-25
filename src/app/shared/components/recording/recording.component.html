@@ -1,0 +1,24 @@
+<div class="modal">
+    <div class="modal-open">
+        <svg class="cross-icon" (click)="decline()" width="10" height="10" viewBox="0 0 10 10" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z"
+                fill="#494949" />
+        </svg>
+        <div class="container vh-100">
+          <div class="d-flex flex-column align-items-center">
+             <div class="p-1">
+                <video #video class="vid" autoplay></video>
+             </div>
+             <div class="pb-2">
+                <button class="btn btn-primary" (click)="capture()">Capture Image</button>
+             </div>
+             <div class="p-1">
+                <canvas #canvas class="vid"></canvas>
+             </div>
+          </div>
+       </div>
+
+    </div>
+</div>

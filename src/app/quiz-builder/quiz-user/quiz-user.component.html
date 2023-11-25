@@ -1,0 +1,247 @@
+<!-- begin contents -->
+<section class="app-contents">
+  <!-- begin head -->
+  <div class="app-head app-head-dashboard">
+    <h1 class="title-1">{{"AUTOMATION" | translate}}
+      <!-- <span>{{"CREATE_A_NEW_AUTOMATION,_OR_CHOOSE_FROM_THE_LIST_BELOW" | translate }}</span> -->
+    </h1>
+    <div class="action">
+      <div class="btn-group">
+          <!-- [routerLink]="['select-automation']" -->
+        <a [routerLink]="['add-automation']" class="btn line blue">
+            <i class="zmdi zmdi-plus"></i>{{"NEW_AUTOMATION" | translate }}</a>
+      </div>
+      <div class="btn-group">
+        <label class="app-checkbox beta">{{"STANDARD" | translate}}
+          <input type="checkbox" [(ngModel)]="sharedWithMe" (change)="onSharedWithMe($event)">
+          <span></span>
+        </label>
+      </div>
+      <div class="btn-group ember-office">
+        <div class="dropdown">
+          <a href="javascript:void(0);" class="dropdown-toggle block btn white shadow t1 dropdown-container" data-toggle="dropdown" data-hover="dropdown"
+            aria-expanded="false" (click)="autoFocus()">
+            <span class="">{{"TEAM" | translate }}</span>
+            <i class="zmdi zmdi-caret-down pull-right"></i>
+          </a>
+          <div class="dropdown-menu li-ember pull-right hold-on-click checkbox-dropdown">
+            <ul class="nav office-checkbox-ul">
+            
+                <li class="navbar-fixed-top">
+                    <input type="text" class="newPadding" id="Box1" [(ngModel)]="searchText" autofocus="true">
+                    <!-- <i class="fa-icon search fa-xs"></i> -->
+                  </li>
+              
+              <li class="topMargin">
+                <label class="app-checkbox">{{"ALL" | translate}}
+                  <input type="checkbox" value="1" name="1" [checked]="selectAll" (click)="onSelectAll()">
+                  <span></span>
+                </label>
+              </li>
+              <li  *ngFor="let office of officeListArray | filterOffice : searchText; let i = index;" >
+               <span [ngClass]="{'childGrouping': office.type == 'Child'}"><label class="app-checkbox">{{ office.name }}
+                  <input type="checkbox" [value]="office.id" [checked]="officeIdArray.includes(office.id.toString())" name="1" (click)="onSelectOffice(office.id)">
+                  <span></span>
+                </label>
+              </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end head -->
+  <div class="sub-head">
+    <div class="flex-value-1">
+      <div class="search-engine">
+        <input type="text" class="form-control" placeholder="{{'SEARCH_BY_NAME_OR_TAG' | translate}}" [(ngModel)]="filterData">
+        <i class="fa-icon search"></i>
+        <a href="javascript:void(0);" class="search-btn" (click)='onSearchBoxEmpty()'>
+          <i class="fa-icon close-1"></i>
+        </a>
+      </div>
+    </div>
+    <!-- <ng-select class="automation-type-filter" [options]="AutomationType" [(ngModel)]="AutomationTypeId"
+    (selected)="onSelectAutomationType($event)"
+    [noFilter]="10">
+    </ng-select> -->
+    <div class="btn-group ember-office automation-type-filter">
+      <div class="dropdown">
+        <a href="javascript:void(0);" class="dropdown-toggle block btn white shadow t1 dropdown-container" data-toggle="dropdown" data-hover="dropdown"
+          aria-expanded="false">
+          <span class="">{{"TYPE" | translate }}</span>
+          <i class="zmdi zmdi-caret-down pull-right"></i>
+        </a>
+        <div class="dropdown-menu li-ember pull-right hold-on-click checkbox-dropdown">
+          <ul class="nav">
+            <li>
+              <label class="app-checkbox">{{"ALL" | translate}}
+                <input type="checkbox" value="1" name="1" [checked]="selectAllAutomationType" (click)="onSelectAllAutomationType()">
+                <span></span>
+              </label>
+            </li>
+            <li *ngFor="let automation of AutomationType; let i = index;">
+              <label class="app-checkbox">{{ automation.label }}
+                <input type="checkbox" [value]="automation.value" [checked]="automationTypeArray.includes(automation.value)"
+                  name="1" (click)="onSelectAutomationType(i)">
+                <span></span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="sort-engine">
+      {{"SORT_BY" | translate}}
+      <a style="cursor:pointer" (click)='onSortedByDate()'>
+        <i *ngIf='sortByDate' class="zmdi zmdi-caret-down" aria-hidden="true"></i>
+        <i *ngIf='!sortByDate' class="zmdi zmdi-caret-up" aria-hidden="true"></i>
+        {{"DATE" | translate}}
+      </a>
+      <a style="cursor:pointer" (click)='onSortedByTagColor()'>
+        <i *ngIf='sortByTagColor' class="zmdi zmdi-caret-down" aria-hidden="true"></i>
+        <i *ngIf='!sortByTagColor' class="zmdi zmdi-caret-up" aria-hidden="true"></i>
+        {{"TAG" | translate}}
+      </a>
+    </div>
+  </div>
+
+  <div class="total-automation-count">      
+    {{"TOTAL_AUTOMATION_COUNT" | translate}}: {{(quizList | filter: filterData).length}}
+  </div>
+  <!-- begin page -->
+  <div class="ember-body" *ngIf="(quizList | filter: filterData: 'QuizTitle').length">
+    <div class="table-container overflow-data">
+      <table class="table data-tabe">
+        <tr class="show-tag" *ngFor="let quiz of quizList | filter: filterData | sortBydate: sortByDate | sortByTagColor: sortByTagColor;">
+          <td>
+            <div class="xs-info">
+              <span class="circular-info">
+                <i class="fa-quest-icon"></i>
+              </span>
+              <p class="txt">
+                <span href="javascript:void(0);" data-toggle="modal" class="break-word" data-target="#preview-modal">{{ quiz.QuizTitle }}</span>
+                <span class="width-resize">{{ quiz?.createdOnFormat }}</span>
+                <span class="custom-tag-container">
+                  <app-custom-tag [tagArr]="quiz.TagDetails" [quizId]=quiz.Id [labelTxt]=quiz.LabelText [selectedColor]=quiz.TagColor (saveTagColor)='showColor($event)'
+                    (removeTagColor)='removedColor($event)'></app-custom-tag>
+                </span>
+              </p>
+            </div>
+          </td>
+          <td>
+            <ul class="action-list">
+              <li>
+                <a class="pointer" (click)="setPermissionDataToGuardService(quiz, permissionQuizTemplate)">
+                  <i class="zmdi zmdi-edit"></i>{{"EDIT" | translate }}</a>
+              </li>
+              <li>
+                <a class="pointer" data-toggle="modal" data-target="#preview-modal" (click)='onPreviewQuiz(publishTemplate, quiz)'>
+                  <i class="zmdi zmdi-eye"></i>{{"PREVIEW" | translate }}</a>
+              </li>
+              <li>
+                <a class="pointer app-data" (click)='dynamicTemplateShare(quiz)' app-data="data-share">
+                  <i class="zmdi zmdi-share"></i>{{"SHARE" | translate }}</a>
+              </li>
+              <li>
+                <a [routerLink]="['analytics', quiz.Id]">
+                  <i class="zmdi zmdi-equalizer"></i>{{"STATISTICS" | translate }}</a>
+              </li>
+              <li>
+                <div class="dropdown">
+                  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                    <i class="zmdi zmdi-settings"></i>
+                  </a>
+                  <div class="dropdown-menu pull-right">
+                    <ul class="nav">
+                      <li>
+                        <a class="pointer" (click)='onDuplicatedQuiz(publishOnDuplicateTemplate, quiz.Id)'>
+                          <i class="zmdi zmdi-copy"></i>
+                          <span *ngIf="quiz.QuizTypeId === 2">{{"DUPLICATE" | translate }}</span>
+                          <span *ngIf="quiz.QuizTypeId === 5">{{"DUPLICATE" | translate }}</span>
+                          <span *ngIf="quiz.QuizTypeId === 3">{{"DUPLICATE" | translate }}</span>
+                          <span *ngIf="quiz.QuizTypeId === 4">{{"DUPLICATE" | translate }}</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a *ngIf="(isStandard && sharedWithMe) || (officeIdArray.length!=0 && (quiz.IsCreatedByYou || !quiz.IsViewOnly))" class="pointer" (click)='onRemovedQuiz(deleteQuizTemplate, quiz.Id)'>
+                          <i class="zmdi zmdi-close-circle-o"></i>
+                          <span *ngIf="quiz.QuizTypeId === 2">{{"DELETE" | translate }}</span>
+                          <span *ngIf="quiz.QuizTypeId === 5">{{"DELETE" | translate }}</span>
+                          <span *ngIf="quiz.QuizTypeId === 3">{{"DELETE" | translate }}</span>
+                          <span *ngIf="quiz.QuizTypeId === 4">{{"DELETE" | translate }}</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="ember-body no-data" *ngIf="!(quizList | filter: filterData: 'QuizTitle').length">
+    {{"DATA_NOT_FOUND" | translate}}!!
+  </div>
+  <!-- end page -->
+</section>
+<!-- end contents -->
+
+<ng-template #publishOnDuplicateTemplate>
+  <div class="modal-body text-center">
+    <p>{{"THIS_QUIZ_HAS_UNPUBLISHED_CHANGES_AND_WILL_NEED_TO_BE_PUBLISHED_BEFORE_YOU_CAN_DUPLICATE_THE_QUIZ." | translate }}</p>
+    <br>
+    <button type="button" class="btn blue" (click)="confirm()">{{"PUBLISH" | translate }}</button>
+    <button type="button" class="btn btn-default" (click)="decline()">{{"CANCEL" | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #publishTemplate>
+  <div class="modal-body text-center">
+    <p>{{"THIS_QUIZ_HAS_UNPUBLISHED_CHANGES_AND_WILL_NEED_TO_BE_PUBLISHED_BEFORE_YOU_CAN_SHARE_THE_QUIZ." | translate }}</p>
+    <br>
+    <button type="button" class="btn blue" (click)="confirm()">{{"PUBLISH" | translate }}</button>
+    <button type="button" class="btn btn-default" (click)="decline()">{{"CANCEL" | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #shareTemplate>
+  <div class="modal-body text-center">
+    <h2>{{"DIRECT_URL_TO_YOUR_QUIZ" | translate }}</h2>
+    <p>{{"SHAREABLE_URL_TO_QUIZ" | translate }}</p>
+    <br>
+    <p>{{"THE_URL_BELOW_CAN_BE_USED_TO_SHARE_YOUR_QUIZ_DIRECTLY." | translate }}</p>
+    <br>
+    <input type="text" class="form-control" [value]='quizURL'>
+    <br>
+    <button class="btn blue" type="button" ngxClipboard [cbContent]="quizURL">
+      {{"COPY_CODE_TO_CLIPBOARD" | translate}}</button>
+  </div>
+</ng-template>
+
+<ng-template #deleteQuizTemplate>
+  <div class="modal-body text-center">
+    <p>{{"YOU_ARE_ABOUT_TO_DELETE_THE_FOLLOWING_AUTOMATION._THIS_IS_A" | translate}}
+      <b>{{"ASSESSMENT_AUTOMATION" | translate }}</b>
+      <br>{{"ARE_YOU_SURE_YOU_WOULD_LIKE_TO_DELETE_THIS_AUTOMATION?" | translate }}</p>
+    <br>
+    <button type="button" class="btn blue" (click)="delete()">{{"YES" | translate }}</button>
+    <button type="button" class="btn btn-default" (click)="cancel()">{{"NO" | translate }}</button>
+  </div>
+</ng-template>
+
+
+<ng-template #permissionQuizTemplate>
+  <div class="modal-body text-center">
+    <p>{{"EDITING_RIGHTS_DISABLED." | translate}}</p>
+    <br>
+  </div>
+</ng-template>
+
+<div class="app-sidebar-overlay"></div>
+<div class="app-sidebar" id="data-share">
+  <div #shareQuizTemplate></div>
+</div>

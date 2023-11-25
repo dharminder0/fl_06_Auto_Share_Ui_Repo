@@ -1,0 +1,236 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Modal 
+*/
+
+.trlogo{
+  bottom: 8px;
+  right: 8px;
+  position: fixed;
+}
+
+.container-single{
+  max-width: 980px;
+  margin: 0 auto;  
+  padding: 20px;  
+  .ins{
+    padding: 40px;
+    min-height: 92vh;
+    @include flex-group();
+    background: $base-bkg-1;  
+    border: 1px solid $base-color-3;
+    box-shadow: $primary-shadow;
+    position: relative;     
+    @media (max-width: 767px) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    &.alpha{
+      padding-bottom: 20px;
+    }
+    h2{
+      margin-bottom: 30px;
+      text-align: center; 
+      span{
+        display: block;
+        margin-top: 26px;  
+      }
+    }  
+  }
+  @media all and (-ms-high-contrast:none){
+   .ins { display: block }
+   *::-ms-backdrop, .ins { display: block }
+  } 
+}
+.page{ 
+  .find-out{
+    width: 100%;
+    text-align: center;       
+    figure{
+      img{
+        width: 100%;
+        @include border-radius(4px);
+      }
+    }
+    h3{
+      margin: 22px 0;
+      line-height: 22px;
+      font-size: $font-size-medium;
+    }
+  }
+  .question{
+    width: 100%;
+    max-width: 612px;
+    margin: 0 auto;
+    .is-question-row{
+      height: 42px;
+      padding: 0 12px;
+      @include flex();
+      @include align-item();
+      margin-bottom: 20px;
+      background: $base-bkg-6;
+      @include border-radius(2px);
+      .app-checkbox{
+        margin-bottom: 0;
+      }
+    } 
+  }
+  .imgtype{
+    width: 100%;
+    max-width: 688px;
+    margin: 0 auto; 
+    .box{
+      padding: 10px;
+      position: relative;
+      text-align: center;
+      margin-bottom: 20px;
+      background: $base-bkg-6;
+      @include border-radius(2px);
+      figure{
+        position: relative;        
+        img{
+          width: 100%;
+          @include border-radius(2px);
+        }
+        .app-checkbox{
+          left: 0;
+          top: 0;
+          width: 15px;
+          height: 15px;
+          margin: 0;
+          padding: 0;
+          position: absolute;
+          background: $base-bkg-1;       
+        }
+      }
+      p{
+        margin: 16px 0 8px 0;
+      }
+    }
+  } 
+  .guru{
+    width: 100%;
+    text-align: center;       
+    figure{
+      margin-bottom: 30px;
+      img{
+        width: 100%;
+        @include border-radius(4px);
+      }
+    }      
+  }
+  .results{
+    width: 100%;
+    .progress-container{
+      padding: 28px;
+      border: 1px solid $base-color-3;
+      @include flex();
+      @include align-item();
+      figure{
+        width: 64px;
+        height: 66px;
+        overflow: hidden;          
+        @include border-radius(2px);
+        img{
+          @include border-radius(2px);
+        }
+      }               
+    }
+  }  
+}  
+.share-result{
+  margin-top: 30px;
+  margin-bottom: 10px;
+  text-align: center; 
+  ul{
+    margin-bottom: 0;
+    display: inline-block;
+    li{
+      margin: 0 6px;
+      display: inline-block;
+    }
+  }
+}
+ 
+.ember-answer-key{
+  width: 100%;
+  max-width: 612px;
+  margin: 0 auto;
+  text-align: center;
+  .answer-key{    
+    .is-question-row{
+      height: 42px;
+      padding: 0 12px;
+      @include flex-group();
+      position: relative;
+      margin-bottom: 20px;
+      background: $base-bkg-6;
+      @include border-radius(2px);
+      small{
+        top: 0;
+        bottom: 0;
+        left: 20px;
+        line-height: 42px;
+        position: absolute;
+        font-size: $font-size-medium;
+      }
+      span{
+        margin: 0 20px;
+      }
+      i{
+        top: 0;
+        bottom: 0;
+        right: 20px;
+        margin: auto;
+        position: absolute;
+      }
+    }
+  }
+  .screen-sec{
+    margin-bottom: 38px;
+    figure{
+      margin-bottom: 0;
+    }
+  }
+}
+
+.ember-ic{
+  text-align: center;
+  h2{
+    font-size: $font-size-large;
+    padding-bottom: 8px;
+  }
+  i{
+    float: none;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .correct{
+    color: #22b34c;
+  }
+  .incorrect{
+    color: #ff000b;
+  }
+  .btn{
+    min-width: 136px;
+    margin-top: 40px;
+  }
+}
+
+.ic-bottom{
+  font-weight: bold;
+  text-align: center;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  position: absolute;
+  span{
+    opacity: 0.5;
+  }
+}
+
+.alink{
+  color: $regular-color !important;
+  display: block;
+}

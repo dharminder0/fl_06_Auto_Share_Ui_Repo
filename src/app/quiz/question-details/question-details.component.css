@@ -1,0 +1,494 @@
+:host ::ng-deep .my-videos>video {
+    max-width: 100%;
+}
+
+.page .question .is-question-row {
+    min-height: 42px;
+    height: auto;
+    background: none;
+    padding: 11px 20px !important;
+    margin-bottom: 15px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.padLeft {
+    padding-left: 14px;
+}
+
+.next-question-btn {
+    color: #fff;
+    background: #62afe0;
+    border-radius: 5px;
+    font-size: 24px;
+    font-weight: 400;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin-bottom: 50px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 15px;
+}
+
+.next-btn-align {
+    text-align: center;
+}
+
+.option-text-align {
+    text-align: left;
+}
+
+button[disabled] {
+    cursor: not-allowed;
+    /* opacity: .4; */
+    background: rgb(244, 244, 244) !important;
+}
+
+.horizontal-form {
+    text-align: left;
+}
+
+.rows {
+    min-height: 45px !important;
+}
+
+#calendar {
+    position: absolute;
+    margin-top: 8px;
+    right: 8px;
+    font-size: 19px;
+    color: black;
+}
+
+#calendar_div {
+    background: #fff;
+    width: 100%;
+    border-radius: 5px;
+    margin: auto;
+}
+
+input[disabled] {
+    cursor: not-allowed;
+}
+
+/* :host::ng-deep.calendar .mbsc-input input {
+    cursor: not-allowed;
+} */
+
+.disabled_label {
+    cursor: not-allowed;
+}
+
+.back {
+    float: left !important;
+}
+
+
+/* .app-checkbox>span{
+  background: #ffffff;
+} */
+
+.is-quest {
+    border-radius: 3px;
+    /* padding: 4px 16px 2px; */
+    margin-bottom: 25px;
+}
+
+.container-single .ins.no {
+    display: block;
+    /* height: calc(100vh - 48px); */
+    width: 100%;
+    overflow: auto;
+}
+
+
+/* ::-webkit-scrollbar {
+  width: 3px;
+  height: 4px; 
+  background-color: inherit;  
+}
+/* ::-webkit-scrollbar-thumb {
+ background-color:var(--secondary-color);
+} */
+
+.padTop {
+    margin-top: 22px !important;
+}
+
+.countDown {
+    text-align: right;
+    font-size: 17px;
+    color: black;
+}
+
+.hidePreviousButton {
+    display: none;
+}
+
+
+/* new style */
+
+.default-option {
+    /* background: #F4F4F4; */
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    /* color: #111111; */
+    line-height: 150%;
+    padding: 0 !important;
+}
+
+.selected-option {
+    transform: scale(1.02);
+    padding: 3px 0 !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.next-btn {
+    background: #00B7AB;
+    border-radius: 5px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    /* min-width: 180px;
+    min-height: 45px; */
+    min-width: 100%;
+    min-height: 38px;
+    border: none;
+}
+
+.ellipsiss {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.question-title {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    color: #111111;
+    margin-bottom: 19px;
+}
+
+.ans-text-box {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    border: 1px solid #D0D0D0;
+    border-radius: 5px;
+    color: #A9A9A9;
+}
+
+.ans-text-box:focus {
+    border: 1px solid #494949;
+    box-shadow: none;
+    color: #111111;
+}
+
+.mbottom-30 {
+    margin-bottom: 20px;
+}
+
+.sub-title-text {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 28px;
+    color: #111111;
+    margin-bottom: 6px;
+}
+
+.cover-height {
+    z-index: 1;
+}
+
+.timer-body {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    right: -30%;
+    border-radius: 100%;
+    z-index: 5;
+}
+
+@media all and (min-width: 951px) {
+    .right-timer-body {
+        left: -30%;
+    }
+}
+
+@media all and (max-width: 500px) {
+    .timer-body {
+        width: 65px;
+        height: 65px;
+        top: 4px;
+    }
+}
+
+.not-display {
+    display: none;
+}
+
+@media all and (max-width: 950px) {
+    .timer-body {
+        right: 0;
+        top: 0;
+    }
+    .jcenter{
+        justify-content: center;
+    }
+}
+
+.select-one-more-options {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    margin-bottom: 15px;
+}
+
+.notransform {
+    transform: none !important;
+}
+
+.pre-btn {
+    position: relative;
+    top: -16px;
+}
+
+@media all and (max-width: 768px) {
+    .pre-btn {
+        top: -4px;
+    }
+}
+
+.vertically-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.mobile-view-logo-body {
+    /* position: relative; */
+    position: fixed;
+    text-align: center;
+    /* min-height: 45px;
+    background-color: #fff; */
+}
+
+.mobile-view-logo-body img {
+    margin: 5px 0px;
+}
+.mobile-view-logo-body:empty{
+    display: none;
+}
+
+::-webkit-scrollbar-track {
+    background-color: inherit;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    background-color: inherit;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #e4e6ec;
+}
+
+.mobile-logo{
+    text-align: center;
+    min-height: 45px;
+    margin-top: 10px;
+}
+
+.rang-div{
+    width: 62px;
+    height: 45px;
+    background: #F9F9F9;
+    margin: 5px;
+    padding: 12px 26px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.rating-emoji-div{
+    width: 100px;
+    height: 130px;
+    background: #F9F9F9;
+    margin: 5px;
+    padding: 12px 8px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.ptop-9{
+    padding-top: 9px;
+}
+
+
+.selectedRang{
+    transform: scale(1.1);
+    border-left: 5px solid;
+    padding: 12px 20px;
+}
+
+.selectedEmojiRating{
+    transform: scale(1.1);
+    border-top: 5px solid;
+    padding: 12px 8px;
+}
+
+.rating-center{
+    align-items: center;
+    justify-content: center;
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.mobile-next-btn{
+    width: 100%;
+    border-radius: 0;
+}
+
+.next-btn-container{
+    background: #fff;
+    border-radius: 5px;
+}
+
+.bbottom-none{
+    border-bottom: none;
+}
+
+.mbottom-18{
+    margin-bottom: 18px;
+}
+
+.content-box{
+    min-height: calc(100vh - 250px);
+    max-height: calc(100vh - 50px);
+}
+
+.next-line-string{
+    white-space: pre-wrap !important;
+    margin-bottom: 22px;
+    text-align: center;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: #494949;
+    margin-top: 0px;
+}
+
+.gray-color{
+    color: #A9A9A9;
+}
+.error-message{
+    color: red;
+}
+.ellipsis-2line{
+    display: block;
+    max-width: 100%;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+}
+
+.availability-div{
+    width: 110px;
+    height: 80px;
+    background: #F9F9F9;
+    margin: 5px;
+    padding: 12px 8px;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* :host ::ng-deep ng-select > div > div.single {
+  height: 35px !important;
+}
+
+:host ::ng-deep ng-select > div {
+  border-radius:5px !important ;
+  border: 1px solid #D0D0D0;
+  background-color: #fff;
+  color: #A9A9A9;
+}
+
+:host ::ng-deep ng-select select-dropdown > div .options, :host ::ng-deep ng-select select-dropdown > div .filter{
+    color: #A9A9A9;
+} */
+
+::ng-deep .fr-box.fr-basic .fr-element {
+    padding: 0px !important;
+}
+
+::ng-deep .mbsc-mobiscroll .mbsc-input input{
+    border: 1px solid #D0D0D0;
+}
+
+.media-block{
+    margin-bottom: 31px;
+}
+
+::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected){
+    border-color:#00B7AB;
+}
+
+::ng-deep .mat-calendar-body-selected{
+    background-color:#00B7AB;
+}
+
+::ng-deep .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected){
+    background-color: #00b7ab94;
+}
+
+::ng-deep .mat-form-field-wrapper{
+    padding: 0;
+}
+
+::ng-deep .mat-form-field-infix{
+    border: 1px solid #D0D0D0;
+    padding: 10px 12px;
+    border-radius: 4px;
+}
+
+@media only screen and (max-width: 768px) {
+    .media-block{
+      margin-bottom: 13px;
+    }
+    .question-title {
+        margin-bottom: 16px;
+        font-size: 18px;
+        line-height: 21px;
+    }
+    /* :host ::ng-deep ng-select > div > div.single > div.value{
+        display: initial !important;
+    } */
+}
+
+@media only screen and (min-width: 768px) {
+    ::ng-deep .ng-dropdown-panel {
+        margin: 10px 9px 0px;
+    }
+}

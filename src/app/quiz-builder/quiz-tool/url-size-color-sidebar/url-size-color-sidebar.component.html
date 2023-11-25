@@ -1,0 +1,85 @@
+<div class="portlet-head">
+  <a href="javascript:void(0)" class="back closet">
+    <i class="fa fa-chevron-left"></i>{{"BACK" | translate }}</a>
+  <div class="action">
+    <a href="javascript:void(0)" class="btn blue hide">{{"SAVE_RECORDS" | translate }}</a>
+    <a href="javascript:void(0)" class="closet"></a>
+  </div>
+</div>
+
+<div class="portlet-body horizontal-form app-calc">
+  <form [formGroup] = 'urlSizeColorform' (submit) = 'saveUrlSizeColor()' class="app-grow">
+    <div data-position="top">
+      <h4>
+        <span>{{"URL" | translate }}</span>
+      </h4>
+      <div class="builder-action-properties">
+        <div class="builder-action-property" data-property="url">
+          <div class="builder-property-group-outer">
+            <div class="builder-property-group" data-property-type="input">
+              <span>{{"CALL_TO_ACTION_URL" | translate }}</span>
+              <input type="text" formControlName = 'ActionButtonURL' class="form-control" data-property="url" value="http://www.finoit.com" placeholder="{{'HTTP'}}://">
+            </div>
+          </div>
+        </div>
+        <div class="builder-action-property" data-property="blank">
+          <div class="builder-property-group-outer">
+            <div class="builder-property-group" data-property-type="checkbox">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="builder-action-content" data-position="top">
+        <h4>
+          <span>{{"SIZE" | translate }}</span>
+        </h4>
+        <div class="builder-action-properties">
+          <div class="builder-action-property" data-property="fontSize">
+            <div class="builder-property-group-outer">
+              <div class="builder-property-group" data-property-type="range">
+                <div class="form-box">
+                  Font Size
+                  <input type="text" formControlName = 'ActionButtonTxtSize' class="form-control range-input-val" data-property="fontSize" value="20">
+                  <div class="range-suffix">{{"PX" | translate }}</div>
+                </div>
+                <input class="front" type="range" min = '16' max = '72' (stepDown) = 'StepDown($event)' step="1" (change) = 'changeEvent($event)' [value] = 'urlSizeColorform?.value["ActionButtonTxtSize"]'>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="builder-action-content" data-position="top">
+        <h4>
+          <span>{{"COLOR" | translate }}</span>
+        </h4>
+        <div class="builder-action-properties">
+          <div class="builder-action-property" data-property="btnColor">
+            <div class="builder-property-group-outer">
+              <div class="builder-property-group colorpicker-element" data-property-type="color">
+                <div class="builder-styles-color" data-property="btnColor" style="background: #62afe0"></div>
+                <span>{{"BUTTON_COLOR" | translate }}</span>
+                <input type="color" formControlName = 'ActionButtonColor' class="form-control" data-property="btnColor" value="#62afe0">
+              </div>
+            </div>
+          </div>
+          <div class="builder-action-property" data-property="fontColor">
+            <div class="builder-property-group-outer">
+              <div class="builder-property-group colorpicker-element" data-property-type="color">
+                <div class="builder-styles-color" data-property="fontColor" style="background: #ffffff"></div>
+                <span>{{"FONT_COLOR" | translate }}</span>
+                <input type="color" formControlName = 'ActionButtonTitleColor' class="form-control" data-property="fontColor" value="#ffffff">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button  class="btn blue" type="submit">{{"SAVE" | translate }}</button>
+  </form>
+</div>

@@ -1,0 +1,205 @@
+.sort-by {
+  color: #b0b0b0;
+}
+
+:host ::ng-deep .legend-labels {
+  display: flex !important;
+  overflow-y: unset !important;
+  overflow-x: unset !important;
+  background: transparent !important;
+  width: 50%
+}
+
+:host ::ng-deep .ngx-charts {
+  margin-top: 100px;
+}
+
+:host ::ng-deep .chart-legend {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  padding: 12px 10px;
+  border-bottom: 1px solid #e4e6ec;
+}
+
+:host ::ng-deep .chart-container {
+  height: 400px;
+  position: relative;
+  display: inline-block;
+}
+
+:host ::ng-deep .ngx-charts {
+  margin-top: 40px;
+}
+
+/* .quiz-created{
+    float: right;
+} */
+.quiz-title {
+  text-align: center;
+  padding: 8px 12px;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+.ember-body-srcoller {
+  overflow: auto;
+  width: 100%;
+  height: calc(100vh - 278px) !important;
+}
+
+.ember-body-srcoller.active {
+  height: calc(100vh - 300px) !important;
+}
+
+.ember-report {
+  margin-bottom: 14px;
+}
+
+.ember-report .form-group{
+  margin-bottom: 12px;
+}
+.reporting-compare-sort-container {
+  display: none;
+    overflow: hidden;
+    height: 22px;
+    visibility: hidden;
+    transition: .2s ease-out height;
+}
+.reporting-compare-sort-container.active {
+  display: block;
+  visibility: visible;
+  overflow: hidden;
+  height: 22px;
+  transition: 0.2s ease-out;
+  /* height: 0; */
+}
+
+:host ::ng-deep .sorting-list {
+  margin-top: 0;
+  font-size: 13px;
+}
+
+:host ::ng-deep .c-btn {
+  border-width: 2px !important;
+  box-shadow: none !important;
+  /* padding: 18px !important; */
+}
+
+:host ::ng-deep .custom-class-example {
+  color: #ccc;
+}
+:host ::ng-deep .custom-class-example .c-token {
+  background: #000000 !important;
+  background: var(--secondary-color) !important;
+}
+:host ::ng-deep .custom-class-example .pure-checkbox label::before {
+  border-color: #00b7ab !important;
+  border-color: var(--primary-color) !important;
+}
+:host
+  ::ng-deep
+  .custom-class-example
+  .pure-checkbox
+  input[type="checkbox"]:checked
+  + label:before {
+    background: #000000!important;
+  background: var(--secondary-color) !important;
+}
+:host ::ng-deep .countplaceholder {
+  position: relative !important;
+  width: 100% !important;
+  top: 10px !important;
+}
+
+:host ::ng-deep .countplaceholder:after {
+  content: " Automation selected";
+}
+
+:host ::ng-deep .legend-title {
+  display: none;
+}
+:host ::ng-deep .chart-legend > div {
+  float: right;
+  width: 50% !important;
+}
+
+.quiz-container {
+  width: 50%;
+}
+
+:host ::ng-deep .selected.highlighted {
+  background-color: #000000;
+  background-color: var(--secondary-color);
+}
+
+:host ::ng-deep .highlighted {
+  background-color: #000000;
+  background-color: var(--secondary-color);
+}
+
+.tag-padding {
+  padding: 0px 4px;
+}
+
+:host ::ng-deep .boxme .chart-container {
+  margin-top: 4px;
+  margin-bottom: 18px;
+  background: #fff;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
+}
+
+:host ::ng-deep .boxme {
+  background: transparent !important;
+  box-shadow: none;
+  border: 0;
+}
+
+:host ::ng-deep .ngx-charts .circle:hover {
+  cursor: unset;
+}
+
+.app-head-data {
+  margin: 24px 0 10px 0;
+}
+
+.selected-sort-option {
+  color: #00b7ab;
+  color: var(--primary-color);
+}
+
+.quiz-title-container {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
+  width: calc(100% - 30px);
+  margin: auto;
+}
+
+.legent-list{
+  padding-right: 20px; 
+}
+
+.legend-datetime{
+  margin-top: 10px; 
+}
+
+:host ::ng-deep .legent-number-text{
+  display: inline-block;
+  vertical-align: top;
+  line-height: 15px;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+@media (max-width:1366px){
+  .chart-legend .legend-labels{
+    white-space: normal;
+  }
+}
+

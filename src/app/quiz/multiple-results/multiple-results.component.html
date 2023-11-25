@@ -1,0 +1,106 @@
+<div class="fixed-fr-toolbar" *ngIf="!resultLeadForm">
+    <div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !leftSlide, 'left-quiz-silder':isMobileView && leftSlide && !isStartQuiz,'right-quiz-silder':isMobileView && isStartQuiz}">
+        <div class="container-single page" #previewContainer [ngClass]="{'display': !hide}">
+            <div class="ins no" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType
+      }">
+                <div class="popup-container-attempt" [ngClass]="{'popup-container': addClass}">
+                    <div class="ember-answer-key container-position">
+                        <div *ngIf="ResultScore.ResultScoreValueTxt" [froalaEditor]="options" contenteditable="false" [ngModel]="ResultScore.ResultScoreValueTxt"></div>
+                        <div *ngIf="ResultScore.Title" class="next-line-string" [froalaEditor]="options" contenteditable="false" [ngModel]="ResultScore.ResultScoreValueTxt"></div>
+                        <div class="result-detail-container">
+                            <div class="result-data" *ngFor="let result of ResultScore.PersonalityResultList; let i = index">
+                                <div class="is-result-row">
+                                    <div class="progress-bar-title title-value">
+                                        <span [ngClass]="{'visible': result.Percentage == null}">
+                        {{ result.Percentage }}%</span>
+                                    </div>
+                                    <div class="progress" *ngIf="!result.IsFullWidthEnable">
+                                        <progressbar class="progress-bar" [style.width]="result.Percentage + '%'" [style.background]="result.GraphColor" [value]="value" max="100"></progressbar>
+                                    </div>
+                                    <div class="progress" *ngIf="result.IsFullWidthEnable">
+                                        <progressbar class="result-progress-bar" [style.width]="result.Percentage * 2 + '%'" [style.background]="result.GraphColor" [value]="value" max="100"></progressbar>
+                                    </div>
+                                    <div class="result-title title-Res" [froalaEditor]="options" contenteditable="false" [ngModel]="result.Title">
+                                    </div>
+                                </div>
+                                <div class="side-btn">
+                                    <button [ngStyle]="{'background-color': result.ButtonColor, 'color': result.ButtonFontColor}" (click)="showIndividualResult(i)">
+                      {{result.SideButtonText}}
+                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf='!resultDetails?.QuizSocialShare.HideSocialShareButtons'>
+                            <button *ngIf='resultDetails?.QuizSocialShare.EnableFacebookShare' shareButton="facebook" [sbUrl]="sharedURL">
+                  <i class="fa fa-facebook-square"></i>
+                  Facebook</button>
+                            <button *ngIf='resultDetails?.QuizSocialShare.EnableTwitterShare' shareButton="twitter" [sbUrl]="sharedURL">
+                  <i class="fa fa-twitter-square"></i>
+                  Twitter</button>
+                            <button *ngIf='resultDetails?.QuizSocialShare.EnableLinkedinShare' shareButton="linkedIn" [sbUrl]="sharedURL">
+                  <i class="fa fa-linkedin-square"></i>
+                  LinkedIn</button>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="(flowOrder && flowOrder == 1) || appointmentCode">
+                    <button class="btn take-next-btn" (click)="onleadForm()" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+                        data-dismiss="modal">
+                        <svg *ngIf="!flowOrder && appointmentCode" class="cal-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.10071 7.7237C5.10071 7.54833 4.95846 7.40625 4.78294 7.40625H3.67404C3.49872 7.40625 3.35645 7.54833 3.35645 7.7237V8.83246C3.35645 9.00806 3.49872 9.1502 3.67404 9.1502H4.78294C4.95846 9.1502 5.10071 9.00806 5.10071 8.83246V7.7237Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M7.87201 7.7237C7.87201 7.54833 7.72973 7.40625 7.55456 7.40625H6.44552C6.27021 7.40625 6.12793 7.54833 6.12793 7.7237V8.83246C6.12793 9.00806 6.27021 9.1502 6.44552 9.1502H7.55456C7.72973 9.1502 7.87201 9.00806 7.87201 8.83246V7.7237Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M10.6437 7.7237C10.6437 7.54833 10.5014 7.40625 10.3261 7.40625H9.21718C9.04166 7.40625 8.89941 7.54833 8.89941 7.7237V8.83246C8.89941 9.00806 9.04166 9.1502 9.21718 9.1502H10.3261C10.5014 9.1502 10.6437 9.00806 10.6437 8.83246V7.7237Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M5.10071 10.4954C5.10071 10.3197 4.95846 10.1777 4.78294 10.1777H3.67404C3.49872 10.1777 3.35645 10.3197 3.35645 10.4954V11.6039C3.35645 11.7794 3.49872 11.9215 3.67404 11.9215H4.78294C4.95846 11.9215 5.10071 11.7794 5.10071 11.6039V10.4954Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M7.87201 10.4954C7.87201 10.3197 7.72973 10.1777 7.55456 10.1777H6.44552C6.27021 10.1777 6.12793 10.3197 6.12793 10.4954V11.6039C6.12793 11.7794 6.27021 11.9215 6.44552 11.9215H7.55456C7.72973 11.9215 7.87201 11.7794 7.87201 11.6039V10.4954Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M10.6437 10.4954C10.6437 10.3197 10.5014 10.1777 10.3262 10.1777H9.21718C9.04166 10.1777 8.89941 10.3197 8.89941 10.4954V11.6039C8.89941 11.7794 9.04166 11.9215 9.21718 11.9215H10.3262C10.5014 11.9215 10.6437 11.7794 10.6437 11.6039V10.4954Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M12.6264 1.55881V3.25235C12.6264 4.01781 12.0054 4.63465 11.2401 4.63465H10.3656C9.60015 4.63465 8.97095 4.01781 8.97095 3.25235V1.55273H5.02923V3.25235C5.02923 4.01781 4.40005 4.63465 3.63477 4.63465H2.76007C1.99475 4.63465 1.37381 4.01781 1.37381 3.25235V1.55881C0.704918 1.57898 0.155273 2.13247 0.155273 2.81278V12.7377C0.155273 13.4308 0.717049 14 1.41015 14H12.59C13.2821 14 13.8449 13.4296 13.8449 12.7377V2.81278C13.8449 2.13247 13.2953 1.57898 12.6264 1.55881ZM12.2202 12.1196C12.2202 12.4192 11.9773 12.6622 11.6777 12.6622H2.29859C1.99894 12.6622 1.75608 12.4192 1.75608 12.1196V6.99307C1.75608 6.69342 1.99891 6.45042 2.29859 6.45042H11.6777C11.9773 6.45042 12.2202 6.69342 12.2202 6.99307L12.2202 12.1196Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M2.7567 3.72677H3.62173C3.8843 3.72677 4.09718 3.5142 4.09718 3.25163V0.475307C4.09718 0.212717 3.8843 0 3.62173 0H2.7567C2.49411 0 2.28125 0.212717 2.28125 0.475307V3.25163C2.28125 3.5142 2.49411 3.72677 2.7567 3.72677Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                            <path d="M10.3543 3.72677H11.2194C11.4818 3.72677 11.6946 3.5142 11.6946 3.25163V0.475307C11.6947 0.212717 11.4818 0 11.2194 0H10.3543C10.0918 0 9.87891 0.212717 9.87891 0.475307V3.25163C9.87891 3.5142 10.0918 3.72677 10.3543 3.72677Z" [ngStyle]="{'fill': QuizBrandingAndStyle.ButtonFontColor ? QuizBrandingAndStyle.ButtonFontColor : 'white'}"/>
+                        </svg>
+                        <span *ngIf="!flowOrder && appointmentCode">{{"BookAnAppointment" | translate}}</span>
+                        <span *ngIf="flowOrder && flowOrder == 1">{{"EnterYourDetails" | translate}}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fixed-fr-toolbar" *ngIf="resultLeadForm">
+    <div *ngIf="ResultScore.ResultScoreValueTxt" [froalaEditor]="options" contenteditable="false" [ngModel]="ResultScore.ResultScoreValueTxt"></div>
+    <div *ngIf="ResultScore.Title" class="next-line-string" [froalaEditor]="options" contenteditable="false" [ngModel]="ResultScore.ResultScoreValueTxt"></div>
+    <div class="result-detail-container" style="margin: 30px 0;">
+        <div class="result-data" *ngFor="let result of ResultScore.PersonalityResultList; let i = index">
+            <div class="is-result-row">
+                <div class="progress-bar-title title-value">
+                    <span [ngClass]="{'visible': result.Percentage == null}">
+                        {{ result.Percentage }}%</span>
+                </div>
+                <div class="progress" *ngIf="!result.IsFullWidthEnable">
+                    <progressbar class="progress-bar" [style.width]="result.Percentage + '%'" [style.background]="result.GraphColor" [value]="value" max="100"></progressbar>
+                </div>
+                <div class="progress" *ngIf="result.IsFullWidthEnable">
+                    <progressbar class="result-progress-bar" [style.width]="result.Percentage * 2 + '%'" [style.background]="result.GraphColor" [value]="value" max="100"></progressbar>
+                </div>
+                <div class="result-title title-Res" [froalaEditor]="options" contenteditable="false" [ngModel]="result.Title">
+                </div>
+            </div>
+            <div class="side-btn">
+                <button [ngStyle]="{'background-color': result.ButtonColor, 'color': result.ButtonFontColor}" (click)="showIndividualResult(i)">
+                      {{result.SideButtonText}}
+                    </button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf='!resultDetails?.QuizSocialShare.HideSocialShareButtons'>
+        <button *ngIf='resultDetails?.QuizSocialShare.EnableFacebookShare' shareButton="facebook" [sbUrl]="sharedURL">
+                  <i class="fa fa-facebook-square"></i>
+                  Facebook</button>
+        <button *ngIf='resultDetails?.QuizSocialShare.EnableTwitterShare' shareButton="twitter" [sbUrl]="sharedURL">
+                  <i class="fa fa-twitter-square"></i>
+                  Twitter</button>
+        <button *ngIf='resultDetails?.QuizSocialShare.EnableLinkedinShare' shareButton="linkedIn" [sbUrl]="sharedURL">
+                  <i class="fa fa-linkedin-square"></i>
+                  LinkedIn</button>
+    </div>
+</div>

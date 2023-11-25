@@ -1,0 +1,103 @@
+<!-- begin header -->
+<header class="app-header">
+  <!-- begin top -->
+  <div class="app-top">
+    <!-- begin logo -->
+    <div class="app-logo">
+      <a href="javascript:void(0);">
+        <img class="logo-image-container" [src]="logoURL" alt="" />
+      </a>
+    </div>
+    <!-- end logo -->
+    <!-- begin toggler -->
+    <div class="menu-toggler">
+      <i class="fa-line"></i>
+    </div>
+    <!-- end toggler -->
+    <!-- begin menu -->
+    <div class="top-menu">
+      <div class="dropdown">
+        <a href="javascript:void(0);" class="dropdown-toggle relative" data-toggle="dropdown" data-hover="dropdown">
+          <img *ngIf="!profilepic" class="img-circle" src="../assets/layouts/img/user-icon.png" alt="" />
+          <img *ngIf="profilepic" class="img-circle img-cu stom min-image-size" [src]="profilepic" alt="" wi />
+          <span class="">{{nickName}}</span>
+          <i class="fa fa-angle-down"></i>
+        </a>
+        <div class="dropdown-menu hold-on-click">
+          <ul class="nav">
+            <li *ngFor="let item of headerMenu[0]">
+              <a href="{{ item.MenueUrl }}">{{ item.MenuText }}</a>
+            </li>
+            <li class="dropdown">
+              <a href="javascript:void(0);">{{"LANGUAGE" | translate }}
+                <i class="fa fa-angle-right"></i>
+              </a>
+              <ul class="dropdown-menu nav pull-right">
+                <li>
+                  <a class="check-hover" (click)="setHeaderMenu('nl-NL')" href="javascript:void(0);">{{"DUTCH" | translate }}</a>
+                  <i *ngIf="language=='nl-NL'" class="fa fa-check check"></i>
+                </li>
+                <li>
+                  <a class="check-hover" (click)="setHeaderMenu('en-US')" href="javascript:void(0);">{{"ENGLISH" | translate }}</a>
+                  <i *ngIf="language=='en-US'" class="fa fa-check check"></i>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- end menu -->
+  </div>
+  <!-- begin top -->
+  <!-- end nav -->
+  <nav class="app-nav">
+    <ul *ngIf="headerMenu[2]" class="nav">
+      <li *ngFor="let item of headerMenu[2]" [ngClass]="{dropdown: item.MenueUrl=='/appointment'}">
+        <div *ngIf="(item.MenueUrl =='/appointment')" class="custom-menu">
+          <a [routerLink]="['/quiz-builder']">{{"AUTOMATIONS" | translate }}</a>
+          <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-angle-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a [routerLink]="['explore']">{{"EXPLORE" | translate }}</a>
+            </li>
+            <li>
+              <a [routerLink]="['email']">{{"EMAIL_AND_SMS_TEMPLATES" | translate }}</a>
+            </li>
+            <li>
+              <a [routerLink]="['reporting']">{{"REPORTING" | translate }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <a *ngIf="(item.Level == 2) && (item.MenueUrl!='/appointment')" href="{{ item.MenueUrl }}">{{ item.MenuText }}</a>
+      </li>
+    </ul>
+    <ul *ngIf="!headerMenu[2]" class="nav">
+      <li class="dropdown">
+        <div class="custom-menu">
+          <a [routerLink]="['/quiz-builder']">{{"QUIZZES" | translate }}</a>
+          <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-angle-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a [routerLink]="['explore']">{{"EXPLORE" | translate }}</a>
+            </li>
+            <li>
+              <a [routerLink]="['email']">{{"EMAIL_AND_SMS_TEMPLATES" | translate }}</a>
+            </li>
+            <li>
+              <a [routerLink]="['reporting']">{{"REPORTING" | translate }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- <a *ngIf="(item.Level == 2) && (item.MenueUrl!='/appointment')" href="{{ item.MenueUrl }}">{{ item.MenuText }}</a> -->
+      </li>
+    </ul>
+  </nav>
+  <!-- end nav -->
+</header>

@@ -1,0 +1,79 @@
+<!-- <div class="portlet-head">
+  <div class="font-type font-text2">
+    <span>{{"QUESTION_ATTEMPTS_SETTINGS" | translate}}</span>
+  </div>
+  <div class="action"><a href="javascript:void(0)" class="closet"></a></div>
+</div> -->
+<div class="form-body">
+  <form [formGroup]="questionSettingForm">
+    <div class="in white-bkg">
+      <div class="answer-container">
+        <div *ngIf="isQuestionEnable" class="question_setting">
+          <label class="app-checkbox normal-text font-type">
+            {{"USER_IS_ALLOWED_TO_NAVIGATE_BACK_FORM_NEXT_PAGE_AND_VIEW_THIS_QUESTION_AGAIN" | translate }}
+            <input type="checkbox" formControlName="ViewPreviousQuestion" (click)="onChanges('viewPreviousQuestion')"
+              [checked]="viewPreviousQuestion == true" />
+            <span></span>
+          </label>
+          <br>
+          <label class="app-checkbox normal-text font-type">
+            {{"USER_IS_ALLOWED_TO_NAVIGATE_BACK_FORM_NEXT_PAGE_AND_VIEW_THIS_QUESTION_AGAIN_AND_EDIT_THE_ANWSER" | translate }}
+            <input type="checkbox" formControlName="EditAnswer" (click)="onChanges('editAnswer')"
+              [checked]="editAnswer == true" />
+            <span></span>
+          </label>
+          <br>
+          <!-- timer option for answerType 1 to 4  -->
+          <label *ngIf="(answerType <= 4)" class="app-checkbox normal-text font-type">
+            {{"ADD_TIMER" | translate}}
+            <input type="checkbox" formControlName="TimerRequired" (click)="onChanges('TimerRequired')"
+              [checked]="timerRequired == true" />
+            <span></span>
+          </label>
+
+          <!-- timer dropdown  -->
+          <div class="Timerdropdown" *ngIf="timerRequired && (answerType <= 4)">
+            <span style="text-align: center;">
+              <ng-select [options]="Hours" (selected)="ButtonDisableProperty()" [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="hours" [noFilter]="10">
+
+              </ng-select>
+              <label class="timerLabel">{{"HOUR" | translate}}</label>
+            </span>
+            <span style="padding: 0 10px;text-align: center;">
+              <ng-select [options]="MinutesArray" (selected)="ButtonDisableProperty()"
+                [ngModelOptions]="{standalone: true}" [(ngModel)]="minutes" [noFilter]="10">
+              </ng-select> <label class="timerLabel">{{"MINUTES" | translate}}</label>
+            </span>
+            <span style="text-align: center;">
+              <ng-select [options]="SecondsArray" (selected)="ButtonDisableProperty()"
+                [ngModelOptions]="{standalone: true}" [(ngModel)]="seconds" [noFilter]="10">
+              </ng-select> <label class="timerLabel">{{"SECONDS" | translate}}</label>
+            </span>
+          </div>
+        </div>
+        <div *ngIf="!isQuestionEnable" class="question_setting">
+          <label class="app-checkbox normal-text font-type">
+            {{"USER_IS_ALLOWED_TO_NAVIGATE_BACK_TO_THIS_CONTENT_PAGE" | translate }}
+            <input type="checkbox" formControlName="ViewPreviousQuestion" (click)="onChanges('viewPreviousQuestion')"
+              [checked]="viewPreviousQuestion == true" />
+            <span></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<!-- <div class="content-bottom">
+  <button type="submit" id="myBtn" class="btn save-btn font-type normal-text"
+    (click)="onUpdateQuestionSetting()">{{"SAVE" | translate }}</button>
+</div> -->
+
+<!-- save button -->
+<div class="form-actions btn-block">
+  <button type="submit" id="myBtn" class="btn save-btn font-type normal-text" (click)="onUpdateQuestionSetting()">
+    {{ "SAVE" | translate }}
+  </button>
+</div>

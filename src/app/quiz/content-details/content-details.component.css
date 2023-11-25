@@ -1,0 +1,131 @@
+:host ::ng-deep .my-videos > video {
+  width: 100%;
+}
+
+figure{
+  margin-bottom: 20px;
+  }
+
+  .ins.no{
+    display: block;
+  }
+  
+  .next-btn-align{
+    text-align: center;
+  }
+  .content-title{
+    white-space: pre-wrap !important;
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    line-height: 28px;
+    color: #494949;
+    margin-bottom: 14px;
+  }
+
+  .cover-height{
+    z-index: 1;
+  }
+
+  .next-question-btn{
+    border: none;
+    /* min-width: 180px; */
+    font-size: 14px;
+    /* min-height: 45px;
+    padding: 8px; */
+    width: 100%;
+    min-height: 38px;
+
+  }
+
+  .pre-btn{
+    position: relative;
+    top:-16px;
+  }
+  
+  @media all and (max-width: 768px){
+    .pre-btn{
+      top:-4px;
+    }
+  }
+
+  .mobile-view-logo-body {
+    /* position: relative; */
+    position: fixed;
+    text-align: center;
+    /* min-height: 45px; */
+    /* background-color: #fff; */
+  }
+  
+  .mobile-view-logo-body img {
+    margin: 5px 0px;
+  }
+  .mobile-view-logo-body:empty{
+    display: none;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: inherit;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    background-color: inherit;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #e4e6ec;
+}
+
+.mobile-logo{
+  text-align: center;
+  min-height: 45px;
+  margin-top: 10px;
+}
+
+.mobile-next-btn{
+  width: 100%;
+  border-radius: 0;
+}
+
+.next-btn-container{
+  background: #fff;
+  border-radius: 5px;
+}
+
+.content-box{
+  min-height: calc(100vh - 250px);
+  max-height: calc(100vh - 50px);
+}
+
+.next-line-string{
+  white-space: pre-wrap !important;
+  margin-bottom: 22px;
+  text-align: center;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  color: #494949;
+  margin-top: 0px;
+}
+
+::ng-deep .fr-box.fr-basic .fr-element {
+  padding: 0px !important;
+}
+
+.media-block{
+  margin-bottom: 31px;
+}
+
+@media only screen and (max-width: 768px) {
+  .content-title{
+    font-size: 18px;
+    line-height: 21px;
+    margin-bottom: 16px;
+  }
+  .media-block{
+    margin-bottom: 13px;
+  }
+}

@@ -1,0 +1,115 @@
+/*
+# Author : Finoit
+# Date : 6 Dec 2017
+# Description : Table 
+*/
+.app-loader {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  z-index: 9999;
+  position: fixed;
+  display: none;
+}
+
+.app-loader:before {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: "";
+  position: fixed;
+  transition: 3s;
+  background: rgba(0, 0, 0, 0.20);
+  transition: visibility 0s, opacity 0.5s linear;
+}
+
+.app-loader .loader {
+  width: 60px;
+  color: #3598dc;
+  margin: 0 auto;
+  background: #fff;
+  position: relative;
+  border-radius: 100px !important;
+}
+
+.app-loader .loader:before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+.app-loader .loader:after {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 26px;
+  height: 26px;    
+  margin: auto;
+  content: '';
+  position: absolute;
+  background: url(../img/sprites.png) no-repeat 0px -352px;
+}
+
+.app-loader .circular {
+  animation: rotate 2s linear infinite;
+  height: 100%;
+  transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.app-loader .path {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+  stroke-linecap: round;
+}
+
+@keyframes rotate {
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+  }
+  50% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -35px;
+  }
+  100% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -124px;
+  }
+}
+
+@keyframes color {
+  100%,
+  0% {
+      stroke: #3598dc;
+  }
+  40% {
+      stroke: #6cc745;
+  }
+  66% {
+      stroke: #3598dc;
+  }
+  80%,
+  90% {
+      stroke: #6cc745;
+  }
+}

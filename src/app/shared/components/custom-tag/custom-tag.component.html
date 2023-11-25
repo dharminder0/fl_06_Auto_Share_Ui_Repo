@@ -1,0 +1,56 @@
+<div class="show-tag" *ngFor="let tag of tagArr;let i = index">
+  <div #pop1="bs-popover" (onHidden)='hidePopover()' [ngClass]="[tag.TagColor]?'display-tag':'hover-tag'" [popover]="popover1" (click)='openTag(tag)'
+  placement="bottom" [outsideClick]='true' popoverTitle="" style="cursor: pointer;" [ngStyle]="{'background-color': tag.TagColor}">
+  <div class="label" *ngIf='tag.TagColor'>{{ tag.LabelText || '' }}</div>
+</div>
+
+<ng-template #popover1>
+    <div id="tag-choose">
+      <div class="tag-choose">
+        <div class="colors">
+          <div *ngFor="let color of COLORS" class="color" [style.background]="color.value" (click)='getColor(color.value,tag)' [ngClass]="{'active':tag.TagColor==color.value}"></div>
+        </div>
+        <input type="text" maxlength="25" id="tag-label" [value]=tag.LabelText (keyup)='onLabelChange($event,tag)' class="form-control input-box"
+          placeholder="Label Text" value="" style="height:30px">
+      </div>
+      <div class="tag-actions">
+        <button class="btn save-btn" (click)='saveColor(tag);pop1.hide()'>
+          <i class="zmdi zmdi-label"></i>
+          <div class="test">{{"SAVE" | translate }}</div >
+        </button>
+        <button class="btn del-btn remove-tag" (click)='removeColor(tag,i);pop1.hide()'>
+          <i class="zmdi zmdi-delete"></i>
+          <div class="test">{{"REMOVE" | translate }}</div >
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  
+</div>
+
+<div class="tag-container" #pop="bs-popover" (onHidden)='hidePopover()'  *ngIf="tagArr.length < 10" [popover]="popover" (click)='openTag(null,pop)' placement="bottom" [outsideClick]='true' popoverTitle="" style="cursor: pointer;" >
+  <i class="zmdi zmdi-label" aria-hidden="true"></i>&nbsp;{{"TAG" | translate }}</div>
+
+<ng-template #popover>
+    <div id="tag-choose">
+      <div class="tag-choose">
+        <div class="colors">
+          <div *ngFor="let color of COLORS" class="color" [style.background]="color.value" (click)='getColor(color.value,emptyTag)' [ngClass]="{'active':emptyTag.TagColor==color.value}"></div>
+        </div>
+        <input type="text" maxlength="25" id="tagDetails-label" [value]=emptyTag.LabelText (keyup)='onLabelChange($event,emptyTag)' class="form-control input-box"
+          placeholder="Label Text" value="" style="height:30px">
+      </div>
+      <div class="tag-actions">
+        <button class="btn save-btn" (click)='entryTag(emptyTag)'>
+          <i class="zmdi zmdi-label"></i>
+          <div class="test">{{"SAVE" | translate }}</div >
+        </button>
+        <button disabled class="btn del-btn remove-tag" (click)='removeColor();pop.hide()'>
+          <i class="zmdi zmdi-delete"></i>
+          <div class="test">{{"REMOVE" | translate }}</div >
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+

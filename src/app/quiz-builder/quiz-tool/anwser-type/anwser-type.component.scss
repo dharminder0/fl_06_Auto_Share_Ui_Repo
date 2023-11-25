@@ -1,0 +1,170 @@
+.form-body {
+    padding: 15px 20px;
+    background: #202020;
+    overflow: inherit;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 15px;
+    top: 2px;
+    margin: 0px 2px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #F9F9F9;
+    transition: 0.4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    left: -1px;
+    bottom: -1px;
+    background: #E0E0E0;
+    transition: 0.4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #F9F9F9;
+  }
+  
+  input:checked + .slider:before {
+    background: #000000;
+    background: var(--secondary-color);
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(15px);
+    -ms-transform: translateX(15px);
+    transform: translateX(15px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 10px;
+    border: 1px solid #E0E0E0;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+//   drop-down
+  ng-select {
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: #fff;
+  }
+
+  :host ::ng-deep ng-select > div > div.single {
+    height: 35px !important;
+  }
+  
+  :host ::ng-deep ng-select > div {
+    border-radius:5px !important ;
+    border: 1px solid #404040;
+  }
+  
+  :host ::ng-deep ng-select > div > div.single > div.value,:host ::ng-deep ng-select > div > div.single > div.placeholder{
+    line-height: 35px;
+  }
+  
+  :host ::ng-deep ng-select > div > div.single > div.toggle {
+    line-height: 40px;
+    font-size: 10px;
+    background: transparent !important;
+  }
+  
+  :host ::ng-deep ng-select > select-dropdown > div > div.options,:host ::ng-deep ng-select > select-dropdown > div > div.filter{
+      color: #fff;
+      input{
+        background: #202020;
+        border: 1px solid #404040;
+      }
+  }
+
+  :host ::ng-deep ng-select > select-dropdown > div{
+    background: #202020;
+    border: 1px solid #404040;
+  }
+
+  :host ::ng-deep ng-select > select-dropdown .selected, :host ::ng-deep ng-select > select-dropdown .selected .highlighted,:host ::ng-deep ng-select > select-dropdown .highlighted{
+    background-color: #494949;
+  }
+
+  .mTop-20{
+      margin-top: 20px;
+  }
+
+  .save-btn{
+    background: transparent;
+    border: 1px solid #FFFFFF;
+    border-radius: 5px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    color: #FFFFFF;
+    &:hover{
+        opacity: .6;
+    }
+  }
+
+  .flex-dis{
+    display: flex;
+  }
+
+  .text-btn{
+    width: 110px;
+    height: 40px;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 10px 12px;
+    text-align: center;
+    cursor: pointer;
+    &:hover{
+      opacity: .6;
+    }
+  }
+
+  .mleft-5{
+    margin-left: 5px !important;
+  }
+  .mleft-10{
+    margin-left: 10px !important;
+  }
+  .mright-5{
+    margin-right: 5px !important;
+  }
+  .mright-10{
+    margin-right: 10px !important;
+  }
+  .mright-20{
+    margin-right: 20px !important;
+  }
+  .mbottom-5{
+    margin-bottom: 5px !important;
+  }

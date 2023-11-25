@@ -1,0 +1,188 @@
+<div class="modal">
+    <div class="popup-body">
+      <svg *ngIf="isEditUsage" class="cross-icon" (click)="decline()" width="10" height="10" viewBox="0 0 10 10" fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+          d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z"
+          fill="#494949" />
+      </svg>
+        <div class="template-header hearder-margin">
+            <p>{{"HOW_DO_YOU_WANT_TO_SHOW_THIS_AUTOMATION" | translate}}</p>
+          </div>
+        <div class="ember-body-container">
+            <div class="choose-quiz sm-2">
+              <div class="row row-info choose-quiz-row">
+                <div class="card" *ngFor="let usage of usages" [ngClass]="{'disable-div':((usage.id == 2 || usage.id == 3) && isWebChatPermission == false),'template-card': isWebChatPermission ?  isWebChatPermission : (isWebChatPermission == false && usage.id == 1), 'jr-d-none':quizType == 3 && usage.id == 3}">
+                  <div class="card-body">
+                    <div class="template-icon-padding">
+                      <div class="template-icon">
+                        <img [src]="usage.image" />
+                      </div>
+                    </div>
+                    <div class="template-title" title="{{usage.title}}">{{usage.title}}</div>
+                    <div class="template-text-padding">
+                      <div class="template-text ellipsis-3line">
+                        {{usage.visit | translate}}
+                      </div>
+                    </div>
+                    <a *ngIf="isWebChatPermission ? isWebChatPermission : (isWebChatPermission == false && usage.id == 1)"
+                    href="javascript:void(0);"
+                    class="btn template-button ellipsiss" (click)="onAddUsage(usage.id)" 
+                    [ngClass]="{
+                      selectedCategoriesCss: selectedUsage.includes(usage.id), disabled:isEditUsage
+                    }"
+                    (mouseover)="isActiveIcon[usage.id] = true" (mouseout)="isActiveIcon[usage.id] = false"
+                    >
+                      <svg *ngIf="!selectedUsage.includes(usage.id)"  class="plus-icon" width="11" height="10" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.3404 4.84032L6.06257 4.85325V0.659563C6.06257 0.294158 5.76841 0 5.40301 0C5.03772 0 4.74344 0.294158 4.74344 0.659563L4.75638 4.84044H0.659563C0.294158 4.84044 0 5.1346 0 5.5C0 5.86529 0.294158 6.15945 0.659563 6.15945H4.74991V10.3404C4.74991 10.7056 5.04407 11 5.40947 11C5.77488 11 6.06903 10.7056 6.06903 10.3404V6.15956H10.3404C10.7058 6.15956 11 5.86517 11 5.5C11 5.13448 10.7026 4.84032 10.3404 4.84032Z" fill="white"/>
+                    </svg>
+                    <span *ngIf="selectedUsage.includes(usage.id)"><img class="img-set"
+                      src="assets/layouts/img/check-icon.png" /></span>
+                      <span *ngIf="!selectedUsage.includes(usage.id)" title="{{'SELECT' | translate}}"> {{"SELECT" | translate}}</span>
+                      <span *ngIf="selectedUsage.includes(usage.id)" title="{{'SELECTED' | translate}}">{{"SELECTED" | translate}}</span></a>
+
+                      <a *ngIf="((usage.id == 2 || usage.id == 3) && isWebChatPermission == false)"
+                      href="javascript:void(0);"
+                      class="btn disable-button ellipsiss"
+                      ><span title="Coming soon">Coming soon</span> </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="tagList && tagList.length > 0" class="form-group padd-12">
+              <div class="tag-title">Tags</div>
+              <div class="row">
+                <div class="col-sm-12" [ngClass]="{'center':tagIdArray.length <= 0 , 'flex-dis': tagIdArray.length > 0}" style="padding: 0 170px;">
+                  <div *ngIf="tagIdArray.length > 0" class="tag-display">
+                    <div class="tag-outer" *ngFor="let tag of tagNameObj" (click)="onSelectResult(tag)">
+                      <span class="tag-contain">{{tag.TagName}}
+                        <svg class="mleft-10" width="10" height="10" viewBox="0 0 10 10" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z"
+                            fill="#494949" />
+                        </svg>
+                      </span>
+                    </div>
+                    <div class="btn-group ember-office mRight-20" (clickOutside)="tagDropDown=false">
+                      <div class="dropdown w-305">
+                          <a href="javascript:void(0);"
+                              class="dropdown-toggle block btn white shadow t1 dropdown-container w-305 multi-select-boder"
+                              data-toggle="dropdown" data-hover="dropdown" aria-expanded="false"
+                              (click)="tagDropDown = !tagDropDown;autoFocus()">
+                              <span *ngIf="tagIdArray.length == 0" title="{{'SELECT_ONE_OR_MORE_TAGS_TO_CATEGORIZE_THIS_FLOW' | translate}}">{{"SELECT_ONE_OR_MORE_TAGS_TO_CATEGORIZE_THIS_FLOW" | translate | slice:0:35}} ...</span>
+                              <span *ngIf="tagIdArray.length == tagList.length && tagList.length > 0">{{"ALL" | translate}} tags</span>
+                              <div *ngIf="tagIdArray.length != tagList.length && tagIdArray.length > 0" class="select-id ellipsiss">
+                                  <span title="{{selectedTagString}}">{{selectedTagString}}</span>
+                              </div>
+                              <span *ngIf="tagIdArray.length != tagList.length && tagIdArray.length > 0">&nbsp;</span>
+                              <i class="zmdi zmdi-caret-down pull-right"></i>
+                          </a>
+                          <div *ngIf="tagDropDown == true" class="dropdown-menu li-ember hold-on-click checkbox-dropdown w-305">
+                              <ul class="nav">
+              
+                                  <li class="navbar-fixed-top" style="padding: 3px;" >
+                                      <input type="text" class="newPadding input-inside" id="Box1"
+                                          [(ngModel)]="searchText" style="width: 100%;"
+                                          [ngModelOptions]="{standalone: true}" autofocus="true">
+                                  </li>
+                                  <ul class="nav office-checkbox-ul topMargin">
+                                  <li>
+                                      <label class="app-checkbox">{{"SELECT_ALL" | translate}}
+                                          <input type="checkbox" value="1" name="1"
+                                              [checked]="selectAll" (click)="tagDropDown = false;onSelectAll()">
+                                          <span></span>
+                                      </label>
+                                  </li>
+                                  <li
+                                      *ngFor="let tag of tagList | searchPipe : 'TagName' : searchText; let i = index;">
+                                      <span><label
+                                              class="app-checkbox ellipsiss d-block" title="{{tag.TagName}}">{{ tag.TagName }}
+                                              <input type="checkbox" [value]="tag.TagId" name="1"
+                                                  [checked]="tagIdArray.includes(tag.TagId.toString())"
+                                                  (click)="tagDropDown = false;onSelectResult(tag)"
+                                                  >
+                                              <span></span>
+                                          </label>
+                                      </span>
+                                  </li>
+                                  </ul>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  </div>
+                  <div *ngIf="tagIdArray.length <= 0" class="btn-group ember-office" (clickOutside)="tagDropDown=false">
+                  <div class="dropdown w-305">
+                      <a href="javascript:void(0);"
+                          class="dropdown-toggle block btn white shadow t1 dropdown-container w-305 multi-select-boder"
+                          data-toggle="dropdown" data-hover="dropdown" aria-expanded="false"
+                          (click)="tagDropDown = !tagDropDown;autoFocus()">
+                          <span *ngIf="tagIdArray.length == 0" title="{{'SELECT_ONE_OR_MORE_TAGS_TO_CATEGORIZE_THIS_FLOW' | translate}}">{{"SELECT_ONE_OR_MORE_TAGS_TO_CATEGORIZE_THIS_FLOW" | translate | slice:0:35}} ...</span>
+                          <span *ngIf="tagIdArray.length == tagList.length && tagList.length > 0">{{"ALL" | translate}} tags</span>
+                          <div *ngIf="tagIdArray.length != tagList.length && tagIdArray.length > 0" class="select-id ellipsiss">
+                              <span title="{{selectedTagString}}">{{selectedTagString}}</span>
+                          </div>
+                          <span *ngIf="tagIdArray.length != tagList.length && tagIdArray.length > 0">&nbsp;</span>
+                          <i class="zmdi zmdi-caret-down pull-right"></i>
+                      </a>
+                      <div *ngIf="tagDropDown == true" class="dropdown-menu li-ember hold-on-click checkbox-dropdown w-305">
+                          <ul class="nav">
+          
+                              <li class="navbar-fixed-top" style="padding: 3px;" >
+                                  <input type="text" class="newPadding input-inside" id="Box1"
+                                      [(ngModel)]="searchText" style="width: 100%;"
+                                      [ngModelOptions]="{standalone: true}" autofocus="true">
+                              </li>
+                              <ul class="nav office-checkbox-ul topMargin">
+                              <li>
+                                  <label class="app-checkbox">{{"SELECT_ALL" | translate}}
+                                      <input type="checkbox" value="1" name="1"
+                                          [checked]="selectAll" (click)="tagDropDown = false;onSelectAll()">
+                                      <span></span>
+                                  </label>
+                              </li>
+                              <li
+                                  *ngFor="let tag of tagList | searchPipe : 'TagName' : searchText; let i = index;">
+                                  <span><label
+                                          class="app-checkbox ellipsiss d-block" title="{{tag.TagName}}">{{ tag.TagName }}
+                                          <input type="checkbox" [value]="tag.TagId" name="1"
+                                              [checked]="tagIdArray.includes(tag.TagId.toString())"
+                                              (click)="tagDropDown = false;onSelectResult(tag)"
+                                              >
+                                          <span></span>
+                                      </label>
+                                  </span>
+                              </li>
+                              </ul>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+
+              </div>
+              </div>
+            </div>
+
+            <div *ngIf="!tagList || tagList.length == 0" style="height: 100px;"></div>
+
+
+          </div>
+          <div class="container-footer">
+            <div class="close">
+              <div (click)="onClear()" class="clear"> 
+                <svg style="margin-right: 10px;" width="10" height="10" viewBox="0 0 10 10" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z"
+                    fill="#494949" />
+                </svg>
+                {{"RESET_SELECTION" | translate}}</div>
+            </div>
+            <div class="next">
+              <button class="btn next-btn" [disabled]="selectedUsage.length <= 0" (click)="onNext()">{{"SAVE" | translate }}</button>
+            </div>
+          </div>
+    </div>
+</div>
