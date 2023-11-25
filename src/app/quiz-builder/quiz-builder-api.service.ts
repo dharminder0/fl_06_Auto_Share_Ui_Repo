@@ -1304,7 +1304,7 @@ export class QuizBuilderApiService {
    * hit api to update Answer type
    */
   updateAnswerType(qId, ansType, answerStructureType, isWhatsappEnable,IsMultiRating, minAnswer?, maxAnswer?){
-    IsMultiRating = (ansType == '11' || ansType == '12') ? IsMultiRating : false;
+    IsMultiRating = (ansType == '10' || ansType == '11' || ansType == '12') ? IsMultiRating : false;
     return this.http.post(`v1/Quiz/UpdateAnswerType?QuestionId=${qId}&AnswerType=${ansType}&MinAnswer=${minAnswer}&MaxAnswer=${maxAnswer}&AnswerStructureType=${answerStructureType}&isWhatsappEnable=${isWhatsappEnable}&isMultiRating=${IsMultiRating}`, {}).map((response) => {
       return response['data'];
     })
@@ -1430,7 +1430,10 @@ export class QuizBuilderApiService {
       return response;
     });
   }
-
+  getWhastappHsmTemplate2(paramObj: any): Observable<any>{
+    let url = `v1/WhatsApp/HSMTemplateDetails?clientCode=${paramObj.clientCode}&moduleType=${paramObj.moduleType}&languageCode=${paramObj.languageCode}&templateId=${paramObj.templateId}`;  
+    return this.http.get(url).map((response) => { return response});
+  }
   getAllLanguageList(type: string): Observable<any> {
     let url = `v1/WhatsApp/GetLanguages?templateType=${type}`
     return this.http.get(url).map((response) => { return response});
@@ -1487,5 +1490,23 @@ export class QuizBuilderApiService {
     return this.http.get(url).map((response) => {
       return response;
     });
+  }
+
+  getMappedSfFieldsList(): Observable<any> {
+    let clientCode: string = this.sharedService.getCookie("clientCode");
+    // let companyCode:string = this.getCookie('clientCode');
+    let object: string = "Vacancy,Lead,Contact";
+    let Url = `v1/MasterList/${clientCode}/variablefields?objects=${object}`;
+    return this.http.get(Url).map((data) => {return data});
+  }
+
+  deleteTestAutomationVerifyRequest(queryParams:any): Observable<any> {
+    let clientCode: string = this.sharedService.getCookie("clientCode");
+    let Url = `v1/Automation/DeleteVerifyRequestAutomation?requestId=${queryParams.requestIds}&objectType=${queryParams.objectType}&clientCode=${clientCode}`;
+    return this.http.post(Url,{}).map((data) => {return data});
+  }
+
+  getDateFieldSyncSettings(): Observable<any>{
+    return this.http.get(`Fields/SyncSetting`).map((data) => {return data});
   }
 }

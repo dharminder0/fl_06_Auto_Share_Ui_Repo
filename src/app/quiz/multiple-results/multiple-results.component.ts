@@ -38,6 +38,7 @@ export class MultipleResultsComponent implements OnInit ,OnDestroy, AfterViewIni
   public isMobileView:boolean=false;
   public isStartQuiz:boolean=false;
   public leftSlide:boolean=false;
+  public isHoveredOnButton = false;
 
   constructor(private renderer: Renderer2,
   private route: ActivatedRoute,

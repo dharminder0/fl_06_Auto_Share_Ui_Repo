@@ -22,6 +22,8 @@ import { MessageVariablePopupComponent } from "./components/message-variable-pop
 import { CommonService } from "./services/common.service";
 import { WhatsappTemplateNewVersionService } from "./services/whatsapp-template-new-version";
 import { DomSanitizer } from "@angular/platform-browser";
+import { TestAutomationComponent } from './components/test-automation/test-automation.component';
+import { WhatsappHsmComponent } from './components/whatsapp-hsm/whatsapp-hsm.component';
 
 @Pipe({ name: "safeUrl" })
 export class SafeUrlPipe {
@@ -29,6 +31,15 @@ export class SafeUrlPipe {
 
   transform(url) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+}
+@Pipe({ name: "safeHtml" })
+export class SafePipe {
+  constructor(private sanitizer: DomSanitizer) {}
+
+  transform(style) {
+    //@ READ MORE at https://medium.com/@swarnakishore/angular-safe-pipe-implementation-to-bypass-domsanitizer-stripping-out-content-c1bf0f1cc36b
+    return this.sanitizer.bypassSecurityTrustHtml(style);
   }
 }
 
@@ -43,7 +54,10 @@ export class SafeUrlPipe {
         RecordingComponent,
         VideoRecordingComponent,
         MessageVariablePopupComponent,
-        SafeUrlPipe
+        SafeUrlPipe,
+        TestAutomationComponent,
+        WhatsappHsmComponent,
+        SafePipe
     ],
     imports: [
         CommonModule,
@@ -55,7 +69,7 @@ export class SafeUrlPipe {
         NgxDaterangepickerMd.forRoot()
     ],
     providers: [SharedService,DebounceService,ShareConfigService,LocaleService,VariablePopupService,AvailablestepsService,CommonService,WhatsappTemplateNewVersionService],
-    exports: [AppSearchComponent,SuggestionPanelComponent,MediaLibraryComponent,DaterangepickerComponent,RecordingComponent,VideoRecordingComponent,testPipe,MessageVariablePopupComponent]
+    exports: [AppSearchComponent,SuggestionPanelComponent,MediaLibraryComponent,DaterangepickerComponent,RecordingComponent,VideoRecordingComponent,testPipe,MessageVariablePopupComponent,TestAutomationComponent,WhatsappHsmComponent]
 })
 
 export class SharedModule{}

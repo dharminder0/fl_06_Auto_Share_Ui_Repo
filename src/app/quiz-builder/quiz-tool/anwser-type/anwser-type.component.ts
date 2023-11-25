@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserInfoService } from '../../../shared/services/security.service';
 import { CommonService } from '../../../shared/services/common.service';
-import { answerTypeEnum, QuizAnswerStructureType, usageTypeEnum } from '../commonEnum';
+import { answerTypeEnum, QuizAnswerStructureType, quizTypeEnum, usageTypeEnum } from '../commonEnum';
 import { DynamicMediaReplaceMentsService } from '../dynamic-media-replacement';
 import { QuestionHelperUtil } from '../questions/question-helper-util';
 
@@ -26,9 +26,13 @@ export class AnwserTypeComponent implements OnInit {
     public get quizAnswerStructureType(): typeof QuizAnswerStructureType {
         return QuizAnswerStructureType;
     }
+    public get QuizType(): typeof quizTypeEnum {
+        return quizTypeEnum;
+    }
     public preAnswerType:any;
     public userInfo:any = {};
     public enabledPermissions:any = {};
+    public isMultiOptionsEnableFor:any = {};
 
     constructor( 
         private route: ActivatedRoute,
@@ -40,7 +44,8 @@ export class AnwserTypeComponent implements OnInit {
         this.enabledPermissions = JSON.parse(JSON.stringify(this.userInfoService.userPermissions));
     }
 
-    ngOnInit(){
+    ngOnInit(){ 
+        this.isMultiOptionsEnableFor[this.selectedAnswerType] = this.isMultiRating;
         this.preAnswerType = this.selectedAnswerType;
         if(this.route.snapshot.data["quizData"]){
             this.quizData = this.route.snapshot.data["quizData"];
@@ -84,7 +89,8 @@ export class AnwserTypeComponent implements OnInit {
                "awnserType" : this.selectedAnswerType,
                "questionId" : this.questionId,
                "answerStructureType" : this.isWhatsappEnable ? this.answerStructureType : QuizAnswerStructureType.default,
-               "isEnableMultiRating" : this.isMultiRating
+            //    "isEnableMultiRating" : this.isMultiRating
+               "isEnableMultiRating" : this.isMultiOptionsEnableFor[this.selectedAnswerType]
             };
             this.preAnswerType = this.selectedAnswerType;
             this.dynamicService.changeAnswerSubmission();
@@ -129,15 +135,18 @@ export class AnwserTypeComponent implements OnInit {
 
     onAnswerTypeChange(){
         if(this.selectedAnswerType != this.preAnswerType){
+            this.isMultiOptionsEnableFor[this.selectedAnswerType] = false;
             this.isAnyChange = true;
         }else{
+            this.isMultiOptionsEnableFor[this.preAnswerType] = this.isMultiRating;
             this.isAnyChange = false;
         }
         this.commonService.isAnswerTypeChange = this.isAnyChange;  
     }
 
-    onMultiRatingOption(data){
-       this.isMultiRating = !data;
+    onMultiRatingOption(){
+    //    this.isMultiRating = !data;
+    this.isMultiOptionsEnableFor[this.selectedAnswerType] = !this.isMultiOptionsEnableFor[this.selectedAnswerType]
     }
 
 }

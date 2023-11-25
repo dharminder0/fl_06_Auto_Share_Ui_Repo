@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { QuizBuilderDataService } from '../../../quiz-builder-data.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { QuizBuilderApiService } from '../../../quiz-builder-api.service';
 import { QuizzToolHelper } from '../../quiz-tool-helper.service';
 import { SharedService } from '../../../../shared/services/shared.service';
@@ -10,11 +9,42 @@ import { rightMenuEnum } from '../../rightmenu-enum/rightMenuEnum';
 import { VariablePopupService } from '../../../../shared/services/variable-popup.service';
 import { UserInfoService } from '../../../../shared/services/security.service';
 import { answerTypeEnum } from '../../commonEnum';
+import { MomentDateTimeAdapter } from 'ng-pick-datetime-moment';
+
+
+import * as _moment from 'moment';
+import {
+  DateTimeAdapter,
+  OWL_DATE_TIME_FORMATS,
+  OWL_DATE_TIME_LOCALE,
+} from 'ng-pick-datetime';
+
+const moment = (_moment as any).default ? (_moment as any).default : _moment; 
+export const MY_CUSTOM_FORMATS = {
+  parseInput: 'DD/MM/YYYY',
+  fullPickerInput: 'DD/MM/YYYY hh:mm:ss a',
+  datePickerInput: 'DD/MM/YYYY',
+  timePickerInput: 'hh:mm:ss a',
+  monthYearLabel: 'MMM-YYYY',
+  dateA11yLabel: 'LLL',
+  monthYearA11yLabel: 'MMMM-YYYY',
+};
+
+
 
 @Component({
   selector: 'app-set-tags',
   templateUrl: './set-tags.component.html',
-  styleUrls: ['./set-tags.component.css']
+  styleUrls: ['./set-tags.component.css'],
+  providers: [
+    {
+      provide: DateTimeAdapter,
+      useClass: MomentDateTimeAdapter,
+      deps: [OWL_DATE_TIME_LOCALE],
+    },
+
+    { provide: OWL_DATE_TIME_FORMATS, useValue: MY_CUSTOM_FORMATS },
+  ],
 })
 export class SetTagsComponent implements OnInit {
 
@@ -71,8 +101,21 @@ export class SetTagsComponent implements OnInit {
   public selectedAnswerId:any;
   public enabledPermissions:any = {};
   public userInfo:any = {};
-  public isPickListValueMatch:boolean = false;
-
+  public isPickListValueMatch:boolean = true;
+  public renderMessageVariableComponent: boolean = false;
+  public isWhatsappEnable:boolean;
+  public isDateValueValid:boolean = true;
+  public isValueFound:boolean = false;
+  public fieldValueCheck:boolean = false;
+  /**
+   * @params : 'AnswerComment'/'Answer'
+   */
+  public mappingFor:string = 'Answer';
+  public fieldObject:any = {};
+  public dateFieldsSyncSettingListOrg:Array<any> = [];
+  public dateFieldsSyncSettingList:Array<any> = [];
+  public isDateMappingValueValid:boolean;
+  public isFieldObjectMakingInProgress: boolean = true;
 
   constructor(
     private quizBuilderDataService: QuizBuilderDataService,
@@ -90,28 +133,42 @@ export class SetTagsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.renderMessageVariableComponent = true;
     if(this.questionData.AnswerList){
       this.questionData.AnswerList.forEach(element => {
         if(element.AnswerText){
           element.AnswerText = this.sharedService.sanitizeData(element.AnswerText);
         }
+        // if(this.mappingFor == 'AnswerComment' && [answerTypeEnum.ratingEmoji,answerTypeEnum.ratingStar,answerTypeEnum.nps].includes(this.questionData.AnswerType)){
+        //   element.AnswerText = this.userInfo.ActiveLanguage == 'en-US' ? 'Type your explanation here...' : 'Type hier je toelichting...';
+        // }
         if(element.AnswerId == this.selectedAnswerId){
           this.selectedAnswer = element;
         }
-          this.answerObjectModel[element.AnswerId] = {};
-          this.answerObjectModel[element.AnswerId].AnswerText = element.AnswerText;
-          if(element.ObjectFieldsInAnswer && Object.keys(element.ObjectFieldsInAnswer).length > 0){
-            this.answerObjectModel[element.AnswerId].ObjectName = element.ObjectFieldsInAnswer.ObjectName;
-            this.answerObjectModel[element.AnswerId].FieldName = element.ObjectFieldsInAnswer.FieldName;
-            this.answerObjectModel[element.AnswerId].AnswerText = element.ObjectFieldsInAnswer.Value;
-            this.answerObjectModel[element.AnswerId].IsExternalSync = element.ObjectFieldsInAnswer.IsExternalSync;
-            if(this.quizzToolHelper.clientAtsFieldsList[`${element.ObjectFieldsInAnswer.ObjectName}.${element.ObjectFieldsInAnswer.FieldName}`]){
-              this.answerObjectModel[element.AnswerId].FieldLabel = this.quizzToolHelper.clientAtsFieldsList[`${element.ObjectFieldsInAnswer.ObjectName}.${element.ObjectFieldsInAnswer.FieldName}`];
-            }
-            else{
-              this.answerObjectModel[element.AnswerId].FieldLabel = this.answerObjectModel[element.AnswerId].FieldName;
-            }    
+        this.answerObjectModel[element.AnswerId] = {};
+        this.answerObjectModel[element.AnswerId].AnswerText = element.AnswerText;
+        this.answerObjectModel[element.AnswerId].placeholder = "Provide some value...";
+        if([answerTypeEnum.ratingEmoji,answerTypeEnum.ratingStar,answerTypeEnum.nps,answerTypeEnum.smallText,answerTypeEnum.largeText].includes(this.questionData.AnswerType)){
+          this.answerObjectModel[element.AnswerId].AnswerText = '';
+          if(this.mappingFor == 'AnswerComment'){
+            this.answerObjectModel[element.AnswerId].placeholder = this.userInfo.ActiveLanguage == 'en-US' ? 'Type your explanation here...' : 'Type hier je toelichting...';
+          }else{
+            this.answerObjectModel[element.AnswerId].placeholder = element.AnswerText;
+          }
         }
+        if(element[`ObjectFieldsIn${this.mappingFor}`] && Object.keys(element[`ObjectFieldsIn${this.mappingFor}`]).length > 0){
+          this.answerObjectModel[element.AnswerId].ObjectName = element[`ObjectFieldsIn${this.mappingFor}`].ObjectName;
+          this.answerObjectModel[element.AnswerId].FieldName = element[`ObjectFieldsIn${this.mappingFor}`].FieldName;
+          this.answerObjectModel[element.AnswerId].AnswerText = element[`ObjectFieldsIn${this.mappingFor}`].Value;
+          this.answerObjectModel[element.AnswerId].IsExternalSync = element[`ObjectFieldsIn${this.mappingFor}`].IsExternalSync;
+          this.answerObjectModel[element.AnswerId].IsCommentMapped = element[`ObjectFieldsIn${this.mappingFor}`].IsCommentMapped;
+          if(this.quizzToolHelper.clientAtsFieldsList[`${element[`ObjectFieldsIn${this.mappingFor}`].ObjectName}.${element[`ObjectFieldsIn${this.mappingFor}`].FieldName}`]){
+            this.answerObjectModel[element.AnswerId].FieldLabel = this.quizzToolHelper.clientAtsFieldsList[`${element[`ObjectFieldsIn${this.mappingFor}`].ObjectName}.${element[`ObjectFieldsIn${this.mappingFor}`].FieldName}`];
+          }
+          else{
+            this.answerObjectModel[element.AnswerId].FieldLabel = this.answerObjectModel[element.AnswerId].FieldName;
+          }
+        }        
       });
     }
     if(this.questionData && this.questionData.AnswerType){
@@ -141,42 +198,48 @@ export class SetTagsComponent implements OnInit {
      * *categories
      */
     this.initializeCategoryModelForAllAnswer();
-    
-    if(this.quizzToolHelper.clientObjectFieldsList && this.quizzToolHelper.clientObjectFieldsList.length > 0){
-      this.quizzToolHelper.clientObjectFieldsList.map((currObj:any) => {
-        this.objectMappingList.push({"label":currObj.ObjectDisplayName,"value":currObj.ObjectName});
-        this.fieldMappingList[currObj.ObjectName] = [];
-        
-        if(currObj.Fields && currObj.Fields.length > 0){
-          currObj.Fields.map((fieldObj:any) => {
-            this.fieldMappingList[currObj.ObjectName].push({"label":fieldObj.DisplayName,"value":fieldObj.Name});
-            this.fieldList[`${currObj.ObjectName}${fieldObj.Name}`] = [];
-            if(fieldObj.FieldListValues){
-              fieldObj.FieldListValues.map((listValue:any)=>{
-                this.fieldList[`${currObj.ObjectName}${fieldObj.Name}`].push({"label":listValue.Label,"value":listValue.Value});
-              })
-            }
-          });
-        }
-      },this);
-    }
-    this.getMatchValueIsPickList();
+    this.dateFieldsSyncSettingListOrg = this.quizzToolHelper.dateFieldsSyncSettingList;
+    this.dateFieldsSyncSettingList = JSON.parse(JSON.stringify(this.dateFieldsSyncSettingListOrg));
+
+    this.checkForClientObjectList();
   }
-  
+
   updateFieldMappingValue(){
+    this.fieldValueCheck = false;
+    this.isValueFound = true;
+    let fieldType: any = this.fieldObject[  `${this.answerObjectModel[ this.selectedAnswer.AnswerId ].ObjectName}${this.answerObjectModel[ this.selectedAnswer.AnswerId ].FieldName}` ].DataType;
+    if(fieldType && fieldType.toLowerCase().includes('date')){
+      let dateSettingTypeIndex = this.answerObjectModel[this.selectedAnswer.AnswerId].dateSettingTypeIndex;
+      if((dateSettingTypeIndex || dateSettingTypeIndex == 0) && this.dateFieldsSyncSettingList[dateSettingTypeIndex].FieldOptionTitle.toLowerCase().includes('fixeddate')){
+        let dateFieldsSyncSettingObj = this.dateFieldsSyncSettingList[dateSettingTypeIndex];
+        if(dateFieldsSyncSettingObj.FieldOptionTitle.toLowerCase().includes('fixeddate')){
+          if(dateFieldsSyncSettingObj.FieldType.toLowerCase() =='date'){
+            this.fieldMappingValue = moment(this.fieldMappingValue).format('DD/MM/YYYY');            
+          }
+          if(dateFieldsSyncSettingObj.FieldType.toLowerCase() == 'datetime'){
+            this.fieldMappingValue = moment(this.fieldMappingValue).format('DD/MM/YYYY h:mm:ss a');
+          }
+        }
+      }
+    }
     this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText = this.fieldMappingValue;
     this.getMatchValueIsPickList();
+    this.updateFieldMappingValueStore(this.fieldMappingValue);
+    this.editDate(true);
     this.resetFieldMappingValue();
   }
 
-  getMatchValueIsPickList(){
+  getMatchValueIsPickList(fieldMappingValue?:any){
+    if(!fieldMappingValue){
+      fieldMappingValue = this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText;
+    }
     this.isPickListValueMatch = false;
-    if(this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName && this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName && 
-      this.selectedAnswerType >=0 && this.selectedAnswerType <= 4 &&
+    if(fieldMappingValue && this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName && this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName && 
+      (this.selectedAnswerType >=0 && this.selectedAnswerType <= 4 || this.mappingFor == 'AnswerComment' && this.selectedAnswerType >=10 && this.selectedAnswerType <= 12) &&
       this.fieldList[`${this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName}${this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName}`] &&
       this.fieldList[`${this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName}${this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName}`].length > 0){
         this.fieldList[`${this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName}${this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName}`].map(field => {
-          if(field.value ==  this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText){
+          if(field.value ==  fieldMappingValue){
             this.isPickListValueMatch = true;
           }
         });
@@ -188,13 +251,20 @@ export class SetTagsComponent implements OnInit {
   resetFieldMappingValue(){
     this.editFieldMappingValue = false;
     this.fieldMappingValue = '';
+    this.answerObjectModel[this.selectedAnswer.AnswerId].dateSettingTypeIndex = undefined;
+    let fieldType: any = this.fieldObject[  `${this.answerObjectModel[ this.selectedAnswer.AnswerId ].ObjectName}${this.answerObjectModel[ this.selectedAnswer.AnswerId ].FieldName}` ].DataType;
+    if(fieldType && fieldType.toLowerCase().includes('date')){
+      this.isDateValueValid = !this.isValueFound ? false : true; 
+    }
   }
 
   removeAnswerTag(selectedAnsId){
     this.answerObjectModel[selectedAnsId].ObjectName = null;
     this.answerObjectModel[selectedAnsId].FieldName = null;
     this.answerObjectModel[selectedAnsId].AnswerText = '';
+    this.answerObjectModel[selectedAnsId].FieldLabel = null;
     this.isPickListValueMatch = true;
+    this.isDateValueValid = true;
   }
 
   /**
@@ -263,7 +333,7 @@ export class SetTagsComponent implements OnInit {
    * @param answer : A single answer instance
    */
   public chooseAnswer(answer) {
-    if(!this.isPickListValueMatch){
+    if(!this.isPickListValueMatch && (this.selectedAnswer && this.answerObjectModel[this.selectedAnswer.AnswerId].IsExternalSync)){
       return false;
     }
     this.selectedAnswer = answer;
@@ -271,17 +341,25 @@ export class SetTagsComponent implements OnInit {
       this.answerObjectModel[this.selectedAnswer.AnswerId] = {};
       this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText = this.selectedAnswer.AnswerText;
       
-      if(this.selectedAnswer.ObjectFieldsInAnswer && Object.keys(this.selectedAnswer.ObjectFieldsInAnswer).length > 0){
-        this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName = this.selectedAnswer.ObjectFieldsInAnswer.ObjectName;
-        this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName = this.selectedAnswer.ObjectFieldsInAnswer.FieldName;
-        this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText = this.selectedAnswer.ObjectFieldsInAnswer.Value;
-        this.answerObjectModel[this.selectedAnswer.AnswerId].IsExternalSync = this.selectedAnswer.ObjectFieldsInAnswer.IsExternalSync;
+      if(this.selectedAnswer[`ObjectFieldsIn${this.mappingFor}`] && Object.keys(this.selectedAnswer[`ObjectFieldsIn${this.mappingFor}`]).length > 0){
+        this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName = this.selectedAnswer[`ObjectFieldsIn${this.mappingFor}`].ObjectName;
+        this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName = this.selectedAnswer[`ObjectFieldsIn${this.mappingFor}`].FieldName;
+        this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText = this.selectedAnswer[`ObjectFieldsIn${this.mappingFor}`].Value;
+        this.answerObjectModel[this.selectedAnswer.AnswerId].IsExternalSync = this.selectedAnswer[`ObjectFieldsIn${this.mappingFor}`].IsExternalSync;
       }
     }
+
+    let fieldType: any = this.fieldObject[  `${this.answerObjectModel[ this.selectedAnswer.AnswerId ].ObjectName}${this.answerObjectModel[ this.selectedAnswer.AnswerId ].FieldName}` ].DataType;
+    if(fieldType && fieldType.toLowerCase().includes('date')){
+      this.filterDateSynSettingList()
+    }
+
+    this.getMatchValueIsPickList();
     this.resetFieldMappingValue();
   }
 
   saveAnswerSettings(){
+    this.renderMessageVariableComponent = false;
     if(this.selectedAnswerType >=0 && this.selectedAnswerType <= 4){
       this.saveTagDetails();
     }
@@ -335,24 +413,28 @@ export class SetTagsComponent implements OnInit {
 
   saveObjectMapping(){
     let bodyObj:any[] = [];
-
+    
     for (var currObj in this.answerObjectModel){
       //if(this.answerObjectModel[currObj].ObjectName && this.answerObjectModel[currObj].FieldName){
-        if(this.selectedAnswerType != answerTypeEnum.availability && this.selectedAnswerType != answerTypeEnum.ratingEmoji && this.selectedAnswerType != answerTypeEnum.ratingStar){
+        if(this.selectedAnswerType != answerTypeEnum.availability && this.selectedAnswerType != answerTypeEnum.ratingEmoji && this.selectedAnswerType != answerTypeEnum.ratingStar && this.selectedAnswerType != answerTypeEnum.nps){
           bodyObj.push({
             "AnswerId": currObj,
             "ObjectName": this.answerObjectModel[currObj].ObjectName,
             "FieldName": this.answerObjectModel[currObj].FieldName,
             "Value": (this.selectedAnswerType >=0 && this.selectedAnswerType <= 4) ? this.answerObjectModel[currObj].AnswerText ? this.answerObjectModel[currObj].AnswerText : "" : '',
-            "IsExternalSync":  this.answerObjectModel[currObj].IsExternalSync ? this.answerObjectModel[currObj].IsExternalSync : false
+            "IsExternalSync":  this.answerObjectModel[currObj].IsExternalSync ? this.answerObjectModel[currObj].IsExternalSync : false,
+            "IsCommentMapped":  false
           });
         }else{
           bodyObj.push({
             "AnswerId": currObj,
             "ObjectName": this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName,
             "FieldName": this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName,
-            "Value": "",
-            "IsExternalSync": this.answerObjectModel[this.selectedAnswer.AnswerId].IsExternalSync
+            "Value": (this.selectedAnswerType >=10 && this.selectedAnswerType <= 12) ? this.answerObjectModel[currObj].AnswerText ? this.answerObjectModel[currObj].AnswerText : "" : '',
+            "IsExternalSync": this.answerObjectModel[this.selectedAnswer.AnswerId].IsExternalSync,
+            "IsCommentMapped": [answerTypeEnum.ratingEmoji, answerTypeEnum.ratingStar, answerTypeEnum.nps].includes(this.selectedAnswerType) && this.mappingFor == 'AnswerComment'
+                                ? true
+                                : false
           });
         }
 
@@ -401,6 +483,7 @@ export class SetTagsComponent implements OnInit {
   }
 
   onClose(){
+    this.renderMessageVariableComponent = false;
     if(this.dynamicMediaReplaceService.isOpenEnableMediaSetiing.isOpen == true){
       this.dynamicMediaReplaceService.isOpenEnableMediaSetiing={
           "isOpen":false,
@@ -411,6 +494,7 @@ export class SetTagsComponent implements OnInit {
   }
 
   openVariablePopup(){
+    this.answerObjectModel[this.selectedAnswer.AnswerId].dateSettingTypeIndex = undefined;
     let variablePopupPayload: any = {};
     variablePopupPayload.listOfUsedVariableObj = [];
     if(this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName && this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName){
@@ -423,21 +507,39 @@ export class SetTagsComponent implements OnInit {
     }
     variablePopupPayload.allowedVariblesFor = 'tag'
     variablePopupPayload.isOpenPopup = true;
+    variablePopupPayload.fetchDspName = true;
 
     this.variablePopupService.variablePopupPayload = variablePopupPayload;
     this.variablePopupService.changeInVariablePopupPayload();
   }
 
   UpdatePopUpStatus(e){
+    this.isDateValueValid = true;
     let listOfUsedVariableObj = this.variablePopupService.listOfUsedVariableObj;
     if(listOfUsedVariableObj && listOfUsedVariableObj.length > 0){
       this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName =  listOfUsedVariableObj[0].formula ? listOfUsedVariableObj[0].formula.split('.')[0].replace("%","") : null;
       this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName = listOfUsedVariableObj[0].formula ? listOfUsedVariableObj[0].formula.split('.')[1].replace("%",""): null;
-      this.answerObjectModel[this.selectedAnswer.AnswerId].FieldLabel = listOfUsedVariableObj[0].title ? listOfUsedVariableObj[0].title.split('.')[1]: null;
+      this.answerObjectModel[this.selectedAnswer.AnswerId].FieldLabel = listOfUsedVariableObj[0].title ? (listOfUsedVariableObj[0].title.split('.')[1] ? listOfUsedVariableObj[0].title.split('.')[1] : listOfUsedVariableObj[0].title) : null;
       this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText = this.selectedAnswer.AnswerText;
+
+
+      if(this.fieldObject[this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName+this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName].listValues && 
+        this.fieldObject[this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName+this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName].listValues.length > 0){
+        this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText = '';    
+      }
+
+      if(this.fieldObject[this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName+this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName].DataType.toLowerCase().includes('date')){
+        this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText = '';
+        this.filterDateSynSettingList();      
+      }
+
+      if([answerTypeEnum.ratingEmoji,answerTypeEnum.ratingStar,answerTypeEnum.nps,answerTypeEnum.smallText,answerTypeEnum.largeText].includes(this.questionData.AnswerType)){
+        this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText = '';        
+      }
+      this.fieldValueCheck = true;
       this.getMatchValueIsPickList();
       if(this.selectedAnswerType == answerTypeEnum.singleSelect || this.selectedAnswerType == answerTypeEnum.multiSelect){
-        this.presetTags();
+        this.presetTags();       
       }
     }
     
@@ -446,13 +548,163 @@ export class SetTagsComponent implements OnInit {
   presetTags(){
      if( this.answerObjectModel && Object.keys(this.answerObjectModel).length > 0){     
          for(let answer in this.answerObjectModel){
-                if(!this.answerObjectModel[answer].hasOwnProperty('FieldName') && !this.answerObjectModel[answer].hasOwnProperty('ObjectName')){
+                if(!this.answerObjectModel[answer].hasOwnProperty('FieldName') && !this.answerObjectModel[answer].hasOwnProperty('ObjectName') &&
+                !this.answerObjectModel[answer].hasOwnProperty('FieldLabel')){
                      this.answerObjectModel[answer].FieldName = this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName;
+                     this.answerObjectModel[answer].FieldLabel = this.answerObjectModel[this.selectedAnswer.AnswerId].FieldLabel;
                      this.answerObjectModel[answer].ObjectName =  this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName;
-                     this.answerObjectModel[answer].AnswerText = this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText;
+                     this.answerObjectModel[answer].AnswerText = this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText;                    
                 }
          }
      }
   }
 
+  updateFieldMappingValueStore(mappingValue:string){
+    if(this.mappingFor == 'AnswerComment' && this.selectedAnswerType >=10 && this.selectedAnswerType <= 12){      
+      Object.keys(this.answerObjectModel).map((data:any)=>{      
+        this.answerObjectModel[data].AnswerText = mappingValue;
+      });
+    }
+  }
+
+  editDate(errorCheck?){
+    this.editFieldMappingValue = !errorCheck ? true : false; 
+    // this.fieldMappingValue = this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText;
+    let tempFieldMappingValue = this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText;
+    let dateOnlyRegX ='^[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}$';
+    let dateTimeRegX ='^[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\s[0-9]{1,2}\\:[0-9]{2}\\:[0-9]{1,2}\\s(am|AM|pm|PM)$';
+    let isDateOnlyMatched = (new RegExp(dateOnlyRegX,"g")).test(tempFieldMappingValue);
+    let isDateTimeMatched = (new RegExp(dateTimeRegX,"g")).test(tempFieldMappingValue);
+
+    this.answerObjectModel[this.selectedAnswer.AnswerId].dateSettingTypeIndex = undefined;
+    let fieldType: any =  (this.answerObjectModel[ this.selectedAnswer.AnswerId ].ObjectName && this.answerObjectModel[ this.selectedAnswer.AnswerId ].FieldName) ? this.fieldObject[  `${this.answerObjectModel[ this.selectedAnswer.AnswerId ].ObjectName}${this.answerObjectModel[ this.selectedAnswer.AnswerId ].FieldName}` ].DataType : '';
+    if(fieldType && fieldType.toLowerCase().includes('date')){
+      this.filterDateSynSettingList()
+      this.dateFieldsSyncSettingList.every(item => {
+        if(fieldType == item.FieldType){
+          if(tempFieldMappingValue && item.Fields && item.Fields.includes(tempFieldMappingValue)){
+            this.answerObjectModel[this.selectedAnswer.AnswerId].dateSettingTypeIndex = item.value;
+            this.isValueFound = true;
+            return false;
+          }else{
+            if(item.FieldOptionTitle.toLowerCase().includes('fixeddate') && isDateOnlyMatched){
+              this.answerObjectModel[this.selectedAnswer.AnswerId].dateSettingTypeIndex = item.value;
+              tempFieldMappingValue = moment(tempFieldMappingValue,"DD/MM/YYYY");
+              this.isValueFound = true;
+              return false;
+            }
+            if(item.FieldOptionTitle.toLowerCase().includes('fixeddatetime') && isDateTimeMatched){
+              this.answerObjectModel[this.selectedAnswer.AnswerId].dateSettingTypeIndex = item.value;
+              tempFieldMappingValue = moment(tempFieldMappingValue,"DD/MM/YYYY h:mm:ss a");
+              this.isValueFound = true;
+              return false;
+            }
+          }
+        }else{
+          this.isDateValueValid = false;
+        }
+        return true;
+      });
+    }
+    if(this.isValueFound){
+      this.fieldMappingValue = tempFieldMappingValue;
+      this.isDateValueValid = true;
+    }
+    // else{
+    //   this.isDateValueValid = false;
+    // }
+  }
+
+  validateDateFieldMappingValueFor(dateType:string){  
+    let reGex ='^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$'
+    let regx = new RegExp(reGex,"g");
+    let isPatternMatched = regx.test(this.fieldMappingValue);
+
+    if(dateType=="automated"){
+      this.isDateMappingValueValid = this.fieldMappingValue? true : false;
+    }
+    else if(dateType =="fixed"){
+      if(this.fieldMappingValue && isPatternMatched){
+        var params =this.fieldMappingValue.split('/');
+
+        var isDateValid = (1 <= parseInt(params[0]) && parseInt(params[0]) <= 31) ? true : false;
+
+        var isMonthValid = (1 <= parseInt(params[1]) && parseInt(params[1]) <= 12) ? true : false;
+
+        var isYearValid = (1 <= parseInt(params[2]) && parseInt(params[2]) <= 9999) ? true : false;
+
+        if(isDateValid && isMonthValid && isYearValid){
+            this.isDateMappingValueValid=true;
+        }else{
+        this.isDateMappingValueValid= false;
+        }
+      } else{
+        this.isDateMappingValueValid=false;
+      }
+    }
+  }
+
+  checkForClientObjectList(){
+    let intervalId;
+    const getClientObjectList = () =>{
+      if(this.quizzToolHelper.clientObjectFieldsList && this.quizzToolHelper.clientObjectFieldsList.length > 0){
+        this.isFieldObjectMakingInProgress = true;
+        this.quizzToolHelper.clientObjectFieldsList.map((currObj:any) => {
+          this.objectMappingList.push({"label":currObj.ObjectDisplayName,"value":currObj.ObjectName});
+          this.fieldMappingList[currObj.ObjectName] = [];
+          
+          if(currObj.Fields && currObj.Fields.length > 0){
+            currObj.Fields.map((fieldObj:any) => {
+              this.fieldMappingList[currObj.ObjectName].push({"label":fieldObj.DisplayName,"value":fieldObj.Name});
+              this.fieldList[`${currObj.ObjectName}${fieldObj.Name}`] = [];
+              if(fieldObj.FieldListValues){
+                fieldObj.FieldListValues.map((listValue:any)=>{
+                  this.fieldList[`${currObj.ObjectName}${fieldObj.Name}`].push({"label":listValue.Label,"value":listValue.Value});
+                })
+              }
+              this.fieldObject[`${currObj.ObjectName}${fieldObj.Name}`] = {};
+              this.fieldObject[`${currObj.ObjectName}${fieldObj.Name}`] = fieldObj;
+              this.fieldObject[`${currObj.ObjectName}${fieldObj.Name}`].listValues = this.fieldList[`${currObj.ObjectName}${fieldObj.Name}`];
+            });
+          }
+        },this);
+        this.isFieldObjectMakingInProgress = false; 
+        this.getMatchValueIsPickList();
+        this.filterDateSynSettingList(); 
+        this.editDate(true);
+        clearInterval(intervalId);
+      }
+    }
+    intervalId = setInterval(getClientObjectList, 100);
+  }
+
+  filterDateSynSettingList(){
+    let tempIndex:number = 0;
+    this.dateFieldsSyncSettingList = this.dateFieldsSyncSettingListOrg.filter(item => {
+      if(this.fieldObject[this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName+this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName] && 
+          item.FieldType.toLowerCase() == this.fieldObject[this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName+this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName].DataType.toLowerCase()
+      ){
+        let temp = tempIndex++;
+        item.value = temp.toString();
+        return true;
+      }else{
+        return false;
+      }
+    }); 
+  }
+
+  checkAndResetPushValue(){
+    if(this.fieldObject[this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName+this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName] && 
+        (this.fieldObject[this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName+this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName].listValues.length > 0 ||
+          this.fieldObject[this.answerObjectModel[this.selectedAnswer.AnswerId].ObjectName+this.answerObjectModel[this.selectedAnswer.AnswerId].FieldName].DataType.toLowerCase().includes('date')
+        )
+    ){
+      this.answerObjectModel[this.selectedAnswer.AnswerId].AnswerText = '';
+    }
+  }
+
+  CheckEditValue(){
+    this.fieldMappingValue = "";
+    this.fieldValueCheck = true;
+  }
 }

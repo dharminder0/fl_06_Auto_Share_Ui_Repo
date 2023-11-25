@@ -42,7 +42,7 @@
                         <img class="explanation-icon" src="assets/layouts/img/explanation-icon.png" />
                     </div>
                     <div class="initial-text font-type sub-text" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{SubmittedAnswer.CorrectAnswerDescription}}</div>
-                    <a *ngIf="!isMobileView" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}" class="btn next-btn ellipsiss"
+                    <a *ngIf="!isMobileView" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor}" class="btn next-btn ellipsiss"
                         (click)="next()">{{SubmittedAnswer.AliasTextForNextButton ? SubmittedAnswer.AliasTextForNextButton : "NEXT" | translate}}</a>
                 </div>
                 <ng-template #correctIncorrectAnswer>
@@ -127,7 +127,7 @@
                         <img class="explanation-icon" src="assets/layouts/img/explanation-icon.png" />
                     </div>
                     <div class="initial-text font-type sub-text" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">{{SubmittedAnswer.CorrectAnswerDescription}}</div>
-                    <a *ngIf="!isMobileView" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}" class="btn next-btn ellipsiss"
+                    <a *ngIf="!isMobileView" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor}" class="btn next-btn ellipsiss"
                         (click)="next()">{{SubmittedAnswer.AliasTextForNextButton ? SubmittedAnswer.AliasTextForNextButton : "NEXT" | translate}}</a>
                 </ng-template>
             </div>
@@ -145,12 +145,12 @@
 
     </div>
     <div *ngIf="isMobileView" class="next-btn-container" style="position: relative;">
-        <a [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}" class="btn next-btn ellipsiss mobile-next-btn" style="margin-top: 0!important;"
+        <a (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor}" class="btn next-btn ellipsiss mobile-next-btn" style="margin-top: 0!important;"
             (click)="next()">{{SubmittedAnswer.AliasTextForNextButton ? SubmittedAnswer.AliasTextForNextButton : "NEXT" | translate}}</a>
     </div>
 </div>
 
 <div *ngIf="isMobileView && !buttonShow" class="mobile-view-logo-body" style="bottom: 0;width: 100%;padding: 0 20px;z-index: 10;">
-    <a style="width: 100%;border-radius: 0px;margin-top:0 !important;" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+    <a style="width: 100%;border-radius: 0px;margin-top:0 !important;" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat', 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor}"
         class="btn next-btn ellipsiss" (click)="next()">{{SubmittedAnswer.AliasTextForNextButton ? SubmittedAnswer.AliasTextForNextButton : "NEXT" | translate}}</a>
 </div>

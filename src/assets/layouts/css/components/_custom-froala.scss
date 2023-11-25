@@ -5,6 +5,8 @@
     }
     .fr-ss-counter{
       bottom: -25px !important;
+      right: 0;
+      color: darkgray;
     }
   }
   .whats-app-desc{
@@ -34,6 +36,11 @@
       &:focus-within .fr-ss-counter{
         display: block !important;
       }
+      .fr-ss-counter{
+        right: 0;
+        color: darkgray;
+        font-weight: 500;
+      }
     }
   }  
 }
@@ -45,6 +52,8 @@
     }
     .fr-ss-counter{
       bottom: -23px !important;
+      right: 0;
+      color: darkgray;
     }
   }
 }

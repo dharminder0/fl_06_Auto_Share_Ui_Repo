@@ -1306,7 +1306,16 @@ textarea {
     color: #494949;
     margin-bottom: 16px;
 }
-
+.required:after {
+    content: " *";
+    color: red;
+    font-size: 30px;
+    position: absolute;
+    top: 7px;
+}
+/* .required.top-15:after {
+    top: 15px;
+} */
 .app-sub {
     font-weight: 500;
     font-size: 14px;
@@ -1671,4 +1680,14 @@ textarea {
      }
   } */
 
+  .position-relative{
+    position: relative;
+  }
 
+  :host ::ng-deep .editor-counter.fr-box.fr-basic .fr-element {    
+    padding-bottom: 25px !important;
+  }
+
+  :host ::ng-deep .editor-counter.fr-box.fr-basic .fr-counter {    
+    font-size: 12px !important;
+  }

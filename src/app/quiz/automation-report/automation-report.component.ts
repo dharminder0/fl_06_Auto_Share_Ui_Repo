@@ -327,7 +327,7 @@ export class AutomationReportComponent implements OnInit {
             }
           });
         }
-        if(ques.QuestionType == this.questionTypeEnum.ratingEmoji || ques.QuestionType == this.questionTypeEnum.ratingStar || ques.QuestionType == this.questionTypeEnum.availability){
+        if(ques.QuestionType == this.questionTypeEnum.ratingEmoji || ques.QuestionType == this.questionTypeEnum.ratingStar || ques.QuestionType == this.questionTypeEnum.availability || ques.QuestionType == this.questionTypeEnum.nps){
           if(ques.Comments && ques.Comments.length > 0){
             ques.Comments.map(comment => {
               comment.CompletedOn = this.formatTimeSlotUtcToLocal(comment.CompletedOn.split("T")[0], comment.CompletedOn.split("T")[1]);

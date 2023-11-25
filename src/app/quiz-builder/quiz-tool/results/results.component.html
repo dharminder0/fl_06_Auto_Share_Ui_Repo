@@ -59,8 +59,16 @@
                     <div *ngIf="resultForm.get('EnableCallToActionButton').value && reOrder.key == elementReorderKey.button && !isWhatsappEnable" class="form-actions" [ngStyle]="{'display':isOpenBranchingLogicSide ? 'block' : '','background': brandingColor.BackgroundColor}">
 
                         <div class="builder-element" ccFocus [id]="'res_btn_'+resultId" (mouseenter)="hoverOnMainDiv = false" (mouseleave)="hoverOnMainDiv = true">
-                            <input autocomplete="off" maxlength="40" class="btn blue next-btn" [style.color]="brandingColor.ButtonFontColor" [style.background]="brandingColor.ButtonColor" [ngStyle]="{'font-family': brandingColor.FontType ? brandingColor.FontType:'' }" formControlName="ActionButtonText"
-                                [placeholder]="brandingColor.ActionBtnPlaceholderText ? brandingColor.ActionBtnPlaceholderText : ('Lbl_ClickHere' | translate)" />
+                            <input autocomplete="off" maxlength="40" class="btn blue next-btn" [style.color]="isHoveredOnButton ? brandingColor.ButtonHoverTextColor : brandingColor.ButtonFontColor" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [style.background]="isHoveredOnButton ? brandingColor.ButtonHoverColor : brandingColor.ButtonColor" [ngStyle]="{'font-family': brandingColor.FontType ? brandingColor.FontType:'' }" formControlName="ActionButtonText"
+                                placeholder="{{
+                                    brandingColor.Language == 1
+                                        ? 'Klik hier'
+                                        :brandingColor.Language == 2
+                                            ? 'Click here'
+                                            :brandingColor.Language == 3
+                                                ? 'Kliknij tutaj'
+                                                : 'Hier klicken'
+                                    }}">
                         </div>
                         <div class="mbottom-20 mTop-20">
                             <ul class="list-unstyled">
@@ -196,8 +204,9 @@
                         <cl-transformation width="720" height="350" crop="fill" fetch-format="auto" quality="100"></cl-transformation>
                     </cl-image>
                     <div *ngIf="imageORvideo === 'video'">
-                        <cl-video id='update' public-id={{resultForm.controls.PublicIdForResult?.value}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposter()'>
-                            <cl-transformation quality="auto" effect="sharpen" crop="fill"></cl-transformation>
+                        <cl-video id='update' [attr.version]="getMediaVersionFromURl(resultForm.controls.Image.value)" source_types="mp4" public-id={{resultForm.controls.PublicIdForResult?.value}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposter()'>
+                            <cl-transformation quality="auto" effect="sharpen" crop="fill" *ngIf="!isWhatsappEnable"></cl-transformation>
+                            <cl-transformation quality="auto:eco" height="750" width="750" crop="fit" fetch_format="mp4" video_codec="h264" *ngIf="isWhatsappEnable"></cl-transformation>
                         </cl-video>
                     </div>
                 </figure>
@@ -285,12 +294,30 @@
                     </div>
                 </div>
             </div>
+            <div class="builder-action-property" data-property="btnHoverColor">
+                <div class="builder-property-group-outer">
+                    <div class="builder-property-group colorpicker-element" data-property-type="color">
+                        <div class="builder-styles-color" data-property="btnHoverColor" style="background: #62afe0"></div>
+                        <span>{{"BUTTON_HOVER_COLOR" | translate }}</span><br/>
+                        <input [(colorPicker)]="ActionButtonHoverColor" [style.background]="ActionButtonHoverColor" [cpCancelButton]="false" (colorPickerChange)="onActionButtonHoverColorChange($event)" [cpSaveClickOutside]="true" class="url-popup" />
+                    </div>
+                </div>
+            </div>
             <div class="builder-action-property" data-property="fontColor">
                 <div class="builder-property-group-outer">
                     <div class="builder-property-group colorpicker-element" data-property-type="color">
                         <div class="builder-styles-color" data-property="fontColor" style="background: #ffffff"></div>
                         <span>{{"BUTTON_FONT_COLOUR" | translate }}</span><br/>
                         <input [(colorPicker)]="ActionButtonTitleColor" [style.background]="ActionButtonTitleColor" [cpCancelButton]="false" (colorPickerChange)="onActionButtonTitleColorChange($event)" [cpSaveClickOutside]="true" class="url-popup" />
+                    </div>
+                </div>
+            </div>
+            <div class="builder-action-property" data-property="fontHoverColor">
+                <div class="builder-property-group-outer">
+                    <div class="builder-property-group colorpicker-element" data-property-type="color">
+                        <div class="builder-styles-color" data-property="fontHoverColor" style="background: #ffffff"></div>
+                        <span>{{"BUTTON_TEXT_HOVER_COLOR" | translate }}</span><br/>
+                        <input [(colorPicker)]="ActionButtonTitleHoverColor" [style.background]="ActionButtonTitleHoverColor" [cpCancelButton]="false" (colorPickerChange)="onActionButtonTitleHoverColorChange($event)" [cpSaveClickOutside]="true" class="url-popup" />
                     </div>
                 </div>
             </div>
@@ -317,9 +344,9 @@
         <div>
             <span>JPEG, PNG, MP4, 3GP</span>
         </div>
-        Media Size:
+        Media Length:
         <div>
-            <span>Less than 64 MB</span>
+            <span>Less than 3 min.</span>
         </div>
     </div>
     <div *ngIf="!isWhatsappEnable">

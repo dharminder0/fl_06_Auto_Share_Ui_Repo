@@ -67,7 +67,9 @@ public quizTypeId;
     {
       BackgroundColor: data.BackgroundColor,
       ButtonColor: data.ButtonColor,
+      ButtonHoverColor: data.ButtonHoverColor,
       ButtonFontColor: data.ButtonFontColor,
+      ButtonHoverTextColor: data.ButtonHoverTextColor,
       FontColor: data.FontColor,
       FontType: data.FontType ? data.FontType : "Montserrat",
       ImageFileURL: data.ImageFileURL,
@@ -210,5 +212,6 @@ public quizTypeId;
   public maxScore =new Subject();
   public showLead =new Subject();
   public clientObjectFieldsList:any[] = [];
-  clientAtsFieldsList: any = {};
+  public clientAtsFieldsList: any = {};
+  public dateFieldsSyncSettingList: any = {};
 }

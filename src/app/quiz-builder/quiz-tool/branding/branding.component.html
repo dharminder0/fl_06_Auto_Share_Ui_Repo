@@ -194,6 +194,15 @@
               </div>
             </div>
             <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'BUTTON_HOVER_COLOR' | translate }}">{{"BUTTON_HOVER_COLOR" | translate }}</label>
+              <div class="col-sm-4">
+                <input type="text" name="text" formControlName="ButtonHoverColor" [(ngModel)]="buttonHoverColor" class="form-control font-type normal-text">
+              </div>
+              <div class="col-sm-3">
+                <input [(colorPicker)]="buttonHoverColor" class="color-box colour-circle" formControlName="ButtonHoverColor" [style.background]="buttonHoverColor" [cpCancelButton]="false" [cpSaveClickOutside]="true" />
+              </div>
+            </div>
+            <div class="form-group">
               <label class="control-label col-sm-4 normal-text font-type" title="{{'BUTTON_TEXT_COLOUR' | translate }}">{{"BUTTON_TEXT_COLOUR" | translate }}</label>
               <div class="col-sm-4">
                 <input type="text" name="text" formControlName="ButtonFontColor" [(ngModel)]="buttonFontColor" class="form-control font-type normal-text">
@@ -203,7 +212,15 @@
                   [cpSaveClickOutside]="true" />
               </div>
             </div>
-
+            <div class="form-group">
+              <label class="control-label col-sm-4 normal-text font-type" title="{{'BUTTON_TEXT_HOVER_COLOR' | translate }}">{{"BUTTON_TEXT_HOVER_COLOR" | translate }}</label>
+              <div class="col-sm-4">
+                <input type="text" name="text" formControlName="ButtonHoverTextColor" [(ngModel)]="buttonHoverTextColor" class="form-control font-type normal-text">
+              </div>
+              <div class="col-sm-3">
+                <input [(colorPicker)]="buttonHoverTextColor" class="color-box colour-circle" formControlName="ButtonHoverTextColor" [style.background]="buttonHoverTextColor" [cpCancelButton]="false" [cpSaveClickOutside]="true" />
+              </div>
+            </div>
             <div class="form-group">
               <div class="control-label col-sm-7 normal-text font-type">
                 <p>

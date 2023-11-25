@@ -22,19 +22,19 @@
 }
 
 .mtop-5 {
-    margin-top: 5px;
+    margin-top: 5px !important;
 }
 
 .mtop-8 {
-    margin-top: 8px;
+    margin-top: 8px !important;
 }
 
 .mtop-10 {
-    margin-top: 10px;
+    margin-top: 10px !important;
 }
 
 .mtop-15 {
-    margin-top: 15px;
+    margin-top: 15px !important;
 }
 
 .mtop-20 {
@@ -42,19 +42,23 @@
 }
 
 .mtop-25 {
-    margin-top: 25px;
+    margin-top: 25px !important;
 }
 
 .mtop-30 {
-    margin-top: 30px;
+    margin-top: 30px !important;
+}
+
+.mtop-40 {
+    margin-top: 40px !important;
 }
 
 .mtop-45 {
-    margin-top: 45px;
+    margin-top: 45px !important;
 }
 
 .mtop-50 {
-    margin-top: 50px;
+    margin-top: 50px !important;
 }
 
 
@@ -76,11 +80,11 @@
 }
 
 .mbottom-10 {
-    margin-bottom: 10px;
+    margin-bottom: 10px !important;
 }
 
 .mbottom-15 {
-    margin-bottom: 15px;
+    margin-bottom: 15px !important;
 }
 
 .mbottom-20 {
@@ -92,54 +96,54 @@
 }
 
 .mbottom-30 {
-    margin-bottom: 30px;
+    margin-bottom: 30px !important;
 }
 
 .mbottom-40 {
-    margin-bottom: 40px;
+    margin-bottom: 40px !important;
 }
 
 
 /* left */
 
 .mleft-5 {
-    margin-left: 5px;
+    margin-left: 5px !important;
 }
 
 .mleft-8 {
-    margin-left: 8px;
+    margin-left: 8px !important;
 }
 
 .mleft-10 {
-    margin-left: 10px;
+    margin-left: 10px !important;
 }
 
 .mleft-15 {
-    margin-left: 15px;
+    margin-left: 15px !important;
 }
 
 .mleft-20 {
-    margin-left: 20px;
+    margin-left: 20px !important;
 }
 
 .mleft-25 {
-    margin-left: 25px;
+    margin-left: 25px !important;
 }
 
 .mleft-30 {
-    margin-left: 30px;
+    margin-left: 30px !important;
 }
 
 .mleft-35 {
-    margin-left: 35px;
+    margin-left: 35px !important;
 }
 
 .mleft-40 {
-    margin-left: 40px;
+    margin-left: 40px !important;
 }
 
 .mleft-45 {
-    margin-left: 45px;
+    margin-left: 45px !important;
 }
 
 
@@ -491,4 +495,15 @@
 
 .jr-position-relative{
     position: relative !important;
+}
+
+.jr-position-absolute{
+    position: absolute !important;
+}
+
+.fsize-11{
+    font-size: 11px !important;
+}
+.fsize-12{
+    font-size: 12px !important;
 }

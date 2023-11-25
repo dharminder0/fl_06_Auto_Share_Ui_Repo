@@ -41,7 +41,9 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
   public urlRegex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
   public ActionButtonTxtSize;
   public ActionButtonColor = "#fff";
+  public ActionButtonHoverColor = "#fff";
   public ActionButtonTitleColor = "#fff";
+  public ActionButtonTitleHoverColor = "#fff";
   public routerSubscription;
   public modalRef: BsModalRef;
   public DescriptionModel: string;
@@ -83,6 +85,9 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
   public elementReorderKey = elementReorderKey;
   public isQuesAndContentInSameTable:boolean;
   public IsBranchingLogicEnabled:boolean;
+  public userInfo:any = {};
+  public enabledPermissions:any = {};
+  public isHoveredOnButton = false;
 
   constructor(
     private quizBuilderApiService: QuizBuilderApiService,
@@ -117,6 +122,12 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
         });
       }
     });
+    this.userInfo = this.userInfoService._info;
+    this.enabledPermissions = JSON.parse(JSON.stringify(this.userInfoService.userPermissions));
+    if(this.variablePopupService.showExtVariablePopup && !(this.variablePopupService.mappedSfFieldsObj && Object.keys(this.variablePopupService.mappedSfFieldsObj).length > 0)
+    && this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.enabledPermissions.isNewVariablePopupEnabled ){
+     this.getMappedSfFieldsList(); 
+   }
   }
 
 
@@ -215,13 +226,22 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
     this.isResultSettingSubscription = this.dynamicMediaReplaceService.resultSettingObservable.subscribe(res => {
       if(res && Object.keys(res).length != 0){
         if(res.resultId == this.resultId){
-          const filterQuestionTitle = filterPipe.transform(this.resultForm.value.Title ? this.resultForm.value.Title : '');
-          if (filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0) {
+          // const filterQuestionTitle = filterPipe.transform(this.resultForm.value.Title ? this.resultForm.value.Title : '');
+          const filterQuestionTitle = this.resultForm.value.Title ? this.variablePopupService.updateTemplateVarHTMLIntoVariableV2(this.resultForm.value.Title) : "";
+          if(filterQuestionTitle && filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0) {
             if(this.isOpenBranchingLogicSide){
               this.muteVideos();
             }
+            if(document.getElementsByClassName('w-result-setting') && document.getElementsByClassName('w-result-setting')[0].classList.contains('data-not-added')){
+              document.getElementsByClassName('w-result-setting')[0].classList.remove('data-not-added')
+            }
             this.saveResult();
             this.dynamicTemplateSettings();
+          }else {
+            if(!(document.getElementsByClassName('w-result-setting') && document.getElementsByClassName('w-result-setting')[0].classList.contains('data-not-added'))){
+              document.getElementsByClassName('w-result-setting')[0].classList.add('data-not-added')
+            }
+            this.notificationsService.error("Error", "Title is missing");
           }
         }
       }
@@ -267,7 +287,13 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
       this.isWhatsappEnable = res;
       this.updateFroalaOptionsAndEvents();
       if(this.isWhatsappEnable){
-        this.updateFormForWhatsAppChatbotFlow();
+        const checkResultData = ()=>{
+          if(this.resultData){
+            this.updateFormForWhatsAppChatbotFlow();
+            clearInterval(interval);
+          }
+        }
+        let interval = setInterval(checkResultData, 100);
       }
     });
   }
@@ -360,6 +386,7 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
       .value.replace("px", "")
       .trim();
     this.ActionButtonColor = this.resultForm.get("ActionButtonColor").value;
+    this.ActionButtonHoverColor = this.resultForm.get("ActionButtonHoverColor").value;
     this.ActionButtonTitleColor = this.resultForm.get(
       "ActionButtonTitleColor"
     ).value;
@@ -514,7 +541,7 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
     }
     // const filterQuestionTitle = filterPipe.transform(this.resultForm.value.Title ? this.resultForm.value.Title : '');
     const filterQuestionTitle = filterPipe.transform(body.Title ? body.Title : '');
-    if ((this.resultForm.dirty || this.resetButton) && filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0) {
+    if ((this.resultForm.dirty || this.resetButton) && filterQuestionTitle && filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0) {
       if(this.isWhatsappEnable){
         body.Description = this.variablePopupService.convertToPlainText(body.Description);
         body.Title = this.variablePopupService.convertToPlainText(body.Title);
@@ -597,7 +624,9 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
       OpenLinkInNewTab: [data.OpenLinkInNewTab],
       ActionButtonTxtSize: [data.ActionButtonTxtSize],
       ActionButtonColor: [data.ActionButtonColor? data.ActionButtonColor : this.brandingColor ? this.brandingColor.ButtonColor : ''],
+      ActionButtonHoverColor: [data.ActionButtonHoverColor? data.ActionButtonHoverColor : this.brandingColor ? this.brandingColor.ButtonHoverColor : ''],
       ActionButtonTitleColor: [data.ActionButtonTitleColor ? data.ActionButtonTitleColor : this.brandingColor ? this.brandingColor.ButtonFontColor : ''],
+      ActionButtonTitleHoverColor: [data.ActionButtonTitleHoverColor ? data.ActionButtonTitleHoverColor : this.brandingColor ? this.brandingColor.ButtonHoverTextColor : ''],
       ActionButtonText: [data.ActionButtonText],
       ResultSettings: this._fb.group({
         QuizId: [data.ResultSettings.QuizId],
@@ -642,10 +671,14 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
     this.resetButton =true;
     this.resultForm.patchValue({
       ActionButtonColor : this.brandingColor.ButtonColor,
-      ActionButtonTitleColor : this.brandingColor.ButtonFontColor
+      ActionButtonHoverColor : this.brandingColor.ButtonHoverColor,
+      ActionButtonTitleColor : this.brandingColor.ButtonFontColor,
+      ActionButtonTitleHoverColor : this.brandingColor.ButtonHoverTextColor
     });
     this.ActionButtonColor = this.brandingColor.ButtonColor;
+    this.ActionButtonHoverColor = this.brandingColor.ButtonHoverColor;
     this.ActionButtonTitleColor = this.brandingColor.ButtonFontColor;
+    this.ActionButtonTitleHoverColor = this.brandingColor.ButtonHoverTextColor;
     this.saveResult();
   }
   /**
@@ -666,6 +699,11 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
     this.resultForm.controls.ActionButtonColor.markAsDirty();
   }
 
+  onActionButtonHoverColorChange(btnColor) {
+    this.resultForm.get("ActionButtonHoverColor").patchValue(btnColor);
+    this.resultForm.controls.ActionButtonHoverColor.markAsDirty();
+  }
+
   /**
    * Change Event when title Color changes
    * @param titleColor
@@ -673,6 +711,11 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
   onActionButtonTitleColorChange(titleColor) {
     this.resultForm.get("ActionButtonTitleColor").patchValue(titleColor);
     this.resultForm.controls.ActionButtonTitleColor.markAsDirty();
+  }
+
+  onActionButtonTitleHoverColorChange(titleColor) {
+    this.resultForm.get("ActionButtonTitleHoverColor").patchValue(titleColor);
+    this.resultForm.controls.ActionButtonTitleHoverColor.markAsDirty();
   }
 
   /**
@@ -1053,5 +1096,33 @@ export class ResultsComponent implements OnInit, OnDestroy , AfterViewInit{
     }
     this.createForm(this.resultData);
   }
+  getMappedSfFieldsList(){
+    this.variablePopupService.mappedSfFieldsObj = {};
+  
+    this.quizBuilderApiService.getMappedSfFieldsList().subscribe((results) => {
+      if (results && results.length > 0) {
+        results.forEach((currObj:any) => {
+          if(currObj.Fields && currObj.Fields.length > 0){
+            currObj.Fields.map((subObj:any) => {
+              this.variablePopupService.mappedSfFieldsObj[`${currObj.ObjectName}.${subObj.FieldName}`] = subObj.FieldLabel;
+            });
+          }
+        });
+      }
+      this.initializeComponent();
+    }), (error:any) => {
+      console.log('Could not load Group status  data');
+    }
+  }
   /********************** variable popup implementation ends *****************************/
+
+  getMediaVersionFromURl(url:string){
+    let regex = /\/v(\d+)\//g;
+    let matchFound = url.match(regex) || [];
+    let version:string = '1';
+    if(matchFound && matchFound.length > 0){
+      version = matchFound[0].replace(regex,'$1');
+    }
+    return version;
+  }
 }

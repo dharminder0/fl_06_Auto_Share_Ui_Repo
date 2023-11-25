@@ -1,0 +1,181 @@
+.whatsapp-button {
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    width: auto;
+    height: 40px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    color: var(--secondary-color);
+    background: #fff;
+    &:hover {
+        background: var(--secondary-color);
+        color: #fff;
+    }
+}
+
+// .modal.hsmPopup{
+//     background: rgba(0, 0, 0, 0.7);
+//     z-index: 99999;
+//     display: block !important;
+//     .modal-dialog{
+//       position: absolute;
+//       top: 0;
+//       right: 0;
+//       bottom: 0;
+//       left: 0;
+//       margin: auto;
+//         max-width: none;
+//         .modal-content{
+//             margin-top: auto;
+//             border-radius: 5px;
+//         .action{
+//             position: absolute;
+//             width: 80px;
+//             height: 80px;
+//             top: -80px;
+//             right: -80px;
+//             background: #fff;
+//             border-radius: 100%;
+//             .close-icon{
+//               position: absolute;
+//               top: 30px;
+//               left: 30px;
+//               width: 20px;
+//               height: 20px;
+//               z-index: 99999;
+//               cursor: pointer;
+//               cursor: pointer;
+//               g{
+//                 path{
+//                   fill: var(--secondary-color);
+//                 }
+//               }
+//             }
+//           }
+//           .modal-body{
+//             padding: 0px;
+//               .iframe-div{
+//                 width: 100%;
+//                 height: 100%;
+//                 border: 0;
+//                 border-radius: 5px;
+//               }
+//           }
+//         }
+//     }
+// }
+.hsm-content {
+    .mleft-0 {
+        margin-left: 0 !important;
+    }
+    .btn-container {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-left: 0 !important;
+        .link {
+            cursor: pointer;
+            padding-right: 8px;
+            color: var(--secondary-color);
+        }
+    }
+    .hsm-card {
+        background-image: url(/assets/layouts/img/chat-bg.png);
+        border: 1px solid;
+        .hsm-card-title {
+            background: #fff;
+            border-radius: 4px;
+            padding: 9px 15px 8px;
+            border: 1px solid transparent;
+            &:hover {
+                color: var(--primary-color);
+                border: 1px solid var(--primary-color);
+            }
+            &.selected {
+                color: var(--primary-color);
+                border: 1px solid var(--primary-color);
+            }
+        }
+        .hsm-card-detail {
+            background: #fff;
+            border-radius: 4px;
+        }
+        .hsm-btn {
+            background: #fff;
+            color: var(--secondary-color);
+            border-radius: 4px;
+        }
+    }
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-75 {
+    width: 75%;
+}
+
+.h-75 {
+    height: 75%;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.modal {
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: block !important;
+    overflow: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.modal-open {
+    width: 75%;
+    height: 85%;
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: 30px auto;
+    background: #ffffff;
+    border-radius: 7px;
+}
+
+.iframe-div {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 7px;
+}
+
+::ng-deep .hsm-card-body{
+    a{
+        &:hover{
+          color: var(--secondary-color) !important;
+        }
+      }
+}
+::ng-deep .header{
+    a{
+        &:hover{
+          color: var(--secondary-color) !important;
+        }
+      }
+}
+

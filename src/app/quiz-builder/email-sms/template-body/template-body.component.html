@@ -26,7 +26,7 @@
             <div class="form-group beta template">
                 <small class="fl-rgt" (click)="openPreviewEmailModal(previewEmail)">{{"PREVIEW" | translate}}</small>
                 <label class="control-label m-bottom-11 app-sub font-type">{{"MESSAGE" | translate }}</label>
-                <div id="froala-editor" formControlName="Body" [froalaEditor]="options" class="app-sub font-type text-area-text break-word">Loading...</div>
+                <div id="froala-editor" formControlName="Body" [froalaEditor]="options" class="app-sub font-type text-area-text editor-counter">Loading...</div>
             </div>
             <div class="position-relative">
                 <div style="display: flex;">
@@ -43,7 +43,7 @@
         <div class="ins p-top-33">
             <div class="sms-editor has-variable">
                 <div class="app-title font-type">{{"SMS_TEMPLATE" | translate }}</div>
-                <div id="froala-editor-sms" formControlName="SMSText" [froalaEditor]="optionsSMS" class="app-sub font-type text-area-text break-word">Loading...</div>
+                <div id="froala-editor-sms" formControlName="SMSText" [froalaEditor]="optionsSMS" class="app-sub font-type text-area-text editor-counter">Loading...</div>
             </div>
             <div class="position-relative">
                 <div style="display: flex;">
@@ -60,18 +60,22 @@
 </form>
 
 <hr/>
-<div *ngIf="isEnableWhatsappTemplate && whatsAppTemplateDataAvailable && templateBodyForm.controls.Id.value != -1" class="whatsApp-width">
+<!-- <div *ngIf="isEnableWhatsappTemplate && whatsAppTemplateDataAvailable && templateBodyForm.controls.Id.value != -1" class="whatsApp-width"> -->
+<div *ngIf="isEnableWhatsappTemplate && templateBodyForm.controls.Id.value != -1" class="whatsApp-width">
     <div *ngIf="isLoaderEnable" class="center">
         <div class="loader" id="loading"></div>
     </div>
     <div *ngIf="!isLoaderEnable" class="ins p-top-18">
-        <div class="app-title font-type">{{"Lbl_WhatsApp" | translate}}:</div>
-        <app-whatsapp-template [templateBodyForm]="templateBodyForm"></app-whatsapp-template>
+        <div class="app-title font-type position-relative">{{"Lbl_WhatsApp" | translate}}:</div>
+        <app-whatsapp-template *ngIf="!(enabledPermissions.isJRSalesforceEnabled && userInfo.AccountLoginType == 'salesforce')" [templateBodyForm]="templateBodyForm"></app-whatsapp-template>
+        <!-- <app-whatsapp-hsm *ngIf="(enabledPermissions.isJRSalesforceEnabled && userInfo.AccountLoginType == 'salesforce' && isEnableWhatsappSection)" (isdataAvailable)="checkData($event)"></app-whatsapp-hsm> -->
+        <app-whatsapp-hsm *ngIf="(enabledPermissions.isJRSalesforceEnabled && userInfo.AccountLoginType == 'salesforce' && whatsAppTemplateDataAvailable)"></app-whatsapp-hsm>
+        <!-- <app-whatsapp-template [templateBodyForm]="templateBodyForm"></app-whatsapp-template> -->
     </div>
     <div *ngIf="!isLoaderEnable && showFollowUpMsg" class="ins p-top-18">
         <div class="form-group beta template has-followUp-variable">
             <div class="app-title font-type">{{"Lbl_WhatsappFollowupMsg" | translate}}:</div>
-            <div id="froala-editor-followUp" [(ngModel)]="followUpMessage" [froalaEditor]="optionsWhatsapp" class="app-sub font-type text-area-text break-word">
+            <div id="froala-editor-followUp" [(ngModel)]="followUpMessage" [froalaEditor]="optionsWhatsapp" class="app-sub font-type text-area-text editor-counter">
             </div>
         </div>
         <div class="position-relative">
@@ -86,7 +90,8 @@
 <div *ngIf="templateBodyForm.controls.Id.value != -1" class="action-padding">
     <button class="btn btn-margin delete-btn app-sub font-type" (click)="openModalDelete(deleteTemplate,templateId)">{{"DELETE" | translate}}</button>
     <button type="button" (click)='openDefaultTemplateModal(defaultTemplate)' class="btn use-default-template-btn btn-margin app-sub font-type">{{"USE_DEFAULT_TEMPLATE" | translate }}</button>
-    <button type="submit" (click)="updateTemplateDetails()" class="btn save-btn add-automation-text btn-margin font-type">{{"SAVE" | translate }}</button>
+    <button type="submit" [disabled]="!(templateBodyForm.get('Body').value || templateBodyForm.get('SMSText').value || checkWhatsAppDataAvailable())" 
+            (click)="updateTemplateDetails()" class="btn save-btn add-automation-text btn-margin font-type">{{"SAVE" | translate }}</button>
 </div>
 
 <ng-template #preview>

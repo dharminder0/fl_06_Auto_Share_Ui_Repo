@@ -103,7 +103,7 @@ export class DynamicMediaReplaceMentsService {
 
     //next button disable in whatsapp
 
-    public isUsageTypeWhatsApp: boolean = false;
+    public isUsageTypeWhatsApp: boolean = undefined;
     public isUsageTypeWhatsAppObservable = new BehaviorSubject(this.isUsageTypeWhatsApp);
 
     changeUsageTypeWhatsAppSubmission() {

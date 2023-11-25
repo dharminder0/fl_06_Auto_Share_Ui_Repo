@@ -43,7 +43,9 @@ export class ShowMultipleResultComponent implements OnInit,AfterViewInit, OnDest
   public multipleResultForm: FormGroup;
   public graphColor;
   public btnColor;
+  public btnHoverColor;
   public btnFontColor;
+  public btnHoverTextColor;
   public routerSubscription;
   public quizId;
   public maxScoreSubscription;
@@ -192,7 +194,9 @@ export class ShowMultipleResultComponent implements OnInit,AfterViewInit, OnDest
     this.multipleResultForm = new FormGroup({
       Title: new FormControl(),
       ButtonColor: new FormControl("#000"),
+      ButtonHoverColor: new FormControl("#000"),
       ButtonFontColor: new FormControl("#000"),
+      ButtonHoverTextColor: new FormControl("#000"),
       GraphColor: new FormControl("#000"),
       IsFullWidthEnable: new FormControl(),
       SideButtonText: new FormControl("", Validators.required),
@@ -212,8 +216,14 @@ export class ShowMultipleResultComponent implements OnInit,AfterViewInit, OnDest
       ButtonColor: this.multipleResultData[0].ButtonColor
         ? this.multipleResultData[0].ButtonColor
         : "#000",
+      ButtonHoverColor: this.multipleResultData[0].ButtonHoverColor
+        ? this.multipleResultData[0].ButtonHoverColor
+        : "#000",
       ButtonFontColor: this.multipleResultData[0].ButtonFontColor
         ? this.multipleResultData[0].ButtonFontColor
+        : "#000",
+      ButtonHoverTextColor: this.multipleResultData[0].ButtonHoverTextColor
+        ? this.multipleResultData[0].ButtonHoverTextColor
         : "#000",
       GraphColor: this.multipleResultData[0].GraphColor
         ? this.multipleResultData[0].GraphColor
@@ -236,7 +246,9 @@ export class ShowMultipleResultComponent implements OnInit,AfterViewInit, OnDest
   onChanges() {
     this.graphColor = this.multipleResultForm.controls.GraphColor.value;
     this.btnColor = this.multipleResultForm.controls.ButtonColor.value;
+    this.btnHoverColor = this.multipleResultForm.controls.ButtonHoverColor.value;
     this.btnFontColor = this.multipleResultForm.controls.ButtonFontColor.value;
+    this.btnHoverTextColor = this.multipleResultForm.controls.ButtonHoverTextColor.value;
     this.multipleResultForm.valueChanges.subscribe(data => {
       this.multipleResultForm.markAsDirty();
       $(document).ready(function() {
@@ -251,9 +263,15 @@ export class ShowMultipleResultComponent implements OnInit,AfterViewInit, OnDest
       this.btnColor = data.ButtonColor
         ? data.ButtonColor
         : this.setButtonColor();
+      this.btnHoverColor = data.ButtonHoverColor
+      ? data.ButtonHoverColor
+      : this.setButtonHOverColor();
       this.btnFontColor = data.ButtonFontColor
         ? data.ButtonFontColor
         : this.setButtonFontColor();
+      this.btnHoverTextColor = data.ButtonHoverTextColor
+        ? data.ButtonHoverTextColor
+        : this.setButtonHoverTextColor();
       this.setFullWidth();
       // this.setStyling('details-button');
     });
@@ -273,9 +291,23 @@ export class ShowMultipleResultComponent implements OnInit,AfterViewInit, OnDest
     return "#000000";
   }
 
+  setButtonHOverColor() {
+    this.multipleResultForm.patchValue({
+      ButtonHoverColor: "#000000"
+    });
+    return "#000000";
+  }
+
   setButtonFontColor() {
     this.multipleResultForm.patchValue({
       ButtonFontColor: "#000000"
+    });
+    return "#000000";
+  }
+
+  setButtonHoverTextColor() {
+    this.multipleResultForm.patchValue({
+      ButtonHoverTextColor: "#000000"
     });
     return "#000000";
   }

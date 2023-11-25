@@ -91,19 +91,40 @@ export class RemoveallTagPipe implements PipeTransform {
   }
  }
 
+ @Pipe({
+  name: 'convertUrlIntoThumbnail'
+})
+export class ConvertUrlIntoThumbnail implements PipeTransform {
+
+  constructor() { }
+  transform(data:string) {
+    let output:string = "";
+
+    if(data && data !== "" && /[^\s]+\.[a-z,0-9]+$/gi.test(data) && !(/([^\s]+(\.(jpe?g|png|gif|bmp|tiff))$)/gi.test(data))){
+      output = data.replace(/\.[a-z,0-9]+$/g,".jpeg");;
+    }else {
+      output = data;
+    }
+    return output;
+  }
+
+}
+
 @NgModule({
   imports: [],
   declarations: [ 
     SearchPipe,
     RemoveTagPipe,
     RemoveallTagPipe,
-    SearchArrayPipe
+    SearchArrayPipe,
+    ConvertUrlIntoThumbnail
   ],
   exports: [
     SearchPipe,
     RemoveTagPipe,
     RemoveallTagPipe,
-    SearchArrayPipe
+    SearchArrayPipe,
+    ConvertUrlIntoThumbnail
   ]
 })
 export class SearchPipes {}

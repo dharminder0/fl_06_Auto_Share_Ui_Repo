@@ -95,6 +95,8 @@ import { DetectBranchingLogicAuthService } from "./detect-branching-logic-auth.s
 import { AnswerReorderComponent } from "./questions/answer-reorder/answer-reorder.component";
 import { VideoDesignSetupComponent } from "./video-design-setup/video-design-setup.component";
 import { WhatsappTemplateNewVersion } from "./whatsapp-template-new-version/whatsapp-template-new-version.component";
+import { OwlDateTimeModule } from "ng-pick-datetime";
+import { OwlNativeDateTimeModule } from "ng-pick-datetime/date-time";
 
 export const cloudinaryLib = {
   Cloudinary: Cloudinary
@@ -198,7 +200,9 @@ export class SafePipe {
     FileUploadModule,
     SharedModule,
     SearchPipes,
-    ClickOutsideModule
+    ClickOutsideModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
   ],
   providers: [
     QuizzToolHelper,

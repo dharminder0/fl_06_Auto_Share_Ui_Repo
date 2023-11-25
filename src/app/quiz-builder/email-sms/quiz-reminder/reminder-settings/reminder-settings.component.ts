@@ -21,6 +21,7 @@ export class ReminderSettingsComponent implements OnInit, OnDestroy {
   public formValueChangeSubscription: Subscription;
   public reminderSettingsData;
   public reminderSettingForm: FormGroup;
+  public isAnyChange: boolean = false;
 
   constructor(private quizBuilderApiService: QuizBuilderApiService,
   private emailSmsSubjectService: EmailSmsSubjectService,
@@ -55,6 +56,7 @@ export class ReminderSettingsComponent implements OnInit, OnDestroy {
       'ThirdCheckBox': new FormControl(false),
       'ThirdReminder': new FormControl('')
     });
+    this.reminderValueChange();
     
     /**
      * get OfficeId using subject
@@ -81,7 +83,39 @@ export class ReminderSettingsComponent implements OnInit, OnDestroy {
     });
     this.getReminderData(this.officeId);
 
-    this.onChanges()
+    this.onChanges();   
+  }
+
+  
+  reminderValueChange() {
+    const { FirstReminder, SecondReminder, ThirdReminder } = this.reminderSettingForm.controls;
+  
+    FirstReminder.valueChanges.subscribe(firstData => {
+      const secondReminderValue = SecondReminder.value;
+      const thirdReminderValue = ThirdReminder.value;
+  
+      if ((secondReminderValue && firstData == secondReminderValue) || (thirdReminderValue && firstData == thirdReminderValue)) {
+        FirstReminder.setErrors({ invalid: true });
+      }
+    });
+  
+    SecondReminder.valueChanges.subscribe(secondData => {
+      const firstReminderValue = FirstReminder.value;
+      const thirdReminderValue = ThirdReminder.value;
+  
+      if ((firstReminderValue && secondData == firstReminderValue) || (thirdReminderValue && secondData == thirdReminderValue)) {
+        SecondReminder.setErrors({ invalid: true });
+      }
+    });
+  
+    ThirdReminder.valueChanges.subscribe(thirdData => {
+      const firstReminderValue = FirstReminder.value;
+      const secondReminderValue = SecondReminder.value;
+  
+      if ((firstReminderValue && thirdData == firstReminderValue) || (secondReminderValue && thirdData == secondReminderValue)) {
+        ThirdReminder.setErrors({ invalid: true });
+      }
+    });
   }
 
   /**

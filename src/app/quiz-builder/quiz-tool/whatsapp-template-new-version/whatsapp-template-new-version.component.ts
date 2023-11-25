@@ -111,7 +111,7 @@ export class WhatsappTemplateNewVersion implements OnInit, OnDestroy {
           this.selectedTempDetails = JSON.parse(JSON.stringify(templateToSelect));
           this.selectedTempDetails.allowedAnswersList = [];
           if(this.selectedTempDetails && this.selectedTempDetails.allowedAnswers){
-            this.selectedTempDetails.allowedAnswersList = typeof this.selectedTempDetails.allowedAnswers === "string" ? this.selectedTempDetails.allowedAnswers.split(",") : this.selectedTempDetails.allowedAnswers;
+            this.selectedTempDetails.allowedAnswersList = this.selectedTempDetails.allowedAnswers ? this.selectedTempDetails.allowedAnswers : [];
           }
           this.fetchTemplate();
         }
@@ -300,7 +300,7 @@ export class WhatsappTemplateNewVersion implements OnInit, OnDestroy {
            }
            this.selectedTempDetails.allowedAnswersList = [];
            if(this.selectedTempDetails && this.selectedTempDetails.allowedAnswers){
-            this.selectedTempDetails.allowedAnswersList = typeof this.selectedTempDetails.allowedAnswers === "string" ? this.selectedTempDetails.allowedAnswers.split(",") : this.selectedTempDetails.allowedAnswers;
+            this.selectedTempDetails.allowedAnswersList = this.selectedTempDetails.allowedAnswers ? this.selectedTempDetails.allowedAnswers : [];
            }
            setTimeout(() => this.fetchTemplate(), 10)
         }

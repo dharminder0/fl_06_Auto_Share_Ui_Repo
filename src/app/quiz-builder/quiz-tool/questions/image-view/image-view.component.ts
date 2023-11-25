@@ -605,6 +605,7 @@ export class ImageViewComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   UpdatePopUpStatus(){
+    let value: any;
     let listOfUsedVariableObj = this.variablePopupService.listOfUsedVariableObj;
     let activeFroalaRef = this.froalaEditorAt[this.froalaOpenedAt].froalaRef;
     let tempVarFormulaList:any = [];
@@ -612,8 +613,13 @@ export class ImageViewComponent implements OnInit, AfterViewInit, OnChanges {
       tempVarFormulaList.push(varItem.formula.replace(/^%/g,'{{').replace(/%$/g,'}}'));
     });
     this.getAnswerGroupAt(this.froalaOpenedAt).get('AnswerVarList').patchValue(tempVarFormulaList);
-    this.variablePopupService.insertFormulaIntoEditorV2(listOfUsedVariableObj, activeFroalaRef);
-    this.form.markAsDirty();
+    value = this.variablePopupService.insertFormulaIntoEditorV2(listOfUsedVariableObj, activeFroalaRef);
+    if(value && value.msg && this.variablePopupService.variablePopupOpened == 'ImageAnswers'){
+      this.getAnswerGroupAt(this.froalaOpenedAt).get('AnswerText').patchValue(value.msg);
+    }
+    if(value && value.newContent){
+      this.form.markAsDirty();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {

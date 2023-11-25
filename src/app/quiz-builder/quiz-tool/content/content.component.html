@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input *ngIf="isButtonEnable && reOrder.key == elementReorderKey.button && !isWhatsappEnable" ccFocus [id]="'con_btn_'+contentId" autocomplete="off" maxlength="40" [ngStyle]="{'background': brandingColor.ButtonColor,'color' : brandingColor.ButtonFontColor,'font-family' :brandingColor.FontType }"
+                        <input *ngIf="isButtonEnable && reOrder.key == elementReorderKey.button && !isWhatsappEnable" ccFocus [id]="'con_btn_'+contentId" autocomplete="off" maxlength="40" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{'background': reOrder.isHovered ? brandingColor.ButtonHoverColor : brandingColor.ButtonColor, 'color' : reOrder.isHovered ? brandingColor.ButtonHoverTextColor : brandingColor.ButtonFontColor,'font-family' :brandingColor.FontType }"
                             formControlName='AliasTextForNextButton' class="form-control fr-prop blue contentButton next-btn mbottom-10" (mouseenter)="hoverOnMainDiv = false" (mouseleave)="hoverOnMainDiv = true" />
 
                     </div>

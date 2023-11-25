@@ -24,7 +24,12 @@ export enum answerTypeEnum {
     nps = 10,
     ratingEmoji = 11,
     ratingStar = 12,
-    availability = 13
+    availability = 13,
+    FirstName = 14,
+    LastName = 15, 
+    Email = 16,
+    PhoneNumber = 17,
+    DatePicker = 18
 }
 
 export enum QuizAnswerStructureType {
@@ -90,5 +95,6 @@ export enum CommunicationModes {
 export enum BrandingLanguage {
     Dutch = 1,
     English = 2,
-    Polish = 3
+    Polish = 3,
+    German = 4
 }

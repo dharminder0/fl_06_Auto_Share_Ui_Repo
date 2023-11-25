@@ -20,6 +20,9 @@
         </div>
         <div class="col-sm-12 col-md-4 h-100">
             <div *ngIf="islogic" class="btn-body">
+                <a *ngIf="isPublished" href="javascript:void(0);" (click)='openTestAutomationModal()' class="btn app-button" style="width: auto;">
+                    <span class="font-type font-text">{{"Test automation" | translate }}</span>
+                </a>
                 <a href="javascript:void(0);" (click)='onPreviewQuiz(publishTemplate)' class="btn app-button" data-toggle="modal"
                 data-target="#preview-modal">
                     <span class="font-type font-text">{{"PREVIEW" | translate }}</span>
@@ -33,6 +36,9 @@
                 </a>
             </div>
             <div *ngIf="!islogic" class="btn-body">
+                <a *ngIf="isPublished" href="javascript:void(0);" (click)='openTestAutomationModal()' class="btn app-button" style="width: auto;">
+                    <span class="font-type font-text">{{"Test automation" | translate }}</span>
+                </a>
                 <a href="javascript:void(0);" (click)='onPreviewQuiz(publishTemplate)' class="btn app-button" data-toggle="modal"
                 data-target="#preview-modal">
                     <span class="font-type font-text">{{"PREVIEW" | translate }}</span>
@@ -65,4 +71,8 @@
 </div> -->
 <div *ngIf="isUagesPopup">
     <app-select-usage [usagesData]="usagesDatas" [isEditUsage]="isEditUsage" [quizId]="quizId" [quizType]="quizType" (changeValue)='changeUsage($event)'></app-select-usage>
+</div>
+
+<div *ngIf="isOpenTestAutomationModel">
+    <app-test-automation [quizId]="quizId" (changeInTestAutoamtionModal)='updateTestAutomationModalStatus($event)'></app-test-automation>
 </div>

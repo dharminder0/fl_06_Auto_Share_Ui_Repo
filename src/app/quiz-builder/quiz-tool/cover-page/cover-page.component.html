@@ -105,7 +105,7 @@
                         [placeholder]="this.brandingColors.QuizStartBtnPlaceholderText ? this.brandingColors.QuizStartBtnPlaceholderText : ('START' | translate)"
                         autocomplete="off" 
                         maxlength="40" 
-                        [ngStyle]="{'background': brandingColors.ButtonColor,'color' : brandingColors.ButtonFontColor,'border-color':  brandingColors.ButtonColor,'font-family': brandingColors.FontType ? brandingColors.FontType:''}" 
+                        (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{'background': reOrder.isHovered ? brandingColors.ButtonHoverColor : brandingColors.ButtonColor,'color' : reOrder.isHovered ? brandingColors.ButtonHoverTextColor : brandingColors.ButtonFontColor,'border-color':  brandingColors.ButtonColor,'font-family': brandingColors.FontType ? brandingColors.FontType:''}" 
                         formControlName='QuizStartButtonText' 
                         class="form-control fr-prop new-blue text-btn" 
                         (mouseenter)="hoverOnMainDiv = false" 

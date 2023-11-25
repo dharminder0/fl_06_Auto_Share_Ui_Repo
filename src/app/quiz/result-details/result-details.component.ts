@@ -37,6 +37,7 @@ export class ResultDetailsComponent implements OnInit, OnDestroy, AfterViewInit 
   public buttonShow:boolean=true;
   public logoImage:string = "";
   public logoBackgroundColor:string = "";
+  public isHoveredOnButton = false;
   private isVideoSoundEnableSubscription:Subscription;
   public resultElementReorder:any = [
     {

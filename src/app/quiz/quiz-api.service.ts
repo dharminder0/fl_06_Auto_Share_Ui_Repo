@@ -9,7 +9,7 @@ import { SharedService } from '../shared/services/shared.service';
 import { Router } from '@angular/router';
 import { of, BehaviorSubject } from 'rxjs';
 import { Meta, Title } from "@angular/platform-browser";
-import { RemoveallTagPipe } from "../shared/pipes/search.pipe";
+import { ConvertUrlIntoThumbnail, RemoveallTagPipe } from "../shared/pipes/search.pipe";
 import { TranslateService } from "@ngx-translate/core";
 import { languageEnum } from "../shared/Enum/languageEnum";
 import { QuizDataService } from "./quiz-data.service";
@@ -18,6 +18,7 @@ import { QuizDataService } from "./quiz-data.service";
 
 var config = new Config();
 const filterPipe = new RemoveallTagPipe();
+const convertUrlIntoThumbnailPipe = new ConvertUrlIntoThumbnail();
 
 @Injectable()
 export class QuizApiService {
@@ -240,8 +241,11 @@ export class QuizApiService {
     }
 
 
-    getQuizAttemptCodeForConfigurationId(ConfigurationId, Mode): Observable<any> {
+    getQuizAttemptCodeForConfigurationId(ConfigurationId, Mode,sourceId?): Observable<any> {
             var queryParam = `ConfigurationId=${ConfigurationId}&Mode=${Mode}`;
+            if(sourceId){
+                queryParam += `&Sourceid=${sourceId}`
+            }
             return this.http.get('v1/Quiz/GetQuizAttemptCode?' + queryParam, this.options).map(response => {
                 return response["data"];
             }) .catch(err=>{
@@ -417,13 +421,22 @@ export class QuizApiService {
                         || quizMediaExtension.includes(".tiff") || quizMediaExtension.includes(".svg") || quizMediaExtension.includes(".webp")
                     ){
                         this.meta.addTag({ property: 'og:image', content: quizMediaToSet });
+                        this.meta.addTag({ property: 'og:image:width', content: "400" });
+                        this.meta.addTag({ property: 'og:image:height', content: "250" });
                         this.meta.addTag({ property: 'twitter:image', content: quizMediaToSet });
                     }
                     else if(quizMediaExtension.includes(".mp4") || quizMediaExtension.includes(".webm") || quizMediaExtension.includes(".mkv")){
+                        let thumbnailToSet = convertUrlIntoThumbnailPipe.transform(quizMediaToSet);
+                        thumbnailToSet = thumbnailToSet.replace("/upload/","/upload/l_Jobrock:btn_play/c_scale,w_250/fl_layer_apply/");
                         this.meta.addTag({ property: 'og:video', content: quizMediaToSet });
                         this.meta.addTag({ property: 'og:video:type', content: "video/mp4" });
                         this.meta.addTag({ property: 'og:video:width', content: "400" });
                         this.meta.addTag({ property: 'og:video:height', content: "250" });
+
+                        this.meta.addTag({ property: 'og:image', content: thumbnailToSet });
+                        this.meta.addTag({ property: 'og:image:width', content: "400" });
+                        this.meta.addTag({ property: 'og:image:height', content: "250" });
+                        this.meta.addTag({ property: 'twitter:image', content: thumbnailToSet });
                     }
                 }
             }

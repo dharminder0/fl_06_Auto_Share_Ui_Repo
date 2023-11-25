@@ -145,16 +145,22 @@
                             </div>
 
                             <div *ngIf="reOrder.key == 'button' && QuestionDetails.AnswerType==questionTypeEnum.singleSelect && !isMobileView && QuestionDetails.EnableNextButton" class="next-btn-container mbottom-10">
-                                  <button class="next-btn ellipsiss" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!buttonEnable" [ngStyle]="{ 
-                                    'color': QuizBrandingAndStyle.ButtonFontColor , 
-                                    'background': QuizBrandingAndStyle.ButtonColor,
+                                  <button class="next-btn ellipsiss" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!buttonEnable" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{ 
+                                    'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+                                    'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
                                     'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
                                   </button>
                             </div>
 
 
                             <div *ngIf="reOrder.key == 'question' && QuestionDetails.AnswerType==questionTypeEnum.multiSelect" class="text-center select-one-more-options" [ngStyle]="{'color': QuizBrandingAndStyle.FontColor}">
-                                {{"multipleAnswersPossible" | translate}}
+                                <!-- {{"multipleAnswersPossible" | translate}} -->
+                                <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                    <ng-container  *ngSwitchCase="1">{{"Meerdere antwoorden mogelijkl"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="2">{{"Multiple answers possible"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="3">{{"Możliwa odpowiedź wielokrotnego wyboru"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="4">{{"Mehrere Antworten möglich"}}</ng-container>
+                                </ng-container>
                             </div>
 
                             <div *ngIf=" reOrder.key == 'question' && QuestionDetails.AnswerType==questionTypeEnum.multiSelect" class="row image-option-cols-2">
@@ -254,17 +260,17 @@
                             </div>
                             <div *ngIf="reOrder.key == 'button' && QuestionDetails.AnswerType==questionTypeEnum.multiSelect && !isMobileView && QuestionDetails.EnableNextButton" class="next-btn-container mbottom-10">
                                 <ng-container *ngIf="!PreviousQuestionSubmittedAnswer">
-                                    <button class="next-btn ellipsiss" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{ 
-            'color': QuizBrandingAndStyle.ButtonFontColor , 
-            'background': QuizBrandingAndStyle.ButtonColor,
+                                    <button class="next-btn ellipsiss" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{ 
+            'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+            'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
             'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
             </button>
                                 </ng-container>
 
                                 <ng-container *ngIf="PreviousQuestionSubmittedAnswer">
-                                    <button class="next-btn ellipsiss" (click)="submitCurrentOption()" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{
-              'color': QuizBrandingAndStyle.ButtonFontColor , 
-              'background': QuizBrandingAndStyle.ButtonColor,
+                                    <button class="next-btn ellipsiss" (click)="submitCurrentOption()" [disabled]="!selectedOptionArray.length || isNextButtonEnable" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{
+              'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+              'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
               'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
               </button>
                                 </ng-container>
@@ -287,24 +293,24 @@
         <div *ngIf="isMobileView && QuestionDetails.EnableNextButton" class="next-btn-container">
             <div *ngIf="buttonShow">
             <ng-container *ngIf="!PreviousQuestionSubmittedAnswer">
-                <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.multiSelect" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{ 
-    'color': QuizBrandingAndStyle.ButtonFontColor , 
-    'background': QuizBrandingAndStyle.ButtonColor,
+                <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.multiSelect" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{ 
+    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 
     'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
     </button>
             </ng-container>
 
             <ng-container *ngIf="PreviousQuestionSubmittedAnswer">
-                <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.multiSelect" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{
-      'color': QuizBrandingAndStyle.ButtonFontColor , 
-      'background': QuizBrandingAndStyle.ButtonColor,
+                <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.multiSelect" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+      'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+      'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 
       'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
       </button>
             </ng-container>
 
-              <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.singleSelect" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!buttonEnable" [ngStyle]="{
-              'color': QuizBrandingAndStyle.ButtonFontColor , 
-              'background': QuizBrandingAndStyle.ButtonColor,
+              <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.singleSelect" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!buttonEnable" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+              'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+              'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 
               'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
               </button>
 
@@ -319,25 +325,25 @@
     <div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !isNextStatus, 'left-quiz-silder':isMobileView && isNextStatus}">
         <div *ngIf="isMobileView && !buttonShow">
           <div class="next-btn-container" *ngIf="(QuestionDetails.AnswerType==questionTypeEnum.singleSelect)">
-            <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!buttonEnable" [ngStyle]="{
-              'color': QuizBrandingAndStyle.ButtonFontColor , 
-              'background': QuizBrandingAndStyle.ButtonColor,
+            <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!buttonEnable" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+              'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+              'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 
               'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
               </button>
           </div>
             <div class="next-btn-container" *ngIf="(QuestionDetails.AnswerType==questionTypeEnum.multiSelect)">
                 <ng-container *ngIf="!PreviousQuestionSubmittedAnswer">
-                    <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{ 
-      'color': QuizBrandingAndStyle.ButtonFontColor , 
-      'background': QuizBrandingAndStyle.ButtonColor,
+                    <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" (click)="submitCurrentOption()" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" [disabled]="!selectedOptionArray.length || isNextButtonEnable" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{ 
+      'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+      'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 
       'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
       </button>
                 </ng-container>
 
                 <ng-container *ngIf="PreviousQuestionSubmittedAnswer">
-                    <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" (click)="submitCurrentOption()" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{
-        'color': QuizBrandingAndStyle.ButtonFontColor , 
-        'background': QuizBrandingAndStyle.ButtonColor,
+                    <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" (click)="submitCurrentOption()" [disabled]="!selectedOptionArray.length || isNextButtonEnable" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+        'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+        'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 
         'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
         </button>
                 </ng-container>

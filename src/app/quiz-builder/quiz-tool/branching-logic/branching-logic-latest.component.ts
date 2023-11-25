@@ -165,6 +165,8 @@ export class BranchingLogicLatestComponent implements OnInit, OnDestroy {
   public selectedTemplate:any;
   public isTemplateList:boolean = false;
   public oldWhatsappFlow:boolean = false;
+  public selectedHsmTemplate: any = {};
+  public enabledPermissions:any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -198,6 +200,7 @@ export class BranchingLogicLatestComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userInfo = this.userInfoService._info;
+    this.enabledPermissions = JSON.parse(JSON.stringify(this.userInfoService.userPermissions));
     if(this.userInfo){
       this.language = this.userInfo.ActiveLanguage;
     }
@@ -841,6 +844,7 @@ export class BranchingLogicLatestComponent implements OnInit, OnDestroy {
     EDIT_quizComponentRef.instance.quizData = this.quizData;
     this.whatsappTemplateService.quizId = this.quizId;
     if(editType == BranchingLogicEnum.WHATSAPPTEMPLATE && id != 'Template'){
+      this.sharedService.hsmTemplateData = JSON.parse(JSON.stringify(this.selectedHsmTemplate))
       this.whatsappTemplateService.addedHsmTemplateId = this.selectedTemplate.TemplateId;
       this.whatsappTemplateService.defualtLanguageCode = this.selectedTemplate.LanguageCode;
       this.whatsappTemplateService.addedTemplateParameters = [];
@@ -865,8 +869,15 @@ export class BranchingLogicLatestComponent implements OnInit, OnDestroy {
         }
     });
     EDIT_quizComponentRef.instance.templateData.subscribe(res => {
-      this.selectedTemplate = res;
-      this.editWhatsappTemplate(id,res);
+      if(this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce'){
+        this.selectedTemplate = res.res;
+        this.selectedHsmTemplate = JSON.parse(JSON.stringify(res.selectedTemplateDetails))
+        this.editWhatsappTemplate(id,res.res);
+      }
+      else{
+        this.selectedTemplate = res;
+        this.editWhatsappTemplate(id,res);
+      }
     });
   }
 
@@ -2722,6 +2733,49 @@ export class BranchingLogicLatestComponent implements OnInit, OnDestroy {
       SHARE_QuizComponentRef.instance.quizData = quiz;
     });
   }
+  // get the selected whatsapp template from common popup for whatsapp
+  getWhastappHsmTemplate2(data: any){
+    let paramObj: any = {};
+    paramObj.clientCode = this.sharedService.getCookie("clientCode");
+    paramObj.languageCode = data.LanguageCode;
+    paramObj.templateId = data.TemplateId;
+    paramObj.moduleType = "Chatbot";
+
+    this.sharedService.hsmTemplateData = {};
+    this.quizBuilderApiService.getWhastappHsmTemplate2(paramObj).subscribe(response =>{
+      if(response && response.data && Object.keys(response.data).length > 0){
+        
+        if(response.data.templateBody && response.data.templateBody.length > 0){
+          response.data.templateBody.map((subItem:any) => {
+            subItem = this.getUpdateVariables(response.data.headerParams, subItem, 'headerText');
+            subItem = this.getUpdateVariables(response.data.params, subItem, 'tempBody');
+          });
+        }
+          this.selectedHsmTemplate = JSON.parse(JSON.stringify(response.data));
+          this.sharedService.hsmTemplateData = JSON.parse(JSON.stringify(this.selectedHsmTemplate));
+        
+      }
+    });
+
+  }
+  
+  getUpdateVariables(paramsData:any, contentData:any, useFor:string){
+      if(paramsData && paramsData.length > 0){
+        paramsData.map((item:any) => {
+            if(item.params && item.params.length > 0){
+              item.params.map((subItem:any) => {
+                if(subItem.paraname){
+                  // Header Text or Body text
+                  if(contentData[useFor] && contentData[useFor].indexOf(`{{${subItem.position}}}`) > -1){
+                    contentData[useFor] = contentData[useFor].replace(`{{${subItem.position}}}`, `<a href="javascript:void(0);">${subItem.paraname}</a>`);
+                  }
+                }
+              });
+            }
+        });
+      }
+    return contentData;
+  }
   
   ngOnDestroy() {
     this.quizBuilderDataService.changeQuizHeader(undefined);
@@ -2868,6 +2922,7 @@ function createSvgAnimation(branchingLogicData) {
             branchingLogicDataList["QuestionAndContentList"][i].QuestionTitle = branchingLogicDataList["QuestionAndContentList"][i].QuestionTxt;
             selectedTemplateData = branchingLogicDataList["QuestionAndContentList"][i];
             componentReference.selectedTemplate = branchingLogicDataList["QuestionAndContentList"][i];
+            componentReference.getWhastappHsmTemplate2(componentReference.selectedTemplate);
             break;
           }
         }
@@ -3486,8 +3541,12 @@ function getSelectedQuestion(questionData,QuestionData){
         questionSvgObj.selectedQuizType = componentReference.quizData.QuizTypeId;
         questionSvgObj.selectedQuestionShowAnswerImage = QuestionData[i].ShowAnswerImage;
         questionSvgObj.enableMultiRatingType = QuestionData[i].IsMultiRating;
-        if(questionSvgObj.enableMultiRatingType && (questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingEmoji || questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingStar)){
-          questionSvgObj.w = QuestionData[i].AnswerList.length > 0 ? 5 * 150 : 150;
+        if(questionSvgObj.enableMultiRatingType && (questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingEmoji || questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingStar || questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.nps)){
+          if(questionSvgObj.selectedQuestionAnswerType != answerTypeEnum.nps){
+            questionSvgObj.w = QuestionData[i].AnswerList.length > 0 ? 5 * 150 : 150;
+          }else{
+            questionSvgObj.w = QuestionData[i].AnswerList.length > 0 ? QuestionData[i].AnswerList.length * 60 : 60;
+          }
         }else{
           questionSvgObj.w = QuestionData[i].AnswerList.length > 0 ? QuestionData[i].AnswerList.length * 150 : 150;
         }
@@ -3516,6 +3575,8 @@ function createQuestionSvgHeadAnimation(questionData){
     questionSvgObj.h = 165;
   }else if(questionSvgObj.enableMultiRatingType && questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingStar){
     questionSvgObj.h = 145;
+  }else if(questionSvgObj.enableMultiRatingType && questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.nps){
+    questionSvgObj.h = 115;
   }
   questionSvgObj.parentFObjSVG = `<svg>
   <foreignObject width=${questionSvgObj.w + 40} height=${questionSvgObj.h}>
@@ -3582,12 +3643,12 @@ function createQuestionAnswerListSvgAnimation(questionData,g2){
           questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerText ? questionSvgObj.selectedAnswerList[i].AnswerText : questionSvgObj.selectedAnswerList[i].AnswerTxt;
         }
       createSingleSelectQuestionSvgAnimation(i,questionData,g2);
-    }else if((questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.multiSelect  || (questionSvgObj.selectedQuestionAnswerType > answerTypeEnum.largeText && questionSvgObj.selectedQuestionAnswerType <= answerTypeEnum.postCode)) 
-    || (!questionSvgObj.enableMultiRatingType && ( questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingEmoji || questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingStar))){
+    }else if((questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.multiSelect  || (questionSvgObj.selectedQuestionAnswerType > answerTypeEnum.largeText && questionSvgObj.selectedQuestionAnswerType <= answerTypeEnum.postCode) || (questionSvgObj.selectedQuestionAnswerType >= answerTypeEnum.FirstName && questionSvgObj.selectedQuestionAnswerType <= answerTypeEnum.DatePicker)) 
+    || (!questionSvgObj.enableMultiRatingType && ( questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingEmoji || questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingStar || questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.nps))){
       createMultiSelectQuestionSvgAnimation(i,questionData,g2);
     }else if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.smallText || questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.largeText){
       createFreeTextQuestionSvgAnimation(i,questionData,g2);
-    }else if(questionSvgObj.enableMultiRatingType && (questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingEmoji || questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingStar)){
+    }else if(questionSvgObj.enableMultiRatingType && (questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingEmoji || questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingStar || questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.nps)){
       createRatingSelectQuestionSvgAnimation(i,questionData,g2);
     }
   }
@@ -3597,8 +3658,60 @@ function createSingleSelectQuestionSvgAnimation(i,questionData,g2){
   var answerCircle;
   var fobjectSVGans;
   if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.availability){
-    questionSvgObj.selectedAnswerList[i].AnswerTxt = (i == 0) ? componentReference.quizData.QuizBrandingAndStyle.Language == BrandingLanguage.English ? 'Immediately' : 'Per direct' : (i == 1) ? componentReference.quizData.QuizBrandingAndStyle.Language == BrandingLanguage.English  ? 'Within 3 months' : 'Binnen 3 maanden' : 
-    componentReference.quizData.QuizBrandingAndStyle.Language == BrandingLanguage.English  ? 'After 3 months' : 'Na 3 maanden';
+    switch (i) {
+      case 0:
+        switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+          case BrandingLanguage.Dutch:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Per direct';
+            break;
+          case BrandingLanguage.English:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Immediately';
+            break;
+          case BrandingLanguage.Polish:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'natychmiast';
+            break;
+          case BrandingLanguage.German:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'sofort';
+            break;        
+        }        
+        break;
+
+      case 1:
+        switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+          case BrandingLanguage.Dutch:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Binnen 3 maanden';
+            break;
+          case BrandingLanguage.English:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Within 3 months';
+            break;
+          case BrandingLanguage.Polish:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'w ciągu 3 miesięcy';
+            break;
+          case BrandingLanguage.German:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'innerhalb von 3 Monaten';
+            break;        
+        }        
+        break;
+
+      case 2:
+        switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+          case BrandingLanguage.Dutch:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Na 3 maanden';
+            break;
+          case BrandingLanguage.English:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'After 3 months';
+            break;
+          case BrandingLanguage.Polish:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'za 3 miesiące';
+            break;
+          case BrandingLanguage.German:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Nach 3 Monaten';
+            break;        
+        }        
+        break;
+    }
+    // questionSvgObj.selectedAnswerList[i].AnswerTxt = (i == 0) ? componentReference.quizData.QuizBrandingAndStyle.Language == BrandingLanguage.English ? 'Immediately' : 'Per direct' : (i == 1) ? componentReference.quizData.QuizBrandingAndStyle.Language == BrandingLanguage.English  ? 'Within 3 months' : 'Binnen 3 maanden' : 
+    // componentReference.quizData.QuizBrandingAndStyle.Language == BrandingLanguage.English  ? 'After 3 months' : 'Na 3 maanden';
   }
   const fiteredAnwserText = filterPipe.transform(questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : '');
     fobjectSVGans = `<svg>
@@ -3728,6 +3841,18 @@ function createMultiSelectQuestionSvgAnimation(i,questionData,g2){
       questionSvgObj.selectedAnswerList[i].AnswerTxt = "Rating for emoji";
     }else if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingStar){
       questionSvgObj.selectedAnswerList[i].AnswerTxt = "Rating for star";
+    }else if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.FirstName){
+      questionSvgObj.selectedAnswerList[i].AnswerTxt = "First name";
+    }else if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.LastName){
+      questionSvgObj.selectedAnswerList[i].AnswerTxt = "Last name";
+    }else if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.Email){
+      questionSvgObj.selectedAnswerList[i].AnswerTxt = "Email name";
+    }else if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.PhoneNumber){
+      questionSvgObj.selectedAnswerList[i].AnswerTxt = "Phone nomber";
+    }else if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.DatePicker){
+      questionSvgObj.selectedAnswerList[i].AnswerTxt = "Date Picker";
+    }else if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.nps){
+      questionSvgObj.selectedAnswerList[i].AnswerTxt = "NPS";
     }
     const fiteredAnwserText = filterPipe.transform(questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : '');
     
@@ -3810,53 +3935,217 @@ function createRatingSelectQuestionSvgAnimation(i,questionData,g2){
   let answerImage = '';
   if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingEmoji){
     if(i == 0){
-      questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : 
-      componentReference.language == 'en-US' ? 'Very dissatisfied' :componentReference.language == 'nl-NL' ? 'Zeer ontevreden' : 'Bardzo niezadowalająca';
+      if(questionSvgObj.selectedAnswerList[i].AnswerTxt){
+        questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt
+      }else{
+        switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+          case BrandingLanguage.Dutch:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Zeer ontevreden';
+            break;
+          case BrandingLanguage.English:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Very dissatisfied';
+            break;
+          case BrandingLanguage.Polish:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Bardzo niezadowalająca';
+            break;
+          case BrandingLanguage.German:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Sehr unzufrieden';
+            break;        
+        }
+      }
+      // questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : 
+      // componentReference.language == 'en-US' ? 'Very dissatisfied' :componentReference.language == 'nl-NL' ? 'Zeer ontevreden' : 'Bardzo niezadowalająca';
+
     answerImage = `<svg _ngcontent-gfo-c28="" fill="none" height="50" viewBox="0 0 50 50" width="50" xmlns="http://www.w3.org/2000/svg">
       <path _ngcontent-gfo-c28="" d="M25 50C11.2153 50 0 38.7847 0 25C0 11.2153 11.2153 0 25 0C38.7847 0 50 11.2153 50 25C50 38.7847 38.7847 50 25 50ZM25 1.7662C12.1875 1.7662 1.7662 12.1875 1.7662 25C1.7662 37.8125 12.1898 48.2338 25.0023 48.2338C37.8148 48.2338 48.2338 37.8125 48.2338 25C48.2338 12.1875 37.8125 1.7662 25 1.7662Z" fill="#111111"></path><path _ngcontent-gfo-c28="" d="M15.5011 36.3319C15.2164 36.3319 14.9478 36.1953 14.7835 35.9638C14.6469 35.7717 14.5914 35.5379 14.6284 35.3064C14.6654 35.0749 14.7927 34.8689 14.9849 34.7324C15.1608 34.605 19.3714 31.6328 24.9988 31.6328C30.633 31.6328 34.8367 34.605 35.015 34.7324C35.4108 35.0171 35.5011 35.568 35.2164 35.9638C35.052 36.1953 34.7835 36.3319 34.4988 36.3319C34.3136 36.3319 34.1353 36.274 33.9849 36.1652C33.9455 36.1374 30.0543 33.3967 24.9988 33.3967C19.9108 33.3967 16.052 36.1374 16.0127 36.1652C15.8645 36.274 15.6863 36.3319 15.5011 36.3319Z" fill="#111111"></path><path _ngcontent-gfo-c28="" d="M16.866 14.3886C15.6114 14.3886 14.292 14.046 12.9447 13.3701C12.7341 13.2636 12.5767 13.083 12.5026 12.8585C12.4285 12.634 12.4447 12.3955 12.5512 12.1849C12.7017 11.884 13.0049 11.6988 13.3406 11.6988C13.4772 11.6988 13.6114 11.7312 13.7364 11.7937C14.8244 12.34 15.8753 12.6155 16.8614 12.6155C18.3359 12.6155 19.6785 12.0067 20.8498 10.8053C21.0165 10.634 21.241 10.5391 21.4818 10.5391C21.7133 10.5391 21.9332 10.6293 22.0975 10.7891C22.4447 11.1293 22.4517 11.6895 22.1137 12.0367C21.0674 13.1085 19.3082 14.3886 16.866 14.3886Z" fill="#111111"></path><path _ngcontent-gfo-c28="" d="M18.9993 23.5548C17.8835 23.5548 16.9414 21.9692 16.9414 20.0919C16.9414 18.2146 17.8835 16.6289 18.9993 16.6289C20.115 16.6289 21.0571 18.2146 21.0571 20.0919C21.0571 21.9692 20.115 23.5548 18.9993 23.5548Z" fill="#111111"></path><path _ngcontent-gfo-c28="" d="M33.1329 14.3886C30.6907 14.3886 28.9315 13.1108 27.8852 12.0367C27.7208 11.8678 27.6305 11.6455 27.6329 11.4094C27.6352 11.1733 27.7301 10.9534 27.8991 10.7891C28.0657 10.627 28.2833 10.5391 28.5171 10.5391C28.7579 10.5391 28.9801 10.634 29.1467 10.8053C30.318 12.0067 31.6606 12.6155 33.1352 12.6155C34.1213 12.6155 35.1745 12.3377 36.2602 11.7937C36.3852 11.7312 36.5171 11.6988 36.656 11.6988C36.994 11.6988 37.2949 11.8863 37.4454 12.1849C37.5518 12.3955 37.568 12.634 37.494 12.8585C37.4199 13.083 37.2625 13.2636 37.0518 13.3701C35.7069 14.0437 34.3875 14.3886 33.1329 14.3886Z" fill="#111111"></path><path _ngcontent-gfo-c28="" d="M30.9993 23.5548C29.8835 23.5548 28.9414 21.9692 28.9414 20.0919C28.9414 18.2146 29.8835 16.6289 30.9993 16.6289C32.115 16.6289 33.0571 18.2146 33.0571 20.0919C33.0571 21.9692 32.1127 23.5548 30.9993 23.5548Z" fill="#111111"></path>
     </svg>`;
     }else if(i == 1){
-      questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : 
-      componentReference.language == 'en-US' ? 'Dissatisfied' : componentReference.language == 'nl-NL' ?  'Ontevreden': 'Niezadowalająca';
+      if(questionSvgObj.selectedAnswerList[i].AnswerTxt){
+        questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt
+      }else{
+        switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+          case BrandingLanguage.Dutch:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Ontevreden';
+            break;
+          case BrandingLanguage.English:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Dissatisfied';
+            break;
+          case BrandingLanguage.Polish:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Niezadowalająca';
+            break;
+          case BrandingLanguage.German:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Unzufrieden';
+            break;        
+        }
+      }
+      // questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : 
+      // componentReference.language == 'en-US' ? 'Dissatisfied' : componentReference.language == 'nl-NL' ?  'Ontevreden': 'Niezadowalająca';
+      
       answerImage = `<svg _ngcontent-rvx-c28="" fill="none" height="50" viewBox="0 0 50 50" width="50" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-rvx-c28="" d="M25 50C11.2153 50 0 38.7847 0 25C0 11.2153 11.2153 0 25 0C38.7847 0 50 11.2153 50 25C50 38.7847 38.7847 50 25 50ZM25 1.7662C12.1875 1.7662 1.7662 12.1875 1.7662 25C1.7662 37.8125 12.1898 48.2338 25 48.2338C37.8125 48.2338 48.2361 37.8102 48.2361 25C48.2338 12.1875 37.8125 1.7662 25 1.7662Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M12.4046 37.5394C12.2333 37.5394 12.0667 37.4884 11.9208 37.3935C11.5157 37.1273 11.4 36.5787 11.6685 36.1713C14.143 32.4028 19.2518 30.0625 24.9995 30.0625C30.7472 30.0625 35.856 32.4028 38.3329 36.1713C38.5991 36.5787 38.4856 37.1273 38.0805 37.3935C37.937 37.4884 37.768 37.5394 37.5967 37.5394C37.2981 37.5394 37.0227 37.3912 36.8583 37.1412C34.7379 33.9144 30.0829 31.8287 25.0018 31.8287C19.9208 31.8287 15.2657 33.9144 13.1454 37.1412C12.9787 37.3889 12.7032 37.5394 12.4046 37.5394Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M18.9915 21.5958C17.8757 21.5958 16.9336 20.0102 16.9336 18.1329C16.9336 16.2556 17.8757 14.6699 18.9915 14.6699C20.1072 14.6699 21.0493 16.2556 21.0493 18.1329C21.0493 20.0102 20.1072 21.5958 18.9915 21.5958Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M31.0071 21.5958C29.8913 21.5958 28.9492 20.0102 28.9492 18.1329C28.9492 16.2556 29.8913 14.6699 31.0071 14.6699C32.1228 14.6699 33.065 16.2556 33.065 18.1329C33.065 20.0102 32.1228 21.5958 31.0071 21.5958Z" fill="#111111"></path></svg>`;
     }else if(i == 2){
-      questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : 
-      componentReference.language == 'en-US' ? 'Neutral' : componentReference.language == 'nl-NL' ?  'Neutraal': 'Neutralna';
+      if(questionSvgObj.selectedAnswerList[i].AnswerTxt){
+        questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt
+      }else{
+        switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+          case BrandingLanguage.Dutch:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Neutraal';
+            break;
+          case BrandingLanguage.English:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Neutral';
+            break;
+          case BrandingLanguage.Polish:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Neutralna';
+            break;
+          case BrandingLanguage.German:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Neutral';
+            break;        
+        }
+      }
+      // questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : 
+      // componentReference.language == 'en-US' ? 'Neutral' : componentReference.language == 'nl-NL' ?  'Neutraal': 'Neutralna';
       answerImage = `<svg _ngcontent-rvx-c28="" fill="none" height="50" viewBox="0 0 50 50" width="50" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-rvx-c28="" d="M25 50C11.2153 50 0 38.7847 0 25C0 11.2153 11.2153 0 25 0C38.7847 0 50 11.2153 50 25C50 38.7847 38.7847 50 25 50ZM25 1.76389C12.1875 1.76389 1.76389 12.1875 1.76389 25C1.76389 37.8125 12.1875 48.2361 25 48.2361C37.8125 48.2361 48.2361 37.8125 48.2361 25C48.2361 12.1875 37.8125 1.76389 25 1.76389Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M14.8976 34.7479C14.4115 34.7479 14.0156 34.3521 14.0156 33.8683C14.0156 33.3822 14.4115 32.9863 14.8976 32.9863H35.1036C35.5897 32.9863 35.9855 33.3822 35.9855 33.8683C35.9855 34.3544 35.5897 34.7479 35.1036 34.7479H14.8976Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M18.9915 21.5958C17.8757 21.5958 16.9336 20.0102 16.9336 18.1329C16.9336 16.2556 17.8757 14.6699 18.9915 14.6699C20.1072 14.6699 21.0493 16.2556 21.0493 18.1329C21.0493 20.0102 20.1072 21.5958 18.9915 21.5958Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M31.011 21.5958C29.8953 21.5958 28.9531 20.0102 28.9531 18.1329C28.9531 16.2556 29.8953 14.6699 31.011 14.6699C32.1267 14.6699 33.0689 16.2556 33.0689 18.1329C33.0689 20.0102 32.1267 21.5958 31.011 21.5958Z" fill="#111111"></path></svg>`;
     }else if(i == 3){
-      questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : 
-      componentReference.language == 'en-US' ? 'Satisfied' : componentReference.language == 'nl-NL' ?  'Tevreden': 'Zadowalająca';
+      if(questionSvgObj.selectedAnswerList[i].AnswerTxt){
+        questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt
+      }else{
+        switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+          case BrandingLanguage.Dutch:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Tevreden';
+            break;
+          case BrandingLanguage.English:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Satisfied';
+            break;
+          case BrandingLanguage.Polish:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Zadowalająca';
+            break;
+          case BrandingLanguage.German:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Zufrieden';
+            break;        
+        }
+      }
+      // questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : 
+      // componentReference.language == 'en-US' ? 'Satisfied' : componentReference.language == 'nl-NL' ?  'Tevreden': 'Zadowalająca';
       answerImage = `<svg _ngcontent-rvx-c28="" fill="none" height="50" viewBox="0 0 50 50" width="50" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-rvx-c28="" d="M25 50C11.2153 50 0 38.7847 0 25C0 11.2153 11.2153 0 25 0C38.7847 0 50 11.2153 50 25C50 38.7847 38.7847 50 25 50ZM25 1.7662C12.1875 1.7662 1.7662 12.1875 1.7662 25C1.7662 37.8125 12.1898 48.2338 25 48.2338C37.8125 48.2338 48.2338 37.8102 48.2338 25C48.2338 12.1875 37.8125 1.7662 25 1.7662Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M25.0002 39.002C19.2895 39.002 14.0302 35.6594 11.6066 30.4835C11.4006 30.0437 11.5904 29.5159 12.0302 29.3099C12.1483 29.2543 12.2756 29.2266 12.4029 29.2266C12.7432 29.2266 13.058 29.4256 13.2039 29.7358C15.3404 34.2937 19.9701 37.2381 25.0002 37.2381C30.0302 37.2381 34.6599 34.2937 36.7964 29.7358C36.9423 29.4256 37.2548 29.2266 37.5974 29.2266C37.727 29.2266 37.852 29.2543 37.9701 29.3099C38.4122 29.5159 38.602 30.0437 38.396 30.4835C35.9701 35.6571 30.7131 39.002 25.0002 39.002Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M18.9915 21.5958C17.8757 21.5958 16.9336 20.0102 16.9336 18.1329C16.9336 16.2556 17.8757 14.6699 18.9915 14.6699C20.1072 14.6699 21.0493 16.2556 21.0493 18.1329C21.0493 20.0102 20.1072 21.5958 18.9915 21.5958Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M31.011 21.5958C29.8953 21.5958 28.9531 20.0102 28.9531 18.1329C28.9531 16.2556 29.8953 14.6699 31.011 14.6699C32.1267 14.6699 33.0689 16.2556 33.0689 18.1329C33.0689 20.0102 32.1244 21.5958 31.011 21.5958Z" fill="#111111"></path></svg>`;
     }else if(i == 4){
-      questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : 
-      componentReference.language == 'en-US' ? 'Very satisfied' : componentReference.language == 'nl-NL' ?  'Zeer tevreden': 'Bardzo zadowalająca';
+      if(questionSvgObj.selectedAnswerList[i].AnswerTxt){
+        questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt
+      }else{
+        switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+          case BrandingLanguage.Dutch:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Zeer tevreden';
+            break;
+          case BrandingLanguage.English:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Very satisfied';
+            break;
+          case BrandingLanguage.Polish:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Bardzo zadowalająca';
+            break;
+          case BrandingLanguage.German:
+            questionSvgObj.selectedAnswerList[i].AnswerTxt = 'sehr zufrieden';
+            break;        
+        }
+      }
+      // questionSvgObj.selectedAnswerList[i].AnswerTxt = questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : 
+      // componentReference.language == 'en-US' ? 'Very satisfied' : componentReference.language == 'nl-NL' ?  'Zeer tevreden': 'Bardzo zadowalająca';
       answerImage = `<svg _ngcontent-rvx-c28="" fill="none" height="50" viewBox="0 0 50 50" width="50" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-rvx-c28="" d="M25 50C11.2153 50 0 38.7847 0 25C0 11.2153 11.2153 0 25 0C38.7847 0 50 11.2153 50 25C50 38.7847 38.7847 50 25 50ZM25 1.7662C12.1875 1.7662 1.76389 12.1875 1.76389 25C1.76389 37.8125 12.1875 48.2338 25 48.2338C37.8125 48.2338 48.2338 37.8125 48.2338 25C48.2338 12.1875 37.8125 1.7662 25 1.7662Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M13.0893 19.5844C12.9597 19.5844 12.8347 19.5566 12.7166 19.5011C12.5036 19.4016 12.3416 19.2233 12.2606 19.0034C12.1796 18.7835 12.1911 18.5428 12.2907 18.3275C13.2212 16.3414 15.2374 15.0566 17.4319 15.0566C19.624 15.0566 21.6425 16.339 22.5731 18.3252C22.6726 18.5381 22.6842 18.7789 22.6032 18.9988C22.5222 19.221 22.3601 19.3969 22.1472 19.4988C22.0291 19.5543 21.9018 19.5821 21.7745 19.5821C21.4342 19.5821 21.1194 19.383 20.9736 19.0728C20.3323 17.7048 18.9411 16.8205 17.4319 16.8205C15.9226 16.8205 14.5314 17.7071 13.8902 19.0752C13.7444 19.3853 13.4296 19.5844 13.0893 19.5844Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M28.226 19.586C28.0964 19.586 27.9714 19.5582 27.8533 19.5027C27.6404 19.4031 27.4783 19.2249 27.3973 19.005C27.3163 18.7828 27.3279 18.5443 27.4274 18.3314C28.358 16.3453 30.3742 15.0605 32.5686 15.0605C34.7607 15.0605 36.7792 16.343 37.7098 18.3291C37.9158 18.7689 37.726 19.2967 37.2839 19.5027C37.1658 19.5582 37.0408 19.586 36.9112 19.586C36.5709 19.586 36.2561 19.3869 36.1103 19.0767C35.4691 17.7087 34.0779 16.8244 32.5663 16.8244C31.057 16.8244 29.6658 17.7087 29.0246 19.0767C28.8811 19.3869 28.5663 19.586 28.226 19.586Z" fill="#111111"></path><path _ngcontent-rvx-c28="" d="M24.9987 38.9565C19.3027 38.9565 14.0613 35.6213 11.6436 30.4622C11.4618 30.0701 11.6294 29.6042 12.0215 29.4196C12.1266 29.3713 12.2374 29.3457 12.3539 29.3457C12.6578 29.3457 12.9363 29.5218 13.0641 29.7974C15.226 34.411 19.9107 37.3912 25.0016 37.3912C30.0925 37.3912 34.7772 34.411 36.9391 29.7974C37.0669 29.5218 37.3453 29.3457 37.6493 29.3457C37.763 29.3457 37.8737 29.3713 37.9789 29.4196C38.3709 29.6042 38.5385 30.0701 38.3567 30.4622C35.9362 35.6213 30.6948 38.9565 24.9987 38.9565Z" fill="#111111"></path></svg>`;
     }
-  }else{
+  }else if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingStar){
     for(let j=0; j<i+1; j++){
       answerImage += `<svg width="20" height="20" viewBox="0 0 40 38" fill="none" style="margin: 3px;" xmlns="http://www.w3.org/2000/svg">
         <path d="M8.65742 38C8.311 38 7.97796 37.8919 7.69314 37.6881C7.15832 37.3035 6.90653 36.6407 7.05296 36L9.69492 24.4493C9.73867 24.2588 9.6735 24.0603 9.52528 23.9318L0.564568 16.1311C0.0663535 15.6996 -0.122932 15.0182 0.0806391 14.3934C0.284211 13.7705 0.841353 13.3292 1.4976 13.2689L13.353 12.2012C13.5494 12.1834 13.7199 12.0603 13.7976 11.8804L18.4851 0.993354C18.7458 0.389898 19.3405 0 20.0003 0C20.6592 0 21.2539 0.389898 21.5155 0.992468L26.2306 11.9291C26.3637 12.1772 26.4878 12.2127 26.7476 12.2304C26.7922 12.2331 38.5012 13.2689 38.5012 13.2689C39.1583 13.3274 39.7146 13.7687 39.919 14.3934C40.1235 15.0182 39.9351 15.6996 39.4378 16.1303L30.4762 23.9282C30.328 24.0567 30.2637 24.2552 30.3065 24.4457L32.9485 35.9965C33.0949 36.638 32.844 37.3008 32.3083 37.6845C32.0253 37.8883 31.6914 37.9956 31.3431 37.9956C31.0458 37.9956 30.7538 37.9149 30.4994 37.7634L20.2744 31.6996C20.1896 31.6491 20.0949 31.6243 19.9994 31.6243C19.9039 31.6243 19.8092 31.6491 19.7244 31.6996L9.50117 37.7669C9.24403 37.9194 8.95207 38 8.65742 38ZM20.0003 30.0762C20.2949 30.0762 20.5878 30.1568 20.8458 30.3093L30.4931 36.0354C30.578 36.086 30.6735 36.1108 30.7681 36.1108C30.8789 36.1108 30.9896 36.0771 31.0824 36.0097C31.2556 35.8848 31.3378 35.6695 31.2905 35.4612L28.7967 24.5583C28.6619 23.9716 28.8619 23.362 29.319 22.965L37.7806 15.6004C37.9414 15.4603 38.003 15.2379 37.9369 15.0359C37.8708 14.8338 37.6896 14.6903 37.4762 14.6708L26.2824 13.6624C25.6753 13.6074 25.1512 13.2273 24.9128 12.6717L20.4931 2.39699C20.4092 2.20115 20.2155 2.07443 20.0003 2.07443C19.786 2.07443 19.5922 2.20115 19.5074 2.39699L15.0833 12.6717C14.8476 13.2264 14.3244 13.6039 13.7181 13.6588L2.5235 14.6681C2.3101 14.6876 2.12885 14.8312 2.06278 15.0332C1.99671 15.2353 2.05742 15.4577 2.21903 15.5977L10.6797 22.9623C11.1378 23.3602 11.3378 23.9708 11.2021 24.5565L8.7101 35.4603C8.66278 35.6677 8.74492 35.883 8.91814 36.008C9.01189 36.0753 9.12171 36.109 9.23242 36.109C9.32707 36.109 9.4226 36.0842 9.50742 36.0337L19.1556 30.3084C19.4128 30.1568 19.7047 30.0762 20.0003 30.0762Z" fill="#111111"/>
       </svg>`;
     }
     if(i == 0){
-      questionSvgObj.selectedAnswerList[i].AnswerTxt = componentReference.language == 'en-US' ? 'Very dissatisfied' : componentReference.language == 'nl-NL' ? 'Zeer ontevreden' : 'Bardzo niezadowalająca';
+      switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+        case BrandingLanguage.Dutch:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Zeer ontevreden';
+          break;
+        case BrandingLanguage.English:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Very dissatisfied';
+          break;
+        case BrandingLanguage.Polish:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Bardzo niezadowalająca';
+          break;
+        case BrandingLanguage.German:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Sehr unzufrieden';
+          break;        
+      }
+      // questionSvgObj.selectedAnswerList[i].AnswerTxt = componentReference.language == 'en-US' ? 'Very dissatisfied' : componentReference.language == 'nl-NL' ? 'Zeer ontevreden' : 'Bardzo niezadowalająca';
     }else if(i == 1){
-      questionSvgObj.selectedAnswerList[i].AnswerTxt = componentReference.language == 'en-US' ? 'Somewhat unsatisfied' : componentReference.language == 'nl-NL' ? 'Enigszins ontevreden' : 'Nieco niezadowalający';
+      switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+        case BrandingLanguage.Dutch:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Enigszins ontevreden';
+          break;
+        case BrandingLanguage.English:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Somewhat unsatisfied';
+          break;
+        case BrandingLanguage.Polish:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Nieco niezadowalający';
+          break;
+        case BrandingLanguage.German:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Etwas unzufrieden';
+          break;        
+      }
+      // questionSvgObj.selectedAnswerList[i].AnswerTxt = componentReference.language == 'en-US' ? 'Somewhat unsatisfied' : componentReference.language == 'nl-NL' ? 'Enigszins ontevreden' : 'Nieco niezadowalający';
     }else if(i == 2){
-      questionSvgObj.selectedAnswerList[i].AnswerTxt = componentReference.language == 'en-US' ? 'Not unsatisfied and not satisfied' : componentReference.language == 'nl-NL' ? 'Niet tevreden en niet ontevreden' : 'Oceń nas';
+      switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+        case BrandingLanguage.Dutch:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Niet tevreden en niet ontevreden';
+          break;
+        case BrandingLanguage.English:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Not unsatisfied and not satisfied';
+          break;
+        case BrandingLanguage.Polish:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Oceń nas';
+          break;
+        case BrandingLanguage.German:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Nicht unzufrieden und nicht zufrieden';
+          break;        
+      }
+      // questionSvgObj.selectedAnswerList[i].AnswerTxt = componentReference.language == 'en-US' ? 'Not unsatisfied and not satisfied' : componentReference.language == 'nl-NL' ? 'Niet tevreden en niet ontevreden' : 'Oceń nas';
     }else if(i == 3){
-      questionSvgObj.selectedAnswerList[i].AnswerTxt = componentReference.language == 'en-US' ? 'Somewhat satisfied' : componentReference.language == 'nl-NL' ? 'Enigszins tevreden' : 'Nieco zadowolony';
+      switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+        case BrandingLanguage.Dutch:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Enigszins tevreden';
+          break;
+        case BrandingLanguage.English:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Somewhat satisfied';
+          break;
+        case BrandingLanguage.Polish:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Nieco zadowolony';
+          break;
+        case BrandingLanguage.German:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Etwas zufrieden';
+          break;        
+      }
+      // questionSvgObj.selectedAnswerList[i].AnswerTxt = componentReference.language == 'en-US' ? 'Somewhat satisfied' : componentReference.language == 'nl-NL' ? 'Enigszins tevreden' : 'Nieco zadowolony';
     }else if(i == 4){
+      switch (componentReference.quizData.QuizBrandingAndStyle.Language) {
+        case BrandingLanguage.Dutch:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Zeer tevreden';
+          break;
+        case BrandingLanguage.English:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Very satisfied';
+          break;
+        case BrandingLanguage.Polish:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Bardzo zadowalająca';
+          break;
+        case BrandingLanguage.German:
+          questionSvgObj.selectedAnswerList[i].AnswerTxt = 'Sehr zufrieden';
+          break;        
+      }
       questionSvgObj.selectedAnswerList[i].AnswerTxt = componentReference.language == 'en-US' ? 'Very satisfied' : componentReference.language == 'nl-NL' ? 'Zeer tevreden': 'Bardzo zadowalająca';
     }
+  }else{
+    questionSvgObj.selectedAnswerList[i].AnswerTxt = (i+1).toString();
   }
 
 
   const fiteredAnwserText = filterPipe.transform(questionSvgObj.selectedAnswerList[i].AnswerTxt ? questionSvgObj.selectedAnswerList[i].AnswerTxt : '');
   fobjectSVGans = `<svg>
-    <foreignObject width="140" height="100">
+    <foreignObject width="#fObjwidth#" height="#fObjHeight#">
       <body>
-        <div class="option-container" [id]=${questionSvgObj.selectedAnswerList[i].AnswerId}>
+        <div class="option-container" #$optionStyle$# [id]=${questionSvgObj.selectedAnswerList[i].AnswerId}>
         <div class="option-rating" #$ratingStyle$#>#$answerOptionImage$#</div>
         <div class="option-gutter" title="${fiteredAnwserText}">${fiteredAnwserText}</div>
         <div class="correct-option">
@@ -3865,6 +4154,14 @@ function createRatingSelectQuestionSvgAnimation(i,questionData,g2){
       </body>
     </foreignObject>
   </svg>`;
+  if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.nps){
+    fobjectSVGans = fobjectSVGans.replace("#fObjwidth#",50).replace('#fObjHeight#',50);
+    fobjectSVGans = fobjectSVGans.replace("#$optionStyle$#",`style='width:50px'`);
+  }else{    
+    fobjectSVGans = fobjectSVGans.replace("#fObjwidth#",140).replace('#fObjHeight#',100);
+    fobjectSVGans = fobjectSVGans.replace("#$optionStyle$#",``);
+  }
+
 
     fobjectSVGans = fobjectSVGans.replace("#$answerOptionImage$#", answerImage);
     let circlePosition;
@@ -3873,38 +4170,71 @@ function createRatingSelectQuestionSvgAnimation(i,questionData,g2){
       fobjectSVGans = fobjectSVGans.replace("#$ratingStyle$#", `style='height:60px;'`);
       circlePosition = 100;
       circleYPosition = 140;
-    }else{
+    }else if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.ratingStar){
       fobjectSVGans = fobjectSVGans.replace("#$ratingStyle$#", `style='height:35px;'`);
       circlePosition = 80;
       circleYPosition = 120;
+    }else{
+      fobjectSVGans = fobjectSVGans.replace("#$ratingStyle$#", ``);
+      circlePosition = 25;
+      circleYPosition = 90;
     }
 
     let fillColor = questionSvgObj.selectedAnswerList[i].IsCorrect ? "transparent" : "#fff";
 
-    answerCircle = s
-    .circle(70, circlePosition, 10)
-    .attr({ fill: fillColor, stroke: "#fff", "stroke-width": 4,cursor: "pointer" })
-    .addClass("join");
+    if(questionSvgObj.selectedQuestionAnswerType == answerTypeEnum.nps){
+      answerCircle = s
+      .circle(25, 50, 10)
+      .attr({ fill: fillColor, stroke: "#fff", "stroke-width": 4,cursor: "pointer" })
+      .addClass("join");
+    }else{
+      answerCircle = s
+      .circle(70, circlePosition, 10)
+      .attr({ fill: fillColor, stroke: "#fff", "stroke-width": 4,cursor: "pointer" })
+      .addClass("join");
+    }
 
     var divANS = Snap.parse(fobjectSVGans);
     let answerId = questionData.Type == BranchingLogicEnum.WHATSAPPTEMPLATE ? `ta_${questionSvgObj.selectedAnswerList[i].AnswerId}` : `a_${questionSvgObj.selectedAnswerList[i].AnswerId}`;
-    var answergroup = g2
-      .group()
-      .append(divANS)
-      .append(answerCircle)
-      .attr({ id: answerId })
-      .transform(
-        `t${+questionData.Position[0] + i * 150},${+questionData.Position[1] +
-          40}`
-      );
+    if(questionSvgObj.selectedQuestionAnswerType != answerTypeEnum.nps){
+      var answergroup = g2
+        .group()
+        .append(divANS)
+        .append(answerCircle)
+        .attr({ id: answerId })
+        .transform(
+          `t${+questionData.Position[0] + i * 150},${+questionData.Position[1] +
+            40}`
+        );
+      }else{
+      var answergroup = g2
+        .group()
+        .append(divANS)
+        .append(answerCircle)
+        .attr({ id: answerId })
+        .transform(
+          `t${+questionData.Position[0] + i * 60},${+questionData.Position[1] +
+            40}`
+        );
+
+    }
     answerCircle.click(clickOnCircle, answergroup);
     answerCircle.click(updateCircleDetails, answerCircle);
-    questionSvgObj.answerListData.push({
-      AgroupId: answerId,
-      Acx: +questionData.Position[0] + 70 + i * 150,
-      Acy: +questionData.Position[1] + circleYPosition,
-      IsCorrect: questionSvgObj.selectedAnswerList[i].IsCorrect
-    });
+    if(questionSvgObj.selectedQuestionAnswerType != answerTypeEnum.nps){
+      questionSvgObj.answerListData.push({
+        AgroupId: answerId,
+        Acx: +questionData.Position[0] + 70 + i * 150,
+        Acy: +questionData.Position[1] + circleYPosition,
+        IsCorrect: questionSvgObj.selectedAnswerList[i].IsCorrect
+      });
+    }else{
+      questionSvgObj.answerListData.push({
+        AgroupId: answerId,
+        Acx: +questionData.Position[0] + 25 + i * 60,
+        Acy: +questionData.Position[1] + circleYPosition,
+        IsCorrect: questionSvgObj.selectedAnswerList[i].IsCorrect
+      });
+    }
 }
 
 /**

@@ -21,12 +21,14 @@ export class UrlSizeColorSidebarComponent implements OnInit {
       'ActionButtonURL': new FormControl(this.resultData.ActionButtonURL),
       'ActionButtonTxtSize': new FormControl(this.resultData.ActionButtonTxtSize),
       'ActionButtonColor': new FormControl(this.resultData.ActionButtonColor),
+      'ActionButtonHoverColor': new FormControl(this.resultData.ActionButtonHoverColor),
       'ActionButtonTitleColor': new FormControl(this.resultData.ActionButtonTitleColor)
     })
   }
 
   saveUrlSizeColor() {
     this.resultData.ActionButtonColor = this.urlSizeColorform.value['ActionButtonColor'];
+    this.resultData.ActionButtonHoverColor = this.urlSizeColorform.value['ActionButtonHoverColor'];
     this.resultData.ActionButtonTitleColor = this.urlSizeColorform.value['ActionButtonTitleColor'];
     this.resultData.ActionButtonTxtSize = this.urlSizeColorform.value['ActionButtonTxtSize'];
     this.resultData.ActionButtonURL = this.urlSizeColorform.value['ActionButtonURL'];

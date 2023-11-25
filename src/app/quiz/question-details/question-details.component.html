@@ -107,16 +107,28 @@
 
                     <div *ngIf="reOrder.key == 'button' && !isMobileView && QuestionDetails.EnableNextButton && (QuestionDetails.AnswerType==questionTypeEnum.singleSelect || QuestionDetails.AnswerType==questionTypeEnum.lookingForJob)" class="next-btn-container mbottom-10">
                         <ng-container>
-                            <button class="next-btn ellipsiss" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" (click)="submitCurrentOption()" [disabled]="!buttonEnable" [ngStyle]="{
-              'color': QuizBrandingAndStyle.ButtonFontColor , 
-              'background': QuizBrandingAndStyle.ButtonColor,
-              'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                            <button class="next-btn ellipsiss" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" (click)="submitCurrentOption()" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [disabled]="!buttonEnable" [ngStyle]="{
+              'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+              'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+              'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                            </ng-container>
                                 </button>
                         </ng-container>
                     </div>
                     
                     <div *ngIf="reOrder.key == 'question' && QuestionDetails.AnswerType==questionTypeEnum.multiSelect" class="text-center select-one-more-options" [ngStyle]="{'color': QuizBrandingAndStyle.FontColor}">
-                        {{"multipleAnswersPossible" | translate}}
+                        <!-- {{"multipleAnswersPossible" | translate}} -->
+                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                            <ng-container  *ngSwitchCase="1">{{"Meerdere antwoorden mogelijkl"}}</ng-container>
+                            <ng-container  *ngSwitchCase="2">{{"Multiple answers possible"}}</ng-container>
+                            <ng-container  *ngSwitchCase="3">{{"Możliwa odpowiedź wielokrotnego wyboru"}}</ng-container>
+                            <ng-container  *ngSwitchCase="4">{{"Mehrere Antworten möglich"}}</ng-container>
+                        </ng-container>
                     </div>
 
                     <div *ngIf="reOrder.key == 'question' && (QuestionDetails.AnswerType==questionTypeEnum.multiSelect || QuestionDetails.AnswerType==questionTypeEnum.driversLicense)" class="alink">
@@ -170,19 +182,25 @@
                     </div>
                     <div *ngIf="reOrder.key == 'button' && !isMobileView && QuestionDetails.EnableNextButton && (QuestionDetails.AnswerType==questionTypeEnum.multiSelect || QuestionDetails.AnswerType==questionTypeEnum.driversLicense)" class="next-btn-container mbottom-10">
                         <ng-container>
-                            <button class="next-btn ellipsiss" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" (click)="submitCurrentOption()" [disabled]="!selectedOptionArray.length || isNextButtonEnable" [ngStyle]="{
-              'color': QuizBrandingAndStyle.ButtonFontColor , 
-              'background': QuizBrandingAndStyle.ButtonColor,
-              'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                            <button class="next-btn ellipsiss" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" (click)="submitCurrentOption()" [disabled]="!selectedOptionArray.length || isNextButtonEnable" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{
+              'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+              'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+              'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                            <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                                        </ng-container>
                                 </button>
                         </ng-container>
 
                     </div>
 
-                    <div *ngIf="reOrder.key == 'question' && (QuestionDetails.AnswerType==questionTypeEnum.smallText || QuestionDetails.AnswerType==questionTypeEnum.largeText || QuestionDetails.AnswerType==questionTypeEnum.postCode || QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.fullAddress || QuestionDetails.AnswerType==questionTypeEnum.nps || QuestionDetails.AnswerType==questionTypeEnum.ratingEmoji || QuestionDetails.AnswerType==questionTypeEnum.ratingStar || QuestionDetails.AnswerType==questionTypeEnum.availability)"
+                    <div *ngIf="reOrder.key == 'question' && (QuestionDetails.AnswerType==questionTypeEnum.smallText || QuestionDetails.AnswerType==questionTypeEnum.largeText || QuestionDetails.AnswerType==questionTypeEnum.postCode || QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.fullAddress || QuestionDetails.AnswerType==questionTypeEnum.nps || QuestionDetails.AnswerType==questionTypeEnum.ratingEmoji || QuestionDetails.AnswerType==questionTypeEnum.ratingStar || QuestionDetails.AnswerType==questionTypeEnum.availability || QuestionDetails.AnswerType==questionTypeEnum.FirstName || QuestionDetails.AnswerType==questionTypeEnum.LastName || QuestionDetails.AnswerType==questionTypeEnum.Email || QuestionDetails.AnswerType==questionTypeEnum.PhoneNumber || QuestionDetails.AnswerType==questionTypeEnum.DatePicker )"
                         class="alink">
-                        <div class="is-quest ion-row horizontal-form" *ngFor="let answer of QuestionDetails.AnswerOption; let i=index" [ngStyle]="{'background': (QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.fullAddress || QuestionDetails.AnswerType==questionTypeEnum.postCode || QuestionDetails.AnswerType==questionTypeEnum.availability) ? '' :QuizBrandingAndStyle.OptionColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.OptionFontColor, 'margin-bottom':(QuestionDetails.AnswerType==questionTypeEnum.postCode || QuestionDetails.AnswerType==questionTypeEnum.fullAddress) ? '0px' : ''}">
-                            <ng-container *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.postCode">
+                        <div class="is-quest ion-row horizontal-form" *ngFor="let answer of QuestionDetails.AnswerOption; let i=index" [ngStyle]="{'background': (QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.fullAddress || QuestionDetails.AnswerType==questionTypeEnum.postCode || QuestionDetails.AnswerType==questionTypeEnum.availability || QuestionDetails.AnswerType==questionTypeEnum.DatePicker) ? '' :QuizBrandingAndStyle.OptionColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.OptionFontColor, 'margin-bottom':(QuestionDetails.AnswerType==questionTypeEnum.postCode || QuestionDetails.AnswerType==questionTypeEnum.fullAddress) ? '0px' : ''}">
+                            <ng-container *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.postCode || QuestionDetails.AnswerType==questionTypeEnum.DatePicker">
                                 <label class="app- checkbox control-label" *ngIf="QuestionDetails.AnswerOption[0].Title">
                                         <div [froalaEditor]="options"
                                             contenteditable="false" [(ngModel)]="answer.Title"></div>
@@ -221,7 +239,8 @@
                                     <input class="form-control rows ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [(ngModel)]="answerSLText" maxlength="40" placeholder="{{answer.Title | removeTagPipe}}">
                                 </div>
                                 <div class="form-group" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.largeText;"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{answer.Title | removeTagPipe}}"
-                                        [(ngModel)]="answerSLText" maxlength="1000"></textarea></div>
+                                        [(ngModel)]="answerSLText" maxlength="1000"></textarea>
+                                </div>
                                 <div *ngIf="QuestionDetails.AnswerType==questionTypeEnum.postCode" class="row padTop">
                                     <div class="col-xs-5 col-md-3">
                                         <ng-select [items]="selectedCountry" 
@@ -238,26 +257,49 @@
                                             </small>
                                     </div>
                                 </div>
-                                <div id="calendar_div" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth;">
+                                <div id="calendar_div" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.DatePicker">
                                     <mbsc-date [(ngModel)]="selectedDateOfBirth" [options]="dateSettings" placeholder="Please Select...">
                                         <i class="fa fa-calendar" aria-hidden="true" id="calendar"></i></mbsc-date>
                                 </div>
-                                <div class="form-group jcenter" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.nps;" style="display:flex;flex-wrap: wrap;" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor}">
-                                    <div *ngFor="let x of [0,1,2,3,4,5,6,7,8,9,10]" (mouseenter)="hoverOnOption[x] = true" (mouseleave)="hoverOnOption[x] = false">
-                                        <div class="rang-div" (click)="onSelectedSlide(x)" [ngStyle]="{'background': answerSLText == x ? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[x] ? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor, 
-                                            'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat',
-                                            'color': ((answerSLText == x ) || hoverOnOption[x]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor,'border-color':colorLuminance(QuizBrandingAndStyle.BackgroundColorofSelectedAnswer,-.3)}"
-                                            [ngClass]="{'selectedRang': answerSLText == x }">
-                                            {{x}}
+                                <div class="form-group jcenter" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.nps && i == 0" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor}">
+                                    <div  style="display:flex;flex-wrap: wrap;" class="mbottom-18">
+                                        <!-- <div *ngFor="let x of [0,1,2,3,4,5,6,7,8,9,10]" (mouseenter)="hoverOnOption[x] = true" (mouseleave)="hoverOnOption[x] = false"> -->
+                                        <div *ngFor="let x of [1,2,3,4,5,6,7,8,9,10]" (mouseenter)="hoverOnOption[x] = true" (mouseleave)="hoverOnOption[x] = false">
+                                            <div class="rang-div" (click)="onSelectedSlide(x)" [ngStyle]="{'background': answerSLText == x ? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[x] ? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor, 
+                                                'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat',
+                                                'color': ((answerSLText == x ) || hoverOnOption[x]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor,'border-color':colorLuminance(QuizBrandingAndStyle.BackgroundColorofSelectedAnswer,-.3)}"
+                                                [ngClass]="{'selectedRang': answerSLText == x }">
+                                                {{x}}
+                                            </div>
                                         </div>
                                     </div>
+                                    <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">
+                                        <!-- {{"PleaseAddAnExplanation" | translate}} -->
+                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                            <ng-container  *ngSwitchCase="1">{{"Geef alstublieft een toelichting:"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="2">{{"Please add an explanation:"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="3">{{"Proszę dodaj wyjaśnienie"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="4">{{"Bitte fügen Sie eine Erklärung hinzu"}}</ng-container>
+                                        </ng-container>
+                                    </div>
+                                    <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{
+
+                                        QuizBrandingAndStyle.Language == 1
+                                            ? 'Type hier je toelichting...'
+                                            :QuizBrandingAndStyle.Language == 2
+                                                ? 'Enter your explanation here...'
+                                                :QuizBrandingAndStyle.Language == 3
+                                                    ? 'Wpisz tutaj swoje wyjaśnienie...'
+                                                    : 'Geben Sie hier Ihre Erklärung ein...'
+                                        }}"
+                                            [(ngModel)]="ratingComment" maxlength="1000"></textarea></div>
                                 </div>
 
                                 <div class="form-group" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.ratingEmoji && i == 0" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor}">
                                     <div class="rating-center mbottom-18">
                                         <div *ngFor="let ratingEmoji of ratingEmojiList" (mouseenter)="hoverOnOption[ratingEmoji.id] = true" (mouseleave)="hoverOnOption[ratingEmoji.id] = false">
                                             <div class="rating-emoji-div" (click)="onSelectedSlide(ratingEmoji.id)" [ngStyle]="{'background': answerSLText == ratingEmoji.id ? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[ratingEmoji.id] ? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor, 
-                                                'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat',
+                                                'font-family': QuizBrandingAndStyle.FontType ? QuizBrandingAndStyle.FontType:'Montserrat',
                                                 'color': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor,'border-color':colorLuminance(QuizBrandingAndStyle.BackgroundColorofSelectedAnswer,-.3)}"
                                                 [ngClass]="{'selectedEmojiRating': answerSLText == ratingEmoji.id }">
                                                 <div *ngIf="ratingEmoji.id == 1">
@@ -276,7 +318,15 @@
                                                             'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                     </svg>
                                                     <div *ngIf="answer.OptionTextforRatingOne !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingOne}}">{{answer.OptionTextforRatingOne}}</div>
-                                                    <div *ngIf="answer.OptionTextforRatingOne === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                    <div *ngIf="answer.OptionTextforRatingOne === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                        <!-- {{ratingEmoji.name | translate}} -->
+                                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                            <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                        </ng-container>
+                                                    </div>
                                                 </div>
                                                 <div *ngIf="ratingEmoji.id == 2">
                                                     <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -290,7 +340,15 @@
                                                             'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                     </svg>
                                                     <div *ngIf="answer.OptionTextforRatingTwo !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingTwo}}">{{answer.OptionTextforRatingTwo}}</div>
-                                                    <div *ngIf="answer.OptionTextforRatingTwo === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                    <div *ngIf="answer.OptionTextforRatingTwo === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                        <!-- {{ratingEmoji.name | translate}} -->
+                                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                            <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                        </ng-container>
+                                                    </div>
                                                 </div>
                                                 <div *ngIf="ratingEmoji.id == 3">
                                                     <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -304,7 +362,15 @@
                                                             'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                     </svg>
                                                     <div *ngIf="answer.OptionTextforRatingThree !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingThree}}">{{answer.OptionTextforRatingThree}}</div>
-                                                    <div *ngIf="answer.OptionTextforRatingThree === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                    <div *ngIf="answer.OptionTextforRatingThree === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                        <!-- {{ratingEmoji.name | translate}} -->
+                                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                            <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                        </ng-container>
+                                                    </div>
                                                 </div>
                                                 <div *ngIf="ratingEmoji.id == 4">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
@@ -318,7 +384,15 @@
                                                         'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                     </svg>
                                                     <div *ngIf="answer.OptionTextforRatingFour !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingFour}}">{{answer.OptionTextforRatingFour}}</div>
-                                                    <div *ngIf="answer.OptionTextforRatingFour === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                    <div *ngIf="answer.OptionTextforRatingFour === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                        <!-- {{ratingEmoji.name | translate}} -->
+                                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                            <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                        </ng-container>
+                                                    </div>
                                                 </div>
                                                 <div *ngIf="ratingEmoji.id == 5">
                                                     <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -332,13 +406,38 @@
                                                             'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                     </svg>
                                                     <div *ngIf="answer.OptionTextforRatingFive !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingFive}}">{{answer.OptionTextforRatingFive}}</div>
-                                                    <div *ngIf="answer.OptionTextforRatingFive === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                    <div *ngIf="answer.OptionTextforRatingFive === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                        <!-- {{ratingEmoji.name | translate}} -->
+                                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                            <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                        </ng-container>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">{{"PleaseAddAnExplanation" | translate}}</div>
-                                    <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{'EnterYourExplanationHere' | translate}}"
+                                    <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">
+                                        <!-- {{"PleaseAddAnExplanation" | translate}} -->
+                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                            <ng-container  *ngSwitchCase="1">{{"Geef alstublieft een toelichting:"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="2">{{"Please add an explanation:"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="3">{{"Proszę dodaj wyjaśnienie"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="4">{{"Bitte fügen Sie eine Erklärung hinzu"}}</ng-container>
+                                        </ng-container>
+                                    </div>
+                                    <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{
+
+                                        QuizBrandingAndStyle.Language == 1
+                                            ? 'Type hier je toelichting...'
+                                            :QuizBrandingAndStyle.Language == 2
+                                                ? 'Enter your explanation here...'
+                                                :QuizBrandingAndStyle.Language == 3
+                                                    ? 'Wpisz tutaj swoje wyjaśnienie...'
+                                                    : 'Geben Sie hier Ihre Erklärung ein...'
+                                        }}"
                                             [(ngModel)]="ratingComment" maxlength="1000"></textarea></div>
                                 </div>
                                 <div class="form-group" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.ratingStar && i == 0" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor}">
@@ -394,7 +493,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="text-center mbottom-18">
+                                    <!-- <div class="text-center mbottom-18">
                                         <div class="gray-color" *ngIf="starHover == 0 && !answerSLText">
                                           <span>{{"MakeAChoice" | translate}}</span>
                                         </div>
@@ -412,9 +511,27 @@
                                             <b *ngIf="answerSLText == 4">{{"SomewhatSatisfied" | translate}}</b>
                                             <b *ngIf="answerSLText == 5">{{"Lbl_Veryhappy" | translate}}</b>
                                         </div>
+                                    </div> -->
+                                    <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">
+                                        <!-- {{"PleaseAddAnExplanation" | translate}} -->
+                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                            <ng-container  *ngSwitchCase="1">{{"Geef alstublieft een toelichting:"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="2">{{"Please add an explanation:"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="3">{{"Proszę dodaj wyjaśnienie"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="4">{{"Bitte fügen Sie eine Erklärung hinzu"}}</ng-container>
+                                        </ng-container>
+
                                     </div>
-                                    <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">{{"PleaseAddAnExplanation" | translate}}</div>
-                                    <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{'EnterYourExplanationHere' | translate}}"
+                                    <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{
+
+                                        QuizBrandingAndStyle.Language == 1
+                                            ? 'Type hier je toelichting...'
+                                            :QuizBrandingAndStyle.Language == 2
+                                                ? 'Enter your explanation here...'
+                                                :QuizBrandingAndStyle.Language == 3
+                                                    ? 'Wpisz tutaj swoje wyjaśnienie...'
+                                                    : 'Geben Sie hier Ihre Erklärung ein...'
+                                        }}"
                                             [(ngModel)]="ratingComment" maxlength="1000"></textarea></div>
                                 </div>
                                 
@@ -424,7 +541,31 @@
                                             <div class="availability-div" [ngStyle]="{'background': answerSLText == item.id ? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[item.id] ? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor, 
                                             'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat',
                                             'color': ((answerSLText == item.id ) || hoverOnOption[item.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}">
-                                                <div title="{{item.name}}">{{item.name | translate}}</div>
+                                                <!-- <div title="{{item.name}}">{{item.name | translate}}</div> -->
+                                                <div title="{{item.name}}" *ngIf="item.id == 1">
+                                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                        <ng-container  *ngSwitchCase="1">{{'Per direct'}}</ng-container>
+                                                        <ng-container  *ngSwitchCase="2">{{'Immediately'}}</ng-container>
+                                                        <ng-container  *ngSwitchCase="3">{{'natychmiast'}}</ng-container>
+                                                        <ng-container  *ngSwitchCase="4">{{'sofort'}}</ng-container>
+                                                    </ng-container>
+                                                </div>
+                                                <div title="{{item.name}}" *ngIf="item.id == 2">
+                                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                        <ng-container  *ngSwitchCase="1">{{'Binnen 3 maanden'}}</ng-container>
+                                                        <ng-container  *ngSwitchCase="2">{{'Within 3 months'}}</ng-container>
+                                                        <ng-container  *ngSwitchCase="3">{{'w ciągu 3 miesięcy'}}</ng-container>
+                                                        <ng-container  *ngSwitchCase="4">{{'innerhalb von 3 Monaten'}}</ng-container>
+                                                    </ng-container>
+                                                </div>
+                                                <div title="{{item.name}}" *ngIf="item.id == 3">
+                                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                        <ng-container  *ngSwitchCase="1">{{'Na 3 maanden'}}</ng-container>
+                                                        <ng-container  *ngSwitchCase="2">{{'After 3 months'}}</ng-container>
+                                                        <ng-container  *ngSwitchCase="3">{{'za 3 miesiące'}}</ng-container>
+                                                        <ng-container  *ngSwitchCase="4">{{'Nach 3 Monaten'}}</ng-container>
+                                                    </ng-container>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -432,6 +573,10 @@
                                         <mbsc-date [(ngModel)]="availabilityDate" [options]="dateSettings" placeholder="Please Select..." [min]="availabilityMinDate" [max]="availabilityMaxDate" >
                                             <i class="fa fa-calendar" aria-hidden="true" id="calendar"></i></mbsc-date>
                                     </div>
+                                </div>
+
+                                <div class="form-group" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.FirstName || QuestionDetails.AnswerType==questionTypeEnum.LastName || QuestionDetails.AnswerType==questionTypeEnum.Email || QuestionDetails.AnswerType==questionTypeEnum.PhoneNumber">
+                                    <input class="form-control rows ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [(ngModel)]="answerSLText" maxlength="40" placeholder="{{answer.Title}}">
                                 </div>
 
                             </ng-container>
@@ -492,13 +637,14 @@
                                              </small>
                                     </div>
                                 </div>
-                                <div id="calendar_div" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth;">
+                                <div id="calendar_div" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.DatePicker">
                                     <mbsc-date class="calendar" [disabled]="QuestionDetails.EditAnswer == false" [(ngModel)]="selectedDateOfBirth" [options]="dateSettings" placeholder="Please Select...">
                                         <i class="fa fa-calendar" aria-hidden="true" id="calendar"></i></mbsc-date>
                                 </div>
-                                <div class="form-group" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.nps;">
+                                <div class="form-group" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.nps && i == 0">
                                     <div *ngIf="QuestionDetails.EditAnswer == false" class="jcenter" style="display:flex;flex-wrap: wrap;" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor}">
-                                        <div *ngFor="let x of [0,1,2,3,4,5,6,7,8,9,10]" (mouseenter)="hoverOnOption[x] = true" (mouseleave)="hoverOnOption[x] = false">
+                                        <!-- <div *ngFor="let x of [0,1,2,3,4,5,6,7,8,9,10]" (mouseenter)="hoverOnOption[x] = true" (mouseleave)="hoverOnOption[x] = false"> -->
+                                        <div *ngFor="let x of [1,2,3,4,5,6,7,8,9,10]" (mouseenter)="hoverOnOption[x] = true" (mouseleave)="hoverOnOption[x] = false">
                                             <div class="rang-div" style="cursor: no-drop;" [ngStyle]="{'background': answerSLText == x ? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[x] ? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor, 
                                                 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat',
                                                 'color': ((answerSLText == x ) || hoverOnOption[x]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor,'border-color':colorLuminance(QuizBrandingAndStyle.BackgroundColorofSelectedAnswer,-.3)}"
@@ -508,7 +654,8 @@
                                         </div>
                                     </div>
                                     <div *ngIf="QuestionDetails.EditAnswer == true" class="jcenter" style="display:flex;flex-wrap: wrap;" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor}">
-                                        <div *ngFor="let x of [0,1,2,3,4,5,6,7,8,9,10]" (mouseenter)="hoverOnOption[x] = true" (mouseleave)="hoverOnOption[x] = false">
+                                        <!-- <div *ngFor="let x of [0,1,2,3,4,5,6,7,8,9,10]" (mouseenter)="hoverOnOption[x] = true" (mouseleave)="hoverOnOption[x] = false"> -->
+                                        <div *ngFor="let x of [1,2,3,4,5,6,7,8,9,10]" (mouseenter)="hoverOnOption[x] = true" (mouseleave)="hoverOnOption[x] = false">
                                             <div class="rang-div" (click)="onSelectedSlide(x)" [ngStyle]="{'background': answerSLText == x ? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[x] ? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor, 
                                                 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat',
                                                 'color': ((answerSLText == x ) || hoverOnOption[x]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor,'border-color':colorLuminance(QuizBrandingAndStyle.BackgroundColorofSelectedAnswer,-.3)}"
@@ -542,7 +689,15 @@
                                                                 'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                         </svg>
                                                         <div *ngIf="answer.OptionTextforRatingOne !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingOne}}">{{answer.OptionTextforRatingOne}}</div>
-                                                        <div *ngIf="answer.OptionTextforRatingOne === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                        <div *ngIf="answer.OptionTextforRatingOne === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                            <!-- {{ratingEmoji.name | translate}} -->
+                                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                                <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                            </ng-container>
+                                                        </div>
                                                     </div>
                                                     <div *ngIf="ratingEmoji.id == 2">
                                                         <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -556,7 +711,15 @@
                                                                 'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                         </svg>
                                                         <div *ngIf="answer.OptionTextforRatingTwo !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingTwo}}">{{answer.OptionTextforRatingTwo}}</div>
-                                                        <div *ngIf="answer.OptionTextforRatingTwo === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                        <div *ngIf="answer.OptionTextforRatingTwo === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                            <!-- {{ratingEmoji.name | translate}} -->
+                                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                                <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                            </ng-container>
+                                                        </div>
                                                     </div>
                                                     <div *ngIf="ratingEmoji.id == 3">
                                                         <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -570,7 +733,15 @@
                                                                 'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                         </svg>
                                                         <div *ngIf="answer.OptionTextforRatingThree !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingThree}}">{{answer.OptionTextforRatingThree}}</div>
-                                                        <div *ngIf="answer.OptionTextforRatingThree === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                        <div *ngIf="answer.OptionTextforRatingThree === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                            <!-- {{ratingEmoji.name | translate}} -->
+                                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                                <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                            </ng-container>
+                                                        </div>
                                                     </div>
                                                     <div *ngIf="ratingEmoji.id == 4">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
@@ -584,7 +755,15 @@
                                                             'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                         </svg>
                                                         <div *ngIf="answer.OptionTextforRatingFour !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingFour}}">{{answer.OptionTextforRatingFour}}</div>
-                                                        <div *ngIf="answer.OptionTextforRatingFour === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                        <div *ngIf="answer.OptionTextforRatingFour === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                            <!-- {{ratingEmoji.name | translate}} -->
+                                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                                <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                            </ng-container>
+                                                        </div>
                                                     </div>
                                                     <div *ngIf="ratingEmoji.id == 5">
                                                         <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -598,13 +777,38 @@
                                                                 'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                         </svg>
                                                         <div *ngIf="answer.OptionTextforRatingFive !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingFive}}">{{answer.OptionTextforRatingFive}}</div>
-                                                        <div *ngIf="answer.OptionTextforRatingFive === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                        <div *ngIf="answer.OptionTextforRatingFive === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                            <!-- {{ratingEmoji.name | translate}} -->
+                                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                                <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                            </ng-container>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">{{"PleaseAddAnExplanation" | translate}}</div>
-                                        <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{'EnterYourExplanationHere' | translate}}"
+                                        <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">
+                                            <!-- {{"PleaseAddAnExplanation" | translate}} -->
+                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                <ng-container  *ngSwitchCase="1">{{"Geef alstublieft een toelichting:"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="2">{{"Please add an explanation:"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="3">{{"Proszę dodaj wyjaśnienie"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="4">{{"Bitte fügen Sie eine Erklärung hinzu"}}</ng-container>
+                                            </ng-container>
+                                        </div>
+                                        <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{
+
+                                            QuizBrandingAndStyle.Language == 1
+                                                ? 'Type hier je toelichting...'
+                                                :QuizBrandingAndStyle.Language == 2
+                                                    ? 'Enter your explanation here...'
+                                                    :QuizBrandingAndStyle.Language == 3
+                                                        ? 'Wpisz tutaj swoje wyjaśnienie...'
+                                                        : 'Geben Sie hier Ihre Erklärung ein...'
+                                            }}"
                                                 [(ngModel)]="ratingComment" maxlength="1000"></textarea></div>
                                     </div>
                                     <div *ngIf="QuestionDetails.EditAnswer == true" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor}">
@@ -630,7 +834,15 @@
                                                                 'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                         </svg>
                                                         <div *ngIf="answer.OptionTextforRatingOne !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingOne}}">{{answer.OptionTextforRatingOne}}</div>
-                                                        <div *ngIf="answer.OptionTextforRatingOne === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                        <div *ngIf="answer.OptionTextforRatingOne === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                            <!-- {{ratingEmoji.name | translate}} -->
+                                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                                <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                            </ng-container>
+                                                        </div>
                                                     </div>
                                                     <div *ngIf="ratingEmoji.id == 2">
                                                         <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -644,7 +856,15 @@
                                                                 'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                         </svg>
                                                         <div *ngIf="answer.OptionTextforRatingTwo !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingTwo}}">{{answer.OptionTextforRatingTwo}}</div>
-                                                        <div *ngIf="answer.OptionTextforRatingTwo === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                        <div *ngIf="answer.OptionTextforRatingTwo === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                            <!-- {{ratingEmoji.name | translate}} -->
+                                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                                <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                            </ng-container>
+                                                        </div>
                                                     </div>
                                                     <div *ngIf="ratingEmoji.id == 3">
                                                         <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -658,7 +878,15 @@
                                                                 'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                         </svg>
                                                         <div *ngIf="answer.OptionTextforRatingThree !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingThree}}">{{answer.OptionTextforRatingThree}}</div>
-                                                        <div *ngIf="answer.OptionTextforRatingThree === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                        <div *ngIf="answer.OptionTextforRatingThree === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                            <!-- {{ratingEmoji.name | translate}} -->
+                                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                                <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                            </ng-container>
+                                                        </div>
                                                     </div>
                                                     <div *ngIf="ratingEmoji.id == 4">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
@@ -672,7 +900,15 @@
                                                             'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                         </svg>
                                                         <div *ngIf="answer.OptionTextforRatingFour !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingFour}}">{{answer.OptionTextforRatingFour}}</div>
-                                                        <div *ngIf="answer.OptionTextforRatingFour === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                        <div *ngIf="answer.OptionTextforRatingFour === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                            <!-- {{ratingEmoji.name | translate}} -->
+                                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                                <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                            </ng-container>                                                        
+                                                        </div>
                                                     </div>
                                                     <div *ngIf="ratingEmoji.id == 5">
                                                         <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -686,13 +922,38 @@
                                                                 'fill': ((answerSLText == ratingEmoji.id ) || hoverOnOption[ratingEmoji.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}"/>
                                                         </svg>
                                                         <div *ngIf="answer.OptionTextforRatingFive !== null"  class="ptop-9 ellipsis-2line" title="{{answer.OptionTextforRatingFive}}">{{answer.OptionTextforRatingFive}}</div>
-                                                        <div *ngIf="answer.OptionTextforRatingFive === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">{{ratingEmoji.name | translate}}</div>
+                                                        <div *ngIf="answer.OptionTextforRatingFive === null" class="ptop-9 ellipsis-2line" title="{{ratingEmoji.name | translate}}">
+                                                            <!-- {{ratingEmoji.name | translate}} -->
+                                                              <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                                <ng-container  *ngSwitchCase="1">{{ratingEmoji.dutchName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="2">{{ratingEmoji.englishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="3">{{ratingEmoji.polishName}}</ng-container>
+                                                                <ng-container  *ngSwitchCase="4">{{ratingEmoji.germanName}}</ng-container>
+                                                            </ng-container>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">{{"PleaseAddAnExplanation" | translate}}</div>
-                                        <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{'EnterYourExplanationHere' | translate}}"
+                                        <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">
+                                            <!-- {{"PleaseAddAnExplanation" | translate}} -->
+                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                <ng-container  *ngSwitchCase="1">{{"Geef alstublieft een toelichting:"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="2">{{"Please add an explanation:"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="3">{{"Proszę dodaj wyjaśnienie"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="4">{{"Bitte fügen Sie eine Erklärung hinzu"}}</ng-container>
+                                            </ng-container>
+                                        </div>
+                                        <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{
+
+                                            QuizBrandingAndStyle.Language == 1
+                                                ? 'Type hier je toelichting...'
+                                                :QuizBrandingAndStyle.Language == 2
+                                                    ? 'Enter your explanation here...'
+                                                    :QuizBrandingAndStyle.Language == 3
+                                                        ? 'Wpisz tutaj swoje wyjaśnienie...'
+                                                        : 'Geben Sie hier Ihre Erklärung ein...'
+                                            }}"
                                                 [(ngModel)]="ratingComment" maxlength="1000"></textarea></div>
                                     </div>
                                 </div>
@@ -750,7 +1011,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="text-center mbottom-18">
+                                        <!-- <div class="text-center mbottom-18">
                                             <div class="gray-color" *ngIf="starHover == 0 && !answerSLText">
                                                 <span>{{"MakeAChoice" | translate}}</span>
                                             </div>
@@ -768,9 +1029,26 @@
                                                 <b *ngIf="answerSLText == 4">{{"SomewhatSatisfied" | translate}}</b>
                                                 <b *ngIf="answerSLText == 5">{{"Lbl_Veryhappy" | translate}}</b>
                                             </div>
+                                        </div> -->
+                                        <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">
+                                            <!-- {{"PleaseAddAnExplanation" | translate}} -->
+                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                <ng-container  *ngSwitchCase="1">{{"Geef alstublieft een toelichting:"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="2">{{"Please add an explanation:"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="3">{{"Proszę dodaj wyjaśnienie"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="4">{{"Bitte fügen Sie eine Erklärung hinzu"}}</ng-container>
+                                            </ng-container>
                                         </div>
-                                        <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">{{"PleaseAddAnExplanation" | translate}}</div>
-                                        <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{'EnterYourExplanationHere' | translate}}"
+                                        <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{
+
+                                            QuizBrandingAndStyle.Language == 1
+                                                ? 'Type hier je toelichting...'
+                                                :QuizBrandingAndStyle.Language == 2
+                                                    ? 'Enter your explanation here...'
+                                                    :QuizBrandingAndStyle.Language == 3
+                                                        ? 'Wpisz tutaj swoje wyjaśnienie...'
+                                                        : 'Geben Sie hier Ihre Erklärung ein...'
+                                            }}"
                                                 [(ngModel)]="ratingComment" maxlength="1000"></textarea></div>
                                     </div>
                                     <div *ngIf="QuestionDetails.EditAnswer == true" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor}">
@@ -826,7 +1104,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="text-center mbottom-18">
+                                        <!-- <div class="text-center mbottom-18">
                                             <div class="gray-color" *ngIf="starHover == 0 && !answerSLText">
                                                 <span>{{"MakeAChoice" | translate}}</span>
                                             </div>
@@ -844,9 +1122,26 @@
                                                 <b *ngIf="answerSLText == 4">{{"SomewhatSatisfied" | translate}}</b>
                                                 <b *ngIf="answerSLText == 5">{{"Lbl_Veryhappy" | translate}}</b>
                                             </div>
+                                        </div> -->
+                                        <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">
+                                            <!-- {{"PleaseAddAnExplanation" | translate}} -->
+                                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                <ng-container  *ngSwitchCase="1">{{"Geef alstublieft een toelichting:"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="2">{{"Please add an explanation:"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="3">{{"Proszę dodaj wyjaśnienie"}}</ng-container>
+                                                <ng-container  *ngSwitchCase="4">{{"Bitte fügen Sie eine Erklärung hinzu"}}</ng-container>
+                                            </ng-container>
                                         </div>
-                                        <div *ngIf="QuestionDetails.EnableComment" class="mbottom-10">{{"PleaseAddAnExplanation" | translate}}</div>
-                                        <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{'EnterYourExplanationHere' | translate}}"
+                                        <div class="form-group mbottom-10" *ngIf="QuestionDetails.EnableComment"><textarea class="form-control ans-text-box" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" placeholder="{{
+
+                                            QuizBrandingAndStyle.Language == 1
+                                                ? 'Type hier je toelichting...'
+                                                :QuizBrandingAndStyle.Language == 2
+                                                    ? 'Enter your explanation here...'
+                                                    :QuizBrandingAndStyle.Language == 3
+                                                        ? 'Wpisz tutaj swoje wyjaśnienie...'
+                                                        : 'Geben Sie hier Ihre Erklärung ein...'
+                                            }}"
                                                 [(ngModel)]="ratingComment" maxlength="1000"></textarea></div>
                                     </div>
                                 </div>
@@ -857,7 +1152,30 @@
                                                 <div class="availability-div" [ngStyle]="{'background': answerSLText == item.id ? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[item.id] ? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor, 
                                                 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat',
                                                 'color': ((answerSLText == item.id ) || hoverOnOption[item.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}">
-                                                    <div title="{{item.name}}">{{item.name | translate}}</div>
+                                                    <div title="{{item.name}}" *ngIf="item.id == 1">
+                                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                            <ng-container  *ngSwitchCase="1">{{'Per direct'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="2">{{'Immediately'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="3">{{'natychmiast'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="4">{{'sofort'}}</ng-container>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div title="{{item.name}}" *ngIf="item.id == 2">
+                                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                            <ng-container  *ngSwitchCase="1">{{'Binnen 3 maanden'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="2">{{'Within 3 months'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="3">{{'w ciągu 3 miesięcy'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="4">{{'innerhalb von 3 Monaten'}}</ng-container>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div title="{{item.name}}" *ngIf="item.id == 3">
+                                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                            <ng-container  *ngSwitchCase="1">{{'Na 3 maanden'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="2">{{'After 3 months'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="3">{{'za 3 miesiące'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="4">{{'Nach 3 Monaten'}}</ng-container>
+                                                        </ng-container>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -872,7 +1190,31 @@
                                                 <div class="availability-div" [ngStyle]="{'background': answerSLText == item.id ? QuizBrandingAndStyle.BackgroundColorofSelectedAnswer : hoverOnOption[item.id] ? QuizBrandingAndStyle.BackgroundColorofAnsweronHover : QuizBrandingAndStyle.OptionColor, 
                                                 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat',
                                                 'color': ((answerSLText == item.id ) || hoverOnOption[item.id]) ? QuizBrandingAndStyle.AnswerTextColorofSelectedAnswer: QuizBrandingAndStyle.OptionFontColor}">
-                                                    <div title="{{item.name}}">{{item.name | translate}}</div>
+                                                    <!-- <div title="{{item.name}}">{{item.name | translate}}</div> -->
+                                                    <div title="{{item.name}}" *ngIf="item.id == 1">
+                                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                            <ng-container  *ngSwitchCase="1">{{'Per direct'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="2">{{'Immediately'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="3">{{'natychmiast'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="4">{{'sofort'}}</ng-container>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div title="{{item.name}}" *ngIf="item.id == 2">
+                                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                            <ng-container  *ngSwitchCase="1">{{'Binnen 3 maanden'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="2">{{'Within 3 months'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="3">{{'w ciągu 3 miesięcy'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="4">{{'innerhalb von 3 Monaten'}}</ng-container>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div title="{{item.name}}" *ngIf="item.id == 3">
+                                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                                            <ng-container  *ngSwitchCase="1">{{'Na 3 maanden'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="2">{{'After 3 months'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="3">{{'za 3 miesiące'}}</ng-container>
+                                                            <ng-container  *ngSwitchCase="4">{{'Nach 3 Monaten'}}</ng-container>
+                                                        </ng-container>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -882,36 +1224,70 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group" *ngIf="QuestionDetails.AnswerType==questionTypeEnum.FirstName || QuestionDetails.AnswerType==questionTypeEnum.LastName || QuestionDetails.AnswerType==questionTypeEnum.Email || QuestionDetails.AnswerType==questionTypeEnum.PhoneNumber">
+                                    <input class="form-control rows ans-text-box" [disabled]="QuestionDetails.EditAnswer == false" [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [(ngModel)]="answerSLText"
+                                        maxlength="40" placeholder="{{answer.Title}}">
+                                </div>
                             </ng-container>
                         </div>
                     </div>
 
-                    <div *ngIf="reOrder.key == 'button' && !isMobileView && QuestionDetails.EnableNextButton && (QuestionDetails.AnswerType==questionTypeEnum.smallText || QuestionDetails.AnswerType==questionTypeEnum.largeText || QuestionDetails.AnswerType==questionTypeEnum.postCode || QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.fullAddress || QuestionDetails.AnswerType==questionTypeEnum.nps || QuestionDetails.AnswerType==questionTypeEnum.ratingEmoji || QuestionDetails.AnswerType==questionTypeEnum.ratingStar || QuestionDetails.AnswerType==questionTypeEnum.availability)"
+                    <div *ngIf="reOrder.key == 'button' && !isMobileView && QuestionDetails.EnableNextButton && (QuestionDetails.AnswerType==questionTypeEnum.smallText || QuestionDetails.AnswerType==questionTypeEnum.largeText || QuestionDetails.AnswerType==questionTypeEnum.postCode || QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.fullAddress || QuestionDetails.AnswerType==questionTypeEnum.nps || QuestionDetails.AnswerType==questionTypeEnum.ratingEmoji || QuestionDetails.AnswerType==questionTypeEnum.ratingStar || QuestionDetails.AnswerType==questionTypeEnum.availability || QuestionDetails.AnswerType==questionTypeEnum.FirstName || QuestionDetails.AnswerType==questionTypeEnum.LastName || QuestionDetails.AnswerType==questionTypeEnum.Email || QuestionDetails.AnswerType==questionTypeEnum.PhoneNumber || QuestionDetails.AnswerType==questionTypeEnum.DatePicker )"
                         class="next-btn-container mbottom-10">
-                        <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.smallText || QuestionDetails.AnswerType==questionTypeEnum.largeText" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!answerSLText" [ngStyle]="{
-                'color': QuizBrandingAndStyle.ButtonFontColor ,
-                'background': QuizBrandingAndStyle.ButtonColor,
-                'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                        <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.smallText || QuestionDetails.AnswerType==questionTypeEnum.largeText || QuestionDetails.AnswerType==questionTypeEnum.FirstName || QuestionDetails.AnswerType==questionTypeEnum.LastName || QuestionDetails.AnswerType==questionTypeEnum.Email || QuestionDetails.AnswerType==questionTypeEnum.PhoneNumber" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!answerSLText" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{
+                'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+                'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+                'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                            </ng-container>
                                 </button>
-                        <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.postCode" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!isVaildPostCode" [ngStyle]="{
-                                    'color': QuizBrandingAndStyle.ButtonFontColor ,
-                                    'background': QuizBrandingAndStyle.ButtonColor,
-                                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                        <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.postCode" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!isVaildPostCode" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{
+                                    'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+                                    'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+                                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                                    </ng-container>
                         </button>
-                        <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!selectedDateOfBirth" [ngStyle]="{
-                                    'color': QuizBrandingAndStyle.ButtonFontColor ,
-                                    'background': QuizBrandingAndStyle.ButtonColor,
-                                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                        <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.DatePicker" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!selectedDateOfBirth" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{
+                                    'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+                                    'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+                                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                                    </ng-container>
                                 </button>
-                        <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.fullAddress" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="subAnswerSlText[0] == '' || subAnswerSlText[1] == '' || subAnswerSlText[2] == '' || !isVaildPostCode" [ngStyle]="{
-                    'color': QuizBrandingAndStyle.ButtonFontColor ,
-                    'background': QuizBrandingAndStyle.ButtonColor,
-                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                        <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.fullAddress" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="subAnswerSlText[0] == '' || subAnswerSlText[1] == '' || subAnswerSlText[2] == '' || !isVaildPostCode" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{
+                    'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+                    'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                                    </ng-container>
                                 </button>
-                        <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.nps || QuestionDetails.AnswerType==questionTypeEnum.ratingEmoji || QuestionDetails.AnswerType==questionTypeEnum.ratingStar || QuestionDetails.AnswerType==questionTypeEnum.availability" [disabled]="answerSLText == undefined || answerSLText == null || ((QuestionDetails.AnswerType==questionTypeEnum.availability)? availabilityDate == null : false )" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [ngStyle]="{
-                                    'color': QuizBrandingAndStyle.ButtonFontColor ,
-                                    'background': QuizBrandingAndStyle.ButtonColor,
-                                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                        <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.nps || QuestionDetails.AnswerType==questionTypeEnum.ratingEmoji || QuestionDetails.AnswerType==questionTypeEnum.ratingStar || QuestionDetails.AnswerType==questionTypeEnum.availability" [disabled]="answerSLText == undefined || answerSLText == null || ((QuestionDetails.AnswerType==questionTypeEnum.availability)? availabilityDate == null : false )" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{
+                                    'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+                                    'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+                                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                                    </ng-container>
                             </button>
                     </div>
 
@@ -932,42 +1308,84 @@
             <div class="next-btn-container">
                 <ng-container *ngIf="buttonShow">
                     <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.singleSelect || QuestionDetails.AnswerType==questionTypeEnum.lookingForJob" class="next-btn ellipsiss mobile-next-btn" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" (click)="submitCurrentOption()" [disabled]="!buttonEnable"
-                    [ngStyle]="{
-    'color': QuizBrandingAndStyle.ButtonFontColor , 
-    'background': QuizBrandingAndStyle.ButtonColor,
-    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                    (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                            <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                            <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                            <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                            <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                        </ng-container>
                 </button>
                     <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.multiSelect || QuestionDetails.AnswerType==questionTypeEnum.driversLicense" class="next-btn ellipsiss mobile-next-btn" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" (click)="submitCurrentOption()" [disabled]="!selectedOptionArray.length || isNextButtonEnable"
-                        [ngStyle]="{
-    'color': QuizBrandingAndStyle.ButtonFontColor , 
-    'background': QuizBrandingAndStyle.ButtonColor,
-    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                    (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                            </ng-container>
                     </button>
-                    <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.smallText || QuestionDetails.AnswerType==questionTypeEnum.largeText" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOptionWithText()" [disabled]="!answerSLText" [ngStyle]="{
-    'color': QuizBrandingAndStyle.ButtonFontColor ,
-    'background': QuizBrandingAndStyle.ButtonColor,
-    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                    <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.smallText || QuestionDetails.AnswerType==questionTypeEnum.largeText || QuestionDetails.AnswerType==questionTypeEnum.FirstName || QuestionDetails.AnswerType==questionTypeEnum.LastName || QuestionDetails.AnswerType==questionTypeEnum.Email || QuestionDetails.AnswerType==questionTypeEnum.PhoneNumber" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOptionWithText()" [disabled]="!answerSLText" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                                <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                    <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                                </ng-container>
                 </button>
-                <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.postCode" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOptionWithText()" [disabled]="!isVaildPostCode" [ngStyle]="{
-                    'color': QuizBrandingAndStyle.ButtonFontColor ,
-                    'background': QuizBrandingAndStyle.ButtonColor,
-                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.postCode" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOptionWithText()" [disabled]="!isVaildPostCode" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+                    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+                    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                            <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                            <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                            <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                            <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                        </ng-container>
                 </button>
-                    <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOptionWithText()" [disabled]="!selectedDateOfBirth" [ngStyle]="{
-                'color': QuizBrandingAndStyle.ButtonFontColor ,
-                'background': QuizBrandingAndStyle.ButtonColor,
-                'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                    <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.DatePicker" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOptionWithText()" [disabled]="!selectedDateOfBirth" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+                'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+                'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+                'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" >
+                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                            <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                            <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                            <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                            <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                        </ng-container>
                 </button>
-                    <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.fullAddress" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOptionWithText()" [disabled]="subAnswerSlText[0] == '' || subAnswerSlText[1] == '' || subAnswerSlText[2] == '' || !isVaildPostCode" [ngStyle]="{
-    'color': QuizBrandingAndStyle.ButtonFontColor ,
-    'background': QuizBrandingAndStyle.ButtonColor,
-    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                    <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.fullAddress" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOptionWithText()" [disabled]="subAnswerSlText[0] == '' || subAnswerSlText[1] == '' || subAnswerSlText[2] == '' || !isVaildPostCode" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" >
+                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                            <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                            <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                            <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                            <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                        </ng-container>
                 </button>
                     <button *ngIf="QuestionDetails.AnswerType==questionTypeEnum.nps || QuestionDetails.AnswerType==questionTypeEnum.ratingEmoji || QuestionDetails.AnswerType==questionTypeEnum.ratingStar || QuestionDetails.AnswerType==questionTypeEnum.availability" [disabled]="answerSLText == undefined || answerSLText == null || ((QuestionDetails.AnswerType==questionTypeEnum.availability)? availabilityDate == null : false )" class="next-btn ellipsiss mobile-next-btn" (click)="submitCurrentOptionWithText()"
-                        [ngStyle]="{
-                    'color': QuizBrandingAndStyle.ButtonFontColor ,
-                    'background': QuizBrandingAndStyle.ButtonColor,
-                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                    (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+                    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+                    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+                    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" >
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                            </ng-container>
             </button>
                 </ng-container>
 
@@ -984,10 +1402,16 @@
             <div *ngIf="(QuestionDetails.AnswerType==questionTypeEnum.singleSelect || QuestionDetails.AnswerType==questionTypeEnum.lookingForJob)" class="next-btn-container">
                 <ng-container>
                     <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" (click)="submitCurrentOption()" [disabled]="!buttonEnable"
-                        [ngStyle]="{
-    'color': QuizBrandingAndStyle.ButtonFontColor , 
-    'background': QuizBrandingAndStyle.ButtonColor,
-    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                    (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" >
+                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                        <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                        <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                        <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                        <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                    </ng-container>
                 </button>
                 </ng-container>
 
@@ -995,47 +1419,83 @@
             <div *ngIf="(QuestionDetails.AnswerType==questionTypeEnum.multiSelect || QuestionDetails.AnswerType==questionTypeEnum.driversLicense)" class="next-btn-container">
                 <ng-container>
                     <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" [tooltip]="QuestionDetails.MinAnswer && QuestionDetails.MaxAnswer ? popTemplate: ''" (click)="submitCurrentOption()" [disabled]="!selectedOptionArray.length || isNextButtonEnable"
-                        [ngStyle]="{
-    'color': QuizBrandingAndStyle.ButtonFontColor , 
-    'background': QuizBrandingAndStyle.ButtonColor,
-    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                    (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor, 
+    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" >
+                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                        <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                        <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                        <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                        <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                    </ng-container>
                 </button>
                 </ng-container>
 
             </div>
-            <div *ngIf="(QuestionDetails.AnswerType==questionTypeEnum.smallText || QuestionDetails.AnswerType==questionTypeEnum.largeText)" class="next-btn-container">
-                <button style="width: 100%;border-radius: 0px;" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!answerSLText" [ngStyle]="{
-    'color': QuizBrandingAndStyle.ButtonFontColor ,
-    'background': QuizBrandingAndStyle.ButtonColor,
-    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+            <div *ngIf="(QuestionDetails.AnswerType==questionTypeEnum.smallText || QuestionDetails.AnswerType==questionTypeEnum.largeText || QuestionDetails.AnswerType==questionTypeEnum.FirstName || QuestionDetails.AnswerType==questionTypeEnum.LastName || QuestionDetails.AnswerType==questionTypeEnum.Email || QuestionDetails.AnswerType==questionTypeEnum.PhoneNumber)" class="next-btn-container">
+                <button style="width: 100%;border-radius: 0px;" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!answerSLText" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" >
+                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                        <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                        <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                        <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                        <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                    </ng-container>
             </button>
             </div>
             <div *ngIf="QuestionDetails.AnswerType==questionTypeEnum.postCode" class="next-btn-container">
-                <button style="width: 100%;border-radius: 0px;" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!isVaildPostCode" [ngStyle]="{
-    'color': QuizBrandingAndStyle.ButtonFontColor ,
-    'background': QuizBrandingAndStyle.ButtonColor,
-    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                <button style="width: 100%;border-radius: 0px;" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!isVaildPostCode" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [>
+                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                        <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                        <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                        <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                        <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                    </ng-container>
             </button>
             </div>
-            <div *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth" class="next-btn-container">
-                <button style="width: 100%;border-radius: 0px;" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!selectedDateOfBirth" [ngStyle]="{
-    'color': QuizBrandingAndStyle.ButtonFontColor ,
-    'background': QuizBrandingAndStyle.ButtonColor,
-    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+            <div *ngIf="QuestionDetails.AnswerType==questionTypeEnum.dateOfBirth || QuestionDetails.AnswerType==questionTypeEnum.DatePicker" class="next-btn-container">
+                <button style="width: 100%;border-radius: 0px;" class="next-btn ellipsiss" (click)="submitCurrentOptionWithText()" [disabled]="!selectedDateOfBirth" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" >
+                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                        <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                        <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                        <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                        <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                    </ng-container>
             </button>
             </div>
             <div *ngIf="QuestionDetails.AnswerType==questionTypeEnum.fullAddress && !buttonShow" class="next-btn-container">
-                <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" (click)="submitCurrentOptionWithText()" [disabled]="subAnswerSlText[0] == '' || subAnswerSlText[1] == '' || subAnswerSlText[2] == '' || !isVaildPostCode" [ngStyle]="{
-    'color': QuizBrandingAndStyle.ButtonFontColor ,
-    'background': QuizBrandingAndStyle.ButtonColor,
-    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                <button class="next-btn ellipsiss" style="width: 100%;border-radius: 0px;" (click)="submitCurrentOptionWithText()" [disabled]="subAnswerSlText[0] == '' || subAnswerSlText[1] == '' || subAnswerSlText[2] == '' || !isVaildPostCode" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+    'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+    'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+    'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" >
+                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                        <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                        <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                        <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                        <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                    </ng-container>
             </button>
             </div>
             <div *ngIf="QuestionDetails.AnswerType==questionTypeEnum.nps || QuestionDetails.AnswerType==questionTypeEnum.ratingEmoji || QuestionDetails.AnswerType==questionTypeEnum.ratingStar || QuestionDetails.AnswerType==questionTypeEnum.availability" class="next-btn-container">
-                <button style="width: 100%;border-radius: 0px;" class="next-btn ellipsiss" [disabled]="answerSLText == undefined || answerSLText == null || ((QuestionDetails.AnswerType==questionTypeEnum.availability)? availabilityDate == null : false )" (click)="submitCurrentOptionWithText()" [ngStyle]="{
-            'color': QuizBrandingAndStyle.ButtonFontColor ,
-            'background': QuizBrandingAndStyle.ButtonColor,
-            'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}" [innerHTML]="QuestionDetails.NextButtonText | safeHtml">
+                <button style="width: 100%;border-radius: 0px;" class="next-btn ellipsiss" [disabled]="answerSLText == undefined || answerSLText == null || ((QuestionDetails.AnswerType==questionTypeEnum.availability)? availabilityDate == null : false )" (click)="submitCurrentOptionWithText()" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{
+            'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,
+            'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor,
+            'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat'}">
+                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                        <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                        <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                        <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                        <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                    </ng-container>
         </button>
             </div>
         </div>

@@ -91,6 +91,8 @@ export class CoverPageComponent implements OnInit, OnDestroy {
   
 public isQuesAndContentInSameTable:boolean;
 public IsBranchingLogicEnabled:boolean;
+public enabledPermissions:any = {};
+public userInfo:any = {};
 
 public isWhatsappEnable = false;
 private isWhatsappEnableSubscription: Subscription;
@@ -111,7 +113,14 @@ private isEnableSetFrameToggleObservableSubscription: Subscription;
     private commonService:CommonService,
     private variablePopupService:VariablePopupService,
     private branchingLogicAuthService:BranchingLogicAuthService
-  ) {}
+  ) {
+    this.userInfo = this.userInfoService._info;
+    this.enabledPermissions = JSON.parse(JSON.stringify(this.userInfoService.userPermissions));
+    if(this.variablePopupService.showExtVariablePopup && !(this.variablePopupService.mappedSfFieldsObj && Object.keys(this.variablePopupService.mappedSfFieldsObj).length > 0)
+    && this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.enabledPermissions.isNewVariablePopupEnabled ){
+     this.getMappedSfFieldsList(); 
+   }
+  }
 
   ngOnInit() {
     this.options = this.froalaEditorOptions.setEditorOptions(40);
@@ -387,7 +396,7 @@ private isEnableSetFrameToggleObservableSubscription: Subscription;
     });
     $(window).off("beforeunload");
     const filterQuestionTitle = filterPipe.transform(this.coverPageForm.value.QuizCoverTitle ? this.coverPageForm.value.QuizCoverTitle : '');
-    if ((this.coverPageForm.dirty || this.preCoverTitle != this.coverPageForm.value.QuizTitle) && filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0) {
+    if ((this.coverPageForm.dirty || this.preCoverTitle != this.coverPageForm.value.QuizTitle) && filterQuestionTitle && filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0) {
       let requestBodyToSend = JSON.parse(JSON.stringify(this.coverPageForm.value));
       requestBodyToSend.QuizDescription = this.variablePopupService.updateTemplateVarHTMLIntoVariableV2(requestBodyToSend.QuizDescription);
       requestBodyToSend.QuizCoverTitle = this.variablePopupService.updateTemplateVarHTMLIntoVariableV2(requestBodyToSend.QuizCoverTitle);
@@ -789,6 +798,25 @@ private isEnableSetFrameToggleObservableSubscription: Subscription;
     let msg = this.froalaEditorFor[openFor].froalaRef.editorRefernce.html.get();     
     let updatedVarist = this.variablePopupService.getListVariableFormulaV2(msg);
     this.coverPageForm.get(openFor+'VarList').patchValue(updatedVarist);
+  }
+
+  getMappedSfFieldsList(){
+    this.variablePopupService.mappedSfFieldsObj = {};
+  
+    this.quizBuilderApiService.getMappedSfFieldsList().subscribe((results) => {
+      if (results && results.length > 0) {
+        results.forEach((currObj:any) => {
+          if(currObj.Fields && currObj.Fields.length > 0){
+            currObj.Fields.map((subObj:any) => {
+              this.variablePopupService.mappedSfFieldsObj[`${currObj.ObjectName}.${subObj.FieldName}`] = subObj.FieldLabel;
+            });
+          }
+        });
+      }
+      this.getQuizCoverDetails();
+    }), (error:any) => {
+      console.log('Could not load Group status  data');
+    }
   }
 
   /********************** variable popup implementation ends *****************************/

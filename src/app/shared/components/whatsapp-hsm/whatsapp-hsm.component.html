@@ -1,0 +1,59 @@
+<div *ngIf="!openWhatsappPopup && !isHsmDataPresent">
+    <button class="btn whatsapp-button" (click)="openPopup()">Select Whatsapp template</button>
+</div>
+
+<div class="modal" *ngIf="openWhatsappPopup">
+    <div class="modal-open">
+        <iframe class="iframe-div" [src]="hsmUrl | test"></iframe>
+    </div>
+</div>
+
+<!-- <div class="modal hsmPopup" *ngIf="openWhatsappPopup">
+    <div class="modal-dialog w-75 h-75">
+        <div class="modal-content w-100 h-100">
+           <div class="action">
+            <svg class="close-icon" (click)="closePopup()" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g>
+                <path
+                  d="M5.88439 5.00087L9.81676 1.0685C10.0611 0.824391 10.0611 0.428318 9.81676 0.184212C9.57245 -0.060102 9.17679 -0.060102 8.93248 0.184212L5.0001 4.11659L1.06752 0.184212C0.823206 -0.060102 0.42755 -0.060102 0.183236 0.184212C-0.0610786 0.428318 -0.0610786 0.824391 0.183236 1.0685L4.11582 5.00087L0.183236 8.93325C-0.0610786 9.17735 -0.0610786 9.57343 0.183236 9.81753C0.305393 9.93948 0.46549 10.0006 0.625378 10.0006C0.785266 10.0006 0.945363 9.93948 1.06752 9.81732L5.0001 5.88495L8.93248 9.81732C9.05464 9.93948 9.21473 10.0006 9.37462 10.0006C9.53451 10.0006 9.69461 9.93948 9.81676 9.81732C10.0611 9.57322 10.0611 9.17715 9.81676 8.93304L5.88439 5.00087Z"
+                  fill="#00A99E"></path>
+              </g>
+            </svg>
+           </div>
+            <div class="modal-body h-100"> 
+                  <iframe class="iframe-div" [src]="hsmUrl | safeUrl"></iframe>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="hsm-content" *ngIf="isHsmDataPresent">
+
+    <div class="row mleft-0">
+        <div class="row btn-container">
+            <div class="col-sm-3 p-all-0">
+                <div class="link" (click)="openPopup()">Change Template</div>
+            </div>
+            <div *ngIf="!isOpenBranchingLogicSide" class="col-sm-3 p-all-0 text-right btn-container">
+                <div class="link" (click)="deleteHsm()">Delete</div>
+            </div>
+        </div>
+        <div class="hsm-card col-sm-6 p-all-10">
+            <div class="hsm-card-title ellipsis fw-bolder text-center mbottom-10 mtop-10 pointer" [title]="hsmTemplateData.displayName">{{hsmTemplateData.displayName}}</div>
+            <div *ngFor="let body of hsmTemplateData.templateBody">
+                <div class="hsm-card-detail p-all-15">
+                    <div class="hsm-card-header">
+                        <div *ngIf="body.headerType == 'text' && body.headerText" class="fw-bolder ellipsis header" [innerHtml]="body.headerText | safeHtml"></div>
+                        <img class="w-100" *ngIf="body.headerType == 'image' && body.headerExample" [src]="body.headerExample" />
+                        <video class="w-100" *ngIf="body.headerType == 'video' && body.headerExample" controls>
+                      <source [src]="body.headerExample" type="video/mp4">
+                    </video>
+                    </div>
+                    <div class="hsm-card-body mbottom-10 mtop-10" [innerHtml]="body.tempBody | safeHtml"></div>
+                    <div class="hsm-card-footer" *ngIf="body.footerText"><small>{{body.footerText}}</small></div>
+
+                </div>
+                <div class="hsm-btn bg-white ellipsis mtop-5 mbottom-10 pbottom-5 pleft-20 pright-20 ptop-5 text-center" *ngFor="let btn of body.buttons" [title]="btn.text">{{btn.text}}</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -40,37 +40,43 @@ export class PredefinedAnsComponent implements OnInit, OnDestroy {
       name : "Lbl_Verysad",
       dutchName: "Zeer ontevreden",
       englishName: "Very dissatisfied",
-      polishName: "Bardzo niezadowalająca"
+      polishName: "Bardzo niezadowalająca",
+      germanName: "Sehr unzufrieden",
     },
     {
       id : 2,
       name : "Lbl_Sad",
       dutchName: "Ontevreden",
       englishName: "Dissatisfied",
-      polishName: "Niezadowalająca"
+      polishName: "Niezadowalająca",
+      germanName: "Unzufrieden"
     },
     {
       id : 3,
       name : "Lbl_Normal",
       dutchName: "Neutraal",
       englishName: "Neutral",
-      polishName: "Neutralna"
+      polishName: "Neutralna",
+      germanName: "Neutral"
     },
     {
       id : 4,
       name : "Lbl_Happy",
       dutchName: "Tevreden",
       englishName: "Satisfied",
-      polishName: "Zadowalająca"
+      polishName: "Zadowalająca",
+      germanName: "Zufrieden"
     },    
     {
       id : 5,
       name : "Lbl_Veryhappy",
       dutchName: "Zeer tevreden",
       englishName: "Very satisfied",
-      polishName: "Bardzo zadowalająca"
+      polishName: "Bardzo zadowalająca",
+      germanName: "sehr zufrieden"
     }
   ];
+
   public getPostalCountryList: any = [];
   public showOptionsForCountry;
   // public routerEventSubscription;
@@ -79,6 +85,7 @@ export class PredefinedAnsComponent implements OnInit, OnDestroy {
   @Input() selectedCountryNameArray;
   @Input() selectedCountryName;
   @Input() isAllSelectCountry;
+  @Input() clientAtsFieldsObj:any;
   public searchCountry;
   // public valueChangesSubscription;
   // public countryChangesSubscription:Subscription;
@@ -89,6 +96,8 @@ export class PredefinedAnsComponent implements OnInit, OnDestroy {
   public userInfo: any = {};
   public enabledPermissions:any = {};
   public isJRSalesforcePermission:boolean = false;
+  public isTagEnable:boolean = false;
+  clientAtsFieldsList:any = {};
 
   constructor(
     private quizDataService: QuizDataService,
@@ -99,7 +108,9 @@ export class PredefinedAnsComponent implements OnInit, OnDestroy {
     private quizBuilderDataService:QuizBuilderDataService,
     private userInfoService: UserInfoService,
     private _fb: FormBuilder,
-    private sharedService: SharedService,) { }
+    private sharedService: SharedService,) { 
+      this.clientAtsFieldsList = JSON.parse(JSON.stringify(this.quizzToolHelper.clientAtsFieldsList));
+    }
 
 
     ngOnChanges(changes: SimpleChanges) {
@@ -117,6 +128,9 @@ export class PredefinedAnsComponent implements OnInit, OnDestroy {
             this.isAllSelectCountry = true;
           }
         }
+      }
+      if(changes.clientAtsFieldsObj && changes.clientAtsFieldsObj.currentValue && Object.keys(changes.clientAtsFieldsObj.currentValue).length > 0){
+        this.clientAtsFieldsList = JSON.parse(JSON.stringify(this.quizzToolHelper.clientAtsFieldsList));
       }
     }
 
@@ -298,15 +312,15 @@ export class PredefinedAnsComponent implements OnInit, OnDestroy {
   onOptionTextLabelChange(event,msg){
     const control = this.getAnswerListControl(this.form);
     if(msg == 'ratingOne'){
-      control[0].patchValue({OptionTextforRatingOne : event.target.value});
+      control[0].patchValue({OptionTextforRatingOne : event.target.innerText});
     }else if(msg == 'ratingTwo'){
-      control[0].patchValue({OptionTextforRatingTwo : event.target.value});
+      control[0].patchValue({OptionTextforRatingTwo : event.target.innerText});
     }else if(msg == 'ratingThree'){
-      control[0].patchValue({OptionTextforRatingThree : event.target.value});
+      control[0].patchValue({OptionTextforRatingThree : event.target.innerText});
     }else if(msg == 'ratingFour'){
-      control[0].patchValue({OptionTextforRatingFour : event.target.value});
+      control[0].patchValue({OptionTextforRatingFour : event.target.innerText});
     }else if(msg == 'ratingFive'){
-      control[0].patchValue({OptionTextforRatingFive : event.target.value});
+      control[0].patchValue({OptionTextforRatingFive : event.target.innerText});
     }
     this.form.markAsDirty();
   }
@@ -400,7 +414,7 @@ export class PredefinedAnsComponent implements OnInit, OnDestroy {
   // }
 
   public dynamicTemplateSetTags(anwserId?) {
-    if(this.form.value.AnswerType == answerTypeEnum.availability || this.form.value.AnswerType == answerTypeEnum.ratingStar){
+    if(this.form.value.AnswerType == answerTypeEnum.availability || this.form.value.AnswerType == answerTypeEnum.ratingStar || this.form.value.AnswerType == answerTypeEnum.nps){
       anwserId = this.form.value.AnswerList[0].AnswerId;
     }
     this.anserTag.emit(anwserId);

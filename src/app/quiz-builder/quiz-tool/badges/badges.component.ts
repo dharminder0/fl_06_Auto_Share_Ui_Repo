@@ -418,7 +418,7 @@ private isEnableSetFrameToggleObservableSubscription: Subscription;
 
   saveBadge() {
     const filterQuestionTitle = filterPipe.transform(this.badgeForm.value.Title ? this.badgeForm.value.Title : '');
-    if (this.badgeForm.dirty && filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0) {
+    if (this.badgeForm.dirty && filterQuestionTitle && filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0) {
       this.quizBuilderApiService.updateBadge(this.badgeForm.value).subscribe(
         data => {
           $(window).off("beforeunload");

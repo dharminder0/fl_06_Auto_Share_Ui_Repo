@@ -25,7 +25,7 @@
                             <a href="javascript:void(0);" [ngClass]="{'active':selectedAnswer && selectedAnswer.AnswerId == answer.AnswerId}" class="select-anw" (click)="chooseAnswer(answer)">
                                 <span>{{i+1}}</span>{{answer.AnswerText}}
                                 <i class="fa fa-check check-icon"></i>
-                                <img class="salesforce" [ngStyle]="{'right': (selectedAnswer && selectedAnswer.AnswerId == answer.AnswerId) ? '45px' : '20px'}" *ngIf="(answerObjectModel[answer.AnswerId] && answerObjectModel[answer.AnswerId].IsExternalSync == true)" src="assets/layouts/img/salesforce.png"
+                                <img class="salesforce" [ngStyle]="{'right': (selectedAnswer && selectedAnswer.AnswerId == answer.AnswerId) ? '45px' : '20px'}" *ngIf="(answerObjectModel[answer.AnswerId] && answerObjectModel[answer.AnswerId].IsExternalSync == true  && answerObjectModel[answer.AnswerId].ObjectName && answerObjectModel[answer.AnswerId].FieldName)" src="assets/layouts/img/salesforce.png"
                                 />
                             </a>
                         </li>
@@ -44,9 +44,10 @@
                 <div *ngIf="enabledPermissions.isJRSalesforceEnabled && userInfo.AccountLoginType == 'salesforce'" class="toggle bold">
                     <img src="assets/layouts/img/salesforce.png" />
                     <label class="switch">
-                        <input type="checkbox" [(ngModel)]="answerObjectModel[this.selectedAnswer.AnswerId].IsExternalSync" [ngModelOptions]="{standalone: true}">
-                        <span class="slider round"></span>
-                    </label>Salesforce sync enabled
+                        <input id="isExTSync" type="checkbox" [(ngModel)]="answerObjectModel[this.selectedAnswer.AnswerId].IsExternalSync" (ngModelChange)="checkAndResetPushValue()" [ngModelOptions]="{standalone: true}">
+                        <span class="slider round"></span> 
+                    </label>
+                    <label for="isExTSync" class="pointer bold">Salesforce sync enabled</label>
                 </div>
                 <div *ngIf="enabledPermissions.isJRSalesforceEnabled && userInfo.AccountLoginType == 'salesforce' && this.answerObjectModel[this.selectedAnswer.AnswerId].IsExternalSync">
                     <div class="form-group col-sm-6">
@@ -61,7 +62,7 @@
                                 <span *ngIf="answerObjectModel[selectedAnswer.AnswerId].ObjectName" class="mleft-5 pointer bold" (click)="removeAnswerTag(selectedAnswer.AnswerId)">
                                     {{"Lbl_Remove" | translate}}                               
                                 </span>
-                                <span class="mleft-10 pointer bold" (click)="openVariablePopup()">
+                                <span class="mleft-10 pointer bold" (click)="openVariablePopup();resetFieldMappingValue()">
                                     {{answerObjectModel[selectedAnswer.AnswerId].ObjectName ? ("Lbl_Edit" | translate) : ("Lbl_Add" | translate)}}                                    
                                 </span>
                             </div>
@@ -81,38 +82,136 @@
                         <input type="text" placeholder="{{'Field' | translate}}" class="form-control h-42p" [(ngModel)]="answerObjectModel[selectedAnswer.AnswerId].FieldLabel" [ngModelOptions]="{standalone: true}" readonly>
                     </div>
 
-                    <div *ngIf="selectedAnswerType >=0 && selectedAnswerType <= 4 && answerObjectModel[selectedAnswer.AnswerId].ObjectName && answerObjectModel[selectedAnswer.AnswerId].FieldName" class="col-sm-12">
+
+                    <div *ngIf="!isFieldObjectMakingInProgress && (selectedAnswerType >=0 && selectedAnswerType <= 4 || mappingFor == 'AnswerComment' && selectedAnswerType >=10 && selectedAnswerType <= 12) && answerObjectModel[selectedAnswer.AnswerId].ObjectName && answerObjectModel[selectedAnswer.AnswerId].FieldName" class="col-sm-12">
                         <div class="bold margin-bottom-10">{{"PUSH_VALUE_TO_SELESFORCE" | translate}}</div>
-                        <div *ngIf="fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName] &&
-                        fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].length > 0" class="mtop-15 row">
-                            <div class="col-sm-6">
-                                <label class="control-label font-type bold">{{"Lbl_Salesforcelist" | translate}}</label>
-                                <ng-select [options]="(answerObjectModel[selectedAnswer.AnswerId].ObjectName && answerObjectModel[selectedAnswer.AnswerId].FieldName)
-                                 ? fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName]:[]" placeholder="{{answerObjectModel[selectedAnswer.AnswerId].AnswerText?answerObjectModel[selectedAnswer.AnswerId].AnswerText:'Select'}}"
-                                    [(ngModel)]="answerObjectModel[selectedAnswer.AnswerId].AnswerText" (ngModelChange)="getMatchValueIsPickList()" [ngModelOptions]="{standalone: true}">
-                                </ng-select>
-                            </div>
-                        </div>
-                        <div *ngIf="!isPickListValueMatch" class="error-msg">{{"LbL_Value_Not_Found_Salesforce" | translate}}</div>
-                        <div *ngIf="!fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName] ||
-                        fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].length == 0" class="row">
-                            <div class="col-sm-12">
-                                <div *ngIf="!editFieldMappingValue">
-                                    <span>{{answerObjectModel[selectedAnswer.AnswerId].AnswerText}}</span>
-                                    <a href="javascript:void(0)" class="link margin-left-20" (click)="editFieldMappingValue = true;fieldMappingValue = answerObjectModel[selectedAnswer.AnswerId].AnswerText">{{"EDIT" | translate}}</a>
+
+                        
+                        <ng-container *ngIf="fieldObject[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName] &&
+                                            fieldObject[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].listValues &&
+                                            fieldObject[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].listValues.length > 0;
+                                            then listValueBlock else checkMore">
+                        </ng-container>
+
+                        <!-- List type value to be pushed -->
+                        <ng-template #listValueBlock>
+                            <div class="row" *ngIf="!editFieldMappingValue">
+                                <div class="col-sm-12">
+                                    <span class="mright-20" *ngIf="answerObjectModel[selectedAnswer.AnswerId].AnswerText">{{answerObjectModel[selectedAnswer.AnswerId].AnswerText}}</span>
+                                    <a href="javascript:void(0)" *ngIf="answerObjectModel[selectedAnswer.AnswerId].AnswerText" class="link" (click)="editDate()">{{"EDIT" | translate}}</a>
+                                    <a href="javascript:void(0)" *ngIf="!answerObjectModel[selectedAnswer.AnswerId].AnswerText" class="link" (click)="editFieldMappingValue = true;fieldMappingValue = answerObjectModel[selectedAnswer.AnswerId].AnswerText">{{"Add Value" | translate}}</a>                                     
+                                </div>
+                                <div class="col-sm-12">
+                                    <div *ngIf="!isPickListValueMatch" class="error-msg">{{"LbL_Value_Not_Found_Salesforce" | translate}}</div>
                                 </div>
                             </div>
-                        </div>
-                        <div *ngIf="!fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName] ||
-                              fieldList[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].length == 0" class="row">
-                            <div class="col-sm-6">
-                                <div *ngIf="editFieldMappingValue">
-                                    <input type="text" name="text" class="form-control margin-bottom-10" [(ngModel)]="fieldMappingValue" [ngModelOptions]="{standalone: true}">
-                                    <a href="javascript:void(0)" class="link" (click)="updateFieldMappingValue()">{{ "SAVE" | translate }}</a>
-                                    <a href="javascript:void(0)" class="link margin-left-20" (click)="resetFieldMappingValue()">{{"CANCEL" | translate}}</a>
+                            <div class="mtop-15 row"  *ngIf="editFieldMappingValue">
+                                <div class="col-sm-6">
+                                    <label class="control-label font-type bold">{{"Lbl_Salesforcelist" | translate}}</label>
+                                    <ng-select [options]="(answerObjectModel[selectedAnswer.AnswerId].ObjectName && answerObjectModel[selectedAnswer.AnswerId].FieldName)
+                                        ? fieldObject[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].listValues:[]" placeholder="{{answerObjectModel[selectedAnswer.AnswerId].AnswerText?answerObjectModel[selectedAnswer.AnswerId].AnswerText:'Select'}}"
+                                        [(ngModel)]="fieldMappingValue" (ngModelChange)="getMatchValueIsPickList(fieldMappingValue);updateFieldMappingValueStore(answerObjectModel[selectedAnswer.AnswerId].AnswerText)" [ngModelOptions]="{standalone: true}">
+                                    </ng-select>
+                                    <div *ngIf="!isPickListValueMatch" class="error-msg">{{"LbL_Value_Not_Found_Salesforce" | translate}}</div>
+                                </div>
+                                <div class="col-sm-12 mtop-10">
+                                    <a href="javascript:void(0)" class="link" (click)="updateFieldMappingValue()" [ngClass]="{'jr-disabled': !fieldMappingValue || !isPickListValueMatch} ">{{ "SAVE" | translate }}</a>
+                                    <a href="javascript:void(0)" class="link margin-left-20" (click)="resetFieldMappingValue();getMatchValueIsPickList()" [ngClass]="'disabled'">{{"CANCEL" | translate}}</a>                                       
                                 </div>
                             </div>
-                        </div>
+                            <!-- <div *ngIf="!isPickListValueMatch" class="error-msg">{{"LbL_Value_Not_Found_Salesforce" | translate}}</div> -->
+                        </ng-template>
+
+                        
+                        <ng-template #checkMore>
+
+                            <ng-container *ngIf="fieldObject[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName] && 
+                                                fieldObject[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].DataType && 
+                                                fieldObject[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].DataType.toLowerCase().includes('date');
+                                                then dateFieldBlock else defaultFieldblock">
+                            </ng-container>
+                            
+                            <!-- Date type value to be pushed -->
+                            <ng-template #dateFieldBlock>
+                                <div class="row" *ngIf="!editFieldMappingValue">
+                                    <div class="col-sm-12">
+                                        <span class="mright-20" *ngIf="answerObjectModel[selectedAnswer.AnswerId].AnswerText">{{answerObjectModel[selectedAnswer.AnswerId].AnswerText}}</span>
+                                        <a href="javascript:void(0)" *ngIf="answerObjectModel[selectedAnswer.AnswerId].AnswerText" class="link" (click)="editDate()">{{"EDIT" | translate}}</a>
+                                        <a href="javascript:void(0)" *ngIf="!answerObjectModel[selectedAnswer.AnswerId].AnswerText" class="link" (click)="editFieldMappingValue = true;fieldMappingValue = answerObjectModel[selectedAnswer.AnswerId].AnswerText">{{"Add Value" | translate}}</a>                                     
+                                    </div>
+                                    <div class="col-sm-12" *ngIf="!isDateValueValid && !editFieldMappingValue">
+                                        <small class="mright-20 error-msg" *ngIf="answerObjectModel[selectedAnswer.AnswerId].AnswerText">{{ "Msg_Invalid_Date" | translate }}</small>
+                                    </div>
+                                </div>
+                                <div class="mtop-15 row"  *ngIf="editFieldMappingValue">
+                                    <div class="col-sm-6">
+                                        <ng-select [options]="dateFieldsSyncSettingList" placeholder="{{'Select'}}" [(ngModel)]="answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex" (ngModelChange)=CheckEditValue() [ngModelOptions]="{standalone: true}">
+                                        </ng-select>
+                                    </div>
+                                    <div class="col-sm-6" *ngIf="answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex || answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex == 0">
+                                        <ng-container *ngIf="dateFieldsSyncSettingList[answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex].FieldType && dateFieldsSyncSettingList[answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex].FieldType.toLowerCase() == 'date'">
+                                            <ng-container *ngIf="dateFieldsSyncSettingList[answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex].dateFuncList && dateFieldsSyncSettingList[answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex].dateFuncList.length > 0;then dateFuncPicklist else fixedDatePicker"></ng-container>
+                                        </ng-container>
+                                        <ng-container *ngIf="dateFieldsSyncSettingList[answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex].FieldType && dateFieldsSyncSettingList[answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex].FieldType.toLowerCase() == 'datetime'">
+                                            <ng-container *ngIf="dateFieldsSyncSettingList[answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex].dateFuncList && dateFieldsSyncSettingList[answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex].dateFuncList.length > 0;then dateFuncPicklist else fixedDateTimePicker"></ng-container>
+                                        </ng-container>
+                                        <!-- <ng-container *ngIf="answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex && dateFieldsSyncSettingList[answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex].dateFuncList && dateFieldsSyncSettingList[answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex].dateFuncList.length > 0;then dateFuncPicklist else TextInputBlock"></ng-container> -->
+                                        <ng-template #dateFuncPicklist>
+                                            <ng-select [options]="dateFieldsSyncSettingList[answerObjectModel[selectedAnswer.AnswerId].dateSettingTypeIndex].dateFuncList" placeholder="{{'Select'}}" [(ngModel)]="fieldMappingValue" [ngModelOptions]="{standalone: true}" (ngModelChange)="validateDateFieldMappingValueFor('automated')">
+                                            </ng-select>
+                                        </ng-template>
+                                        <ng-template #fixedDatePicker>
+                                            <input class="date-input form-control" placeholder="DD/MM/YYYY"
+                                                    [(ngModel)]="fieldMappingValue"                                                    
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    [owlDateTimeTrigger]="dt" [owlDateTime]="dt" readonly>
+                                            <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+                                        </ng-template>
+                                        <ng-template #fixedDateTimePicker>
+                                            <input class="date-input form-control" placeholder="DD/MM/YYYY hh:mm:ss tt"
+                                                    [(ngModel)]="fieldMappingValue"                                                    
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1" readonly>
+                                            <owl-date-time #dt1 [pickerType]="'both'" [hour12Timer]="true" [showSecondsTimer]="true"></owl-date-time>
+                                        </ng-template>                                        
+                                    </div>
+                                    <div class="col-sm-12 mtop-10">
+                                        <a href="javascript:void(0)" class="link" (click)="updateFieldMappingValue()" [ngClass]="{'jr-disabled': !fieldMappingValue} ">{{ "SAVE" | translate }}</a>
+                                        <a href="javascript:void(0)" class="link margin-left-20" (click)="resetFieldMappingValue()" [ngClass]="'disabled'">{{"CANCEL" | translate}}</a>                                       
+                                    </div>
+                                </div>
+                            </ng-template>
+    
+                            <ng-template #defaultFieldblock >
+                                <!-- <div *ngIf="!fieldObject[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].listValues ||
+                                fieldObject[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].listValues.length == 0" class="row"> -->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div *ngIf="!editFieldMappingValue">
+                                            <span class="mright-20" *ngIf="answerObjectModel[selectedAnswer.AnswerId].AnswerText">{{answerObjectModel[selectedAnswer.AnswerId].AnswerText}}</span>
+                                            <a href="javascript:void(0)" *ngIf="answerObjectModel[selectedAnswer.AnswerId].AnswerText" class="link" (click)="editFieldMappingValue = true;fieldMappingValue = answerObjectModel[selectedAnswer.AnswerId].AnswerText">{{"EDIT" | translate}}</a>
+                                            <a href="javascript:void(0)" *ngIf="!answerObjectModel[selectedAnswer.AnswerId].AnswerText" class="link" (click)="editFieldMappingValue = true;fieldMappingValue = answerObjectModel[selectedAnswer.AnswerId].AnswerText">{{"Add Value" | translate}}</a>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!-- <div *ngIf="!fieldObject[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].listValues ||
+                                fieldObject[answerObjectModel[selectedAnswer.AnswerId].ObjectName + answerObjectModel[selectedAnswer.AnswerId].FieldName].listValues.length == 0" class="row"> -->
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div *ngIf="editFieldMappingValue">
+                                            <!-- <input type="text" name="text" class="form-control margin-bottom-10" [(ngModel)]="fieldMappingValue" [ngModelOptions]="{standalone: true}" [placeholder]="answerObjectModel[selectedAnswer.AnswerId].placeholder"> -->
+                                            <input type="text" name="text" class="form-control margin-bottom-10" [(ngModel)]="fieldMappingValue" [ngModelOptions]="{standalone: true}" [placeholder]="answerObjectModel[selectedAnswer.AnswerId].placeholder">
+                                            <a href="javascript:void(0)" class="link" (click)="updateFieldMappingValue()">{{ "SAVE" | translate }}</a>
+                                            <a href="javascript:void(0)" class="link margin-left-20" (click)="resetFieldMappingValue()" [ngClass]="'disabled'">{{"CANCEL" | translate}}</a>
+                                            <!-- <a href="javascript:void(0)" class="link btn margin-left-20" (click)="resetFieldMappingValue()" [ngClass]="{'disabled' : answerObjectModel[selectedAnswer.AnswerId].AnswerText }">{{"CANCEL" | translate}}</a> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            
+                        </ng-template>
+                        
+
                     </div>
                 </div>
             </div>
@@ -129,7 +228,9 @@
 
 <div class="content-bottom">
     <button type="submit" class="btn save-btn font-type normal-text" (click)="saveAnswerSettings()" [disabled]="
-  questionData.AnswerType != answerTypeData || !isPickListValueMatch ||  (!answerObjectModel[selectedAnswer.AnswerId].ObjectName && !answerObjectModel[selectedAnswer.AnswerId].FieldName && answerObjectModel[selectedAnswer.AnswerId].IsExternalSync)">{{"SAVE" | translate }}</button>
+  questionData.AnswerType != answerTypeData || !isPickListValueMatch || (!answerObjectModel[selectedAnswer.AnswerId].ObjectName && !answerObjectModel[selectedAnswer.AnswerId].FieldName && answerObjectModel[selectedAnswer.AnswerId].IsExternalSync) || !isDateValueValid || fieldValueCheck">{{"SAVE" | translate }}</button>
 </div>
 
-<app-message-variable-popup (updateIsOpenPopup)="UpdatePopUpStatus($event)"></app-message-variable-popup>
+<div *ngIf="renderMessageVariableComponent">
+    <app-message-variable-popup (updateIsOpenPopup)="UpdatePopUpStatus($event)"></app-message-variable-popup>
+</div>

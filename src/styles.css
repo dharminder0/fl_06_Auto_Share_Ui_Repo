@@ -1,6 +1,7 @@
 @import '~video.js/dist/video-js.css';
 @import '~videojs-record/dist/css/videojs.record.css';
 @import "~@ng-select/ng-select/themes/ant.design.theme.css";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
 .logic-info {
     min-height: 32px;
     display: flex;
@@ -325,6 +326,9 @@ body.app-body {
     background: none !important;
 }
 
+.email-sms-edit.fr-basic .fr-element {
+    min-height: 250px !important;
+}
 .fr-box.fr-basic .fr-element.fr-view a {
     color: #007bff !important;
 }

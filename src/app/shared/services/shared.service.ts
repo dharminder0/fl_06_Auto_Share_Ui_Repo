@@ -7,6 +7,7 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 @Injectable()
 export class SharedService {
+    public hsmTemplateData: any = {}; 
     private readonly documentIsAccessible: boolean;
     public quizTypeId;
 

@@ -40,6 +40,7 @@ export class LeadFormComponent implements OnInit {
   public logoBackgroundColor:string = "";
   public formId:any = 1;
   public countryCodeList: Array<object> = [];
+  public isHoveredOnButton = false;
 
   Id;
   IdName;

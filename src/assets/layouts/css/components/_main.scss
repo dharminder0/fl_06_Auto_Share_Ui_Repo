@@ -1,0 +1,52 @@
+/*************** tag styling start ******************/
+.pop-icon{    
+    width: 30px;
+    img{
+        height: 21px;
+    }
+}
+
+.tag-popover{
+    padding: 5px;
+    &.is-inpt-count{
+        margin-top: 0px !important;
+    }
+   .cat-row{
+       margin-bottom: 4px;
+       span{
+           &.title{
+            font-size: 12px;
+           }
+           &.tag{
+            color: #fff;
+            background: #fb6412;
+            border-radius: 2px;
+            font-size: 11px;
+            padding: 2px 4px;
+            margin: 2px 2px;
+           }
+       }
+   }   
+}
+
+/*************** tag styling end ******************/
+
+.new-hsm-card{
+    .hsm-card{
+        width: 350px;
+        max-height: calc(100vh - 230px);
+        overflow: auto;
+        .hsm-card-title {
+            overflow-wrap: anywhere;
+        }
+    }
+}
+
+
+@media (min-width: 1400px) {
+    .new-hsm-card{
+        .hsm-card {
+            width: 450px;
+        }
+    }
+}

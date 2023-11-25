@@ -17,7 +17,7 @@
                         [froalaEditor]="options" contenteditable="false" [ngModel]="coverData.QuizCoverDetails.QuizCoverTitle"></div>
                     <div *ngIf="coverData.QuizCoverDetails.ShowDescription && reOrder.key == 'description'" class="next-line-string" [froalaEditor]="options" contenteditable="false" [ngModel]="coverData.QuizCoverDetails.QuizDescription"></div>
                     <div *ngIf="!isMobileView && coverData.QuizCoverDetails.EnableNextButton && reOrder.key == 'button'" class="text-center next-btn-container mbottom-10">
-                        <a class="btn take-personality-btn ellipsiss" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+                        <a class="btn take-personality-btn ellipsiss" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor}"
                             data-dismiss="modal" title="{{coverData.QuizCoverDetails.QuizStartButtonText}}" [innerHTML]="coverData.QuizCoverDetails.QuizStartButtonText | safeHtml" (click)="startQuiz()"></a>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
 
         <div *ngIf="isMobileView && coverData.QuizCoverDetails.EnableNextButton" class="text-center next-btn-container">
             <div *ngIf="buttonShow">
-                <a class="btn take-personality-btn ellipsiss mobile-next-btn" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+                <a class="btn take-personality-btn ellipsiss mobile-next-btn" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor}"
                 data-dismiss="modal" title="{{coverData.QuizCoverDetails.QuizStartButtonText}}" [innerHTML]="coverData.QuizCoverDetails.QuizStartButtonText | safeHtml" (click)="startQuiz()"></a>
             </div>
         </div>
@@ -46,7 +46,7 @@
 <div *ngIf="isMobileView && coverData.QuizCoverDetails.EnableNextButton" class="mobile-view-logo-body" style="bottom: 0;width: 100%;padding: 0 20px;">
     <div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !leftSlide, 'left-quiz-silder':isMobileView && leftSlide && !isStartQuiz,'right-quiz-silder':isMobileView && isStartQuiz}">
         <div *ngIf="isMobileView && !buttonShow" class="text-center next-btn-container">
-            <a class="btn take-personality-btn ellipsiss" style="width: 100%;border-radius: 0px;" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': QuizBrandingAndStyle.ButtonFontColor}"
+            <a class="btn take-personality-btn ellipsiss" style="width: 100%;border-radius: 0px;" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType?QuizBrandingAndStyle.FontType:'Montserrat', 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor}"
                 data-dismiss="modal" title="{{coverData.QuizCoverDetails.QuizStartButtonText}}" [innerHTML]="coverData.QuizCoverDetails.QuizStartButtonText | safeHtml" (click)="startQuiz()"></a>
         </div>
     </div>

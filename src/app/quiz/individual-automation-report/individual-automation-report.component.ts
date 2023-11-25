@@ -39,13 +39,32 @@ import { CommonService } from '../../shared/services/common.service';
         private translate: TranslateService,
         private commonService:CommonService){}
       ngOnInit(){
-        this.leadId = this.activatedRoute.snapshot.queryParams["leadId"];
-        if(this.activatedRoute.snapshot.queryParams["quizId"] && this.activatedRoute.snapshot.queryParams["quizId"].indexOf('$') > -1){
-          if(this.activatedRoute.snapshot.queryParams["quizId"].split('$')[0]){
-            this.quizId = this.activatedRoute.snapshot.queryParams["quizId"].split('$')[0];
+        let updatedQueryParams:any = {};
+        
+        if(Object.keys(this.activatedRoute.snapshot.queryParams).length > 0){
+          Object.keys(this.activatedRoute.snapshot.queryParams).forEach((currKey:string) => {
+            updatedQueryParams[currKey.replace(/amp;/g, "")] = this.activatedRoute.snapshot.queryParams[currKey];
+          });
+        }
+
+        this.leadId = updatedQueryParams["leadId"];
+        if(updatedQueryParams["quizId"] && updatedQueryParams["quizId"].indexOf('--') > -1){
+          if(updatedQueryParams["quizId"].split('--')[0]){
+            this.quizId = updatedQueryParams["quizId"].split('--')[0];
           }
-        }else{
-          this.quizId = this.activatedRoute.snapshot.queryParams["quizId"];
+        }
+        else if(updatedQueryParams["quizId"] && updatedQueryParams["quizId"].indexOf('$$') > -1){
+          if(updatedQueryParams["quizId"].split('$$')[0]){
+            this.quizId = updatedQueryParams["quizId"].split('$$')[0];
+          }
+        }
+        else if(updatedQueryParams["quizId"] && updatedQueryParams["quizId"].indexOf('$') > -1){
+          if(updatedQueryParams["quizId"].split('$')[0]){
+            this.quizId = updatedQueryParams["quizId"].split('$')[0];
+          }
+        }
+        else{
+          this.quizId = updatedQueryParams["quizId"];
         }
         this.userInfo = this.userInfoService._info;
         if (this.userInfo) {

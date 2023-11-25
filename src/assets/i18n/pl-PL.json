@@ -34,7 +34,6 @@
     "NotUnsatisfiedAndNotSatisfied":"Oceń nas",
     "SomewhatSatisfied":"Nieco zadowolony",
     "YOUR_ANSWER":"Twoja odpowiedź",
-    "AliasTextForNextButton":"Następny",
     "NEXT":"Następny",
     "INCORRECT":"Niepoprawna odpowiedź",
     "CORRECT_ANSWER":"Poprawna odpowiedź",
@@ -53,5 +52,17 @@
     "Lbl_ClickHere":"Click here",
     "Lbl_Immediately":"Per direct",
     "Lbl_Within3months":"Binnen 3 maanden",
-    "Lbl_After3months": "Na 3 maanden"
+    "Lbl_After3months": "Na 3 maanden",
+    "Lbl_Enabled":"Enabled",
+    "Lbl_Disabled":"Disabled",
+    "Lbl_FIRST_NAME":"First Name",
+    "Lbl_LAST_NAME":"Last Name",
+    "Lbl_EMAIL":"Email",
+    "Lbl_PHONE_NUMBER":"Phone Number",
+    "Lbl_Date_Picker":"Date Picker",
+    "Msg_Invalid_Date":"Invalid date",
+    "VALUE_NEEDS_TO_BE_UNIQUE": "Value needs to be unique",
+    "BUTTON_HOVER_COLOR": "Button colour (mouse over)",
+    "BUTTON_TEXT_HOVER_COLOR": "Button text colour (mouse over)",
+    "GERMAN":"German"
 }

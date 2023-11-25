@@ -165,12 +165,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="builder-action-property" data-property="btnHoverColor">
+                    <div class="builder-property-group-outer">
+                        <div class="builder-property-group colorpicker-element" data-property-type="color">
+                            <div class="builder-styles-color" data-property="btnHoverColor" style="background: #62afe0"></div>
+                            <span>{{ "BUTTON_HOVER_COLOR" | translate }}</span><br/>
+                            <input formControlName="ButtonHoverColor" [(ngModel)]="btnHoverColor" [(colorPicker)]="btnHoverColor" [style.background]="btnHoverColor" [cpCancelButton]="false" [cpSaveClickOutside]="true" />
+                        </div>
+                    </div>
+                </div>
                 <div class="builder-action-property" data-property="fontColor">
                     <div class="builder-property-group-outer">
                         <div class="builder-property-group colorpicker-element" data-property-type="color">
                             <div class="builder-styles-color" data-property="fontColor" style="background: #ffffff"></div>
                             <span>{{ "FONT_COLOUR" | translate }}</span><br/>
                             <input formControlName="ButtonFontColor" [(ngModel)]="btnFontColor" [(colorPicker)]="btnFontColor" [style.background]="btnFontColor" [cpCancelButton]="false" [cpSaveClickOutside]="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="builder-action-property" data-property="fontHoverColor">
+                    <div class="builder-property-group-outer">
+                        <div class="builder-property-group colorpicker-element" data-property-type="color">
+                            <div class="builder-styles-color" data-property="fontHoverColor" style="background: #ffffff"></div>
+                            <span>{{ "BUTTON_TEXT_HOVER_COLOR" | translate }}</span><br/>
+                            <input formControlName="ButtonHoverTextColor" [(ngModel)]="btnHoverTextColor" [(colorPicker)]="btnHoverTextColor" [style.background]="btnHoverTextColor" [cpCancelButton]="false" [cpSaveClickOutside]="true" />
                         </div>
                     </div>
                 </div>

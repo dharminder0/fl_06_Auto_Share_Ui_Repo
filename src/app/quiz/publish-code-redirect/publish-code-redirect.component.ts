@@ -111,12 +111,16 @@ export class PublishCodeRedirectComponent implements OnInit {
     let UserId = this.activatedRoute.snapshot.queryParams["UserId"]
     let WorkPackageInfoId = this.activatedRoute.snapshot.queryParams["WorkPackageInfoId"]
     let configurationId;
+    let sourceId;
     let queryParamsObj:any = {};
     queryParamsObj["QuizCode"] = "";
 
     if(this.activatedRoute.snapshot.queryParams["ConfigurationId"]){
       configurationId = this.activatedRoute.snapshot.queryParams["ConfigurationId"];
       this.quizApiService.isQuizConfigurationIdsSubmission = this.activatedRoute.snapshot.queryParams["ConfigurationId"];
+    }
+    if(this.activatedRoute.snapshot.queryParams["sourceId"]){
+      sourceId = this.activatedRoute.snapshot.queryParams["sourceId"];
     }
 
     // Query params for UTM should always be at last for GTM script to work.
@@ -158,7 +162,7 @@ export class PublishCodeRedirectComponent implements OnInit {
     } 
     else if(configurationId){
       this.loaderService.show();
-      this.quizApiService.getQuizAttemptCodeForConfigurationId(configurationId, 'AUDIT')
+      this.quizApiService.getQuizAttemptCodeForConfigurationId(configurationId, 'AUDIT',sourceId)
         .subscribe((data) => {
           this.loaderService.hide();
             queryParamsObj["QuizCode"] = data;

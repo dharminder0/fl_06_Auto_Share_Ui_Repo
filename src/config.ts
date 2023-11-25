@@ -11,6 +11,7 @@ export class Config {
     WebUrl: string;
     appointmentSlotUrl:string;
     coreUrl:string;
+    hubUrl:string;
     automationApiUrl: string;
     enableWhatsAppTemplate:boolean;
     isQuizVarPopupEnable:boolean;
@@ -28,6 +29,7 @@ export class Config {
         this.WebUrl = "";
         this.appointmentSlotUrl = "";
         this.coreUrl = "";
+        this.hubUrl = "";
         this.automationApiUrl = "";
         this.enableWhatsAppTemplate = false;
         this.isQuizVarPopupEnable = false;
@@ -71,6 +73,9 @@ export class Config {
             }
             if (config.hasOwnProperty('CoreUrl')) {
                 this.coreUrl = config['CoreUrl'];
+            }
+            if (config.hasOwnProperty('HubUrl')) {
+                this.hubUrl = config['HubUrl'];
             }
             if (config.hasOwnProperty('AutomationApiURL')) {
                 this.automationApiUrl = config['AutomationApiURL'];

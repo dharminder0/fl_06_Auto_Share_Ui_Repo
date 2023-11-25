@@ -15,6 +15,7 @@ import { VariablePopupService } from '../../../../shared/services/variable-popup
 import { ActivatedRoute } from '@angular/router';
 import { BranchingLogicAuthService } from '../../branching-logic-auth.service';
 import { Config } from '../../../../../config';
+import { QuizBuilderDataService } from '../../../quiz-builder-data.service';
 declare var $: any;
 @Component({
   selector: 'app-text-view',
@@ -61,7 +62,9 @@ export class TextViewComponent implements OnInit, OnDestroy, OnChanges {
   public config = new Config();
   public isVeriablePopupType:any;
   clientAtsFieldsList:any = {};
-
+  public enabledPermissions:any = {};
+  public isJRSalesforcePermission:boolean = false;
+  
   constructor(
     private quizBuilderApiService: QuizBuilderApiService,
     private notificationsService: NotificationsService,
@@ -73,6 +76,7 @@ export class TextViewComponent implements OnInit, OnDestroy, OnChanges {
     private variablePopupService: VariablePopupService,
     private route: ActivatedRoute,
     private branchingLogicAuthService: BranchingLogicAuthService,
+    private quizBuilderDataService: QuizBuilderDataService
     ) {
 
       this.clientAtsFieldsList = JSON.parse(JSON.stringify(this.quizzToolHelper.clientAtsFieldsList));
@@ -137,6 +141,8 @@ export class TextViewComponent implements OnInit, OnDestroy, OnChanges {
     if(this.userInfo){
       this.language = this.userInfo.ActiveLanguage;
     }
+    this.enabledPermissions = JSON.parse(JSON.stringify(this.userInfoService.userPermissions));
+    this.isJRSalesforcePermission = (this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce') ? true : false;
     this.isTagPremission = this.userInfo.IsContactTagsPermission;
     // this.onAnswerTextChange()
     this.options = this.froalaEditorOptions.setEditorOptions(1000);
@@ -423,7 +429,7 @@ export class TextViewComponent implements OnInit, OnDestroy, OnChanges {
     if(changes.form){
       this.createFroalaEditorAndOption();
     }
-    if(changes.clientAtsFieldsObj.currentValue){
+    if(changes.clientAtsFieldsObj && changes.clientAtsFieldsObj.currentValue && Object.keys(changes.clientAtsFieldsObj.currentValue).length > 0){
       this.clientAtsFieldsList = JSON.parse(JSON.stringify(this.quizzToolHelper.clientAtsFieldsList));
     }
   }
@@ -452,6 +458,7 @@ export class TextViewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   UpdatePopUpStatus(){
+    let value: any;
     let listOfUsedVariableObj = this.variablePopupService.listOfUsedVariableObj;
     let activeFroalaRef;
     if(this.isVeriablePopupType == 'ans'){
@@ -459,14 +466,24 @@ export class TextViewComponent implements OnInit, OnDestroy, OnChanges {
     }else if(this.isVeriablePopupType == 'ansDesc'){
       activeFroalaRef = this.froalaEditorAnsDesc[this.froalaOpenedAt].froalaRef;
     }
-    this.isVeriablePopupType = '';
     let tempVarFormulaList:any = [];
     listOfUsedVariableObj.map(varItem => {
       tempVarFormulaList.push(varItem.formula.replace(/^%/g,'{{').replace(/%$/g,'}}'));
     });
     this.getAnswerGroupAt(this.froalaOpenedAt).get('AnswerVarList').patchValue(tempVarFormulaList);
-    this.variablePopupService.insertFormulaIntoEditorV2(listOfUsedVariableObj, activeFroalaRef);
-    this.form.markAsDirty();
+    value = this.variablePopupService.insertFormulaIntoEditorV2(listOfUsedVariableObj, activeFroalaRef);
+    if(value && value.msg && this.isVeriablePopupType == 'ans'){
+      this.getAnswerGroupAt(this.froalaOpenedAt).get('AnswerText').patchValue(value.msg);
+      if(this.isWhatsappEnable && this._answerTypeNum == 1 ){
+        this.commonService.answerTextList[this.froalaOpenedAt] = value.msg;
+      }
+    }else if(value && value.msg && this.isVeriablePopupType == 'ansDesc'){
+      this.getAnswerGroupAt(this.froalaOpenedAt).get('AnswerDescription').patchValue(value.msg);
+    }
+    if(value && value.newContent){
+      this.form.markAsDirty();
+    }
+    this.isVeriablePopupType = '';
   }
 
   public froalaEditorAt:any = {};

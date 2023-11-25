@@ -19,6 +19,7 @@
   import { VariablePopupService } from "../../../shared/services/variable-popup.service";
   import { Config } from "../../../../config";
 import { CommunicationModes } from "../../quiz-tool/commonEnum";
+import { SharedService } from "../../../shared/services/shared.service";
   declare var $: any;
   declare var cloudinary: any;
 
@@ -75,6 +76,7 @@ import { CommunicationModes } from "../../quiz-tool/commonEnum";
     public isEnableWhatsappTemplate:boolean = false;
     public userInfo: any = {};
     public config: any;
+    public isEnableWhatsappSection:boolean = false;
     
     automationTemObjPreview:any = {};
     public enabledPermissions:any = {};
@@ -149,6 +151,7 @@ import { CommunicationModes } from "../../quiz-tool/commonEnum";
       private userInfoService:UserInfoService,
       private variablePopupService: VariablePopupService,
       private modalService: BsModalService,
+      private sharedService: SharedService
       ) {
       // this.makeQuillEditorToReplacePTagWithDiv();
       // this.options = this.froalaEditorOptions.editorOptions;
@@ -225,10 +228,22 @@ import { CommunicationModes } from "../../quiz-tool/commonEnum";
 
       // this.froalaEditorOptions.dropdownBAR();
       this.options = this.froalaEditorOptions.setEditorOptions();
+      this.options["events"]["froalaEditor.keyup"] = (e, editor) => {
+        editor.selection.save();                        
+        this.templateBodyForm.get("Body").patchValue(editor.html.get(true));
+        editor.selection.restore();
+      };
       this.froalaEditorOptions.customPopupBtn();
+
       this.optionsSMS = this.froalaEditorOptionsSMS.setEditorOptions();
+      this.optionsSMS["events"]["froalaEditor.keyup"] = (e, editor) => {    
+        editor.selection.save();                       
+        this.templateBodyForm.get("SMSText").patchValue(editor.html.get(true));
+        editor.selection.restore();
+      };
       this.optionsSMS['toolbarButtons'] = ['my_dropdown'];
       this.froalaEditorOptionsSMS.customPopupBtn();
+      
       this.optionsWhatsapp = this.froalaEditorOptionsWhatsapp.setEditorOptions();
       this.optionsWhatsapp['toolbarButtons'] = ['my_dropdown'];
       this.froalaEditorOptionsWhatsapp.customPopupBtn();
@@ -370,6 +385,9 @@ import { CommunicationModes } from "../../quiz-tool/commonEnum";
                   tempWhatsApp.templateParameters.push(tempParam);
                 })
               }
+              if(this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce'){
+                this.getWhastappHsmTemplate2(tempWhatsApp);
+              }
               this.isLoaderEnable = true;
               let listOfUsedVariableObjWhatsapp = this.variablePopupService.getListOfUsedVariableObj(tempWhatsApp.followUpMessage);
               this.followUpMessage = tempWhatsApp.followUpMessage ? tempWhatsApp.followUpMessage : '';
@@ -383,12 +401,16 @@ import { CommunicationModes } from "../../quiz-tool/commonEnum";
               },500);
             }
             else{
+              
               this.isLoaderEnable = true;
               this.followUpMessage = "";
+              this.sharedService.hsmTemplateData = {};
+              this.isEnableWhatsappSection = true;
               this.emailSmsSubjectService.addedHsmTemplateId = 0;
               this.emailSmsSubjectService.defualtLanguageCode = "nl-NL";
               this.emailSmsSubjectService.addedTemplateParameters = [];
               this.emailSmsSubjectService.editWhatsAppTemplate = true;
+
               setTimeout(()=>{
                 this.isLoaderEnable = false;
               },500);
@@ -439,6 +461,7 @@ import { CommunicationModes } from "../../quiz-tool/commonEnum";
         Subject: "",
         TemplateTitle:""
       });
+      // this.sharedService.hsmTemplateData = {};
     }
 
     /**
@@ -449,9 +472,11 @@ import { CommunicationModes } from "../../quiz-tool/commonEnum";
         this.setWhatsAppPayload();
       } 
       let listOfUsedVariableObj = this.variablePopupService.getListOfUsedVariableObj(this.templateBodyForm.value.Body);
-      this.templateBodyForm.value.Body = this.variablePopupService.updateTemplateVarHTMLIntoVariable(this.templateBodyForm.value.Body, this.getUsedMsgVariablesList(CommunicationModes.EmailTemplateMsg), 'body');
+      // this.templateBodyForm.value.Body = this.variablePopupService.updateTemplateVarHTMLIntoVariable(this.templateBodyForm.value.Body, this.getUsedMsgVariablesList(CommunicationModes.EmailTemplateMsg), 'body');
+      this.templateBodyForm.value.Body = this.variablePopupService.updateTemplateVarHTMLIntoVariable(this.templateBodyForm.value.Body, listOfUsedVariableObj, 'body');
       let listOfUsedVariableObjSms = this.variablePopupService.getListOfUsedVariableObj(this.templateBodyForm.value.SMSText);
-      this.templateBodyForm.value.SMSText = this.variablePopupService.updateTemplateVarHTMLIntoVariable(this.templateBodyForm.value.SMSText, this.getUsedMsgVariablesList(CommunicationModes.SmsTemplateMsg), 'sms');
+      // this.templateBodyForm.value.SMSText = this.variablePopupService.updateTemplateVarHTMLIntoVariable(this.templateBodyForm.value.SMSText, this.getUsedMsgVariablesList(CommunicationModes.SmsTemplateMsg), 'sms');
+      this.templateBodyForm.value.SMSText = this.variablePopupService.updateTemplateVarHTMLIntoVariable(this.templateBodyForm.value.SMSText, listOfUsedVariableObj, 'sms');
       // this.templateBodyForm.value.SMSText = this.templateBodyForm.value.SMSText ? this.templateBodyForm.value.SMSText.replace(/&nbsp;/g," ").replace(/<br(\s\/)*>/g,"\n") : '';
       this.templateBodyForm.value.SMSText = this.templateBodyForm.value.SMSText ? this.variablePopupService.convertToPlainText(this.templateBodyForm.value.SMSText) : null;
       this.emailSmsSubjectService.changeTemplateId(this.templateBodyForm.get('Id').value)
@@ -492,18 +517,22 @@ import { CommunicationModes } from "../../quiz-tool/commonEnum";
     }
  
     setWhatsAppPayload(){
+      let hsmTemplateData: any = JSON.parse(JSON.stringify(this.sharedService.hsmTemplateData));
       let whatsApp:any = {}
-      whatsApp.hsmTemplateId =  this.emailSmsSubjectService.addedHsmTemplateId;
-      whatsApp.hsmTemplateLanguageCode = this.emailSmsSubjectService.defualtLanguageCode;
-      let listOfUsedVariableObjwhatsapp = this.variablePopupService.getListOfUsedVariableObj(this.followUpMessage);
-      if(this.showFollowUpMsg){
-      whatsApp.followUpMessage = this.variablePopupService.updateTemplateVarHTMLIntoVariable(this.followUpMessage, this.getUsedMsgVariablesList(CommunicationModes.WhatsappTemplateMsg), 'followUp');
-      whatsApp.followUpMessage = whatsApp.followUpMessage ? this.variablePopupService.convertToPlainText(whatsApp.followUpMessage) : null;
-      }else{
-        whatsApp.followUpMessage = null;
-      }
-      whatsApp.templateParameters = this.emailSmsSubjectService.addedTemplateParameters;
-      this.templateBodyForm.value.WhatsApp = whatsApp;
+        whatsApp.hsmTemplateId = (this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce') ?  (hsmTemplateData.id ? hsmTemplateData.id  : null) : this.emailSmsSubjectService.addedHsmTemplateId;
+        whatsApp.hsmTemplateLanguageCode = (this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce') ? (hsmTemplateData.templateBody ? hsmTemplateData.templateBody[0].langCode : null): this.emailSmsSubjectService.defualtLanguageCode;
+        let listOfUsedVariableObjwhatsapp = this.variablePopupService.getListOfUsedVariableObj(this.followUpMessage);
+        if(this.showFollowUpMsg){
+        whatsApp.followUpMessage = this.variablePopupService.updateTemplateVarHTMLIntoVariable(this.followUpMessage, this.getUsedMsgVariablesList(CommunicationModes.WhatsappTemplateMsg), 'followUp');
+        whatsApp.followUpMessage = whatsApp.followUpMessage ? this.variablePopupService.convertToPlainText(whatsApp.followUpMessage) : null;
+        }else{
+          whatsApp.followUpMessage = null;
+        }
+        if(!this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType != 'salesforce'){
+          whatsApp.templateParameters = this.emailSmsSubjectService.addedTemplateParameters;
+        }
+        this.templateBodyForm.value.WhatsApp = whatsApp;
+        // this.templateBodyForm.value.WhatsApp = JSON.parse(JSON.stringify(this.sharedService.hsmTemplateData))
     }
 
     smsDefaultTemplate() {
@@ -1062,6 +1091,41 @@ getWhastappHsmTemplate(){
    })
 }
 
+// get the selected whatsapp template from common popup for whatsapp
+getWhastappHsmTemplate2(data: any){
+  let paramObj: any = {};
+  paramObj.clientCode = this.sharedService.getCookie("clientCode");
+  paramObj.languageCode = data.hsmTemplateLanguageCode;
+  paramObj.templateId = data.hsmTemplateId;
+  paramObj.moduleType = "automation";
+
+//  this.isEnableWhatsappSection = false;
+  this.whatsAppTemplateDataAvailable = false;
+  this.sharedService.hsmTemplateData = {};
+  this.quizBuilderApiService.getWhastappHsmTemplate2(paramObj).subscribe(response =>{ 
+     if(response && response.data && response.data.id && response.data.templateBody){
+        // Update variables in template
+        if(response.data.templateBody && response.data.templateBody.length > 0){
+          response.data.templateBody.map((subItem:any) => {
+            subItem.tempBody = subItem.tempBody ? subItem.tempBody.replace(/(?:\r\n|\r|\n)/g, '<br>') : subItem.tempBody
+            if(response.data.headerParams && response.data.headerParams.length > 0){
+              subItem = this.getUpdateVariables(response.data.headerParams, subItem, 'header');  
+            }
+            if(response.data.params && response.data.params.length > 0){
+              subItem = this.getUpdateVariables(response.data.params, subItem, 'tempbody');  
+            }
+          });
+        }
+        this.sharedService.hsmTemplateData = JSON.parse(JSON.stringify(response.data));
+        // this.isEnableWhatsappSection = true;
+      }
+      this.whatsAppTemplateDataAvailable = true;
+  },error => {
+    this.whatsAppTemplateDataAvailable = true;
+  })
+
+}
+
 getAllLanguageList(){
   this.quizBuilderApiService.getAllLanguageList('automation').subscribe(response=>{
     if(response.data && response.data.length > 0){
@@ -1115,6 +1179,30 @@ getUsedMsgVariablesList(froalaCode:string, fetchOnlyFormula:boolean = false){
   return usedVariablesList && usedVariablesList.length > 0 ? usedVariablesList : [];
 }
 
+getUpdateVariables(paramsData:any, contentData:any, updateFor: string){
+  if(paramsData && paramsData.length > 0){
+    paramsData.map((item:any) => {
+        if(item.params && item.params.length > 0){
+          item.params.map((subItem:any) => {
+            if(subItem.paraname){
+              // Header Text
+              if(updateFor == 'header' && contentData.headerText && contentData.headerText.indexOf(`{{${subItem.position}}}`) > -1){
+                // contentData.headerText = contentData.headerText.replace(`{{${subItem.position}}}`, subItem.paraname);
+                contentData.headerText = contentData.headerText.replace(`{{${subItem.position}}}`, `<a href="javascript:void(0);">${subItem.paraname}</a>`);
+              } 
+              // Body Text
+              if(updateFor == 'tempbody' && contentData.tempBody && contentData.tempBody.indexOf(`{{${subItem.position}}}`) > -1){
+                // contentData.tempBody = contentData.tempBody.replace(`{{${subItem.position}}}`, subItem.paraname);
+                contentData.tempBody = contentData.tempBody.replace(`{{${subItem.position}}}`, `<a href="javascript:void(0);">${subItem.paraname}</a>`);
+              } 
+            }
+          })
+        }
+    })
+  }
+  return contentData;
+}
+
 //Modal confirm
 confirm(): void {
   this.deleteTemplate(this.deleteTempateObject)
@@ -1135,4 +1223,12 @@ decline(): void {
         throw new Error(e);
       }
     }
-  }
+
+    checkWhatsAppDataAvailable():boolean {
+      if(this.sharedService.hsmTemplateData && this.sharedService.hsmTemplateData.id){
+        return true;
+      }else{
+        return false;
+      }
+    }
+}

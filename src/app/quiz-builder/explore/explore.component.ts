@@ -124,6 +124,7 @@ export class ExploreComponent implements OnInit {
     if(this.userInfo.IsNPSAutomationPermission){
       this.automationTypeArray = ["1","2", "3", "4"];
     }
+    // this.automationTypeArray = ["1","2", "3", "4"];
     // get offices list
     this.getOfficesList();
     // call for automation list by suggestion filtered

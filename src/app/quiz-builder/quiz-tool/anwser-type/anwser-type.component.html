@@ -24,10 +24,11 @@
                 </label>
             </span>
         </div>
-        <div *ngIf="!isWhatsappEnable && (selectedAnswerType == '11' || selectedAnswerType == '12')" class="switch-bar-col ptop-15 mbottom-15">
+        <div *ngIf="(selectedAnswerType == '11' || selectedAnswerType == '12' || selectedAnswerType == '10') && quizData.QuizTypeId != QuizType.Nps" class="switch-bar-col ptop-15 mbottom-15">
            Multiple option
             <label class="switch" style="float: right;">
-                <input type="checkbox" class="boxid" (change)='onMultiRatingOption(isMultiRating)' [checked]="isMultiRating" [disabled] = '!isAnyChange'>
+                <!-- <input type="checkbox" class="boxid" (change)='onMultiRatingOption(isMultiRating)' [checked]="isMultiRating" [disabled] = '!isAnyChange'> -->
+                <input type="checkbox" class="boxid" (change)='onMultiRatingOption()' [checked]="isMultiOptionsEnableFor[selectedAnswerType]" [disabled] = '!isAnyChange'>
                 <span class="slider round" [ngClass]="{'jr-disabled': !isAnyChange}"></span>
             </label>
         </div>

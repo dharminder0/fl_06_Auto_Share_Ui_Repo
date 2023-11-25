@@ -133,7 +133,8 @@ export class QuizToolComponent implements OnInit, OnDestroy {
   }
 
   getQuizUsageType(){
-    if(this.quizData && this.userInfo && this.userInfo.IsWebChatbotPermission){
+    // if(this.quizData && this.userInfo && this.userInfo.IsWebChatbotPermission){
+    if(this.quizData){
       if(this.quizData.usageType && this.quizData.usageType.includes(3)){
         this.isWhatsappEnable = true;
         if(this.quizData.QuizTypeId == quizTypeEnum.Nps){
@@ -1202,5 +1203,4 @@ export class QuizToolComponent implements OnInit, OnDestroy {
       this.router.navigate(['/quiz-builder/quiz-tool',this.quizData.QuizId])
     }
   }
-
 }

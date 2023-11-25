@@ -35,6 +35,7 @@ export class CoverDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   public logoImage:string = "";
   public elemTop:any;
   public elemBottom:any; 
+  public isHoveredOnButton = false;
   public logoBackgroundColor:string = "";
   private isVideoSoundEnableSubscription:Subscription;
   public coverElementReorder:any = [

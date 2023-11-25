@@ -20,7 +20,7 @@
 
   <div class="form-body">
 
-    <div *ngIf="questionDetail.QuestionType != 11 && questionDetail.QuestionType != 12 && questionDetail.QuestionType != 13" class="inner">
+    <div *ngIf="questionDetail.QuestionType != 11 && questionDetail.QuestionType != 12 && questionDetail.QuestionType != 13 && questionDetail.QuestionType != 10" class="inner">
       <div *ngFor="let answers of questionDetail.Answers" class="ans-text">
         <span style="color: #A9A9A9;"> {{answers.CompletedOn}}</span>
         <div *ngIf="answers.AnswerText && answers.AnswerText.length > 0" title="{{answers.AnswerText | removeallTagPipe}}">
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div *ngIf="questionDetail.QuestionType == 11 || questionDetail.QuestionType == 12" class="inner">
+    <div *ngIf="questionDetail.QuestionType == 11 || questionDetail.QuestionType == 12 || questionDetail.QuestionType == 10" class="inner">
       <div *ngFor="let comment of questionDetail.Comments" class="ans-text">
         <div class="flex-dis">
           <div style="color: #A9A9A9;"> {{comment.CompletedOn}}</div>

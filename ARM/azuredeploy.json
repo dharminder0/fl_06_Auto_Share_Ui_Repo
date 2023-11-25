@@ -139,7 +139,7 @@
       "defaultValue": "http://automation-api-test.jobrock.com"
     },
     "nodeVersion": {
-      "defaultValue": "16.13.1",
+      "defaultValue": "8.9.4",
       "type": "string",
       "metadata": {
         "description": "Node Version"

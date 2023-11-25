@@ -38,14 +38,20 @@
 
 
                     <div *ngIf="reOrder.key == 'button' && !isMobileView && ContentData.EnableNextButton" class="next-btn-container mbottom-10">
-                        <button class="next-question-btn" style="margin: 0;" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': QuizBrandingAndStyle.ButtonFontColor}" (click)="next()" *ngIf="ContentData.AliasTextForNextButton else other_content"
-                            [innerHTML]="ContentData.AliasTextForNextButton|safeHtml">
-        </button>
+                        <button class="next-question-btn" style="margin: 0;" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor}" (click)="next()" *ngIf="ContentData.AliasTextForNextButton else other_content">
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                            </ng-container>
+                        </button>
                     </div>
                     <ng-template #other_content>
                         <div *ngIf="reOrder.key == 'button' && !isMobileView && ContentData.EnableNextButton" class="next-btn-container mbottom-10">
-                            <button class="next-question-btn" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': QuizBrandingAndStyle.ButtonFontColor}" (click)="next()">   
-                {{"Next"}}  </button>
+                            <button class="next-question-btn" (mouseover)="reOrder.isHovered = true" (mouseout)="reOrder.isHovered = false" [ngStyle]="{'background': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': reOrder.isHovered ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor}" (click)="next()">   
+                {{"Next"}}  
+            </button>
                         </div>
                     </ng-template>
                 </div>
@@ -62,8 +68,14 @@
         <div *ngIf="isMobileView && ContentData.EnableNextButton" style="position: relative;">
             <div class="next-btn-container">
                 <div *ngIf="buttonShow">
-                    <button class="next-question-btn mobile-next-btn" style="width: 100%;border-radius: 0px;margin: 0;" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': QuizBrandingAndStyle.ButtonFontColor}"
-                    (click)="next()" [innerHTML]="ContentData.AliasTextForNextButton ? ContentData.AliasTextForNextButton : 'Next'|safeHtml">
+                    <button class="next-question-btn mobile-next-btn" style="width: 100%;border-radius: 0px;margin: 0;" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor}"
+                    (click)="next()">
+                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                            <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                            <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                            <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                            <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                        </ng-container>
                     </button>
                 </div>
             </div>
@@ -75,8 +87,13 @@
 <div *ngIf="isMobileView && !buttonShow && ContentData.EnableNextButton" class="mobile-view-logo-body" style="bottom: 0;width: 100%;padding: 0 20px;z-index: 10;">
     <div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !isNextStatus, 'left-quiz-silder':isMobileView && isNextStatus}">
         <div class="next-btn-container">
-            <button class="next-question-btn" style="width: 100%;border-radius: 0px;margin: 0;" [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': QuizBrandingAndStyle.ButtonFontColor}" (click)="next()"
-                [innerHTML]="ContentData.AliasTextForNextButton ? ContentData.AliasTextForNextButton : 'Next'|safeHtml">
+            <button class="next-question-btn" style="width: 100%;border-radius: 0px;margin: 0;" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'font-family': QuizBrandingAndStyle.FontType, 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor}" (click)="next()">
+                <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                    <ng-container  *ngSwitchCase="1">{{"Volgende"}}</ng-container>
+                    <ng-container  *ngSwitchCase="2">{{"Next"}}</ng-container>
+                    <ng-container  *ngSwitchCase="3">{{"Następny"}}</ng-container>
+                    <ng-container  *ngSwitchCase="4">{{"Weiter"}}</ng-container>
+                </ng-container>
             </button>
         </div>
     </div>

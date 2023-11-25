@@ -14,6 +14,15 @@ export class VariablePopupService {
   public variablePopupPayload: any = {};
   public variablePopupOpened: any = '';
   public variablePopupPayload$ = new BehaviorSubject(this.variablePopupPayload);
+  public fixedMappedSfFieldsObj:any = {
+    "user.FirstName": "Voornaam",
+    "user.LastName": "Achternaam",
+    "user.Email": "E-mail",
+    "user.PhoneNumber": "Telefoonnummer"
+  };
+  public mappedSfFieldsObj:any = {};
+  public mappedSfFieldsFullObj:any = {};
+  public showExtVariablePopup: boolean = false;
 
   constructor(
     private availablestepsService: AvailablestepsService,
@@ -23,6 +32,7 @@ export class VariablePopupService {
     this.enabledPermissions = JSON.parse(JSON.stringify(this.userInfoService.userPermissions));
 
     if(this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.enabledPermissions.isNewVariablePopupEnabled){
+      this.showExtVariablePopup = true;
       this.regXForVarFormula = /%(([a-zA-Z0-9_]\.){0,1}[a-zA-Z0-9_])+%/g
     }
   }
@@ -54,10 +64,12 @@ export class VariablePopupService {
       });
 
       if(this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.enabledPermissions.isNewVariablePopupEnabled){
+        let titleToSet:string = "";
         remainingVars.map((itemObj:any) => {
+          titleToSet = this.mappedSfFieldsObj[itemObj.replace(/%/g,"")] ? this.mappedSfFieldsObj[itemObj.replace(/%/g,"")] : ( this.fixedMappedSfFieldsObj[itemObj.replace(/%/g,"")] ? this.fixedMappedSfFieldsObj[itemObj.replace(/%/g,"")] : itemObj.replace(/%/g,""));
           listOfUsedVariableObj.push({
             "formula" : itemObj,
-            "title" : itemObj.replace(/%/g,"")
+            "title" : titleToSet
           });
         });
       }
@@ -199,7 +211,7 @@ export class VariablePopupService {
   updateTemplateVariableIntoHTML(msg: string, listOfUsedVariableObj: any, type:any): string{
     if (msg) {
       if(type == 'sms' || type == 'followUp'){
-        msg = msg.replace(/(?:\r\n|\r|\n)/g, '<br>').replace(/\s/g,"&nbsp;");
+        msg = msg.replace(/(?:\r\n|\r|\n)/g, '<br>');
       }
       msg = this.removeInlineCSSForParagraphStyle(msg);
       if (msg) {
@@ -245,7 +257,8 @@ export class VariablePopupService {
     // if(doc.getElementById(varItem.formula) && type == 'body'){
     if(doc.getElementById(varItem.formula)){
       innerhtml = doc.getElementById(varItem.formula).innerHTML;
-      let regexStringToRep:any = `<span(\\s)*class=(.)*editor-var-tag(.)*>${varItem.title}</span>&nbsp;`;
+      // let regexStringToRep:any = `<span(\\s)*class=(.)*editor-var-tag(.)*>${varItem.title}</span>&nbsp;`;
+      let regexStringToRep:any = `<span(\\s)*class=(.)*editor-var-tag(.)*>${varItem.title.replace('(','\\(').replace(')','\\)')}</span>&nbsp;`;
       let regxToRep = new RegExp(regexStringToRep, "g");
       innerhtml = innerhtml.replace(regxToRep,varItem.formula);
       doc.getElementById(varItem.formula).outerHTML = innerhtml;
@@ -343,6 +356,7 @@ export class VariablePopupService {
     let newVariables: any = [];
     let newVariableObj: any =  {};
     let msg: any;
+    let newContent: boolean = false;
     let listOfUsedVariableFormula: any = templateFroala.editorRefernce.html.get().match(this.regXForVarFormulaV2)? templateFroala.editorRefernce.html.get().match(this.regXForVarFormulaV2): [];
     if(listOfVariableObjToBeUsed && listOfVariableObjToBeUsed.length > 0){
       listOfVariableObjToBeUsed.map(varItem => {
@@ -372,6 +386,10 @@ export class VariablePopupService {
       if(templateFroala.editorOptions.ssCharCounterCount){
         contentLengthInTemplateFroala = templateFroala.editorRefernce.ssCharCounter.count();
         charCounterMax = templateFroala.editorOptions.ssCharCounterMax;
+      }
+
+      if(oldfroalContent.toLowerCase() !== newFroalaContent.toLowerCase() && contentLengthInTemplateFroala <= charCounterMax){
+        newContent = true;
       }
       
       if(contentLengthInTemplateFroala <= charCounterMax){
@@ -423,7 +441,7 @@ export class VariablePopupService {
       templateFroala.editorRefernce.events.focus(true);  
       newVariables = [];  
     }, 50);
-    return msg;
+    return {msg,newContent};
   }
 
   createVariableTagElementsV2(variableObj: Array<any>): Array<any>{
@@ -522,10 +540,12 @@ export class VariablePopupService {
       });
 
       if(this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.enabledPermissions.isNewVariablePopupEnabled){
+        let titleToSet:string = "";
         remainingVars.map((itemObj:any) => {
+          titleToSet = this.mappedSfFieldsObj[itemObj.replace(/\{\{/g,"").replace(/\}\}/g,"").replace(/%/g,"")] ? this.mappedSfFieldsObj[itemObj.replace(/\{\{/g,"").replace(/\}\}/g,"").replace(/%/g,"")] : ( this.fixedMappedSfFieldsObj[itemObj.replace(/%/g,"")] ? this.fixedMappedSfFieldsObj[itemObj.replace(/%/g,"")] : itemObj.replace(/%/g,""));
           listOfUsedVariableObj.push({
             "formula" : itemObj,
-            "title" : itemObj.replace(/\{\{/g,"").replace(/\}\}/g,"")
+            "title" : titleToSet
           });
         });
       }

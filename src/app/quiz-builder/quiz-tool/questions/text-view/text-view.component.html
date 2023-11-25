@@ -1,8 +1,9 @@
 <div *ngIf="!(_answerTypeNum != form.value.AnswerType || isWhatsappEnable && answerStructureType != form.value.AnswerStructureType);else dummyData;" [formGroup]="form">
     <div *ngIf="_answerTypeNum <= 2" class="admin fixed-fr-toolbar" formArrayName="AnswerList">
-        <div [dragula]="'answer-bag'" id="ans-drag" [dragulaModel]="getAnswerListControl(form)">
-            <div class="question" [ngClass]="{'wht-ap-cstm-pad':isWhatsappEnable}" [ngStyle]="{'background': brandingColor.BackgroundColor}" *ngFor="let answer of getAnswerListControl(form); let i=index" [formGroupName]="i">
-                <div class="is-question-row">
+        <div [dragula]="'answer-bag'" id="ans-drag" [dragulaModel]="getAnswerListControl(form)" [ngClass]="{'mbottom-20': isJRSalesforcePermission}">
+            <div class="question jr-position-relative" [ngClass]="{'wht-ap-cstm-pad':isWhatsappEnable, 'mbottom-10':isJRSalesforcePermission}" [ngStyle]="{'background': brandingColor.BackgroundColor}" *ngFor="let answer of getAnswerListControl(form); let i=index; let last = last"
+                [formGroupName]="i" (mouseenter)="answer.isTag = true" (mouseleave)="answer.isTag = false">
+                <div class="is-question-row" [ngClass]="{'mbottom-20': !isJRSalesforcePermission, 'mbottom-0':isJRSalesforcePermission}">
                     <!-- isUpdate is set to true/false for DOM update -->
                     <div class="jr-position-relative jr-w-100 has-ans-variable mright-15" [ngClass]="{'whats-app-ans':isWhatsappEnable}" (mouseenter)="froalaEditorAt[i].isShowVarBtn = true" (mouseleave)="froalaEditorAt[i].isShowVarBtn = false">
                         <!-- <div *ngIf="!isWhatsappEnable"> -->
@@ -28,14 +29,14 @@
                     <a href="javascript:void(0);" *ngIf="form.get('AnswerList').value.length > 2" (click)="removeAnswer(answer.controls.AnswerId.value,i)" class="ans-drag ans-normal-drag">
                         <i class="fa-icon delete"></i>
                     </a>
-                    <a *ngIf="isTagPremission && (_answerTypeNum == 1 || _answerTypeNum == 2)" class="app-data pointer ans-drag ans-normal-drag" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)">
+                    <a *ngIf="isTagPremission && (_answerTypeNum == 1 || _answerTypeNum == 2) && !isJRSalesforcePermission" class="app-data pointer ans-drag ans-normal-drag" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M13.4929 1H8.17974C8.07101 1 7.96665 1.04326 7.88975 1.12016L1.4406 7.5691C0.853135 8.15678 0.853135 9.11285 1.4406 9.70031L6.29954 14.5591C6.58324 14.8428 6.96167 14.9991 7.36499 14.9992H7.36509C7.76852 14.9992 8.14695 14.8428 8.43075 14.559L14.8797 8.10999C14.9566 8.03309 14.9999 7.92874 14.9999 7.82L15 2.50689C14.9999 1.67601 14.3237 1 13.4929 1ZM14.1795 7.65017L7.85066 13.9791C7.72184 14.108 7.54934 14.1789 7.36509 14.1789C7.18074 14.1789 7.00834 14.108 6.87953 13.9792L2.02058 9.12032C1.75291 8.85265 1.75291 8.41686 2.02058 8.14909L8.34957 1.82031H13.4929C13.8715 1.82031 14.1796 2.12835 14.1796 2.507L14.1795 7.65017Z" fill="#494949" stroke="#494949" stroke-width="0.25"/>
                             <circle cx="11" cy="5" r="1" fill="#494949"/>
                         </svg>
                     </a>
                 </div>
-                <div *ngIf="isWhatsappEnable && _answerTypeNum == 1 && answerStructureType == quizAnswerStructureType.list" class="is-question-row">
+                <div *ngIf="isWhatsappEnable && _answerTypeNum == 1 && answerStructureType == quizAnswerStructureType.list" class="is-question-row mtop-25 mbottom-0">
                     <div class="jr-position-relative jr-w-100 has-ans-desc-variable mright-15" [ngClass]="{'whats-app-ans':isWhatsappEnable}" (mouseenter)="froalaEditorAnsDesc[i].isShowVarBtn = true" (mouseleave)="froalaEditorAnsDesc[i].isShowVarBtn = false">
                         <div ccFocus [id]="'answdes_'+answer.controls.AnswerId.value" [froalaEditor]="froalaEditorAnsDesc[i].options" [ngStyle]="{'background': brandingColor.OptionColor,'color' : brandingColor.OptionFontColor,'font-family': brandingColor.FontType}" formControlName='AnswerDescription'
                             class="form-control fr-prop ans mheight-41 boder-none" placeholder="Description (optional)"></div>
@@ -45,14 +46,19 @@
                     <a style="opacity: 0;" *ngIf="form.get('AnswerList').value.length > 2">
                         <i class="fa-icon delete"></i>
                     </a>
-                    <a style="opacity: 0;" *ngIf="isTagPremission && (_answerTypeNum == 1 || _answerTypeNum == 2)">
+                    <a style="opacity: 0;" *ngIf="isTagPremission && (_answerTypeNum == 1 || _answerTypeNum == 2) && !isJRSalesforcePermission">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M13.4929 1H8.17974C8.07101 1 7.96665 1.04326 7.88975 1.12016L1.4406 7.5691C0.853135 8.15678 0.853135 9.11285 1.4406 9.70031L6.29954 14.5591C6.58324 14.8428 6.96167 14.9991 7.36499 14.9992H7.36509C7.76852 14.9992 8.14695 14.8428 8.43075 14.559L14.8797 8.10999C14.9566 8.03309 14.9999 7.92874 14.9999 7.82L15 2.50689C14.9999 1.67601 14.3237 1 13.4929 1ZM14.1795 7.65017L7.85066 13.9791C7.72184 14.108 7.54934 14.1789 7.36509 14.1789C7.18074 14.1789 7.00834 14.108 6.87953 13.9792L2.02058 9.12032C1.75291 8.85265 1.75291 8.41686 2.02058 8.14909L8.34957 1.82031H13.4929C13.8715 1.82031 14.1796 2.12835 14.1796 2.507L14.1795 7.65017Z" fill="#494949" stroke="#494949" stroke-width="0.25"/>
                             <circle cx="11" cy="5" r="1" fill="#494949"/>
                         </svg>
                     </a>
                 </div>
-                <div class="tag-listing app-data" [ngClass]="{'is-inpt-count':isWhatsappEnable}" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)">
+                <div *ngIf="isJRSalesforcePermission && answer.controls.ObjectFieldsInAnswer && answer.controls.ObjectFieldsInAnswer.value && answer.controls.ObjectFieldsInAnswer.value.ObjectName && answer.controls.ObjectFieldsInAnswer.value.FieldName && answer.controls.ObjectFieldsInAnswer.value.IsExternalSync == true"
+                    class="pop-icon app-data add-sf-map" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)" [tooltip]="objectMappingPopover" [ngClass]="{'is-inpt-count':isWhatsappEnable}" placement="right" [container]="'body'"
+                    triggers="mouseenter:mouseleave">
+                    <img src="assets/layouts/img/salesforce.png">
+                </div>
+                <div *ngIf="!isJRSalesforcePermission" class="tag-listing app-data" [ngClass]="{'is-inpt-count':isWhatsappEnable}" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)">
                     <div *ngIf="answer.controls.Categories && answer.controls.Categories.value && answer.controls.Categories.value.length > 0">
                         <div class="cat-row" *ngFor="let cat of answer.controls.Categories.value">
                             <span class="title"><b>{{cat.CategoryName}}</b>:</span>
@@ -60,16 +66,39 @@
                         </div>
                     </div>
                     <div *ngIf="answer.controls.ObjectFieldsInAnswer && answer.controls.ObjectFieldsInAnswer.value && answer.controls.ObjectFieldsInAnswer.value.ObjectName && answer.controls.ObjectFieldsInAnswer.value.FieldName && answer.controls.ObjectFieldsInAnswer.value.IsExternalSync == true">
-                        <div class="cat-row">
+                        <!-- <div class="cat-row">
                             <span class="title"><b>Object</b>:</span>
                             <span class="tag">{{answer.controls.ObjectFieldsInAnswer.value.ObjectName}}</span>
                         </div>
                         <div class="cat-row">
                             <span class="title"><b>{{ "FIELDS" | translate }}</b>:</span>
                             <span class="tag">{{clientAtsFieldsList[answer.controls.ObjectFieldsInAnswer.value.ObjectName + "." + answer.controls.ObjectFieldsInAnswer.value.FieldName]}}</span>
-                        </div>
+                        </div> -->
+                        <ng-container [ngTemplateOutlet]="objectMapping"></ng-container>
                     </div>
                 </div>
+                <div *ngIf="(_answerTypeNum == 1 || _answerTypeNum == 2) && isJRSalesforcePermission && answer.isTag && (!answer.controls.ObjectFieldsInAnswer.value || (answer.controls.ObjectFieldsInAnswer.value && !answer.controls.ObjectFieldsInAnswer.value.IsExternalSync))"
+                    class="add-sf-map" [ngClass]="{'mtop-40':isWhatsappEnable && (!answer.controls.ObjectFieldsInAnswer.value || (answer.controls.ObjectFieldsInAnswer.value && !answer.controls.ObjectFieldsInAnswer.value.IsExternalSync))}">
+                    <span class="app-data pointer fsize-12" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)">
+                        <i class="zmdi zmdi-plus plan"></i>
+                       Add Salesforce mapping
+                    </span>
+                </div>
+                <ng-template #objectMapping>
+                    <div class="cat-row">
+                        <span class="title"><b>Object</b>:</span>
+                        <span class="tag">{{answer.controls.ObjectFieldsInAnswer.value.ObjectName}}</span>
+                    </div>
+                    <div class="cat-row">
+                        <span class="title"><b>{{ "FIELDS" | translate }}</b>:</span>
+                        <span class="tag">{{clientAtsFieldsList[answer.controls.ObjectFieldsInAnswer.value.ObjectName + "." + answer.controls.ObjectFieldsInAnswer.value.FieldName] ? clientAtsFieldsList[answer.controls.ObjectFieldsInAnswer.value.ObjectName + "." + answer.controls.ObjectFieldsInAnswer.value.FieldName] : answer.controls.ObjectFieldsInAnswer.value.FieldName}}</span>
+                    </div>
+                </ng-template>
+                <ng-template #objectMappingPopover>
+                    <div class="tag-popover" [ngClass]="{'is-inpt-count':isWhatsappEnable}">
+                        <ng-container [ngTemplateOutlet]="objectMapping"></ng-container>
+                    </div>
+                </ng-template>
             </div>
         </div>
         <!-- <div [ngClass]="{'disabled':!(!answerStructureType || ((answerStructureType == 'button' && getAnswerListControl(form).length < 3) || (answerStructureType == 'list' && getAnswerListControl(form).length < 10)))}"> -->
@@ -82,20 +111,26 @@
 
     <!--add short and long answer types-->
     <div *ngIf="_answerTypeNum == 3 || _answerTypeNum == 4" formArrayName="AnswerList" class="admin fixed-fr-toolbar">
-        <div class="question" [ngClass]="{'wht-ap-cstm-pad':isWhatsappEnable}" *ngFor="let answer of getAnswerListControl(form); let i=index" [formGroupName]="i" [ngStyle]="{'background': brandingColor.BackgroundColor}">
-            <div class="is-question-row">
+        <div class="question jr-position-relative" [ngClass]="{'wht-ap-cstm-pad':isWhatsappEnable, 'mbottom-15':isJRSalesforcePermission}" *ngFor="let answer of getAnswerListControl(form); let i=index" [formGroupName]="i" [ngStyle]="{'background': brandingColor.BackgroundColor}"
+            (mouseenter)="answer.isTag = true" (mouseleave)="answer.isTag = false">
+            <div class="is-question-row" [ngClass]="{'mbottom-0':isJRSalesforcePermission}">
                 <div *ngIf="!isWhatsappEnable" ccFocus [id]="'aws'+answer.controls.AnswerId.value" [froalaEditor]="options" [ngStyle]="{
                     'color' : brandingColor.OptionFontColor,'font-family': brandingColor.FontType}" formControlName='AnswerText' class="short-long-anstype-text fr-prop mheight-41"></div>
                 <input *ngIf="isWhatsappEnable" ccFocus [id]="'aws'+answer.controls.AnswerId.value" [ngStyle]="{
                     'color' : '#000','font-family': brandingColor.FontType}" formControlName='AnswerText' class="short-long-anstype-text fr-prop mheight-41 input-type">
-                <a *ngIf="isTagPremission" class="app-data pointer ans-drag p-left-8" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)">
+                <a *ngIf="isTagPremission && !isJRSalesforcePermission" class="app-data pointer ans-drag p-left-8" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13.4929 1H8.17974C8.07101 1 7.96665 1.04326 7.88975 1.12016L1.4406 7.5691C0.853135 8.15678 0.853135 9.11285 1.4406 9.70031L6.29954 14.5591C6.58324 14.8428 6.96167 14.9991 7.36499 14.9992H7.36509C7.76852 14.9992 8.14695 14.8428 8.43075 14.559L14.8797 8.10999C14.9566 8.03309 14.9999 7.92874 14.9999 7.82L15 2.50689C14.9999 1.67601 14.3237 1 13.4929 1ZM14.1795 7.65017L7.85066 13.9791C7.72184 14.108 7.54934 14.1789 7.36509 14.1789C7.18074 14.1789 7.00834 14.108 6.87953 13.9792L2.02058 9.12032C1.75291 8.85265 1.75291 8.41686 2.02058 8.14909L8.34957 1.82031H13.4929C13.8715 1.82031 14.1796 2.12835 14.1796 2.507L14.1795 7.65017Z" fill="#494949" stroke="#494949" stroke-width="0.25"/>
                         <circle cx="11" cy="5" r="1" fill="#494949"/>
                     </svg>
                 </a>
             </div>
-            <div class="tag-listing app-data" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)">
+            <div *ngIf="isJRSalesforcePermission && answer.controls.ObjectFieldsInAnswer && answer.controls.ObjectFieldsInAnswer.value && answer.controls.ObjectFieldsInAnswer.value.ObjectName && answer.controls.ObjectFieldsInAnswer.value.FieldName && answer.controls.ObjectFieldsInAnswer.value.IsExternalSync == true"
+                class="pop-icon app-data add-sf-map" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)" [tooltip]="objectMappingPopover" [ngClass]="{'is-inpt-count':isWhatsappEnable}" placement="right" [container]="'body'"
+                triggers="mouseenter:mouseleave">
+                <img src="assets/layouts/img/salesforce.png">
+            </div>
+            <div *ngIf="!isJRSalesforcePermission" class="tag-listing app-data" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)">
                 <div *ngIf="answer.controls.Categories && answer.controls.Categories.value && answer.controls.Categories.value.length > 0">
                     <div class="cat-row" *ngFor="let cat of answer.controls.Categories.value">
                         <span class="title"><b>{{cat.CategoryName}}</b>:</span>
@@ -103,16 +138,38 @@
                     </div>
                 </div>
                 <div *ngIf="answer.controls.ObjectFieldsInAnswer && answer.controls.ObjectFieldsInAnswer.value && answer.controls.ObjectFieldsInAnswer.value.ObjectName && answer.controls.ObjectFieldsInAnswer.value.FieldName && answer.controls.ObjectFieldsInAnswer.value.IsExternalSync == true">
-                    <div class="cat-row">
+                    <!-- <div class="cat-row">
                         <span class="title"><b>Object</b>:</span>
                         <span class="tag">{{answer.controls.ObjectFieldsInAnswer.value.ObjectName}}</span>
                     </div>
                     <div class="cat-row">
                         <span class="title"><b>{{ "FIELDS" | translate }}</b>:</span>
                         <span class="tag">{{clientAtsFieldsList[answer.controls.ObjectFieldsInAnswer.value.ObjectName + "." + answer.controls.ObjectFieldsInAnswer.value.FieldName]}}</span>
-                    </div>
+                    </div> -->
+                    <ng-container [ngTemplateOutlet]="objectMapping"></ng-container>
                 </div>
             </div>
+            <div *ngIf="isJRSalesforcePermission && answer.isTag && (!answer.controls.ObjectFieldsInAnswer.value || (answer.controls.ObjectFieldsInAnswer.value && !answer.controls.ObjectFieldsInAnswer.value.IsExternalSync))" class="add-sf-map">
+                <span class="app-data pointer fsize-12" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)">
+                    <i class="zmdi zmdi-plus plan"></i>
+                   Add Salesforce mapping
+                </span>
+            </div>
+            <ng-template #objectMapping>
+                <div class="cat-row">
+                    <span class="title"><b>Object</b>:</span>
+                    <span class="tag">{{answer.controls.ObjectFieldsInAnswer.value.ObjectName}}</span>
+                </div>
+                <div class="cat-row">
+                    <span class="title"><b>{{ "FIELDS" | translate }}</b>:</span>
+                    <span class="tag">{{clientAtsFieldsList[answer.controls.ObjectFieldsInAnswer.value.ObjectName + "." + answer.controls.ObjectFieldsInAnswer.value.FieldName] ? clientAtsFieldsList[answer.controls.ObjectFieldsInAnswer.value.ObjectName + "." + answer.controls.ObjectFieldsInAnswer.value.FieldName] : answer.controls.ObjectFieldsInAnswer.value.FieldName}}</span>
+                </div>
+            </ng-template>
+            <ng-template #objectMappingPopover>
+                <div class="tag-popover" [ngClass]="{'is-inpt-count':isWhatsappEnable}">
+                    <ng-container [ngTemplateOutlet]="objectMapping"></ng-container>
+                </div>
+            </ng-template>
         </div>
 
         <div class="suggestion-text-holder" [ngClass]="{'p-l-r-15':isWhatsappEnable}">

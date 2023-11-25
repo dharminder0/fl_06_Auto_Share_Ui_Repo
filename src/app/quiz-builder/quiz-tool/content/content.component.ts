@@ -560,7 +560,7 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   saveContent() {
     const filterQuestionTitle = filterPipe.transform(this.contentForm.value.ContentTitle ? this.contentForm.value.ContentTitle : '');
-    if (this.contentForm.dirty && filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0) {
+    if (this.contentForm.dirty && filterQuestionTitle && filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0) {
       this.quizBuilderApiService
         .updateQuizContent(this.contentForm.value)
         .subscribe(

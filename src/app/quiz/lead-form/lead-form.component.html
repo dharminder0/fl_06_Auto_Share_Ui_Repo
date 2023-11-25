@@ -15,30 +15,70 @@
                         <div *ngIf="formId == 1" class="row">
                             <div class="form-group col-md-6">
                                 <label for="firstname"
-                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"FIRST_NAME_NL" | translate}}
+                                    [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ? QuizBrandingAndStyle.FontType : 'Montserrat'}">
+                                    <!-- {{"FIRST_NAME_NL" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Voornaam:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"First name:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Imię"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Vorname:"}}</ng-container>
+                                    </ng-container>
                                 </label>
                                 <input formControlName="Voornaam" type="text"
                                     class="form-control input-text font-type sub-text" id="firstname" maxlength="20"
-                                    placeholder="{{'ENTER_YOUR_FIRST_NAME' | translate}}">
+                                    placeholder="{{
+                                        QuizBrandingAndStyle.Language == 1
+                                            ? 'Typ hier je voornaam'
+                                            :QuizBrandingAndStyle.Language == 2
+                                                ? 'Enter your first name'
+                                                :QuizBrandingAndStyle.Language == 3
+                                                    ? 'Wprowadź swoje imię'
+                                                    : 'Geben Sie Ihren Vornamen ein'
+                                    }}">
                                 <small class="invalid-input"
                                     *ngIf="leadUserForm.get('Voornaam').touched && leadUserForm.get('Voornaam').invalid"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"FirstNameIsRequired" | translate}}
+                                    <!-- {{"FirstNameIsRequired" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Ihr Vorname ist erforderlich!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Your first name is required!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Twoje imię jest wymagane!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Je voornaam is verplicht!"}}</ng-container>
+                                    </ng-container>
                                 </small>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="lastname"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"LAST_NAME_NL" | translate}}
+                                    <!-- {{"LAST_NAME_NL" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Achternaam:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Last name:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Nazwisko"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Nachname:"}}</ng-container>
+                                    </ng-container>
                                 </label>
                                 <input formControlName="Achternaam" type="text"
                                     class="form-control input-text font-type sub-text" id="lastname" maxlength="20"
-                                    placeholder="{{'ENTER_YOUR_LAST_NAME' | translate}}">
+                                    placeholder="{{
+                                        QuizBrandingAndStyle.Language == 1
+                                        ? 'Typ hier je achternaam'
+                                        :QuizBrandingAndStyle.Language == 2
+                                            ? 'Enter your last name'
+                                            :QuizBrandingAndStyle.Language == 3
+                                                ? 'Wprowadź swoje nazwisko'
+                                                : 'Geben Sie Ihren Nachnamen ein'
+                                    }}">
                                 <small class="invalid-input"
                                     *ngIf="leadUserForm.get('Achternaam').invalid && leadUserForm.get('Achternaam').touched"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"LastNameIsRequired" | translate}}
+                                    <!-- {{"LastNameIsRequired" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Ihr Nachname ist erforderlich!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Your last name is required!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Twoje nazwisko jest wymagane!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Je achternaam is verplicht!"}}</ng-container>
+                                    </ng-container>
                                 </small>
                             </div>
                         </div>
@@ -46,29 +86,70 @@
                             <div class="form-group col-md-12">
                                 <label for="firstname"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"FIRST_NAME_NL" | translate}}
+                                    <!-- {{"FIRST_NAME_NL" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Voornaam:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"First name:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Imię"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Vorname:"}}</ng-container>
+                                    </ng-container>
+                                    
                                 </label>
                                 <input formControlName="Voornaam" type="text"
                                     class="form-control input-text font-type sub-text" id="firstname" maxlength="20"
-                                    placeholder="{{'ENTER_YOUR_FIRST_NAME' | translate}}">
+                                    placeholder="{{
+                                        QuizBrandingAndStyle.Language == 1
+                                            ? 'Typ hier je voornaam'
+                                            :QuizBrandingAndStyle.Language == 2
+                                                ? 'Enter your first name'
+                                                :QuizBrandingAndStyle.Language == 3
+                                                    ? 'Wprowadź swoje imię'
+                                                    : 'Geben Sie Ihren Vornamen ein'
+                                    }}">
                                 <small class="invalid-input"
                                     *ngIf="leadUserForm.get('Voornaam').touched && leadUserForm.get('Voornaam').invalid"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"FirstNameIsRequired" | translate}}
+                                    <!-- {{"FirstNameIsRequired" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Ihr Vorname ist erforderlich!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Your first name is required!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Twoje imię jest wymagane!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Je voornaam is verplicht!"}}</ng-container>
+                                    </ng-container>
                                 </small>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="lastname"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"LAST_NAME_NL" | translate}}
+                                    <!-- {{"LAST_NAME_NL" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Achternaam:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Last name:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Nazwisko"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Nachname:"}}</ng-container>
+                                    </ng-container>
                                 </label>
                                 <input formControlName="Achternaam" type="text"
                                     class="form-control input-text font-type sub-text" id="lastname" maxlength="20"
-                                    placeholder="{{'ENTER_YOUR_LAST_NAME' | translate}}">
+                                    placeholder="{{
+                                        QuizBrandingAndStyle.Language == 1
+                                        ? 'Typ hier je achternaam'
+                                        :QuizBrandingAndStyle.Language == 2
+                                            ? 'Enter your last name'
+                                            :QuizBrandingAndStyle.Language == 3
+                                                ? 'Wprowadź swoje nazwisko'
+                                                : 'Geben Sie Ihren Nachnamen ein'
+                                    }}">
                                 <small class="invalid-input"
                                     *ngIf="leadUserForm.get('Achternaam').invalid && leadUserForm.get('Achternaam').touched"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"LastNameIsRequired" | translate}}
+                                    <!-- {{"LastNameIsRequired" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Ihr Nachname ist erforderlich!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Your last name is required!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Twoje nazwisko jest wymagane!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Je achternaam is verplicht!"}}</ng-container>
+                                    </ng-container>
                                 </small>
                             </div>
                         </div>
@@ -76,17 +157,45 @@
                             <div class="form-group col-md-12">
                                 <label for="email"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"EMAIL_NL" | translate}}
+                                    <!-- {{"EMAIL_NL" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"E-mailadres:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Email address:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Adres email"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"E-Mail-Adresse:"}}</ng-container>
+                                    </ng-container>
                                 </label>
                                 <input formControlName="Email" type="text"
                                     class="form-control input-text font-type sub-text" id="email"
-                                    placeholder="{{'ENTER_YOUR_EMAIL_ADDRESS' | translate}}">
+                                    placeholder="{{
+                                        QuizBrandingAndStyle.Language == 1
+                                            ? 'Typ hier je e-mailadres'
+                                            :QuizBrandingAndStyle.Language == 2
+                                                ? 'Enter your email address'
+                                                :QuizBrandingAndStyle.Language == 3
+                                                    ? 'Wprowadź swój adres email'
+                                                    : 'Geben Sie Ihre E-Mail-Adresse ein'
+                                    }}">
                                 <small class="invalid-input"
-                                    *ngIf="leadUserForm.get('Email').hasError('pattern')">{{"INVALID_EMAIL" | translate }}</small>
+                                    *ngIf="leadUserForm.get('Email').hasError('pattern')">
+                                    <!-- {{"INVALID_EMAIL" | translate }} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Ungültige E-Mail"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Invalid Email"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Incorrect e-mailadres"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Niepoprawny email"}}</ng-container>
+                                    </ng-container>
+                                </small>
                                 <small class="invalid-input"
                                     *ngIf="leadUserForm.get('Email').hasError('required') && leadUserForm.get('Email').touched"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"EmailAddressIsRequired" | translate}}
+                                    <!-- {{"EmailAddressIsRequired" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Die E-Mail-Adresse ist erforderlich!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Phone number is required!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Je e-mailadres is verplicht!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Twój adres email jest wymagany!"}}</ng-container>
+                                    </ng-container>
                                 </small>
                             </div>
                         </div>
@@ -94,12 +203,27 @@
                             <div class="col-md-12">
                                 <label for="phoneno"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"PHONE_NUMBER_NL" | translate}}
+                                    <!-- {{"PHONE_NUMBER_NL" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Telefoonnummer:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Phone number:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Telefon"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Telefonnummer:"}}</ng-container>
+                                    </ng-container>
                                 </label>
                             </div>
                             <div class="form-group mbottom-25 col-xs-5 col-md-3">
                                 <ng-select [items]="countryCodeList" 
-                                        placeholder="{{countryCode ? '' : ('SELECT_COUNTRY' | translate) }}"
+                                        placeholder="{{
+                                            countryCode ? '' : 
+                                            QuizBrandingAndStyle.Language == 1
+                                                    ? 'Select country'
+                                                    :QuizBrandingAndStyle.Language == 2
+                                                        ? 'Select country'
+                                                        :QuizBrandingAndStyle.Language == 3
+                                                            ? 'Wybierz kraj'
+                                                            : 'Land auswählen' 
+                                        }}"
                                         [searchable]="true"
                                     class="custom-select search" bindLabel="label" bindValue="value" [(ngModel)]="countryCode" [ngModelOptions]="{standalone: true}" [dropdownPosition]="'top'" (selected)="onCountryCodeChange($event)">                             
                                 </ng-select>
@@ -107,18 +231,38 @@
                             <div class="form-group col-xs-7 col-md-9">
                                 <input maxlength="10" OnlyNumber="true" formControlName="PhoneNr" type="text"
                                     class="form-control input-text font-type sub-text" id="phoneno"
-                                    placeholder="{{'ENTER_YOUR_PHONE_NUMBER' | translate}}">
+                                    placeholder="{{
+                                        QuizBrandingAndStyle.Language == 1
+                                            ? 'Typ hier je telefoonnummer'
+                                            :QuizBrandingAndStyle.Language == 2
+                                                ? 'Enter your phone number'
+                                                :QuizBrandingAndStyle.Language == 3
+                                                    ? 'Wprowadź swój numer telefonu'
+                                                    : 'Geben Sie Ihre E-Mail-Adresse ein'
+                                    }}">
                                 <small class="invalid-input"
                                     *ngIf="leadUserForm.get('PhoneNr').invalid && leadUserForm.get('PhoneNr').touched"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"PhoneNumberIsRequired" | translate}}
+                                    <!-- {{"PhoneNumberIsRequired" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Die Telefonnummer ist erforderlich!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Phone number is required!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Twój telefon jest wymagany!"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Je telefoonnummer is verplicht"}}</ng-container>
+                                    </ng-container>
                                 </small>
                             </div>
                         </div>
                         <div class="row" *ngIf="isCVMandatory">
                             <div class="form-group col-md-12">
                                 <label [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"Resume:" | translate}}
+                                    <!-- {{"Resume:" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"CV"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Resume"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Wznawiać"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Wznawiać"}}</ng-container>
+                                    </ng-container>
                                 </label>
                                 <button id="inputBtn" class="form-control input-text font-type sub-text pointer" (click)="fileInput.click();checkValidationOnCancel()" *ngIf="!isResumeObjValid()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" class="mright-5">
@@ -138,7 +282,15 @@
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                    <span>{{"Upload Your CV"}}</span>
+                                    <span>
+                                        <!-- {{"Upload Your CV"}} -->
+                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                            <ng-container  *ngSwitchCase="1">{{"Upload je CV"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="2">{{"Upload Your CV"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="3">{{"Prześlij swoje CV"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="4">{{"Laden Sie Ihren Lebenslauf hoch"}}</ng-container>
+                                        </ng-container>
+                                    </span>
                                     <input id="cvFile" type="file" #fileInput (change)="onFileSelected($event)" class="hidden">
                                 </button>
                                 <span *ngIf="isResumeObjValid()" [title]="this.leadUserForm.get('resume').value.file.fileName">
@@ -154,7 +306,13 @@
                                 <small class="invalid-input"
                                     *ngIf="leadUserForm.get('resume').invalid && leadUserForm.get('resume').touched"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"Msg_PleaseUploadYourCV" | translate}}
+                                    <!-- {{"Msg_PleaseUploadYourCV" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Bitte laden Sie Ihren Lebenslauf hoch"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"Please upload your CV"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Bitte laden Sie Ihren Lebenslauf hoch"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Prosimy o przesłanie CV"}}</ng-container>
+                                    </ng-container>
                                 </small>
                             </div>
                         </div>
@@ -163,9 +321,21 @@
                             <div class="form-group col-md-12">
                                 <label
                                     class="app-checkbox normal-text font-type">
-                                   {{"IAgreeToThe" | translate}}
+                                   <!-- {{"IAgreeToThe" | translate}} -->
+                                   <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Ik ga akkoord met de:"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"I agree to the"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Akceptuję warunki"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Ich stimme den"}}</ng-container>
+                                    </ng-container>
                                     <a class="link-test" href="{{privacyLink}}" target="_blank">
-                                        {{"PrivacyPolicy" | translate}}
+                                        <!-- {{"PrivacyPolicy" | translate}} -->
+                                        <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                            <ng-container  *ngSwitchCase="1">{{"Privacy Voorwaarden"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="2">{{"Privacy Policy"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="3">{{"Polityki prywatności"}}</ng-container>
+                                            <ng-container  *ngSwitchCase="4">{{"Datenschutzrichtlinie"}}</ng-container>
+                                        </ng-container>
                                     </a>
                                     <input type="checkbox" formControlName="Privacy" required />
                                     <span></span>
@@ -173,7 +343,13 @@
                                 <small class="invalid-input"
                                     *ngIf="leadUserForm.get('Privacy').hasError('required') && leadUserForm.get('Privacy').touched"
                                     [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                                    {{"PrivacyPolicyContinue" | translate}}
+                                    <!-- {{"PrivacyPolicyContinue" | translate}} -->
+                                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                        <ng-container  *ngSwitchCase="1">{{"Je moet akkoord gaan met de Privacy Voorwaarden om verder te kunnen gaan."}}</ng-container>
+                                        <ng-container  *ngSwitchCase="2">{{"You need to agree to the Privacy Policy to continue."}}</ng-container>
+                                        <ng-container  *ngSwitchCase="3">{{"Aby kontynuować musisz zaakceptować warunki polityki prywatności"}}</ng-container>
+                                        <ng-container  *ngSwitchCase="4">{{"Sie müssen der Datenschutzrichtlinie zustimmen, um fortzufahren."}}</ng-container>
+                                    </ng-container>
                                 </small>
                             </div>
                         </div>
@@ -190,18 +366,30 @@
             </div>
             <div class="next-btn-container" *ngIf="!isMobileView">
                 <button type="submit" (click)="submitLeadInfo()"
-                    [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor,'color': QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
+                (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
                     [disabled]="leadUserForm.invalid" class="btn next-btn ellipsiss">
-                    {{"SUBMIT_NL" | translate}}
+                    <!-- {{"SUBMIT_NL" | translate}} -->
+                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                        <ng-container  *ngSwitchCase="1">{{"Reageer"}}</ng-container>
+                        <ng-container  *ngSwitchCase="2">{{"Submit"}}</ng-container>
+                        <ng-container  *ngSwitchCase="3">{{"Zapisz"}}</ng-container>
+                        <ng-container  *ngSwitchCase="4">{{"Senden"}}</ng-container>
+                    </ng-container>
                 </button>
             </div>
         </div>
         <div class="next-btn-container" *ngIf="isMobileView">
             <div *ngIf="buttonShow">
                 <button type="submit" (click)="submitLeadInfo()"
-                    [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor,'color': QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
+                (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
                     [disabled]="leadUserForm.invalid" class="btn next-btn ellipsiss mobile-next-btn">
-                    {{"SUBMIT_NL" | translate}}
+                    <!-- {{"SUBMIT_NL" | translate}} -->
+                    <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                        <ng-container  *ngSwitchCase="1">{{"Reageer"}}</ng-container>
+                        <ng-container  *ngSwitchCase="2">{{"Submit"}}</ng-container>
+                        <ng-container  *ngSwitchCase="3">{{"Zapisz"}}</ng-container>
+                        <ng-container  *ngSwitchCase="4">{{"Senden"}}</ng-container>
+                    </ng-container>
                 </button>
             </div>
         </div>
@@ -213,9 +401,15 @@
     <div [ngClass]="{'left-slide': isMobileView, 'left-auto': isMobileView && !leftSlide, 'left-quiz-silder':isMobileView && leftSlide && !isStartQuiz,'right-quiz-silder':isMobileView && isStartQuiz}">
         <div *ngIf="isMobileView && !buttonShow" class="next-btn-container">
             <button style="width: 100%;border-radius: 0px;" type="submit"
-                [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor,'color': QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
+            (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
                 [disabled]="leadUserForm.invalid" class="btn next-btn ellipsiss" (click)="submitLeadInfo()">
-                {{"SUBMIT_NL" | translate}}
+                <!-- {{"SUBMIT_NL" | translate}} -->
+                <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                    <ng-container  *ngSwitchCase="1">{{"Reageer"}}</ng-container>
+                    <ng-container  *ngSwitchCase="2">{{"Submit"}}</ng-container>
+                    <ng-container  *ngSwitchCase="3">{{"Zapisz"}}</ng-container>
+                    <ng-container  *ngSwitchCase="4">{{"Senden"}}</ng-container>
+                </ng-container>
             </button>
         </div>
     </div>
@@ -237,29 +431,69 @@
                     <div class="form-group col-md-6">
                         <label for="firstname"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"FIRST_NAME_NL" | translate}}
+                            <!-- {{"FIRST_NAME_NL" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Voornaam:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"First name:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Imię"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Vorname:"}}</ng-container>
+                            </ng-container>
                         </label>
                         <input formControlName="Voornaam" type="text"
                             class="form-control input-text font-type sub-text" id="firstname" maxlength="20"
-                            placeholder="{{'ENTER_YOUR_FIRST_NAME' | translate}}">
+                            placeholder="{{
+                                QuizBrandingAndStyle.Language == 1
+                                    ? 'Typ hier je voornaam'
+                                    :QuizBrandingAndStyle.Language == 2
+                                        ? 'Enter your first name'
+                                        :QuizBrandingAndStyle.Language == 3
+                                            ? 'Wprowadź swoje imię'
+                                            : 'Geben Sie Ihren Vornamen ein'
+                            }}">
                         <small class="invalid-input"
                             *ngIf="leadUserForm.get('Voornaam').touched && leadUserForm.get('Voornaam').invalid"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"FirstNameIsRequired" | translate}}
+                            <!-- {{"FirstNameIsRequired" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Ihr Vorname ist erforderlich!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Your first name is required!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Twoje imię jest wymagane!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Je voornaam is verplicht!"}}</ng-container>
+                            </ng-container>
                         </small>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="lastname"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"LAST_NAME_NL" | translate}}
+                            <!-- {{"LAST_NAME_NL" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Achternaam:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Last name:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Nazwisko"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Nachname:"}}</ng-container>
+                            </ng-container>
                         </label>
                         <input formControlName="Achternaam" type="text"
                             class="form-control input-text font-type sub-text" id="lastname" maxlength="20"
-                            placeholder="{{'ENTER_YOUR_LAST_NAME' | translate}}">
+                            placeholder="{{
+                                QuizBrandingAndStyle.Language == 1
+                                ? 'Typ hier je achternaam'
+                                :QuizBrandingAndStyle.Language == 2
+                                    ? 'Enter your last name'
+                                    :QuizBrandingAndStyle.Language == 3
+                                        ? 'Wprowadź swoje nazwisko'
+                                        : 'Geben Sie Ihren Nachnamen ein'
+                            }}">
                         <small class="invalid-input"
                             *ngIf="leadUserForm.get('Achternaam').invalid && leadUserForm.get('Achternaam').touched"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"LastNameIsRequired" | translate}}
+                            <!-- {{"LastNameIsRequired" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Ihr Nachname ist erforderlich!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Your last name is required!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Twoje nazwisko jest wymagane!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Je achternaam is verplicht!"}}</ng-container>
+                            </ng-container>
                         </small>
                     </div>
                 </div>
@@ -267,29 +501,69 @@
                     <div class="form-group col-md-12">
                         <label for="firstname"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"FIRST_NAME_NL" | translate}}
+                            <!-- {{"FIRST_NAME_NL" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Voornaam:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"First name:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Imię"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Vorname:"}}</ng-container>
+                            </ng-container>
                         </label>
                         <input formControlName="Voornaam" type="text"
                             class="form-control input-text font-type sub-text" id="firstname" maxlength="20"
-                            placeholder="{{'ENTER_YOUR_FIRST_NAME' | translate}}">
+                            placeholder="{{
+                                QuizBrandingAndStyle.Language == 1
+                                    ? 'Typ hier je voornaam'
+                                    :QuizBrandingAndStyle.Language == 2
+                                        ? 'Enter your first name'
+                                        :QuizBrandingAndStyle.Language == 3
+                                            ? 'Wprowadź swoje imię'
+                                            : 'Geben Sie Ihren Vornamen ein'
+                            }}">
                         <small class="invalid-input"
                             *ngIf="leadUserForm.get('Voornaam').touched && leadUserForm.get('Voornaam').invalid"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"FirstNameIsRequired" | translate}}
+                            <!-- {{"FirstNameIsRequired" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Ihr Vorname ist erforderlich!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Your first name is required!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Twoje imię jest wymagane!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Je voornaam is verplicht!"}}</ng-container>
+                            </ng-container>
                         </small>
                     </div>
                     <div class="form-group col-md-12">
                         <label for="lastname"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"LAST_NAME_NL" | translate}}
+                            <!-- {{"LAST_NAME_NL" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Achternaam:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Last name:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Nazwisko"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Nachname:"}}</ng-container>
+                            </ng-container>
                         </label>
                         <input formControlName="Achternaam" type="text"
                             class="form-control input-text font-type sub-text" id="lastname" maxlength="20"
-                            placeholder="{{'ENTER_YOUR_LAST_NAME' | translate}}">
+                            placeholder="{{
+                                QuizBrandingAndStyle.Language == 1
+                                ? 'Typ hier je achternaam'
+                                :QuizBrandingAndStyle.Language == 2
+                                    ? 'Enter your last name'
+                                    :QuizBrandingAndStyle.Language == 3
+                                        ? 'Wprowadź swoje nazwisko'
+                                        : 'Geben Sie Ihren Nachnamen ein'
+                            }}">
                         <small class="invalid-input"
                             *ngIf="leadUserForm.get('Achternaam').invalid && leadUserForm.get('Achternaam').touched"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"LastNameIsRequired" | translate}}
+                            <!-- {{"LastNameIsRequired" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Ihr Nachname ist erforderlich!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Your last name is required!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Twoje nazwisko jest wymagane!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Je achternaam is verplicht!"}}</ng-container>
+                            </ng-container>
                         </small>
                     </div>
                 </div>
@@ -297,17 +571,45 @@
                     <div class="form-group col-md-12">
                         <label for="email"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"EMAIL_NL" | translate}}
+                            <!-- {{"EMAIL_NL" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"E-mailadres:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Email address:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Adres email"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"E-Mail-Adresse:"}}</ng-container>
+                            </ng-container>
                         </label>
                         <input formControlName="Email" type="text"
                             class="form-control input-text font-type sub-text" id="email"
-                            placeholder="{{'ENTER_YOUR_EMAIL_ADDRESS' | translate}}">
+                            placeholder="{{
+                                QuizBrandingAndStyle.Language == 1
+                                    ? 'Typ hier je e-mailadres'
+                                    :QuizBrandingAndStyle.Language == 2
+                                        ? 'Enter your email address'
+                                        :QuizBrandingAndStyle.Language == 3
+                                            ? 'Wprowadź swój adres email'
+                                            : 'Geben Sie Ihre E-Mail-Adresse ein'
+                            }}">
                         <small class="invalid-input"
-                            *ngIf="leadUserForm.get('Email').hasError('pattern')">{{"INVALID_EMAIL" | translate }}</small>
+                            *ngIf="leadUserForm.get('Email').hasError('pattern')">
+                            <!-- {{"INVALID_EMAIL" | translate }} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Ungültige E-Mail"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Invalid Email"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Incorrect e-mailadres"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Niepoprawny email"}}</ng-container>
+                            </ng-container>
+                        </small>
                         <small class="invalid-input"
                             *ngIf="leadUserForm.get('Email').hasError('required') && leadUserForm.get('Email').touched"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"EmailAddressIsRequired" | translate}}
+                            <!-- {{"EmailAddressIsRequired" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Die E-Mail-Adresse ist erforderlich!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Phone number is required!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Je e-mailadres is verplicht!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Twój adres email jest wymagany!"}}</ng-container>
+                            </ng-container>
                         </small>
                     </div>
                 </div>
@@ -315,12 +617,27 @@
                     <div class="col-md-12">
                         <label for="phoneno"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"PHONE_NUMBER_NL" | translate}}
+                            <!-- {{"PHONE_NUMBER_NL" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Telefoonnummer:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Phone number:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Telefon"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Telefonnummer:"}}</ng-container>
+                            </ng-container>
                         </label>
                     </div>
                     <div class="form-group phone-number-container col-xs-5 col-md-4">
                         <ng-select [items]="countryCodeList" 
-                                placeholder="{{countryCode ? '' : ('SELECT_COUNTRY' | translate) }}"
+                                placeholder="{{
+                                    countryCode ? '' : 
+                                    QuizBrandingAndStyle.Language == 1
+                                            ? 'Select country'
+                                            :QuizBrandingAndStyle.Language == 2
+                                                ? 'Select country'
+                                                :QuizBrandingAndStyle.Language == 3
+                                                    ? 'Wybierz kraj'
+                                                    : 'Land auswählen' 
+                                }}"
                                 [searchable]="true"
                             class="custom-select search" bindLabel="label" bindValue="value" [(ngModel)]="countryCode" [ngModelOptions]="{standalone: true}" [dropdownPosition]="'top'" (selected)="onCountryCodeChange($event)">                             
                         </ng-select>
@@ -328,18 +645,38 @@
                     <div class="form-group col-xs-7 col-md-8">
                         <input maxlength="10" OnlyNumber="true" formControlName="PhoneNr" type="text"
                             class="form-control input-text font-type sub-text" id="phoneno"
-                            placeholder="{{'ENTER_YOUR_PHONE_NUMBER' | translate}}">
+                            placeholder="{{
+                                QuizBrandingAndStyle.Language == 1
+                                    ? 'Typ hier je telefoonnummer'
+                                    :QuizBrandingAndStyle.Language == 2
+                                        ? 'Enter your phone number'
+                                        :QuizBrandingAndStyle.Language == 3
+                                            ? 'Wprowadź swój numer telefonu'
+                                            : 'Geben Sie Ihre E-Mail-Adresse ein'
+                            }}">
                         <small class="invalid-input"
                             *ngIf="leadUserForm.get('PhoneNr').invalid && leadUserForm.get('PhoneNr').touched"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"PhoneNumberIsRequired" | translate}}
+                            <!-- {{"PhoneNumberIsRequired" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Die Telefonnummer ist erforderlich!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Phone number is required!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Twój telefon jest wymagany!"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Je telefoonnummer is verplicht"}}</ng-container>
+                            </ng-container>
                         </small>
                     </div>
                 </div>
                 <div class="row" *ngIf="isCVMandatory">
                     <div class="form-group col-md-12">
                         <label [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"Resume:" | translate}}
+                            <!-- {{"Resume:" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"CV"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Resume"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Wznawiać"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Wznawiać"}}</ng-container>
+                            </ng-container>
                         </label>
                         <button id="inputBtn" class="form-control input-text font-type sub-text pointer" (click)="fileInput.click();checkValidationOnCancel()" *ngIf="!isResumeObjValid()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" class="mright-5">
@@ -359,7 +696,15 @@
                                     </clipPath>
                                 </defs>
                             </svg>
-                            <span>{{"Upload Your CV"}}</span>
+                            <span>
+                                <!-- {{"Upload Your CV"}} -->
+                                <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                    <ng-container  *ngSwitchCase="1">{{"Upload je CV"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="2">{{"Upload Your CV"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="3">{{"Prześlij swoje CV"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="4">{{"Laden Sie Ihren Lebenslauf hoch"}}</ng-container>
+                                </ng-container>
+                            </span>
                             <input id="cvFile" type="file" #fileInput (change)="onFileSelected($event)" class="hidden">
                         </button>
                         <span *ngIf="isResumeObjValid()" [title]="this.leadUserForm.get('resume').value.file.fileName">
@@ -375,7 +720,13 @@
                         <small class="invalid-input"
                             *ngIf="leadUserForm.get('resume').invalid && leadUserForm.get('resume').touched"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"Msg_PleaseUploadYourCV" | translate}}
+                            <!-- {{"Msg_PleaseUploadYourCV" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Bitte laden Sie Ihren Lebenslauf hoch"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"Please upload your CV"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Bitte laden Sie Ihren Lebenslauf hoch"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Prosimy o przesłanie CV"}}</ng-container>
+                            </ng-container>
                         </small>
                     </div>
                 </div>
@@ -384,9 +735,21 @@
                     <div class="form-group col-md-12">
                         <label
                             class="app-checkbox normal-text font-type">
-                            {{"IAgreeToThe" | translate}}
+                            <!-- {{"IAgreeToThe" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Ik ga akkoord met de:"}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"I agree to the"}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Akceptuję warunki"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Ich stimme den"}}</ng-container>
+                            </ng-container>
                             <a class="link-test" href="{{privacyLink ? privacyLink : 'javascript:void(0);'}}" target="_blank">
-                                {{"PrivacyPolicy" | translate}}
+                                <!-- {{"PrivacyPolicy" | translate}} -->
+                                <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                    <ng-container  *ngSwitchCase="1">{{"Privacy Voorwaarden"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="2">{{"Privacy Policy"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="3">{{"Polityki prywatności"}}</ng-container>
+                                    <ng-container  *ngSwitchCase="4">{{"Datenschutzrichtlinie"}}</ng-container>
+                                </ng-container>
                             </a>
                             <input type="checkbox" formControlName="Privacy" required />
                             <span></span>
@@ -394,7 +757,13 @@
                         <small class="invalid-input"
                             *ngIf="leadUserForm.get('Privacy').hasError('required') && leadUserForm.get('Privacy').touched"
                             [ngStyle]="{'font-family': QuizBrandingAndStyle.FontType ?QuizBrandingAndStyle.FontType:'Montserrat'}">
-                            {{"PrivacyPolicyContinue" | translate}}
+                            <!-- {{"PrivacyPolicyContinue" | translate}} -->
+                            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                                <ng-container  *ngSwitchCase="1">{{"Je moet akkoord gaan met de Privacy Voorwaarden om verder te kunnen gaan."}}</ng-container>
+                                <ng-container  *ngSwitchCase="2">{{"You need to agree to the Privacy Policy to continue."}}</ng-container>
+                                <ng-container  *ngSwitchCase="3">{{"Aby kontynuować musisz zaakceptować warunki polityki prywatności"}}</ng-container>
+                                <ng-container  *ngSwitchCase="4">{{"Sie müssen der Datenschutzrichtlinie zustimmen, um fortzufahren."}}</ng-container>
+                            </ng-container>
                         </small>
                     </div>
                 </div>
@@ -411,9 +780,15 @@
     </div>
     <div class="next-btn-container mtop-10">
         <button type="submit" (click)="submitLeadInfo()"
-            [ngStyle]="{'background': QuizBrandingAndStyle.ButtonColor,'color': QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
+        (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [ngStyle]="{'background': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverColor : QuizBrandingAndStyle.ButtonColor, 'color': isHoveredOnButton ? QuizBrandingAndStyle.ButtonHoverTextColor : QuizBrandingAndStyle.ButtonFontColor,'font-family': QuizBrandingAndStyle.FontType? QuizBrandingAndStyle.FontType:'Montserrat'}"
             [disabled]="leadUserForm.invalid" class="btn next-btn ellipsiss">
-            {{"SUBMIT_NL" | translate}}
+            <!-- {{"SUBMIT_NL" | translate}} -->
+            <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                <ng-container  *ngSwitchCase="1">{{"Reageer"}}</ng-container>
+                <ng-container  *ngSwitchCase="2">{{"Submit"}}</ng-container>
+                <ng-container  *ngSwitchCase="3">{{"Zapisz"}}</ng-container>
+                <ng-container  *ngSwitchCase="4">{{"Senden"}}</ng-container>
+            </ng-container>
         </button>
     </div>
 </div>

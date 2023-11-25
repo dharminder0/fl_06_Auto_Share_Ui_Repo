@@ -3,8 +3,19 @@
         <div class="ins no cover-height content-box" [ngStyle]="{'background-color': QuizBrandingAndStyle.BackgroundColor, 'color': QuizBrandingAndStyle.FontColor, 'font-family': QuizBrandingAndStyle.FontType}">
             <div class="text-div">
                <span>
-                {{"Thanks" | translate}} <br/>
-                {{"WeReceivedYourDetailsSuccessfully" | translate}}
+                <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                    <ng-container  *ngSwitchCase="1">{{"Bedankt!"}}</ng-container>
+                    <ng-container  *ngSwitchCase="2">{{"Thanks!"}}</ng-container>
+                    <ng-container  *ngSwitchCase="3">{{"Dziękujemy!"}}</ng-container>
+                    <ng-container  *ngSwitchCase="4">{{"Danke!"}}</ng-container>
+                </ng-container>
+                <br/>
+                <ng-container [ngSwitch]="QuizBrandingAndStyle.Language">
+                    <ng-container  *ngSwitchCase="1">{{"We hebben je gegevens ontvangen."}}</ng-container>
+                    <ng-container  *ngSwitchCase="2">{{"We received your details successfully."}}</ng-container>
+                    <ng-container  *ngSwitchCase="3">{{"Otrzymaliśmy wprowadzone przez Ciebie informacje."}}</ng-container>
+                    <ng-container  *ngSwitchCase="4">{{"Wir haben Ihre Daten erfolgreich erhalten."}}</ng-container>
+                </ng-container>
                </span>
             </div>
         </div>

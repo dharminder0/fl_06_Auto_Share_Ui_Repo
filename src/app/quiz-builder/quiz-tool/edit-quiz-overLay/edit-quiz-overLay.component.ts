@@ -1,6 +1,7 @@
 import { Component,EventEmitter,OnInit, Output } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { NotificationsService } from "angular2-notifications";
+import { SharedService } from "../../../shared/services/shared.service";
 import { CommonService } from "../../../shared/services/common.service";
 import { UserInfoService } from "../../../shared/services/security.service";
 import { QuizBuilderApiService } from "../../quiz-builder-api.service";
@@ -31,6 +32,7 @@ export class EditQuizOverLayComponent implements OnInit {
     public coverData;
     public personalResult:boolean = false;
     public userInfo:any={};
+    public enabledPermissions:any = {};
     public language;
     public branchingLogicEnum = BranchingLogicEnum;
     public multiResultEnum = 12;
@@ -41,7 +43,8 @@ export class EditQuizOverLayComponent implements OnInit {
         private dynamicMediaReplaceService:DynamicMediaReplaceMentsService,
         private notificationsService: NotificationsService,
         private userInfoService: UserInfoService,
-        private commonService: CommonService
+        private commonService: CommonService,
+        private sharedService: SharedService
     ){}
 
     ngOnInit(){
@@ -69,6 +72,7 @@ export class EditQuizOverLayComponent implements OnInit {
         {
             this.language = this.userInfo.ActiveLanguage
         }
+        this.enabledPermissions = JSON.parse(JSON.stringify(this.userInfoService.userPermissions));
     }
 
     fetchQuestionDetails() {
@@ -177,7 +181,21 @@ export class EditQuizOverLayComponent implements OnInit {
     }
 
     onSaveTemplate(){
-        this.quizBuilderDataService.changeQuizWhatsappSave("save");
-        this.commonService.closeOverlay();
+        if(this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce'){
+            let selectedTemplateDetails:any = {}
+            if(this.sharedService.hsmTemplateData  && Object.keys(this.sharedService.hsmTemplateData).length > 0){
+                selectedTemplateDetails = JSON.parse(JSON.stringify(this.sharedService.hsmTemplateData));
+                this.quizBuilderApiService.updateQuizWhatsAppTemplate(this.quizId,selectedTemplateDetails.id,selectedTemplateDetails.templateBody[0].langCode).subscribe(res => {
+                    this.templateData.emit({res,selectedTemplateDetails});
+                });
+                this.commonService.closeOverlay();
+            }
+        }
+        else{
+            this.quizBuilderDataService.changeQuizWhatsappSave("save");
+            this.commonService.closeOverlay();
+        }
+        // this.quizBuilderDataService.changeQuizWhatsappSave("save");
+        // this.commonService.closeOverlay();
     }
 }

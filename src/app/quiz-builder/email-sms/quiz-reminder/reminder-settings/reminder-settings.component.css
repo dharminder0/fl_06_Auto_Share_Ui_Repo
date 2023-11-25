@@ -27,6 +27,7 @@
 
 .m-list{
     margin: 6px 0 !important;
+    margin-bottom: 15px !important;
 }
 
 .reminder-body{
@@ -120,4 +121,12 @@ color: var(--secondary-color);
 
 .float-right{
     float: right;
+}
+
+.error-field {
+    color: #ba3939;
+    position: absolute;
+    margin-left: 5px;
+    margin-top: 0;
+    width: 140px;
 }

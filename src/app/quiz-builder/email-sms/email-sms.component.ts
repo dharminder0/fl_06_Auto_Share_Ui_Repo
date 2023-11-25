@@ -8,6 +8,7 @@ import { SettingsTemplateComponent } from './settings-template/settings-template
 import { Subscription } from 'rxjs';
 import { ReminderSettingsComponent } from '../email-sms/quiz-reminder/reminder-settings/reminder-settings.component';
 import { Title } from '@angular/platform-browser';
+import { VariablePopupService } from '../../shared/services/variable-popup.service';
 
 @Component({
   selector: 'app-email-sms',
@@ -29,12 +30,18 @@ export class EmailSmsComponent implements OnInit {
   public officeIdSubscription: Subscription;
   public isCompanyWise:boolean=false;
   public isNotification:any;
+  public enabledPermissions:any = {};
+  public userInfo:any = {};
 
   constructor(private _cfr: ComponentFactoryResolver,
   private quizBuilderApiService: QuizBuilderApiService,
   private userInfoService: UserInfoService,
   private emailSmsSubjectService: EmailSmsSubjectService,
-  private titleService: Title) {}
+  private titleService: Title,
+  private variablePopupService: VariablePopupService) {
+    this.enabledPermissions = JSON.parse(JSON.stringify(this.userInfoService.userPermissions));
+    this.userInfo = this.userInfoService._info;
+  }
 
   ngOnInit() {
     this.titleService.setTitle( "E-mail & SMS templates | Jobrock" );
@@ -92,6 +99,10 @@ export class EmailSmsComponent implements OnInit {
     }
 
     this.onChanges();
+    if(this.variablePopupService.showExtVariablePopup && !(this.variablePopupService.mappedSfFieldsObj && Object.keys(this.variablePopupService.mappedSfFieldsObj).length > 0)
+     && this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.enabledPermissions.isNewVariablePopupEnabled ){
+      this.getMappedSfFieldsList(); 
+    }
   }
 
   /** 
@@ -222,6 +233,25 @@ onReminderSetting(){
 ngOnDestroy() {
  // this.officeIdSubscription.unsubscribe();
  this.titleService.setTitle( "Automation | Jobrock");
+}
+
+getMappedSfFieldsList(){
+  // this.ngxService.startLoader('appointmentTemplate');
+  this.variablePopupService.mappedSfFieldsObj = {};
+
+  this.quizBuilderApiService.getMappedSfFieldsList().subscribe((results) => {
+    if (results && results.length > 0) {
+      results.forEach((currObj:any) => {
+        if(currObj.Fields && currObj.Fields.length > 0){
+          currObj.Fields.map((subObj:any) => {
+            this.variablePopupService.mappedSfFieldsObj[`${currObj.ObjectName}.${subObj.FieldName}`] = subObj.FieldLabel;
+          });
+        }
+      });
+    }
+  }), (error:any) => {
+    console.log('Could not load Group status  data');
+  }
 }
 
 }

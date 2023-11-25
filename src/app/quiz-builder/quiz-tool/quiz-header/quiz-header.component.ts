@@ -11,6 +11,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { UserInfoService } from '../../../shared/services/security.service';
 import { Subscription } from 'rxjs';
 import { DynamicMediaReplaceMentsService } from '../dynamic-media-replacement';
+import { CommonService } from '../../../shared/services/common.service';
 
 @Component({
     selector: 'app-quiz-header',
@@ -37,6 +38,7 @@ import { DynamicMediaReplaceMentsService } from '../dynamic-media-replacement';
     public isUagesPopup:boolean = false;
     public usagesDatas;
     public isEditUsage:boolean = true;
+    public isPublished: boolean = false;
     public usagesInWebChat:any=[{
       id : 1,
       title : "Webflow"
@@ -57,10 +59,12 @@ import { DynamicMediaReplaceMentsService } from '../dynamic-media-replacement';
     ];
 
     public getUsages:any;
-    public isWebChatPermission:boolean = false;
+    // public isWebChatPermission:boolean = false;
     public userInfo: any = {};
     public isBranchingLogicLinkSubscription: Subscription;
     public quizType;
+    public quizDetails: any = {};
+    public enabledPermissions:any = {};
 
     @ViewChild("shareQuizTemplate", { read: ViewContainerRef, static:true })
     shareQuizTemplate: ViewContainerRef;
@@ -76,7 +80,12 @@ import { DynamicMediaReplaceMentsService } from '../dynamic-media-replacement';
       private titleService: Title,
       private notificationsService: NotificationsService,
       private userInfoService: UserInfoService,
-      private dynamicMediaReplaceService:DynamicMediaReplaceMentsService){}
+      private dynamicMediaReplaceService:DynamicMediaReplaceMentsService,
+      private commonService: CommonService
+      ){    
+        this.userInfo = this.userInfoService._info;
+        this.enabledPermissions = JSON.parse(JSON.stringify(this.userInfoService.userPermissions));
+      }
 
       getQuizCoverDetail(){
         let self=this;
@@ -96,12 +105,17 @@ import { DynamicMediaReplaceMentsService } from '../dynamic-media-replacement';
 
     ngOnInit() {
       this.userInfo = this.userInfoService._info;
-      this.isWebChatPermission = this.userInfo.IsWebChatbotPermission;
+      // this.isWebChatPermission = this.userInfo.IsWebChatbotPermission;
       this.hostURL = this.location[
         "_platformLocation"
       ].location.host;
       this.routerParamSubscription();
       this.quizData = this.route.snapshot.data["quizData"];
+
+      this.quizDetails = JSON.parse(JSON.stringify(this.route.snapshot.data["quizData"]));
+      if(this.quizDetails && this.quizDetails.EverPublished && this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce'){
+        this.isPublished = true;
+       }
       if(this.isBrsnchingLogic) {
         setTimeout(() => {
           this.getQuizCoverDetail();
@@ -117,11 +131,12 @@ import { DynamicMediaReplaceMentsService } from '../dynamic-media-replacement';
     }
 
     getUsageDetails(){
-      if(this.isWebChatPermission){
-        this.getUsages = this.usagesInWebChat;
-      }else{
-        this.getUsages = this.usages;
-      }
+      // if(this.isWebChatPermission){
+      //   this.getUsages = this.usagesInWebChat;
+      // }else{
+      //   this.getUsages = this.usages;
+      // }
+      this.getUsages = this.usagesInWebChat;
       this.quizBuilderApiService.getQuizUsageType(this.quizId).subscribe(data=>{
         if(data && data.UsageTypes.length > 0 ){
           this.usagesDatas = data;
@@ -146,7 +161,8 @@ import { DynamicMediaReplaceMentsService } from '../dynamic-media-replacement';
             }
 
             //hide next button all page if usage type whatsapp
-            if(this.isWebChatPermission && data.UsageTypes.includes(3)){
+            // if(this.isWebChatPermission && data.UsageTypes.includes(3)){
+            if(data.UsageTypes.includes(3)){
               this.dynamicMediaReplaceService.isUsageTypeWhatsApp = true;
             }else{
               this.dynamicMediaReplaceService.isUsageTypeWhatsApp = false;
@@ -154,15 +170,17 @@ import { DynamicMediaReplaceMentsService } from '../dynamic-media-replacement';
             this.dynamicMediaReplaceService.changeUsageTypeWhatsAppSubmission();
 
             //if webchat permission disable and previously by defualt usage type selected 2 
-            if(data.UsageTypes.length == 1 && this.isWebChatPermission == false){
-              if(data.UsageTypes[0] == 2 || data.UsageTypes[0] == 3){
-                this.isUagesPopup = true;
-                this.isEditUsage = false;
-              }else{
-                this.isEditUsage = true;
-              }
-            }
-            else if(data.UsageTypes[0] == 2){
+            // if(data.UsageTypes.length == 1 && this.isWebChatPermission == false){
+            // if(data.UsageTypes.length == 1){
+            //   if(data.UsageTypes[0] == 2 || data.UsageTypes[0] == 3){
+            //     this.isUagesPopup = true;
+            //     this.isEditUsage = false;
+            //   }else{
+            //     this.isEditUsage = true;
+            //   }
+            // }
+            // else 
+            if(data.UsageTypes[0] == 2){
               this.isUagesPopup = true;
               this.isEditUsage = false;
             }
@@ -260,7 +278,14 @@ import { DynamicMediaReplaceMentsService } from '../dynamic-media-replacement';
 
   onPublished() {
     this.quizBuilderApiService.publishQuiz(this.quizId).subscribe(
-      data => {},
+      response => {
+        if(response){
+          if(this.quizDetails && this.quizDetails.EverPublished == false && this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce'){
+            this.quizDetails.EverPublished =  true;
+            this.isPublished = true;
+          }
+        }
+      },
        error => {
         this.notificationsService.error(error.error.message);
       }
@@ -344,6 +369,27 @@ import { DynamicMediaReplaceMentsService } from '../dynamic-media-replacement';
     this.isBranchingLogicLinkSubscription.unsubscribe();
     this.quizBuilderDataService.changeQuizSaveAll(undefined);
     this.titleService.setTitle( "Automation | Jobrock");
+  }
+
+  updateTestAutomationModalStatus(data:any){
+    this.isOpenTestAutomationModel = data;
+    this.deleteTestAutomationVerifyRequest();
+  }
+  public isOpenTestAutomationModel: boolean = false;
+  
+  openTestAutomationModal(){
+    this.isOpenTestAutomationModel = true;
+  }
+
+  deleteTestAutomationVerifyRequest(){
+    let queryParamsToSend: any = {
+      requestIds: this.commonService.testAutomationRequestIds.join(','),
+      objectType:'automation'
+    }
+
+    this.quizBuilderApiService.deleteTestAutomationVerifyRequest(queryParamsToSend).subscribe(response => {
+      this.commonService.testAutomationRequestIds = [];
+    })
   }
 
   }

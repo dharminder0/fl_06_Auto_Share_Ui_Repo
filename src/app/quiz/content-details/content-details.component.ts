@@ -47,6 +47,7 @@ export class ContentDetailsComponent implements OnInit, OnDestroy , AfterViewIni
   public nextStatus;
   public isleftSlide:boolean;
   public isNextStatus:boolean=false;
+  public isHoveredOnButton = false;
   public contentElementReorder:any = [
     {
         "displayOrder": 1,

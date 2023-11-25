@@ -17,6 +17,8 @@ export class CommonService {
     public userInfo: any;
     public isAnswerChange: boolean = false;
 
+    public testAutomationRequestIds:Array<any> = [];
+
     constructor(
       private quizDataService: QuizDataService,
       private notificationsService: NotificationsService,
@@ -284,7 +286,7 @@ export class CommonService {
           isErrorInQuestion = false;
           break;
       }
-      if(QuestionData.ShowTitle && !QuestionData.QuestionTitle.trim()){
+      if(QuestionData.ShowTitle && (!QuestionData.QuestionTitle || (QuestionData.QuestionTitle && !QuestionData.QuestionTitle.trim()))){
         this.notificationsService.error(this.userInfo.ActiveLanguage == 'en-US' ? "Title is missing!": "Titel ontbreekt!");
         isErrorInQuestion = true;
       }
@@ -294,7 +296,7 @@ export class CommonService {
         this.notificationsService.error(this.userInfo.ActiveLanguage == 'en-US' ? "Description is missing!" : "Omschrijving ontbreekt!");
         isErrorInQuestion = true;
       }      
-      if(QuestionData.ShowTitle && !QuestionData.QuestionTitle.trim()){
+      if(QuestionData.ShowTitle && (!QuestionData.QuestionTitle || (QuestionData.QuestionTitle && !QuestionData.QuestionTitle.trim()))){
         this.notificationsService.error(this.userInfo.ActiveLanguage == 'en-US' ? "Title is missing!": "Titel ontbreekt!");
         isErrorInQuestion = true;
       }
@@ -351,6 +353,9 @@ export class CommonService {
         return fileBasePath+'.jpeg';
       }
       if(mediaType == 'video'){
+        // if(!fileBasePath.includes('q_auto:eco%2cvc_h264')){
+        //   fileBasePath = fileBasePath.replace('upload','upload/q_auto:eco%2cvc_h264');
+        // }
         return fileBasePath+'.mp4';
       }
     }else{

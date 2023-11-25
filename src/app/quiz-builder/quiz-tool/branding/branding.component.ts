@@ -28,7 +28,9 @@ export class BrandingComponent implements OnInit {
   public backColor;
   public opacity;
   public buttoncolor;
-  public buttonFontColor
+  public buttonFontColor;
+  public buttonHoverColor;
+  public buttonHoverTextColor;
   public optioncolor;
   public optionFontColor;
   public applyToAll;
@@ -70,7 +72,8 @@ export class BrandingComponent implements OnInit {
   public languages = [
     {value:'1', label:'DUTCH'},
     {value:'2', label:'ENGLISH'},
-    {value:'3', label:'POLISH'}
+    {value:'3', label:'POLISH'},
+    {value:'4', label:'GERMAN'}
   ];
   public alignment = [
     {value:'Center', label:'CENTER'},
@@ -130,6 +133,8 @@ export class BrandingComponent implements OnInit {
       "IsBackType": new FormControl(''),
       'ButtonColor': new FormControl(''),
       'ButtonFontColor':new FormControl(''),
+      'ButtonHoverTextColor':new FormControl(''),
+      'ButtonHoverColor':new FormControl(''),
       'OptionColor': new FormControl(''),
       'OptionFontColor': new FormControl(''),
       'ApplyToAll':  new FormControl(''),
@@ -164,6 +169,8 @@ export class BrandingComponent implements OnInit {
           'BackgroundColor': data.BackgroundColor,
           'ButtonColor': data.ButtonColor,
           'ButtonFontColor': data.ButtonFontColor,
+          'ButtonHoverTextColor': data.ButtonHoverTextColor,
+          'ButtonHoverColor': data.ButtonHoverColor,
           'OptionColor': data.OptionColor,
           'OptionFontColor': data.OptionFontColor,
           'ApplyToAll': data.ApplyToAll,
@@ -217,6 +224,8 @@ export class BrandingComponent implements OnInit {
       this.optioncolor = data.OptionColor;
       this.fontcolor = data.FontColor;
       this.buttonFontColor = data.ButtonFontColor;
+      this.buttonHoverTextColor = data.ButtonHoverTextColor;
+      this.buttonHoverColor = data.ButtonHoverColor;
       this.optionFontColor = data.OptionFontColor;
       this.applyToAll = data.ApplyToAll;
       this.backColor = data.BackColor;
@@ -306,7 +315,11 @@ export class BrandingComponent implements OnInit {
           this.brandingForm.controls.PublicIdForFileURL.patchValue(event.publicId);
           this.isBackgroundMediaLibrary=false;
           this.selectBackgroundImage = false;
-        }
+        }        
+      }
+      else{
+        this.isBackgroundMediaLibrary=false;
+        this.isVisibleMediaLibrary=false;
       }
     }
 

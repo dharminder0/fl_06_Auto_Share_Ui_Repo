@@ -84,6 +84,11 @@ export class FetchToken implements CanActivate {
   public companycode;
   public previousCompanyCode;
   public tempToken;
+  private externalUserId: string = "";
+  private logintype: string = "";
+  private externalUrl: string = "";
+  private isMultiBranding: string = "";
+  private selectedBrand: string = "";
   // public companyDetails;
   public config = new Config();
   constructor(
@@ -100,57 +105,125 @@ export class FetchToken implements CanActivate {
     if(route.queryParams.skipValidation === true || route.queryParams.skipValidation === "true"){
       return true;
     }
-    this.tempToken = route.queryParams.token;
-    this.companycode = route.queryParams.companycode || this.sharedService.getCookie("clientCode");
+    let referrer:string = document.referrer ? document.referrer.toLowerCase() : "";
+    let isRedirectedFromSF = referrer.includes("force.com") ? true : false;
+
+    let urlQueryParamsObj = JSON.parse(JSON.stringify(route.queryParams));
+    if(urlQueryParamsObj && Object.keys(urlQueryParamsObj).length > 0){
+      let paramKeyToCompare: string = "";
+      for (let key in urlQueryParamsObj) {
+        paramKeyToCompare = key.replace(/amp;/g, "").toLowerCase();
+
+        if (paramKeyToCompare === "externaluserid") {
+          this.externalUserId = urlQueryParamsObj[key];
+        }
+        else if (paramKeyToCompare === "logintype") {
+          this.logintype = urlQueryParamsObj[key];
+        }
+        else if (paramKeyToCompare === "url") {
+          this.externalUrl = urlQueryParamsObj[key];
+        }
+        else if(paramKeyToCompare === "ismultibrand"){
+          this.isMultiBranding = urlQueryParamsObj[key];
+        }
+        else if(paramKeyToCompare === "selectedbrand"){
+          this.selectedBrand = urlQueryParamsObj[key];
+        }
+      }
+      urlQueryParamsObj = JSON.parse(JSON.stringify(urlQueryParamsObj).replace(/&amp;/g, "&").replace(/amp;/g, ""));
+    }
+
+    this.tempToken = urlQueryParamsObj.token;
+    this.companycode = urlQueryParamsObj.companycode || this.sharedService.getCookie("clientCode");
     this.token = this.sharedService.getCookie("token");
-    if(this.token){
-      return this.fetchToken();
-    }else{
-      if(this.companycode){
-        // localStorage.setItem("companycode", this.companycode);
-        return this.validateCompanyCode(this.companycode);
-      } else {
-        this.router.navigate(['404']);
+
+    if (this.token) {
+      if(isRedirectedFromSF && !this.isMultiBranding && !this.logintype && !this.externalUserId && urlQueryParamsObj.companycode){
+        let tempBaseURL = `${location.href}&logintype=SF`;
+        window.location.replace(
+          `${this.config.loginUrl}?companyCode=${urlQueryParamsObj.companycode}&logintype=SF&returnUrl=${encodeURIComponent(tempBaseURL)}`
+        );
+      }
+      else if(this.isMultiBranding && (this.isMultiBranding == '1' || this.isMultiBranding.toLowerCase() == 'true')) {
+        let cookieClienCode = this.sharedService.getCookie("clientCode");
+        let returnToUrl:string = window.location.origin + window.location.pathname + encodeURIComponent(window.location.search.replace(/&amp;/g, "&").replace(/amp;/g, ""));
+
+        if(this.selectedBrand){
+          if(cookieClienCode && cookieClienCode.toLowerCase() === this.selectedBrand.toLowerCase()){
+            return this.fetchToken(this.selectedBrand);
+          }
+          else{
+            this.switchUserBrand(this.selectedBrand,returnToUrl);
+            return false;
+          }
+        }
+        else{
+          let brandPageUrl:string = `${this.config.hubUrl}/brand?returnToUrl=${encodeURIComponent(returnToUrl)}&selectedBrand=${this.companycode}`;
+          window.open(brandPageUrl,"_self");
+          return false;
+        }
+      }
+      else{
+        return this.fetchToken();
+      }
+    } 
+    else {
+      let conpanyCodeToSend = this.companycode;
+      if(this.isMultiBranding && (this.isMultiBranding == '1' || this.isMultiBranding.toLowerCase() == 'true') && this.selectedBrand){
+        conpanyCodeToSend = this.selectedBrand;
+      }
+
+      if (conpanyCodeToSend) {
+        return this.validateCompanyCode(conpanyCodeToSend);
+      } 
+      else {
+        //this.router.navigate(['error']);
+        var baseURL = location.href;
+        window.location.replace(
+          `${this.config.loginUrl}?returnUrl=${encodeURIComponent(baseURL)}`
+        );
       }
     }
   }
 
-  validateCompanyCode(companycode) {
-    return this.getToken
-      .fetchCompanyDetails(companycode)
-      .map(companyDetails => {
-        // localStorage.setItem('companycode', companyDetails.CompanyCode)
-        // this.companyDetails = companyDetails;
-        var baseURL = location.href.split("?");
-        baseURL.forEach(url => {
-          if (url.match("companycode")) {
-            companycode = url;
-          }
-        });
-        if (companycode) {
-          window.location.replace(
-            `${this.config.loginUrl}?companyCode=${this.companycode}&returnUrl=${
-              baseURL[0]
-            }?${companycode}`
-          );
-        } else {
-          window.location.replace(
-            `${this.config.loginUrl}?companyCode=${this.companycode}&returnUrl=${
-              baseURL[0]
-            }`
-          );
+  validateCompanyCode(companycode:string) {
+    var baseURL = location.href.split("?");
+    let encodedUrl = baseURL[0];
+
+    if(baseURL.length > 1){
+      baseURL[1].split("&").map((item:string, index:number) => {
+        if(item.toLowerCase().indexOf("companycode") >= 0){
+          item = `companycode=${companycode}`;
         }
-        return false;
-      }).catch(() => {
-        this.router.navigate(['404']);
-        localStorage.clear();
-        return Observable.of(false);
+
+        if(index === 0){
+          encodedUrl = `${encodedUrl}?${item}`;
+        }
+        else{
+          encodedUrl = `${encodedUrl}&${item}`;
+        }
       });
+    }
+    encodedUrl = encodeURIComponent(encodedUrl);
+    
+    let completeLoginUrl:string = `${this.config.loginUrl}?companyCode=${companycode}`;
+    if(this.externalUserId){
+      completeLoginUrl += `&userId=${this.externalUserId}`;
+    }
+    if(this.logintype){
+      completeLoginUrl += `&loginType=${this.logintype}`;
+    }
+    completeLoginUrl = `${completeLoginUrl}&returnUrl=${encodedUrl}`;
+
+    window.location.replace(completeLoginUrl);
+           return false;
   }
 
-  fetchToken() {
+  fetchToken(clientcode?:string) {
+    let companycode = clientcode ? clientcode : this.companycode;
+
     return this.getToken
-      .fetchUserToken(this.token, this.companycode, this.previousCompanyCode)
+      .fetchUserToken(this.token, companycode, this.previousCompanyCode)
       .map(e => {
         if (e) {
           return true;
@@ -167,19 +240,43 @@ export class FetchToken implements CanActivate {
         });
         if (companycode) {
           window.location.replace(
-            `${this.config.loginUrl}?companyCode=${this.companycode}&returnUrl=${
-              baseURL[0]
-            }?${companycode}`
+            `${this.config.loginUrl}?companyCode=${this.companycode}&returnUrl=${encodeURIComponent(baseURL[0])}?${companycode}`
           );
         } else {
           window.location.replace(
-            `${this.config.loginUrl}?companyCode=${this.companycode}&returnUrl=${
-              baseURL[0]
-            }`
+            `${this.config.loginUrl}?companyCode=${this.companycode}&returnUrl=${encodeURIComponent(baseURL[0])}`
           );
         }
         return Observable.of(false);
       });
+  }
+
+  switchUserBrand(selectBrand:string, currUrl:string){
+    let currUrlSplitList:Array<string> = decodeURIComponent(currUrl).split("?");
+    let returnUrl:string = currUrlSplitList[0];
+
+    if(currUrlSplitList.length > 1){
+      let temp:Array<string> = currUrlSplitList[1].split("&");
+
+      temp.map((item:string,index:number) => {
+        if(item.toLowerCase().indexOf("selectedbrand=") >= 0){
+          item = `selectedbrand=${selectBrand}`;
+        }
+        else if(item.toLowerCase().indexOf("companycode=") >= 0){
+          item = `companycode=${selectBrand}`;
+        }
+
+        if(index === 0){
+          returnUrl = `${returnUrl}?${item}`;
+        }
+        else{
+          returnUrl = `${returnUrl}&${item}`;
+        }
+      });
+    }
+
+    let url = `${this.config.loginUrl}account/switch?companyCode=${selectBrand}&returnUrl=${encodeURIComponent(returnUrl)}`;
+    window.location.href = url;
   }
 }
 

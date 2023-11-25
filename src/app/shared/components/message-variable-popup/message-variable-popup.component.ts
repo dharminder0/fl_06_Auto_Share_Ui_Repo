@@ -53,7 +53,7 @@ export class MessageVariablePopupComponent implements OnInit {
       this.addJrVaraiablePopupListener();
       this.showExtVariablePopup = true;
       let allowedVariableCategories:Array<string> = ["lead","contact","automation","vacancy","recruiter"];
-      this.extVariablePopupOrgUrl = `${this.config.coreUrl}/variablePopup?multiple=true&entityFilter=${allowedVariableCategories.join()}&clientcode=${this.clientCode}`;
+      this.extVariablePopupOrgUrl = `${this.config.coreUrl}/variablePopup?multiple=true&fetchDspName=true&entityFilter=${allowedVariableCategories.join()}&clientcode=${this.clientCode}`;
     }
 
 
@@ -71,15 +71,24 @@ export class MessageVariablePopupComponent implements OnInit {
             if(payload.allowedVariblesFor === 'tag'){
               allowedVariableCategories = ["lead","contact"];
               updatedUrl.searchParams.set('multiple','false');
+              updatedUrl.searchParams.set('usageFeature', 'syncSalesforce');
             }
             if(payload.allowedVariblesFor === 'quiz'){
               allowedVariableCategories = ["lead","contact","vacancy"];
               updatedUrl.searchParams.set('multiple','true');
+              updatedUrl.searchParams.set('usageFeature', 'automationmodule');
+            }
+            if(payload.fetchDspName){
+              updatedUrl.searchParams.set('fetchDspName','true');
             }
             updatedUrl.searchParams.set('entityFilter', allowedVariableCategories.join());
             this.extVariablePopupUrl = decodeURIComponent(updatedUrl.href);
           }else{
-            this.extVariablePopupUrl = this.extVariablePopupOrgUrl;
+            let updatedUrl = new URL(this.extVariablePopupOrgUrl);
+            if(payload.allowedVariblesFor == "automation"){
+              updatedUrl.searchParams.set('usageFeature', 'automationmodule');
+            }
+            this.extVariablePopupUrl = decodeURIComponent(updatedUrl.href);
           }
 
           if(payload.listOfUsedVariableObj && payload.listOfUsedVariableObj.length > 0){

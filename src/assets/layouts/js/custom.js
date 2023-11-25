@@ -23,10 +23,14 @@ $(document).ready(function () {
   });
 
   $(document).on('click','.app-data',function () {
-    var tab_id = $(this).attr('app-data');  
+    var tab_id = $(this).attr('app-data'); 
     $('.app-sidebar').removeClass('open');
     $("#"+tab_id).addClass('open');
     $('.app-sidebar-overlay').addClass('open');
+    if($("#"+tab_id) && $("#"+tab_id).hasClass('data-not-added')){
+      $("#"+tab_id).removeClass('open');
+      $('.app-sidebar-overlay').removeClass('open');
+    }
     $('body').addClass('app-body');
   });
 

@@ -27,6 +27,7 @@ export class AnswerDetailsComponent implements OnInit , AfterViewInit{
   public buttonShow:boolean = true;
   public logoImage:string = "";
   public logoBackgroundColor:string = "";
+  public isHoveredOnButton = false;
   public defaultCoverImage:any="https://res.cloudinary.com/dbbkqtyqn/image/upload/c_fill,w_200,h_200,g_face,q_auto:best,f_auto/v1588680596/Jobrock/automation-place-holder-corner.png";
 
   @ViewChild('previewContainer', {read: ElementRef, static: true}) previewContainer: ElementRef;

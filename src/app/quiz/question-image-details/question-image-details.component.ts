@@ -108,6 +108,7 @@ export class QuestionImageDetailsComponent implements OnInit, OnDestroy, AfterVi
   private isVideoSoundEnableSubscription:Subscription;
   public isleftSlide:boolean;
   public questionTypeEnum = answerTypeEnum;
+  public isHoveredOnButton = false;
 
   constructor(
     private quizDataService: QuizDataService,

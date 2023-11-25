@@ -43,7 +43,7 @@ public selectAll: boolean = false;
 public selectedTagName:any = [];
 public tagNameObj:any = [];
 public selectedTagString;
-public isWebChatPermission:boolean = false;
+// public isWebChatPermission:boolean = false;
 public userInfo: any = {};
 public tagDropDown:boolean = false;
 
@@ -55,19 +55,19 @@ public tagDropDown:boolean = false;
 
   ngOnInit() {
     this.userInfo = this.userInfoService._info;
-    this.isWebChatPermission = this.userInfo.IsWebChatbotPermission;
+    // this.isWebChatPermission = this.userInfo.IsWebChatbotPermission;
     
     this.getTagDetails();
     if(this.usagesData && this.usagesData.UsageTypes){
       this.selectedUsage =JSON.parse(JSON.stringify(this.usagesData.UsageTypes));
-      if(this.isWebChatPermission == false){
-        this.selectedUsage = [];
-        this.usagesData.UsageTypes.map(select => {
-          if(select == 1){
-            this.selectedUsage.push(select);
-          }
-        });
-      }
+      // if(this.isWebChatPermission == false){
+      //   this.selectedUsage = [];
+      //   this.usagesData.UsageTypes.map(select => {
+      //     if(select == 1){
+      //       this.selectedUsage.push(select);
+      //     }
+      //   });
+      // }
     }
   }
 

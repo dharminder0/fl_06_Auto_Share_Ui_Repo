@@ -84,15 +84,15 @@ export class MediaLibraryComponent implements OnInit {
       let r_filters = JSON.stringify(relationFilters);      
       url = `${this.config.mediaSiteUrl}/openMediaPopup?r_filters=${r_filters}&clientcode=${this.companyCode}`;
     }
-    if(this.isWhatsappEnable){
-      //64 Mb = 67108864 bytes
-      let mSize:any = {
-        "imgSize":67108864, 
-        "vidSize":67108864
-      }
-      let m_size = JSON.stringify(mSize);
-      url += `&m_size=${m_size}`;
-    }
+    // if(this.isWhatsappEnable){
+    //   //64 Mb = 67108864 bytes
+    //   let mSize:any = {
+    //     "imgSize":67108864, 
+    //     "vidSize":67108864
+    //   }
+    //   let m_size = JSON.stringify(mSize);
+    //   url += `&m_size=${m_size}`;
+    // }
     this.Url = url;
   }
 }

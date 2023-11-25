@@ -28,6 +28,7 @@ export class BookAppointmentComponent implements OnInit {
   public isLoaderEnable:boolean = false;
   public iframeHeight;
   public isSetIframeHeight:boolean = true;
+  public isHoveredOnButton = false;
 
   constructor(private quizDataService: QuizDataService,
     private loaderService: LoaderService,
@@ -74,7 +75,9 @@ export class BookAppointmentComponent implements OnInit {
     "quiz_BackgroundColorofSelectedAnswer":this.QuizBrandingAndStyle.BackgroundColorofSelectedAnswer,
     "quiz_BackgroundColorofAnsweronHover":this.QuizBrandingAndStyle.BackgroundColorofAnsweronHover,
     "quiz_ButtonColor":this.QuizBrandingAndStyle.ButtonColor,
-    "quiz_ButtonFontColor":this.QuizBrandingAndStyle.ButtonFontColor
+    "quiz_ButtonHoverColor":this.QuizBrandingAndStyle.ButtonHoverColor,
+    "quiz_ButtonFontColor":this.QuizBrandingAndStyle.ButtonFontColor,
+    "quiz_ButtonHoverTextColor":this.QuizBrandingAndStyle.ButtonHoverTextColor
   };
   let quizStyle = JSON.stringify(appointmentStyle);
   quizStyle = encodeURIComponent(quizStyle);

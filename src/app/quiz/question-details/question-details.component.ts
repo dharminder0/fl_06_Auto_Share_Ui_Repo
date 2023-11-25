@@ -98,23 +98,43 @@ export class QuestionDetailsComponent implements OnInit, OnDestroy, AfterViewIni
   public ratingEmojiList = [
     {
       id : 1,
-      name : "Lbl_Verysad"
+      name : "Lbl_Verysad",
+      dutchName: "Zeer ontevreden",
+      englishName: "Very dissatisfied",
+      polishName: "Bardzo niezadowalająca",
+      germanName: "Sehr unzufrieden",
     },
     {
       id : 2,
-      name : "Lbl_Sad"
+      name : "Lbl_Sad",
+      dutchName: "Ontevreden",
+      englishName: "Dissatisfied",
+      polishName: "Niezadowalająca",
+      germanName: "Unzufrieden"
     },
     {
       id : 3,
-      name : "Lbl_Normal"
+      name : "Lbl_Normal",
+      dutchName: "Neutraal",
+      englishName: "Neutral",
+      polishName: "Neutralna",
+      germanName: "Neutral"
     },
     {
       id : 4,
-      name : "Lbl_Happy"
+      name : "Lbl_Happy",
+      dutchName: "Tevreden",
+      englishName: "Satisfied",
+      polishName: "Zadowalająca",
+      germanName: "Zufrieden"
     },    
     {
       id : 5,
-      name : "Lbl_Veryhappy"
+      name : "Lbl_Veryhappy",
+      dutchName: "Zeer tevreden",
+      englishName: "Very satisfied",
+      polishName: "Bardzo zadowalająca",
+      germanName: "sehr zufrieden"
     }
   ];
 
@@ -148,6 +168,7 @@ export class QuestionDetailsComponent implements OnInit, OnDestroy, AfterViewIni
   public availabilityDate: any;
   public availabilityMinDate : any;
   public availabilityMaxDate : any;
+  public isHoveredOnButton = false;
 
   constructor(private quizDataService: QuizDataService,
     private route: ActivatedRoute,
@@ -257,16 +278,16 @@ export class QuestionDetailsComponent implements OnInit, OnDestroy, AfterViewIni
         i.forEach(element => {
           this.selectedOptionArray.push(element.AnswerId)
         });
-      }else if (this.QuestionDetails.AnswerType == this.questionTypeEnum.smallText || this.QuestionDetails.AnswerType == this.questionTypeEnum.largeText || this.QuestionDetails.AnswerType == this.questionTypeEnum.postCode || this.QuestionDetails.AnswerType == this.questionTypeEnum.nps || this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingEmoji || this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingStar || this.QuestionDetails.AnswerType == this.questionTypeEnum.availability) {
+      }else if (this.QuestionDetails.AnswerType == this.questionTypeEnum.smallText || this.QuestionDetails.AnswerType == this.questionTypeEnum.largeText || this.QuestionDetails.AnswerType == this.questionTypeEnum.postCode || this.QuestionDetails.AnswerType == this.questionTypeEnum.nps || this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingEmoji || this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingStar || this.QuestionDetails.AnswerType == this.questionTypeEnum.availability || this.QuestionDetails.AnswerType == this.questionTypeEnum.FirstName || this.QuestionDetails.AnswerType == this.questionTypeEnum.LastName || this.QuestionDetails.AnswerType == this.questionTypeEnum.Email || this.QuestionDetails.AnswerType == this.questionTypeEnum.PhoneNumber) {
         this.answerSLText = this.PreviousQuestionSubmittedAnswer.SubmittedAnswerDetails[0].SubmittedAnswerTitle;
         this.ratingComment = this.PreviousQuestionSubmittedAnswer.SubmittedAnswerDetails[0].Comment;
         this.availabilityDate = new Date(this.PreviousQuestionSubmittedAnswer.SubmittedAnswerDetails[0].Comment);
         if(this.QuestionDetails.AnswerType == answerTypeEnum.availability){
           this.setMinAndMaxDate(this.answerSLText);
         }
-      }else if(this.QuestionDetails.AnswerType == this.questionTypeEnum.dateOfBirth){
+      }else if(this.QuestionDetails.AnswerType == this.questionTypeEnum.dateOfBirth || this.QuestionDetails.AnswerType == this.questionTypeEnum.DatePicker){
         if(this.PreviousQuestionSubmittedAnswer.SubmittedAnswerDetails[0].SubmittedAnswerTitle){
-          this.selectedDateOfBirth = moment(this.PreviousQuestionSubmittedAnswer.SubmittedAnswerDetails[0].SubmittedAnswerTitle).format('YYYY-MM-DD');
+          this.selectedDateOfBirth = moment(this.PreviousQuestionSubmittedAnswer.SubmittedAnswerDetails[0].SubmittedAnswerTitle,'DD/MM/YYYY').format('YYYY-MM-DD');
         }
       }else if (this.QuestionDetails.AnswerType == this.questionTypeEnum.fullAddress) {
         this.subAnswerSlText[0] = this.PreviousQuestionSubmittedAnswer.SubmittedAnswerDetails[0].SubmittedAnswerTitle;
@@ -658,9 +679,9 @@ setMinAndMaxDate(data:any){
 }
 
 
-  submitCurrentOptionWithText() {
+  submitCurrentOptionWithText() { 
     this.CountDownInterval ? clearInterval(this.CountDownInterval) : '';
-    if(this.QuestionDetails.IsMultiRating && (this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingEmoji || this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingStar)){
+    if(this.QuestionDetails.IsMultiRating && (this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingEmoji || this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingStar || this.QuestionDetails.AnswerType == this.questionTypeEnum.nps)){
       this.quizStatus.AnswerId = this.QuestionDetails.AnswerOption[this.answerSLText-1].AnswerId;
     }else{
       if(this.QuestionDetails.AnswerType == this.questionTypeEnum.availability){
@@ -671,14 +692,15 @@ setMinAndMaxDate(data:any){
    }
     this.quizStatus.status = 'complete_question';
     this.quizStatus.QuestionId = this.QuestionDetails.QuestionId;
-    if(this.QuestionDetails.AnswerType == this.questionTypeEnum.dateOfBirth){
+    if(this.QuestionDetails.AnswerType == this.questionTypeEnum.dateOfBirth || this.QuestionDetails.AnswerType == this.questionTypeEnum.DatePicker){
         if (typeof this.selectedDateOfBirth == "string") {
           this.answerSLText = this.PreviousQuestionSubmittedAnswer.SubmittedAnswerDetails[0].SubmittedAnswerTitle;
         } else {
-          this.answerSLText = this.selectedDateOfBirth.toLocaleDateString();
+          // this.answerSLText = this.selectedDateOfBirth.toLocaleDateString();
+          this.answerSLText = moment(this.selectedDateOfBirth).format('DD/MM/YYYY');
         }
     }
-    if (this.QuestionDetails.AnswerType == this.questionTypeEnum.smallText || this.QuestionDetails.AnswerType == this.questionTypeEnum.largeText || this.QuestionDetails.AnswerType == this.questionTypeEnum.dateOfBirth || this.QuestionDetails.AnswerType == this.questionTypeEnum.postCode || this.QuestionDetails.AnswerType == this.questionTypeEnum.nps) {
+    if (this.QuestionDetails.AnswerType == this.questionTypeEnum.smallText || this.QuestionDetails.AnswerType == this.questionTypeEnum.largeText || this.QuestionDetails.AnswerType == this.questionTypeEnum.dateOfBirth || this.QuestionDetails.AnswerType == this.questionTypeEnum.postCode || this.QuestionDetails.AnswerType == this.questionTypeEnum.FirstName || this.QuestionDetails.AnswerType==this.questionTypeEnum.LastName || this.QuestionDetails.AnswerType==this.questionTypeEnum.Email || this.QuestionDetails.AnswerType==this.questionTypeEnum.PhoneNumber || this.QuestionDetails.AnswerType == this.questionTypeEnum.DatePicker) {
       this.quizStatus.obj = [
         {
           "AnswerId": this.QuestionDetails.AnswerOption[0].AnswerId,
@@ -692,7 +714,7 @@ setMinAndMaxDate(data:any){
           ]
         }
       ];
-    } else if(this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingEmoji || this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingStar){
+    } else if(this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingEmoji || this.QuestionDetails.AnswerType == this.questionTypeEnum.ratingStar || this.QuestionDetails.AnswerType == this.questionTypeEnum.nps){
         this.quizStatus.obj = [
           {
             "AnswerId": this.QuestionDetails.IsMultiRating ? this.QuestionDetails.AnswerOption[this.answerSLText-1].AnswerId : this.QuestionDetails.AnswerOption[0].AnswerId,

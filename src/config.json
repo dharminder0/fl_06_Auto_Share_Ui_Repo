@@ -12,6 +12,7 @@
   "AppointmentSlotUrl": "https://appointments-test.jobrock.com",
   "WebUrl": "automation-test.jobrock.com",
   "CoreUrl": "https://core-test.jobrock.com",
+  "HubUrl": "https://hub-test.jobrock.com",
   "EnableWhatsAppTemplate": true,
   "DisableMedia": false,
   "isQuizVarPopupEnable": true

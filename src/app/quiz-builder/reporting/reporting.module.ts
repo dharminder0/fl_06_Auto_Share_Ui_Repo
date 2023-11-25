@@ -5,7 +5,7 @@ import { ReportingRoutingModule } from "./reporting-routing.module";
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+// import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ReportingResolve } from './reporting-resolver';
 import { SortPipeModule } from "../../shared/pipes/sort.pipe";
 import { SelectModule } from "ng-select";
@@ -22,7 +22,7 @@ import { TranslateModule } from "@ngx-translate/core";
         FormsModule,
         ReactiveFormsModule,
         TranslateModule,
-        NgxChartsModule,
+        // NgxChartsModule,
         SelectModule,
         SortPipeModule,
         BsDatepickerModule.forRoot()

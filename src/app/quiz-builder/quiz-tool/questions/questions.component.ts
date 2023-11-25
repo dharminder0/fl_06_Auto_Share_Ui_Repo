@@ -95,7 +95,7 @@ public elementObj:any;
 public selectedAnwser:any;
 public isAnswerTypeChange:boolean = false;
 private isVideoSoundEnableSubscription:Subscription;
-public isWhatsappEnable = false;
+public isWhatsappEnable: boolean;
 private isWhatsappEnableSubscription: Subscription;
 private isStylingSubscription: Subscription;
 //country code start
@@ -123,6 +123,8 @@ public IsBranchingLogicEnabled:boolean;
 public enabledPermissions:any = {};
 public userInfo:any = {};
 public isTagPremission:boolean = false;
+public clientAtsFieldsList:any = {};
+public isHoveredOnButton = false;
 
 public get QuizAnswerStructureType(): typeof QuizAnswerStructureType{
   return QuizAnswerStructureType;
@@ -153,6 +155,10 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
   ) {
     this.userInfo = this.userInfoService._info;
     this.enabledPermissions = JSON.parse(JSON.stringify(this.userInfoService.userPermissions));
+    if(this.variablePopupService.showExtVariablePopup && !(this.variablePopupService.mappedSfFieldsObj && Object.keys(this.variablePopupService.mappedSfFieldsObj).length > 0)
+      && this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.enabledPermissions.isNewVariablePopupEnabled ){
+      this.getMappedSfFieldsList(); 
+    }
   }
 
   ngOnInit() {
@@ -194,6 +200,7 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
     this.onSaveQuizSubscription();
     this.getDynamicMediaData();
     this.getClientObjectMappingDetails();
+    this.getDateTypeFieldSettings();
     this.AnswerResultSettingSubscription();
     this.getWhatsappUsage(); 
     this.IsBranchingLogicEnabled = this.branchingLogicAuthService.getBranchingLogicEnable();
@@ -312,19 +319,23 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
 
   getClientObjectMappingDetails(){
     this.quizBuilderApiService.getObjectFieldsList().subscribe(data => {
-      this.quizzToolHelper.clientAtsFieldsList = {};
 
       if(data && data.data && data.data.length > 0){
         this.quizzToolHelper.clientObjectFieldsList = data.data;
         this.hasObjectMappingFields = true;
 
-        this.quizzToolHelper.clientObjectFieldsList.forEach((currObj:any) => {
-          if(currObj.Fields && currObj.Fields.length > 0){
-            currObj.Fields.map((subObj:any) => {
-              this.quizzToolHelper.clientAtsFieldsList[`${currObj.ObjectName}.${subObj.Name}`] = subObj.DisplayName;
-            });
-          }
-        });
+        if(!(this.quizzToolHelper.clientAtsFieldsList && Object.keys(this.quizzToolHelper.clientAtsFieldsList).length > 0)){
+          this.quizzToolHelper.clientAtsFieldsList = {};
+
+          this.quizzToolHelper.clientObjectFieldsList.forEach((currObj:any) => {
+            if(currObj.Fields && currObj.Fields.length > 0){
+              currObj.Fields.map((subObj:any) => {
+                this.quizzToolHelper.clientAtsFieldsList[`${currObj.ObjectName}.${subObj.Name}`] = subObj.DisplayName;
+              });
+            }
+          });
+        }
+        this.clientAtsFieldsList = JSON.parse(JSON.stringify(this.quizzToolHelper.clientAtsFieldsList));
       }
     });
   }
@@ -443,7 +454,7 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
       setTimeout(function(){  
         var questionInfo = {
           QuestionId: self.questionForm.controls.QuestionId.value,
-          QuestionTitle: self.questionForm.controls.QuestionTitle.value
+          QuestionTitle: self.variablePopupService.updateTemplateVarHTMLIntoVariableV2(self.questionForm.controls.QuestionTitle.value)
         };
         self.quizzToolHelper.updateSidebarOptionsQuestionTitle.next(
           questionInfo
@@ -464,7 +475,13 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
     var SectionCorrectAnswerComponentRef = this.setCorrectAnswerTemplate.createComponent(
       SectionCorrectAnswerTemplate
     );
-    SectionCorrectAnswerComponentRef.instance.questionData = this.questionForm.value;
+    SectionCorrectAnswerComponentRef.instance.questionData = JSON.parse(JSON.stringify(this.questionForm.value));
+    if(this.questionData.AnswerType == answerTypeEnum.singleSelect || this.questionData.AnswerType == answerTypeEnum.multiSelect){
+      SectionCorrectAnswerComponentRef.instance.questionData.AnswerList.map(answer => {
+        answer.AnswerText = this.variablePopupService.updateTemplateVarHTMLIntoVariableV2(answer.AnswerText);
+        return true;
+      });
+    }
     SectionCorrectAnswerComponentRef.instance.answerTypeData = +this.selectedAnswerType;
     SectionCorrectAnswerComponentRef.instance.isOpenBranchingLogicSide = this.isOpenBranchingLogicSide;
     SectionCorrectAnswerComponentRef.instance.isWhatsappEnable = this.isWhatsappEnable;
@@ -534,7 +551,7 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
   /**
    * Create Set catgegories answer template
    */
-  public dynamicTemplateSetTags(answerId?) {
+  public dynamicTemplateSetTags(answerId?, mappingFor ='Answer') {
     /** Save the Data Before opening Choose the correct  Answer */
     this.save();
     this.setCorrectAnswerTemplate.clear();
@@ -545,6 +562,8 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
       SectionCorrectAnswerTemplate
     );
     SectionCorrectAnswerComponentRef.instance.questionData = JSON.parse(JSON.stringify(this.questionForm.value));
+    SectionCorrectAnswerComponentRef.instance.isWhatsappEnable = this.isWhatsappEnable;
+    SectionCorrectAnswerComponentRef.instance.mappingFor = mappingFor;
     if(this.questionData.AnswerType == answerTypeEnum.singleSelect || this.questionData.AnswerType == answerTypeEnum.multiSelect){
       SectionCorrectAnswerComponentRef.instance.questionData.AnswerList.map(answer => {
         answer.AnswerText = this.variablePopupService.updateTemplateVarHTMLIntoVariableV2(answer.AnswerText);
@@ -687,8 +706,8 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
     //   this.questionData.Description = this.questionData.Description.replace(/(?:\r\n|\r|\n)/g, '<br>').replace(/\s/g,"&nbsp;");
     // }
     
-    if(this.questionData.AnswerType == answerTypeEnum.singleSelect || this.questionData.AnswerType == answerTypeEnum.multiSelect 
-      && this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.isTagPremission){
+    // if(this.questionData.AnswerType == answerTypeEnum.singleSelect || this.questionData.AnswerType == answerTypeEnum.multiSelect && this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.isTagPremission){
+    if((this.questionData.AnswerType == answerTypeEnum.singleSelect || this.questionData.AnswerType == answerTypeEnum.multiSelect) && this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce'){
         let ObjectFieldsInAnswer: any = {}
         for(let i =0; i < this.questionData.AnswerList.length; i++){
           if(this.questionData.AnswerList[i].ObjectFieldsInAnswer && this.questionData.AnswerList[i].ObjectFieldsInAnswer.FieldName && !ObjectFieldsInAnswer.FieldName){
@@ -705,37 +724,86 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
         })
       
     }
-    if((this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.isTagPremission && this.commonService.isAnswerChange) &&
-     (this.questionData.AnswerType == answerTypeEnum.postCode || this.questionData.AnswerType == answerTypeEnum.dateOfBirth || this.questionData.AnswerType == answerTypeEnum.availability)){
-    let bodyObj:any[] = [];
-    this.questionData.AnswerList.map((answerList)=>{
-      if(answerList.ObjectFieldsInAnswer == null){
-        if(this.questionData.AnswerType == answerTypeEnum.postCode){    
-          bodyObj.push({
-               "AnswerId": answerList.AnswerId,
+    // if(this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.isTagPremission && this.commonService.isAnswerChange){
+    if(this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && this.commonService.isAnswerChange){
+      let bodyObj:any[] = [];
+      this.questionData.AnswerList.map((answerList)=>{
+        if(answerList.ObjectFieldsInAnswer == null){
+          switch (this.questionData.AnswerType) {
+            case answerTypeEnum.postCode: 
+              bodyObj.push({
+                "AnswerId": answerList.AnswerId,
                 "ObjectName": 'Contact',
                 "FieldName": 'PostalCode',
                 "Value": "",
                 "IsExternalSync": true
-          })
-        }else if(this.questionData.AnswerType == answerTypeEnum.dateOfBirth){
-          bodyObj.push({
-             "AnswerId": answerList.AnswerId,
-             "ObjectName": 'Contact',
-             "FieldName": 'BirthDate',
-             "Value": "",
-             "IsExternalSync": true
-       })
-        }else if(this.questionData.AnswerType == answerTypeEnum.availability){
-          bodyObj.push({
-            "AnswerId": answerList.AnswerId,
-            "ObjectName": 'Contact',
-            "FieldName": 'AvailableFromDate',
-            "Value": "",
-            "IsExternalSync": true
-      })
+              });            
+              break;
+          
+            case answerTypeEnum.dateOfBirth: 
+              bodyObj.push({
+                "AnswerId": answerList.AnswerId,
+                "ObjectName": 'Contact',
+                "FieldName": 'BirthDate',
+                "Value": "",
+                "IsExternalSync": true
+              });            
+              break;
+          
+            case answerTypeEnum.availability: 
+              bodyObj.push({
+                "AnswerId": answerList.AnswerId,
+                "ObjectName": 'Contact',
+                "FieldName": 'AvailableFromDate',
+                "Value": "",
+                "IsExternalSync": true
+              });            
+              break;
+          
+            case answerTypeEnum.FirstName: 
+              bodyObj.push({
+                "AnswerId": answerList.AnswerId,
+                "ObjectName": 'Contact',
+                "FieldName": 'FirstName',
+                "Value": "",
+                "IsExternalSync": true
+              });            
+              break;
+          
+            case answerTypeEnum.LastName: 
+              bodyObj.push({
+                "AnswerId": answerList.AnswerId,
+                "ObjectName": 'Contact',
+                "FieldName": 'LastName',
+                "Value": "",
+                "IsExternalSync": true
+              });            
+              break;
+          
+            case answerTypeEnum.Email: 
+              bodyObj.push({
+                "AnswerId": answerList.AnswerId,
+                "ObjectName": 'Contact',
+                "FieldName": 'Email',
+                "Value": "",
+                "IsExternalSync": true
+              });            
+              break;
+          
+            case answerTypeEnum.PhoneNumber: 
+              bodyObj.push({
+                "AnswerId": answerList.AnswerId,
+                "ObjectName": 'Contact',
+                "FieldName": 'Phone',
+                "Value": "",
+                "IsExternalSync": true
+              });            
+              break;
+          
+            default:
+              break;
+          }
         }
-      }
     });
     if(bodyObj && bodyObj.length > 0){
   
@@ -757,21 +825,22 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
     this.showQuestionImage = this.questionForm.controls.ShowQuestionImage.value;
     this.showDescriptionImage = this.questionForm.controls.ShowDescriptionImage.value;
     this.enableNextButton = this.questionForm.controls.EnableNextButton.value;
-    if(this.selectedAnswerType > '4'){
+    let selectedAnswerType = parseInt(this.selectedAnswerType)
+    if(selectedAnswerType > 4){
       this.tab = "tab-03";
-      } 
-      else if(this.selectedAnswerType < '3'){
-        this.tab = this.questionForm.controls.ShowAnswerImage.value
-        ? "tab-02"
-        : "tab-01";
-      }
-      if(this.selectedAnswerType == '3' ||this.selectedAnswerType == '4'){
-        this.tab = "tab-01";
-        } 
+    } 
+    else if(selectedAnswerType < 3){
+      this.tab = this.questionForm.controls.ShowAnswerImage.value
+      ? "tab-02"
+      : "tab-01";
+    }
+    if(selectedAnswerType == 3 || selectedAnswerType == 4){
+      this.tab = "tab-01";
+    } 
 
-        if(this.selectedAnswerType == '10' || this.selectedAnswerType == '11' || this.selectedAnswerType == '12' || this.selectedAnswerType == '13'){
-          this.tab = "tab-03";
-          } 
+    if(selectedAnswerType == 10 || selectedAnswerType == 11 || selectedAnswerType == 12 || selectedAnswerType == 13){
+      this.tab = "tab-03";
+    } 
 
   }
 
@@ -862,8 +931,10 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
     this.isImageAnswerTypeObservableSubscription = this.dynamicMediaReplaceService.isAnswerTextImageObservable.subscribe(res => {
       if(res){
         if(res.tab && this.questionForm.controls.QuestionId.value == res.questionId && this.selectedAnswerType == res.awnserType){
-          const filterQuestionTitle = filterPipe.transform(this.questionForm.value.QuestionTitle ? this.questionForm.value.QuestionTitle : '');
-          if(filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0){
+          // const filterQuestionTitle = filterPipe.transform(this.questionForm.value.QuestionTitle ? this.questionForm.value.QuestionTitle : '');
+          const filterQuestionTitle = this.questionForm.value.QuestionTitle ? this.variablePopupService.updateTemplateVarHTMLIntoVariableV2(this.questionForm.value.QuestionTitle) : "";
+
+          if(filterQuestionTitle && filterQuestionTitle.trim() && filterQuestionTitle.trim().length > 0){
             this.switchTab(res.tab);
           }
         }
@@ -1015,8 +1086,10 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
       ],
       NextButtonTxtSize: [ data.NextButtonTxtSize ? data.NextButtonTxtSize : "24 px"],
       NextButtonTxtColor: [ data.NextButtonTxtColor ? data.NextButtonTxtColor :this.brandingColor.ButtonFontColor],
+      NextButtonHoverTxtColor: [ data.NextButtonHoverTxtColor ? data.NextButtonHoverTxtColor :this.brandingColor.ButtonHoverTextColor],
       NextButtonText: [ data.NextButtonText],
       NextButtonColor: [ data.NextButtonColor ? data.NextButtonColor : this.brandingColor.ButtonColor],
+      NextButtonHoverColor: [ data.NextButtonHoverColor ? data.NextButtonHoverColor : this.brandingColor.ButtonHoverColor],
       MinAnswer: [ data.MinAnswer ? data.MinAnswer : 0 ],
       MaxAnswer: [ data.MaxAnswer ? data.MaxAnswer : 0 ],
       Description : [this.variablePopupService.updateTemplateVariableIntoHTMLV2(data.Description)],
@@ -1052,7 +1125,9 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
     });
     this.nextButtonTxtSize = data.NextButtonTxtSize ? data.NextButtonTxtSize.replace("px", "").trim() : "24";
     this.nextButtonTitleColor = data.NextButtonTxtColor ? data.NextButtonTxtColor : this.brandingColor.ButtonFontColor;
+    this.nextButtonHoverTitleColor = data.NextButtonHoverTxtColor ? data.NextButtonHoverTxtColor : this.brandingColor.ButtonHoverTextColor;
     this.nextButtonColor = data.NextButtonColor ? data.NextButtonColor : this.brandingColor.ButtonColor;
+    this.nextButtonHoverColor = data.NextButtonHoverColor ? data.NextButtonHoverColor : this.brandingColor.ButtonHoverColor;
     this.isEnableMultiRating = data.IsMultiRating;
     this.commonService.onLoadvideo('update',true);
     this.commonService.onLoadvideo('updatedes',true);
@@ -1083,6 +1158,7 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
       OptionTextforRatingFive: [answer.OptionTextforRatingFive],
       DisplayOrder : [answer.DisplayOrder],
       ObjectFieldsInAnswer : [answer.ObjectFieldsInAnswer],
+      ObjectFieldsInAnswerComment : [answer.ObjectFieldsInAnswerComment],
       SecondsToApply : [answer.SecondsToApply],
       VideoFrameEnabled: [answer.VideoFrameEnabled],
       ListValues: [answer.ListValues],
@@ -1341,20 +1417,21 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
     }
     this.questionId = questionId;
     this.quizzToolHelper.selectedAnswerType.next({answerType:ansType, questionId: questionId,  isdataLive:true});
-    if(this.selectedAnswerType > '4'){
+    let selectedAnswerType = parseInt(this.selectedAnswerType);
+    if(selectedAnswerType > 4){
       this.tab = "tab-03";
-      } 
-      else if(this.selectedAnswerType < '3'){
-        this.tab = this.questionForm.controls.ShowAnswerImage.value
-        ? "tab-02"
-        : "tab-01";
-      }
-      if(this.selectedAnswerType == '3' ||this.selectedAnswerType == '4'){
-        this.tab = "tab-01";
-        } 
-        if(this.selectedAnswerType == '10' || this.selectedAnswerType == '11' || this.selectedAnswerType == '12' || this.selectedAnswerType == '13'){
-          this.tab = "tab-03";
-          } 
+    } 
+    else if(selectedAnswerType < 3){
+      this.tab = this.questionForm.controls.ShowAnswerImage.value
+      ? "tab-02"
+      : "tab-01";
+    }
+    if(selectedAnswerType == 3 || selectedAnswerType == 4){
+      this.tab = "tab-01";
+    } 
+    if(selectedAnswerType == 10 || selectedAnswerType == 11 || selectedAnswerType == 12 || selectedAnswerType == 13){
+      this.tab = "tab-03";
+    } 
   }
 
   
@@ -1442,7 +1519,9 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
   public isOpenSizeTooltip: boolean = false;
   public isOpenColorTooltip: boolean = false;
   public nextButtonTitleColor;
+  public nextButtonHoverTitleColor;
   public nextButtonColor;
+  public nextButtonHoverColor;
   public nextButtonTxtSize: number = 24;
 
   onSizeTooltipShown(){
@@ -1479,6 +1558,11 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
     this.questionForm.controls.NextButtonColor.markAsDirty();
   }
 
+  onNextButtonHoverColorChange(btnColor) {
+    this.questionForm.get("NextButtonHoverColor").patchValue(btnColor);
+    this.questionForm.controls.NextButtonHoverColor.markAsDirty();
+  }
+
   /**
    * Change Event when title Color changes
    * @param titleColor
@@ -1507,10 +1591,13 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
   {
     this.resetButton = true;
     this.nextButtonTitleColor = this.brandingColor.ButtonFontColor;
+    this.nextButtonHoverTitleColor = this.brandingColor.ButtonHoverTextColor;
     this.nextButtonColor = this.brandingColor.ButtonColor;
+    this.nextButtonHoverColor = this.brandingColor.ButtonHoverColor;
     this.questionForm.patchValue({
       NextButtonTxtColor : this.nextButtonTitleColor,
-      NextButtonColor : this.nextButtonColor
+      NextButtonColor : this.nextButtonColor,
+      NextButtonHoverColor : this.nextButtonHoverColor
     });
     this.save();
   }
@@ -1700,6 +1787,9 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
 
   onEnableComment(item){
     this.questionForm.patchValue({'EnableComment': !item});
+    if(!item == false){
+      this.saveObjectMappingForComment();
+    }
     let self = this;
     setTimeout(function(){ self.questionForm.controls.EnableComment.markAsDirty()}, 1000);
   }
@@ -1904,6 +1994,7 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
   }
 
   UpdatePopUpStatus(e){
+    let value: any;
     let listOfUsedVariableObj = this.variablePopupService.listOfUsedVariableObj;
     if(this.variablePopupService.variablePopupOpened == 'QuestionTitle' || this.variablePopupService.variablePopupOpened == 'Description'){
       let activeFroalaRef = this.froalaEditorFor[this.froalaOpenedFor].froalaRef;
@@ -1912,12 +2003,28 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
         tempVarFormulaList.push(varItem.formula.replace(/^%/g,'{{').replace(/%$/g,'}}'));
       });
       this.questionForm.get(this.variablePopupService.variablePopupOpened+'VarList').patchValue(tempVarFormulaList);
-      this.variablePopupService.insertFormulaIntoEditorV2(listOfUsedVariableObj, activeFroalaRef);
-      this.questionForm.markAsDirty();
+      value = this.variablePopupService.insertFormulaIntoEditorV2(listOfUsedVariableObj, activeFroalaRef);
+      if(value && value.msg){
+        if(this.variablePopupService.variablePopupOpened == 'QuestionTitle'){
+          this.questionForm.get('QuestionTitle').patchValue(value.msg);
+        }else if(this.variablePopupService.variablePopupOpened == 'Description'){
+          this.questionForm.get('Description').patchValue(value.msg);
+        }
+      }
+      if(value && value.newContent){
+        this.questionForm.markAsDirty();
+      }
     }
     if(this.variablePopupService.variablePopupOpened == 'Answers' || this.variablePopupService.variablePopupOpened == 'ImageAnswers' || this.variablePopupService.variablePopupOpened == 'AnswersDescription'){
-      this.textViewComponentRef.UpdatePopUpStatus();
+      if(this.variablePopupService.variablePopupOpened == 'ImageAnswers'){
+        this.imageViewComponentRef.UpdatePopUpStatus();
+      }else{
+        this.textViewComponentRef.UpdatePopUpStatus();
+      }
     }
+    setTimeout(() => {
+      this.save();
+    }, 1000);
   }
 
   updatePayloadForVariables(requestPayload:any){
@@ -2024,7 +2131,78 @@ public get AnswerTypeEnum(): typeof answerTypeEnum{
     this.commonService.questionForm = this.questionForm;
   }
 
+  getMappedSfFieldsList(){
+    this.variablePopupService.mappedSfFieldsObj = {};
+  
+    this.quizBuilderApiService.getMappedSfFieldsList().subscribe((results) => {
+      if (results && results.length > 0) {
+        results.forEach((currObj:any) => {
+          if(currObj.Fields && currObj.Fields.length > 0){
+            currObj.Fields.map((subObj:any) => {
+              this.variablePopupService.mappedSfFieldsObj[`${currObj.ObjectName}.${subObj.FieldName}`] = subObj.FieldLabel;
+              this.variablePopupService.mappedSfFieldsFullObj[`${currObj.ObjectName}.${subObj.FieldName}`] = subObj;
+            });
+          }
+        });
+      }
+      this.initializeComponent();
+    }), (error:any) => {
+      console.log('Could not load Group status  data');
+    }
+  }
 
 /********************** variable popup implementation ends *****************************/
 
+  saveObjectMappingForComment(){
+    let bodyObj:any[] = [];
+
+    this.questionForm.value.AnswerList.map((answer,index) => {
+      
+      if(answer.ObjectFieldsInAnswerComment){
+        answer.ObjectFieldsInAnswerComment.IsExternalSync = false;
+        (this.questionForm.controls.AnswerList as FormArray).at(index).get('ObjectFieldsInAnswerComment').patchValue(answer.ObjectFieldsInAnswerComment);
+        answer.ObjectFieldsInAnswerComment.AnswerId = answer.AnswerId;
+        bodyObj.push(answer.ObjectFieldsInAnswerComment);
+      }
+    });
+    
+    if(bodyObj && bodyObj.length > 0){
+
+      this.quizBuilderApiService.updateAnswerObjectMapping(bodyObj).subscribe(data => {
+        
+      })
+    }
+  }
+
+  getMediaVersionFromURl(url:string){
+    let regex = /\/v(\d+)\//g;
+    let matchFound = url.match(regex) || [];
+    let version:string = '1';
+    if(matchFound && matchFound.length > 0){
+      version = matchFound[0].replace(regex,'$1');
+    }
+    return version;
+  }
+  
+  getDateTypeFieldSettings(){
+    this.quizzToolHelper.dateFieldsSyncSettingList = [];
+    this.quizBuilderApiService.getDateFieldSyncSettings().subscribe(response => {
+      if(response && response.data && response.data.length > 0){
+        response.data.map((item,index)=>{
+          item.label = item.FieldOptionTitle;
+          item.value = index.toString();
+          if(item.Fields && item.Fields.length > 0){     
+            item.dateFuncList = [];       
+            item.Fields.map(subItem => {
+              item.dateFuncList.push({label : subItem, value : subItem });
+            });
+          }
+        },true);
+        this.quizzToolHelper.dateFieldsSyncSettingList = response.data;
+      }
+    },error => {
+      console.log("failed to get field sync setting");
+    });
+  }
+  
 }

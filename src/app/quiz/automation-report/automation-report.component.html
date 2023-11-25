@@ -261,7 +261,7 @@
                                 <div *ngIf="questions.QuestionType == 10">NPS</div>
                                      <div>score</div></div>
                             </div>
-                            <div *ngIf="questions.Comments && questions.Comments.length > 0 && questions.QuestionType != 10" class="comment-text app-data" (click)="onFreeText(questions)" app-data="data-text">
+                            <div *ngIf="questions.Comments && questions.Comments.length > 0" class="comment-text app-data" (click)="onFreeText(questions)" app-data="data-text">
                                 {{"Lbl_Seecomments" | translate}} ({{questions.Comments.length}})
                                 <svg class="arrow-icon" width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6.84073 5.6431L1.94026 1.14762C1.72523 0.950794 1.37684 0.950794 1.16127 1.14762C0.946243 1.34445 0.946243 1.66414 1.16127 1.86097L5.67305 5.99975L1.16182 10.1385C0.946787 10.3354 0.946787 10.6551 1.16182 10.8524C1.37685 11.0492 1.72577 11.0492 1.9408 10.8524L6.84127 6.35694C7.053 6.16215 7.053 5.83743 6.84073 5.6431Z" fill="#00B7AB" stroke="#00B7AB" stroke-width="0.5"/>

@@ -56,7 +56,7 @@
                             <ng-container [ngTemplateOutlet]="textImagePredefineAnswers" *ngIf="isQuestionEnable && reOrder.key == elementReorderKey.question"></ng-container>
 
                             <!-- rating emoji/star answers -->
-                            <ng-container [ngTemplateOutlet]="emojiStarRatingAnswers" *ngIf="(selectedAnswerType == '11' || selectedAnswerType == '12') && isQuestionEnable && reOrder.key == elementReorderKey.question"></ng-container>
+                            <ng-container [ngTemplateOutlet]="emojiStarRatingAnswers" *ngIf="(selectedAnswerType == '11' || selectedAnswerType == '12' || selectedAnswerType == '10') && isQuestionEnable && reOrder.key == elementReorderKey.question"></ng-container>
                             <!-- end answers -->
 
                         </div>
@@ -64,8 +64,16 @@
                     <!-- Next button only visible in web flow -->
                     <div *ngIf="enableNextButton && reOrder.key == elementReorderKey.button && !isWhatsappEnable" class="form-actions" (mouseenter)="hoverOnMainDiv = false" (mouseleave)="hoverOnMainDiv = true" [ngStyle]="{'display':isOpenBranchingLogicSide ? 'block' : '','background': brandingColor.BackgroundColor}">
                         <div class="builder-element" ccFocus id="id-quest-action-btn" [ngClass]="{'mbottom-10':isOpenBranchingLogicSide}">
-                            <input autocomplete="off" maxlength="40" class="btn blue next-btn" [style.color]="brandingColor.ButtonFontColor" [ngStyle]="{'font-family': brandingColor.FontType ? brandingColor.FontType:'' }" [style.background]="brandingColor.ButtonColor" formControlName="NextButtonText"
-                                [placeholder]="this.brandingColor.NextButtonText ? this.brandingColor.NextButtonText : ('NEXT' | translate)" />
+                            <input autocomplete="off" maxlength="40" class="btn blue next-btn" [style.color]="isHoveredOnButton ? brandingColor.ButtonHoverTextColor : brandingColor.ButtonFontColor" [ngStyle]="{'font-family': brandingColor.FontType ? brandingColor.FontType:'' }" (mouseover)="isHoveredOnButton = true" (mouseout)="isHoveredOnButton = false" [style.background]="isHoveredOnButton ? brandingColor.ButtonHoverColor : brandingColor.ButtonColor" formControlName="NextButtonText"
+                                placeholder="{{this.brandingColor.NextButtonText ? this.brandingColor.NextButtonText : 
+                                    brandingColor.Language == 1
+                                    ? 'Volgende'
+                                    :brandingColor.Language == 2
+                                        ? 'Next'
+                                        :brandingColor.Language == 3
+                                            ? 'Następny'
+                                            : 'Weiter'
+                                }}"/>
                         </div>
                     </div>
                 </div>
@@ -214,9 +222,10 @@
                     </cl-image>
                 </figure>
                 <div *ngIf="imageORvideo === 'video'">
-                    <cl-video id='update' (click)="questionPageSetting('img');" public-id={{questionForm.controls.PublicIdForQuestion?.value}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposter()'>
-                        <cl-transformation quality="auto" effect="sharpen" crop="fill"></cl-transformation>
-                    </cl-video>
+                    <cl-video id='update' [attr.version]="getMediaVersionFromURl(questionForm.controls.QuestionImage.value)" (click)="questionPageSetting('img');" source_types="mp4" public-id={{questionForm.controls.PublicIdForQuestion?.value}} secure="true" class="my-videos" controls="true" [attr.poster]='applyposter()'>
+                        <cl-transformation quality="auto" effect="sharpen" crop="fill" *ngIf="!isWhatsappEnable"></cl-transformation>
+                        <cl-transformation quality="auto:eco" height="750" width="750" crop="fit" fetch_format="mp4" video_codec="h264" *ngIf="isWhatsappEnable"></cl-transformation>
+                    </cl-video> 
                 </div>
             </div>
         </ng-template>
@@ -272,7 +281,7 @@
                 <div *ngIf="tab=='tab-03'" (click)="questionPageSetting('answer')">
                     <app-predefined-ans (onTextChange)="onTextViewChange($event)" [hidden]="tab=='tab-02' || tab=='tab-01'" [form]="questionForm" [answerType]="selectedAnswerType" [isOpenBranchingLogicSide]="isOpenBranchingLogicSide" (isAddRemoveAnser)="onAddRemoveAnser()"
                         (anserTag)="onAnswerTag($event)" [selectAll]="selectAll" [selectedCountcodeArray]="selectedCountcodeArray" [selectedCountryName]="selectedCountryName" [selectedCountryNameArray]="selectedCountryNameArray" [isAllSelectCountry]="isAllSelectCountry"
-                        [isWhatsappEnable]="isWhatsappEnable">
+                        [isWhatsappEnable]="isWhatsappEnable" [clientAtsFieldsObj]="quizzToolHelper.clientAtsFieldsList">
                     </app-predefined-ans>
                 </div>
             </div>
@@ -280,15 +289,46 @@
 
         <ng-template #emojiStarRatingAnswers>
             <div class="mbottom-10" [ngClass]="{'p-l-r-15':isWhatsappEnable}" (mouseenter)="hoverOnMainDiv = false" (mouseleave)="hoverOnMainDiv = true">
-                <div class="enableComment" (change)='isProcess = true;' *ngIf="!isWhatsappEnable">
+                <div class="enableComment" (change)='isProcess = true;' *ngIf="isWhatsappEnable != undefined && !isWhatsappEnable">
                     <label class="switch">
                         <input type="checkbox" class="boxid" (change)='onEnableComment(questionForm.controls.EnableComment.value)'
                         [checked]="questionForm.controls.EnableComment.value">
                         <span class="sliders round"></span>
                     </label> {{"Lbl_Explanation" | translate}}
                 </div>
-                <textarea *ngIf="!isWhatsappEnable && questionForm.controls.EnableComment.value" class="form-control comment-block" maxlength="40" placeholder="{{'Plc_Explanation' | translate}}" [ngStyle]="{'font-family': brandingColor.FontType}" readonly></textarea>
-                <div style="display: flex;margin-top: 20px;">
+                <div *ngIf="isWhatsappEnable != undefined && !isWhatsappEnable && questionForm.controls.EnableComment.value" (mouseenter)="isTagEnable = true" (mouseleave)="isTagEnable = false" class="jr-position-relative pbottom-30">
+                    <textarea class="form-control comment-block" maxlength="40" placeholder="{{'Plc_Explanation' | translate}}" [ngStyle]="{'font-family': brandingColor.FontType}" readonly></textarea>
+                    <div class="admin" formArrayName="AnswerList" style=" position: absolute; bottom: 0px; ">
+                        <div *ngFor="let answer of questionForm.controls.AnswerList.controls; let i=index">
+                            <!-- <div *ngIf="i == 0" class="tag-listing app-data"  app-data="data-add" (click)="dynamicTemplateSetTags()"> -->
+                            <div *ngIf="i == 0" class="app-data" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value,'AnswerComment')">
+                                <ng-template #objectMappingPopover>
+                                    <div class="tag-popover">
+                                        <div class="cat-row">
+                                            <span class="title"><b>Object</b>:</span>
+                                            <span class="tag">{{answer.controls.ObjectFieldsInAnswerComment.value.ObjectName}}</span>
+                                        </div>
+                                        <div class="cat-row">
+                                            <span class="title"><b>{{ "FIELDS" | translate }}</b>:</span>
+                                            <span class="tag">{{clientAtsFieldsList[answer.controls.ObjectFieldsInAnswerComment.value.ObjectName + "." + answer.controls.ObjectFieldsInAnswerComment.value.FieldName] ? clientAtsFieldsList[answer.controls.ObjectFieldsInAnswerComment.value.ObjectName + "." + answer.controls.ObjectFieldsInAnswerComment.value.FieldName] : answer.controls.ObjectFieldsInAnswerComment.value.FieldName }}</span>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <div *ngIf="answer.controls.ObjectFieldsInAnswerComment && answer.controls.ObjectFieldsInAnswerComment.value && answer.controls.ObjectFieldsInAnswerComment.value.ObjectName && answer.controls.ObjectFieldsInAnswerComment.value.FieldName && answer.controls.ObjectFieldsInAnswerComment.value.IsExternalSync == true"
+                                    class="pop-icon app-data jr-position-relative" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value)" [tooltip]="objectMappingPopover" placement="right" [container]="'body'" triggers="mouseenter:mouseleave">
+                                    <img src="assets/layouts/img/salesforce.png">
+                                </div>
+                            </div>
+                            <div *ngIf="i==0 && this.enabledPermissions.isJRSalesforceEnabled && this.userInfo.AccountLoginType == 'salesforce' && isTagEnable && (!answer.controls.ObjectFieldsInAnswerComment.value || (answer.controls.ObjectFieldsInAnswerComment.value && !answer.controls.ObjectFieldsInAnswerComment.value.IsExternalSync))">
+                                <span class="app-data pointer fsize-11" app-data="data-add" (click)="dynamicTemplateSetTags(answer.controls.AnswerId.value,'AnswerComment')">
+                                  <i class="zmdi zmdi-plus plan"></i>
+                                 Add Salesforce mapping
+                              </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex;margin-top: 20px;" *ngIf="selectedAnswerType != '10'">
                     <div style="width: 160px;">
                         <span class="enableComment">{{"Lbl_Subjects" | translate}}</span><br/>
                         <span class="sub-titles">({{"Msg_User_not_see" | translate}})</span>
@@ -316,9 +356,9 @@
         <div>
             <span>JPEG, PNG, MP4, 3GP</span>
         </div>
-        Media Size:
+        Media Length:
         <div>
-            <span>Less than 64 MB</span>
+            <span>Less than 3 min.</span>
         </div>
     </div>
     <div *ngIf="!isWhatsappEnable">
@@ -366,6 +406,15 @@
                         <div class="builder-styles-color" data-property="btnColor" style="background: #62afe0"></div>
                         <span>{{"BUTTON_COLOR" | translate }}</span><br/>
                         <input [(colorPicker)]="nextButtonColor" [style.background]="nextButtonColor" [cpCancelButton]="false" (colorPickerChange)="onNextButtonColorChange($event)" [cpSaveClickOutside]="true" class="url-popup" />
+                    </div>
+                </div>
+            </div>
+            <div class="builder-action-property" data-property="btnHoverColor">
+                <div class="builder-property-group-outer">
+                    <div class="builder-property-group colorpicker-element" data-property-type="color">
+                        <div class="builder-styles-color" data-property="btnHoverColor" style="background: #62afe0"></div>
+                        <span>{{"BUTTON_HOVER_COLOR" | translate }}</span><br/>
+                        <input [(colorPicker)]="nextButtonHoverColor" [style.background]="nextButtonHoverColor" [cpCancelButton]="false" (colorPickerChange)="onNextButtonHoverColorChange($event)" [cpSaveClickOutside]="true" class="url-popup" />
                     </div>
                 </div>
             </div>
