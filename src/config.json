@@ -1,5 +1,5 @@
 {
-  "AutomationApiURL": "https://automation-api-test.jobrock.com/api/",
+  "AutomationApiURL": "https://fl-06-auto-shared-api-ci.azurewebsites.net/api/",
   "AppointmentApiURL": "https://appointments-api-test.jobrock.com/api/",
   "AutomationApiSecret": "9a597082778a42268b33e56ce96dd45a",
   "AppointmentApiSecret": "9a597082778a42268b33e56ce96dd45a",
@@ -10,7 +10,7 @@
   },
   "MediaSiteUrl": "https://media-test.jobrock.com",
   "AppointmentSlotUrl": "https://appointments-test.jobrock.com",
-  "WebUrl": "automation-test.jobrock.com",
+  "WebUrl": "fl-06-auto-shared-ui-ci.azurewebsites.net/",
   "CoreUrl": "https://core-test.jobrock.com",
   "HubUrl": "https://hub-test.jobrock.com",
   "EnableWhatsAppTemplate": true,
