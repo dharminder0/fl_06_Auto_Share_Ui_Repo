@@ -177,8 +177,8 @@ class HeaderMenu {
   private HeaderMenus = [];
 
   constructor(userInfo) {
-    this.ActiveLanguage = userInfo.ActiveLanguage;
-    this.HeaderMenus = userInfo.HeaderMenusNew;
+    this.ActiveLanguage = userInfo.ActiveLanguage || "en-US";
+    this.HeaderMenus = userInfo.HeaderMenusNew || [];
     this.initializeMenu();
   }
 

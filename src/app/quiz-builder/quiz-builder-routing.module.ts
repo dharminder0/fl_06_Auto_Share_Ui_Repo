@@ -6,14 +6,14 @@ import { QuizToolResolver } from "./quiz-tool/quiz-tool-resolve";
 import { AllowTemplate } from "../shared/services/auth-guard.service";
 import { PreviewComonent } from "../quiz/publish-code-redirect/publish-code-redirect.component";
 import { QuizComponent } from "../quiz/quiz.component";
-import {  QuizPreviewResolve } from "../quiz/quiz-resolve";
+import { QuizPreviewResolve } from "../quiz/quiz-resolve";
 
 const quizRoutes: Routes = [
     {
         path: '', component: QuizbuilderComponent, children: [
             { path: "", redirectTo: "explore", pathMatch: "full" },
             // { path: '', loadChildren: () => import('./quiz-user/quiz-user.module').then(m => m.QuizUserModule) },
-            { path: 'templates', loadChildren: () => import('./templates/templates.module').then(m => m.TemplatesModule), canActivate:[AllowTemplate] },
+            { path: 'templates', loadChildren: () => import('./templates/templates.module').then(m => m.TemplatesModule) },
             { path: 'explore', loadChildren: () => import('./explore/explore.module').then(m => m.ExploreModule) },
             { path: 'email', loadChildren: () => import('./email-sms/email-sms.module').then(m => m.EmailSmsModule) },
             { path: 'reporting', loadChildren: () => import('./reporting/reporting.module').then(m => m.ReportingModule) },
@@ -25,7 +25,7 @@ const quizRoutes: Routes = [
         ]
     },
     {
-        path:'quiz-preview-mode',
+        path: 'quiz-preview-mode',
         component: PreviewComonent, children: [
             {
                 path: 'attempt-quiz',
