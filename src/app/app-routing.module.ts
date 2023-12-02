@@ -12,16 +12,14 @@ const appRoutes: Routes = [
   { path: "", redirectTo: "quiz-builder", pathMatch: "full" },
   {
     path: "quiz-builder",
-    loadChildren: () => import('./quiz-builder/quiz-builder.module').then(m => m.QuizbuilderModule),
-    canActivate: [FetchToken]
+    loadChildren: () => import('./quiz-builder/quiz-builder.module').then(m => m.QuizbuilderModule)
   },
   {
     path: "quiz",
-    loadChildren: () => import('./quiz/quiz.module').then(m => m.QuizModule),
-    canActivate: [FetchToken]
+    loadChildren: () => import('./quiz/quiz.module').then(m => m.QuizModule)
   },
   {
-    path: ':id', component: PublishCodeRedirectComponent, resolve: { customDomainData: CustomDomainResolve }, canActivate: [IsOtherDomain]
+    path: ':id', component: PublishCodeRedirectComponent, resolve: { customDomainData: CustomDomainResolve }
   },
   { path: "unauthorized", component: UnauthorizedComponent },
   { path: "404", component: NotFoundComponent },
@@ -33,4 +31,4 @@ const appRoutes: Routes = [
   imports: [RouterModule.forRoot(appRoutes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

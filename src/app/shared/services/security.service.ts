@@ -13,8 +13,8 @@ let config = new Config();
 
 @Injectable()
 export class UserInfoService {
-  _info: any = null;
-  userPermissions:any = {};
+  _info: any = {};
+  userPermissions: any = {};
 
   get() {
     return this._info || {};
@@ -28,16 +28,16 @@ export class UserInfoService {
     this.authToken.clear();
   }
 
-  setUserPermissions(){
-    if(this._info.Permissions && this._info.Permissions.length > 0){
-      let currPermission:string = "";
-      let userAllowedPermissionsList:string = this._info.Permissions.join().toLowerCase().split(",");
-      
-      for(let key in GenericClass.permissionObj){
+  setUserPermissions() {
+    if (this._info.Permissions && this._info.Permissions.length > 0) {
+      let currPermission: string = "";
+      let userAllowedPermissionsList: string = this._info.Permissions.join().toLowerCase().split(",");
+
+      for (let key in GenericClass.permissionObj) {
         currPermission = GenericClass.permissionObj[key].toLowerCase();
         this.userPermissions[key] = false;
 
-        if(userAllowedPermissionsList.includes(currPermission)){
+        if (userAllowedPermissionsList.includes(currPermission)) {
           this.userPermissions[key] = true;
         }
       }
@@ -46,20 +46,20 @@ export class UserInfoService {
 
   authToken = {
     _token: null,
-    set: function(token: string) {
+    set: function (token: string) {
       this._token = localStorage.setItem("id_token", token);
     },
-    get: function() {
+    get: function () {
       if (localStorage.getItem("id_token") && !this._token) {
         this._token = localStorage.getItem("id_token");
       }
       return localStorage.getItem("id_token");
     },
-    clear: function() {
+    clear: function () {
       localStorage.removeItem("id_token");
       this._token = null;
     },
-    isSet: function() {
+    isSet: function () {
       return this.get() ? true : false;
     }
   };
@@ -72,7 +72,7 @@ export class SecurityService {
     private router: Router,
     private HTTP: HttpClient,
     private translate: TranslateService
-  ) {}
+  ) { }
   _fetched: boolean = false;
   requiredAuthorizedUser(): Observable<boolean> {
     if (!this._fetched) {
@@ -103,51 +103,51 @@ export class GetToken {
     private userInfoService: UserInfoService,
     private router: Router,
     private sharedService: SharedService
-  ) {}
+  ) { }
   fetchUserToken(token, companycode, previousCompanyCode): Observable<boolean> {
     return this.HTTP.get(
-     
-        "v1/Account/ValidateJwtToken?Module=automatisering&JwtToken=" +
-        token +
-        "&CompanyCode=" +
-        companycode
+
+      "v1/Account/ValidateJwtToken?Module=automatisering&JwtToken=" +
+      token +
+      "&CompanyCode=" +
+      companycode
     )
       .map(response => {
         var officeIdArray = [];
-        if(response["data"].officesParentChildList.length >= 1){
+        if (response["data"].officesParentChildList.length >= 1) {
           response["data"].officesParentChildList.forEach(office => {
             this.officeListArray.push({
-                id: office.id.toString(),
-                name: office.name,
-                type : 'Parent'
+              id: office.id.toString(),
+              name: office.name,
+              type: 'Parent'
             })
-            if(office.children && office.children.length > 0){
+            if (office.children && office.children.length > 0) {
               office.children.forEach(child => {
                 this.officeListArray.push({
-                  id :  child.id.toString(),
-                  name :  child.name,
-                  type  :  'Child'
-                }) 
+                  id: child.id.toString(),
+                  name: child.name,
+                  type: 'Child'
+                })
               })
-          }
+            }
           })
           this.officeListArray.forEach(office => {
-            officeIdArray.push(office.id) 
+            officeIdArray.push(office.id)
           });
         }
         this.sharedService.setProjectTitle(response["data"].CompanyName);
         this.userInfoService.set(response["data"]);
         // localStorage.setItem("id_token", token);
-        if(!previousCompanyCode || previousCompanyCode != companycode){
-          if(companycode){
+        if (!previousCompanyCode || previousCompanyCode != companycode) {
+          if (companycode) {
             // localStorage.setItem("companycode", companycode);
           }
-          if(this.officeListArray.length >= 1){
+          if (this.officeListArray.length >= 1) {
             localStorage.setItem("officeId", this.officeListArray[0].id);
           } else {
             localStorage.setItem("officeId", '');
-           }
-          if(officeIdArray.length >= 1){
+          }
+          if (officeIdArray.length >= 1) {
             localStorage.setItem("officeIds", officeIdArray.toString());
           } else {
             localStorage.setItem("officeIds", '');
@@ -159,10 +159,9 @@ export class GetToken {
       })
       .catch(err => {
         let data = err.error;
-        if(err.status == 501 && data.message == 'Not allowed')
-        {
+        if (err.status == 501 && data.message == 'Not allowed') {
           data.message = 'this is not a dead end. Looks like you tried to open a page which is not shared with you by company admin.'
-          data['message1']='Please get the required access from company admin and try again.'
+          data['message1'] = 'Please get the required access from company admin and try again.'
           this.sharedService.setErrorMessage(data);
           this.router.navigate(['error']);
           return of(false);
@@ -177,8 +176,8 @@ export class GetToken {
   /**
    * Get company details like (companyCode, JobRocketApiUrl, JobRocketApiAuthorizationBearer, JobRocketClientUrl)
    */
-  fetchCompanyDetails(companycode){
+  fetchCompanyDetails(companycode) {
     return this.HTTP.get("v1/Account/ValidateCompanyToken?CompanyCode=" + companycode)
   }
-   
+
 }

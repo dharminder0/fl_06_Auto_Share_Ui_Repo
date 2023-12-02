@@ -10,7 +10,7 @@ import { QuizToolResolver, QuizCategoriesResolve, BrandingAndStylingResolver } f
 import { QuestionsResolver } from "./questions/questions-resolve";
 import { BranchingLogicAuthService } from './branching-logic-auth.service';
 import { ResultResolver } from './results/result.resolver';
-import { CoverPageResolver} from './cover-page/cover-resolve'
+import { CoverPageResolver } from './cover-page/cover-resolve'
 import { ActionComponent } from "./action/action.component";
 import { ContentComponent } from "./content/content.component";
 import { ActionResolver, AppointmentResolver, AutomationResolver } from "./action/action.resolver";
@@ -33,7 +33,7 @@ const quizToolRoutes: Routes = [
             {
                 path: 'cover', component: CoverPageComponent, resolve: {
                     coverPageDetail: CoverPageResolver
-                }, canActivate: [QuizPermissionGaurd,DetectBranchingLogicAuthService]
+                }
             },
             { path: 'branding', component: BrandingComponent },
             { path: 'previous', component: PreviousQuestionComponent },
@@ -54,17 +54,17 @@ const quizToolRoutes: Routes = [
                     runGuardsAndResolvers: 'always',
                     resolve: {
                         questionData: QuestionsResolver
-                    }, canActivate: [DetectBranchingLogicAuthService]
+                    }
                 }]
             },
             {
                 path: 'result/:rId', component: ResultsComponent, resolve: {
                     resultData: ResultResolver
-                }, canActivate: [DetectBranchingLogicAuthService]
+                }
             },
             {
-                path: 'show-multiple-results', component: ShowMultipleResultComponent, canActivate: [DetectBranchingLogicAuthService]
-                
+                path: 'show-multiple-results', component: ShowMultipleResultComponent
+
             },
             {
                 path: 'action/:aId', component: ActionComponent, resolve: {
@@ -76,16 +76,16 @@ const quizToolRoutes: Routes = [
             {
                 path: 'content/:cId', component: ContentComponent, resolve: {
                     contentData: ContentResolver
-                }, canActivate: [DetectBranchingLogicAuthService]
+                }
             },
             {
                 path: 'badge/:bId', component: BadgesComponent, resolve: {
                     badgeData: BadgesResolver
-                }, canActivate: [DetectBranchingLogicAuthService]
+                }
             }
         ], resolve: {
             quizData: QuizToolResolver,
-            brandingAndStyling : BrandingAndStylingResolver,
+            brandingAndStyling: BrandingAndStylingResolver,
             quizCategoriesList: QuizCategoriesResolve
         }
     },
@@ -94,7 +94,7 @@ const quizToolRoutes: Routes = [
             quizData: QuizToolResolver,
             branchingData: BranchingLogicLatestResolve,
             quizCategoriesList: QuizCategoriesResolve
-        }, canActivate: [BranchingLogicAuthService]
+        }
     }
 ];
 

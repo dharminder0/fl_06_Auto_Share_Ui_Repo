@@ -27,9 +27,9 @@ export class ExploreComponent implements OnInit {
   //public officeList:any = [];
   public selectedOffice: any = {};
   public userList;
-  public selectedUser:string = "";
+  public selectedUser: string = "";
   public selectedUserEmail: string = "";
-  public quizList:any=[];
+  public quizList: any = [];
   public modalRef: BsModalRef;
   public quizId;
   public sortByDate;
@@ -39,7 +39,7 @@ export class ExploreComponent implements OnInit {
   public filterDataByUserName: string;
   public AutomationType = [
     { label: "Assessment", value: "2" },
-    {label : "Scored", value :"4"}
+    { label: "Scored", value: "4" }
   ];
   // public AutomationTypeId = "0";
   public automationTypeArray = ["2", "3", "4"];
@@ -49,17 +49,17 @@ export class ExploreComponent implements OnInit {
   //new style
   //public isLandelijkVestiing: boolean = false;
   public showOptionsForFilter: boolean = false;
-  isActiveIconOnHover: any={};
+  isActiveIconOnHover: any = {};
   public searchOffice: string = '';
   public automationType: string = "";
   //public businessUserId:any;
   //public businessUserEmail:any;
   //public sharedMe:boolean;
-  public officeId:any;
-  public isQuizList:boolean=false;
-  public isPublished:boolean=false;
+  public officeId: any;
+  public isQuizList: boolean = false;
+  public isPublished: boolean = false;
   private publishTemplate;
-  @ViewChild("shareQuizTemplate", { read: ViewContainerRef , static:true})
+  @ViewChild("shareQuizTemplate", { read: ViewContainerRef, static: true })
   shareQuizTemplate: ViewContainerRef;
   private openMode;
   public selectedQuiz;
@@ -74,24 +74,24 @@ export class ExploreComponent implements OnInit {
   public userInfo: any = {};
 
   public hoverOnFavorite: any = {};
-  public isFavorited:boolean=false;
-  public isFavorite:boolean=false;
+  public isFavorited: boolean = false;
+  public isFavorite: boolean = false;
   public isStandard;
-  public defaultImage:any="https://res.cloudinary.com/dbbkqtyqn/image/upload/c_fill,w_283,h_134,g_auto,q_auto:best,f_auto/v1588680596/Jobrock/automation-place-holder-corner.png";  
-  public defaultWhatsAppCover:any="https://res.cloudinary.com/dbbkqtyqn/image/upload/c_fill,w_283,h_134,g_auto,q_auto:best,f_auto/v1646131152/Jobrock/whatsapp-place-holder.jpg";
-  public startDate:any;
-  public endDate:any;
-  public isContactAutomationReport:boolean = false;
+  public defaultImage: any = "https://res.cloudinary.com/dbbkqtyqn/image/upload/c_fill,w_283,h_134,g_auto,q_auto:best,f_auto/v1588680596/Jobrock/automation-place-holder-corner.png";
+  public defaultWhatsAppCover: any = "https://res.cloudinary.com/dbbkqtyqn/image/upload/c_fill,w_283,h_134,g_auto,q_auto:best,f_auto/v1646131152/Jobrock/whatsapp-place-holder.jpg";
+  public startDate: any;
+  public endDate: any;
+  public isContactAutomationReport: boolean = false;
 
-  public isRecoding:boolean=false;
-  public isRecoding2:boolean=false;
+  public isRecoding: boolean = false;
+  public isRecoding2: boolean = false;
 
   public moreTagsVisible: any = {};
   public recordsPerData = 0;
-  public pageIndex:number = 1;
-  public startRecord:any = 0;
-  public endRecord:any = 0;
-  public prePageIndex:number = 1;
+  public pageIndex: number = 1;
+  public startRecord: any = 0;
+  public endRecord: any = 0;
+  public prePageIndex: number = 1;
   public preferredOffices: any = [];
   public selectAll: boolean = false;
   public selectedOfficeName = [];
@@ -112,17 +112,17 @@ export class ExploreComponent implements OnInit {
     private shareConfigService: ShareConfigService,
     private sharedService: SharedService,
     private titleService: Title,
-    private metaService : Meta
-  ) {}
+    private metaService: Meta
+  ) { }
 
   ngOnInit() {
-    this.titleService.setTitle( "Explore all | Jobrock" );
+    this.titleService.setTitle("Explore all | Jobrock");
     this.companyCode = this.sharedService.getCookie("clientCode");
     this.isStandard = this.userInfoService.get().IsCreateStandardAutomationPermission;
     // get user info
-    this.userInfo = this.userInfoService._info;
-    if(this.userInfo.IsNPSAutomationPermission){
-      this.automationTypeArray = ["1","2", "3", "4"];
+    this.userInfo = this.userInfoService._info || {};
+    if (this.userInfo.IsNPSAutomationPermission) {
+      this.automationTypeArray = ["1", "2", "3", "4"];
     }
     // this.automationTypeArray = ["1","2", "3", "4"];
     // get offices list
@@ -135,7 +135,7 @@ export class ExploreComponent implements OnInit {
           this.callForSuggestionFilteredData = Object.assign({}, item);
         }
         this.getAutomationListCompanyWise(this.isCompanyWise);
-    });
+      });
 
 
   }
@@ -145,9 +145,9 @@ export class ExploreComponent implements OnInit {
     this.preferredOffices = this.userInfo.PreferredOffices;
     this.getOfficeData = this.userInfo.officesParentChildList;
     let getAllOffices = this.userInfo.OfficeList;
-    if(this.preferredOffices && this.preferredOffices.length > 0){
+    if (this.preferredOffices && this.preferredOffices.length > 0) {
       this.preferredOffices.map((item: any) => {
-        if(getAllOffices && getAllOffices.length > 0){
+        if (getAllOffices && getAllOffices.length > 0) {
           for (let i = 0; i < getAllOffices.length; i++) {
             if (item.id == getAllOffices[i].id) {
               this.selectedOfficeName.push(getAllOffices[i].name);
@@ -155,302 +155,302 @@ export class ExploreComponent implements OnInit {
               break;
             }
           }
-        }    
+        }
       });
 
-     
-      if(this.selectedOfficeName && this.selectedOfficeName.length > 0){
+
+      if (this.selectedOfficeName && this.selectedOfficeName.length > 0) {
         this.selectedOffice.officeName = this.selectedOfficeName.join();
       }
-    }else{
+    } else {
       this.selectAllOffice();
     }
   }
 
-//new style
-getAutomationListCompanyWise(isCompanyWise: boolean) {
-  this.isCompanyWise = isCompanyWise;
-  this.emailSmsSubjectService.changeSearchSection(true)
-  this.showOptionsForFilter = false;
-  this.pageIndex = 1;
-  this.getQuizListdetail();
-}
-
-startOfficeFilter() {
-  this.showOptionsForFilter = !this.showOptionsForFilter;
-}
-
-selectOfficeToFilter(officeName: any, officeId: any) {
-  this.selectedOffice = {};
-  if (this.allOfficeIds.includes(officeId)) {
-    var id = this.allOfficeIds.indexOf(officeId);
-    this.allOfficeIds.splice(id, 1);
-    var officeNames = this.selectedOfficeName.indexOf(officeName);
-    this.selectedOfficeName.splice(officeNames, 1);
-  } else {
-    this.allOfficeIds.push(officeId);
-    this.selectedOfficeName.push(officeName);
-  }
-  //show office name
-  if(this.allOfficeIds && this.allOfficeIds.length > 0){
-    this.selectedOffice.officeName = this.selectedOfficeName.join();
-  }else{
-    this.selectedOffice.officeName = 'Team';
-  }
-  //all  select option
-  if (this.allOfficeIds.length == this.userInfo.OfficeList.length) {
-    this.selectAll = true;
-    this.selectedOffice.officeName = 'All teams';
-  } else {
-    this.selectAll = false;
+  //new style
+  getAutomationListCompanyWise(isCompanyWise: boolean) {
+    this.isCompanyWise = isCompanyWise;
+    this.emailSmsSubjectService.changeSearchSection(true)
+    this.showOptionsForFilter = false;
+    this.pageIndex = 1;
+    this.getQuizListdetail();
   }
 
-  this.searchOffice='';
-  //this.officeId=officeId;
-  this.pageIndex = 1;
-  this.getQuizListdetail();
-  this.emailSmsSubjectService.changeSearchSection(true)
-}
-
-getQuizListdetail(pageIndex?){
-  this.isQuizList = false;
-  this.pageIndex = pageIndex ? pageIndex : this.pageIndex;
-  let officeIds: string = '';
-
-  if(!this.isCompanyWise){
-    //officeIds = this.allOfficeIds.join();
-    officeIds = this.allOfficeIds;
-  }
-  
-  let QuizTypeId = this.automationTypeArray.toString();
-
-  // ready to send
-  let readyToSendObj: any = {
-    // "BusinessUserID": this.userInfo.BusinessUserId,
-    // "BusinessUserEmail": this.userInfo.UserName,
-    "IncludeSharedWithMe": this.isCompanyWise,
-    "OffsetValue": this.userInfo.OffsetValue,
-    "QuizTag": [],
-    "SearchTxt": "",
-    "QuizTypeId": QuizTypeId,
-    // "IsDashboard": true,
-    "OfficeIdList": officeIds,
-    "QuizId": "",
-    "QuizTagId": "",
-    "IsFavorite": "",
-    "CompanyCode": this.companyCode,
-    "PageNo": this.pageIndex,
-    "PageSize": 25,
-    "IsPublished":"",
-    "UsageType":""
+  startOfficeFilter() {
+    this.showOptionsForFilter = !this.showOptionsForFilter;
   }
 
-  if(this.isFavorited){
-    readyToSendObj.IsFavorite = this.isFavorited;
+  selectOfficeToFilter(officeName: any, officeId: any) {
+    this.selectedOffice = {};
+    if (this.allOfficeIds.includes(officeId)) {
+      var id = this.allOfficeIds.indexOf(officeId);
+      this.allOfficeIds.splice(id, 1);
+      var officeNames = this.selectedOfficeName.indexOf(officeName);
+      this.selectedOfficeName.splice(officeNames, 1);
+    } else {
+      this.allOfficeIds.push(officeId);
+      this.selectedOfficeName.push(officeName);
+    }
+    //show office name
+    if (this.allOfficeIds && this.allOfficeIds.length > 0) {
+      this.selectedOffice.officeName = this.selectedOfficeName.join();
+    } else {
+      this.selectedOffice.officeName = 'Team';
+    }
+    //all  select option
+    if (this.allOfficeIds.length == this.userInfo.OfficeList.length) {
+      this.selectAll = true;
+      this.selectedOffice.officeName = 'All teams';
+    } else {
+      this.selectAll = false;
+    }
+
+    this.searchOffice = '';
+    //this.officeId=officeId;
+    this.pageIndex = 1;
+    this.getQuizListdetail();
+    this.emailSmsSubjectService.changeSearchSection(true)
   }
 
-  if(this.isPublished){
-    readyToSendObj.IsPublished = this.isPublished;
-  }
+  getQuizListdetail(pageIndex?) {
+    this.isQuizList = false;
+    this.pageIndex = pageIndex ? pageIndex : this.pageIndex;
+    let officeIds: string = '';
 
-  if (this.callForSuggestionFilteredData.viewData && this.callForSuggestionFilteredData.viewData.length > 0) {
-    
-    this.callForSuggestionFilteredData.viewData.map(function (item: any) {
-      if (item.filterCode == 'qSearch') {
-        readyToSendObj.SearchTxt = item.searchValue;
-      }
-      else if (item.filterCode == 'Automations') {
-        readyToSendObj.QuizId = item.searchValue;
-      }
-      else if (item.filterCode == 'AutomationTypes') {
-        readyToSendObj.QuizTypeId = item.searchValue;
-      }
-      else if (item.filterCode == 'Tag') {
-        readyToSendObj.QuizTagId = item.searchValue;
-      }
-      else if (item.filterCode == 'Usage') {
-        readyToSendObj.UsageType = item.searchValue;
-      }
-    });
-  }
-  // this.quizBuilderApiService.getAutomationListVersion3(readyToSendObj)
-  this.quizBuilderApiService.getAutomationReportList(readyToSendObj)
+    if (!this.isCompanyWise) {
+      //officeIds = this.allOfficeIds.join();
+      officeIds = this.allOfficeIds;
+    }
+
+    let QuizTypeId = this.automationTypeArray.toString();
+
+    // ready to send
+    let readyToSendObj: any = {
+      // "BusinessUserID": this.userInfo.BusinessUserId,
+      // "BusinessUserEmail": this.userInfo.UserName,
+      "IncludeSharedWithMe": this.isCompanyWise,
+      "OffsetValue": this.userInfo.OffsetValue,
+      "QuizTag": [],
+      "SearchTxt": "",
+      "QuizTypeId": QuizTypeId,
+      // "IsDashboard": true,
+      "OfficeIdList": officeIds,
+      "QuizId": "",
+      "QuizTagId": "",
+      "IsFavorite": "",
+      "CompanyCode": this.companyCode,
+      "PageNo": this.pageIndex,
+      "PageSize": 25,
+      "IsPublished": "",
+      "UsageType": ""
+    }
+
+    if (this.isFavorited) {
+      readyToSendObj.IsFavorite = this.isFavorited;
+    }
+
+    if (this.isPublished) {
+      readyToSendObj.IsPublished = this.isPublished;
+    }
+
+    if (this.callForSuggestionFilteredData.viewData && this.callForSuggestionFilteredData.viewData.length > 0) {
+
+      this.callForSuggestionFilteredData.viewData.map(function (item: any) {
+        if (item.filterCode == 'qSearch') {
+          readyToSendObj.SearchTxt = item.searchValue;
+        }
+        else if (item.filterCode == 'Automations') {
+          readyToSendObj.QuizId = item.searchValue;
+        }
+        else if (item.filterCode == 'AutomationTypes') {
+          readyToSendObj.QuizTypeId = item.searchValue;
+        }
+        else if (item.filterCode == 'Tag') {
+          readyToSendObj.QuizTagId = item.searchValue;
+        }
+        else if (item.filterCode == 'Usage') {
+          readyToSendObj.UsageType = item.searchValue;
+        }
+      });
+    }
+    // this.quizBuilderApiService.getAutomationListVersion3(readyToSendObj)
+    this.quizBuilderApiService.getAutomationReportList(readyToSendObj)
       .subscribe(data => {
         //pagination
-          if(data.CurrentPageIndex == 1){
-            this.startRecord = 1;
-            this.endRecord = data.QuizListResponse.length + this.startRecord - 1 ;
-          }else if(data.CurrentPageIndex > 1 && this.prePageIndex < data.CurrentPageIndex){
-            this.startRecord = this.endRecord + 1;
-            this.endRecord = data.QuizListResponse.length + this.startRecord - 1;
-          }else if(data.CurrentPageIndex > 1 && this.prePageIndex > data.CurrentPageIndex){
-            this.startRecord = this.startRecord - data.QuizListResponse.length;
-            this.endRecord = this.endRecord - this.quizList.length;
-          }
+        if (data.CurrentPageIndex == 1) {
+          this.startRecord = 1;
+          this.endRecord = data.QuizListResponse.length + this.startRecord - 1;
+        } else if (data.CurrentPageIndex > 1 && this.prePageIndex < data.CurrentPageIndex) {
+          this.startRecord = this.endRecord + 1;
+          this.endRecord = data.QuizListResponse.length + this.startRecord - 1;
+        } else if (data.CurrentPageIndex > 1 && this.prePageIndex > data.CurrentPageIndex) {
+          this.startRecord = this.startRecord - data.QuizListResponse.length;
+          this.endRecord = this.endRecord - this.quizList.length;
+        }
         this.recordsPerData = data.TotalRecords;
         this.prePageIndex = data.CurrentPageIndex;
 
-          // if(data && data.QuizListResponse && data.QuizListResponse.length > 0 && this.isPublished){
-          //   this.quizList = [];
-          //   for(let i = 0; i < data.QuizListResponse.length; i++){
-          //     if(data.QuizListResponse[i].IsPublished == this.isPublished){
-          //       this.quizList.push(data.QuizListResponse[i]);
-          //     }
-          //   }
-          // }else{
-            this.quizList = data.QuizListResponse;
-          //}
+        // if(data && data.QuizListResponse && data.QuizListResponse.length > 0 && this.isPublished){
+        //   this.quizList = [];
+        //   for(let i = 0; i < data.QuizListResponse.length; i++){
+        //     if(data.QuizListResponse[i].IsPublished == this.isPublished){
+        //       this.quizList.push(data.QuizListResponse[i]);
+        //     }
+        //   }
+        // }else{
+        this.quizList = data.QuizListResponse;
+        //}
 
-          if(this.quizList && this.quizList.length > 0){
+        if (this.quizList && this.quizList.length > 0) {
           this.quizList.forEach(quiz => {
             quiz.createdOnFormat = moment(quiz.createdOn).format("ll");
             quiz.lastEditOnFormat = moment(quiz.LastEditDate).format("ll");
-            if(quiz.QuizCoverDetail.QuizCoverImage){
+            if (quiz.QuizCoverDetail.QuizCoverImage) {
               var content = quiz.QuizCoverDetail.QuizCoverImage.split('.');
-              var contentType = content[content.length-1];
-              if(contentType === 'jpg' || contentType === 'png' || contentType === 'jpeg' || contentType === 'gif' || contentType === 'tiff' || contentType === 'svg' || contentType === 'webp' || contentType===''){
-                let uploadIndex=quiz.QuizCoverDetail.QuizCoverImage.indexOf( "upload/");
-                let uploadedSubstring=quiz.QuizCoverDetail.QuizCoverImage.substring(0,(uploadIndex+7));
-                let c_cropIndex=quiz.QuizCoverDetail.QuizCoverImage.indexOf( "c_crop/");
-                if(c_cropIndex != -1){
-                let c_cropSubstring=quiz.QuizCoverDetail.QuizCoverImage.substring(c_cropIndex+7);
-                quiz.QuizCoverDetail.QuizCoverImage=uploadedSubstring + c_cropSubstring;
+              var contentType = content[content.length - 1];
+              if (contentType === 'jpg' || contentType === 'png' || contentType === 'jpeg' || contentType === 'gif' || contentType === 'tiff' || contentType === 'svg' || contentType === 'webp' || contentType === '') {
+                let uploadIndex = quiz.QuizCoverDetail.QuizCoverImage.indexOf("upload/");
+                let uploadedSubstring = quiz.QuizCoverDetail.QuizCoverImage.substring(0, (uploadIndex + 7));
+                let c_cropIndex = quiz.QuizCoverDetail.QuizCoverImage.indexOf("c_crop/");
+                if (c_cropIndex != -1) {
+                  let c_cropSubstring = quiz.QuizCoverDetail.QuizCoverImage.substring(c_cropIndex + 7);
+                  quiz.QuizCoverDetail.QuizCoverImage = uploadedSubstring + c_cropSubstring;
                 }
                 quiz.QuizCoverDetail.QuizCoverImage = quiz.QuizCoverDetail.QuizCoverImage.replace('upload/', "upload/c_fill,w_283,h_134,g_auto,q_auto:best,f_auto/");
-                
-                quiz.isImage  = true;
-              }else { 
-                quiz.isImage  = false;
+
+                quiz.isImage = true;
+              } else {
+                quiz.isImage = false;
               }
-            }else{
-              quiz.isImage  = true;
+            } else {
+              quiz.isImage = true;
             }
-            quiz.isQuizTags=false;
-            quiz.isAction=false;
+            quiz.isQuizTags = false;
+            quiz.isAction = false;
           });
-        }else{
-          this.isQuizList=true;
+        } else {
+          this.isQuizList = true;
         }
-        },
+      },
         error => {
-          this.isQuizList=false;
+          this.isQuizList = false;
         }
       );
-   //   this.officeId='';
-}
+    //   this.officeId='';
+  }
 
 
-setPermissionDataToGuardService(quizData){
-  this.quizPermissionGaurd.setPermissionData(quizData);
-  if((this.isCompanyWise && this.isStandard) || !this.isCompanyWise){
-    if(quizData.UsageTypes && quizData.UsageTypes.includes(3) && quizData.QuizTypeId != quizTypeEnum.Nps){
-      if(quizData.IsBranchingLogicEnabled){
-        window.open("quiz-builder/quiz-tool/"+quizData.Id+"/branching-logic");
-      }else{
-        window.open("quiz-builder/quiz-tool/"+quizData.Id);
+  setPermissionDataToGuardService(quizData) {
+    this.quizPermissionGaurd.setPermissionData(quizData);
+    if ((this.isCompanyWise && this.isStandard) || !this.isCompanyWise) {
+      if (quizData.UsageTypes && quizData.UsageTypes.includes(3) && quizData.QuizTypeId != quizTypeEnum.Nps) {
+        if (quizData.IsBranchingLogicEnabled) {
+          window.open("quiz-builder/quiz-tool/" + quizData.Id + "/branching-logic");
+        } else {
+          window.open("quiz-builder/quiz-tool/" + quizData.Id);
+        }
+      } else if (quizData.IsBranchingLogicEnabled && quizData.QuizTypeId != 1) {
+        window.open("quiz-builder/quiz-tool/" + quizData.Id + "/branching-logic");
+      } else {
+        window.open("quiz-builder/quiz-tool/" + quizData.Id + "/cover");
       }
-    }else if(quizData.IsBranchingLogicEnabled && quizData.QuizTypeId != 1){
-      window.open("quiz-builder/quiz-tool/"+quizData.Id+"/branching-logic");
-    }else{
-      window.open("quiz-builder/quiz-tool/"+quizData.Id+"/cover");
     }
   }
-}
 
-openPermissionPopup(template){
-  this.modalRef = this.modalService.show(template, { class: "modal-sm" });
-}
+  openPermissionPopup(template) {
+    this.modalRef = this.modalService.show(template, { class: "modal-sm" });
+  }
 
-onPublished(){
-  this.isPublished = !this.isPublished;
-  this.pageIndex = 1;
-  this.emailSmsSubjectService.changeSearchSection(true)
-  this.getQuizListdetail();
-}
+  onPublished() {
+    this.isPublished = !this.isPublished;
+    this.pageIndex = 1;
+    this.emailSmsSubjectService.changeSearchSection(true)
+    this.getQuizListdetail();
+  }
 
-onAction(quizid){
-  for(let i=0; i<this.quizList.length;i++){
-    if(this.quizList[i].Id==quizid){
-      this.quizList[i].isAction=!this.quizList[i].isAction;
+  onAction(quizid) {
+    for (let i = 0; i < this.quizList.length; i++) {
+      if (this.quizList[i].Id == quizid) {
+        this.quizList[i].isAction = !this.quizList[i].isAction;
+      }
     }
   }
-}
 
-dynamicTemplateShare(quiz) {
-  this.shareQuizTemplate.clear();
-  var SHARE_QuizTemplate = this._crf.resolveComponentFactory(
-    ShareQuizComponent
-  );
-  var SHARE_QuizComponentRef = this.shareQuizTemplate.createComponent(
-    SHARE_QuizTemplate
-  );
-  SHARE_QuizComponentRef.instance.quizData = quiz;
-}
+  dynamicTemplateShare(quiz) {
+    this.shareQuizTemplate.clear();
+    var SHARE_QuizTemplate = this._crf.resolveComponentFactory(
+      ShareQuizComponent
+    );
+    var SHARE_QuizComponentRef = this.shareQuizTemplate.createComponent(
+      SHARE_QuizTemplate
+    );
+    SHARE_QuizComponentRef.instance.quizData = quiz;
+  }
 
-onDuplicatedQuiz(publishTemplate, quiz) {
-  this.publishTemplate = publishTemplate;
-  this.quizId = quiz.Id;
-  this.quizBuilderApiService.createDuplicateQuiz(quiz.Id).subscribe(
-    data => {
-      let res=data['data'];
-      if(quiz.IsBranchingLogicEnabled && quiz.QuizTypeId != 1){
-        window.open("quiz-builder/quiz-tool/"+res+"/branching-logic");
-      }else{
-        window.open("quiz-builder/quiz-tool/"+res+"/cover");
+  onDuplicatedQuiz(publishTemplate, quiz) {
+    this.publishTemplate = publishTemplate;
+    this.quizId = quiz.Id;
+    this.quizBuilderApiService.createDuplicateQuiz(quiz.Id).subscribe(
+      data => {
+        let res = data['data'];
+        if (quiz.IsBranchingLogicEnabled && quiz.QuizTypeId != 1) {
+          window.open("quiz-builder/quiz-tool/" + res + "/branching-logic");
+        } else {
+          window.open("quiz-builder/quiz-tool/" + res + "/cover");
+        }
+      },
+      error => {
+        this.notificationsService.error('Error');
+        // this.publishModal(publishTemplate, quizId, "DUPLICATE");
       }
-    },
-    error => {
-      this.notificationsService.error('Error');
-      // this.publishModal(publishTemplate, quizId, "DUPLICATE");
+    );
+  }
+
+  publishModal(template: TemplateRef<any>, quizId, Mode) {
+    this.openMode = Mode;
+    // this.modalRef = this.modalService.show(template, { class: "modal-sm" });
+  }
+
+  onRemovedQuiz(template, item) {
+    if (item.QuizTypeId == 1) {
+      this.automationType = "NPS";
+    } else if (item.QuizTypeId == 2) {
+      this.automationType = "BASIC";
+    } else if (item.QuizTypeId == 3) {
+      this.automationType = "PROFILE";
+    } else {
+      this.automationType = "SCORED";
     }
-  );
-}
+    this.quizId = item.Id;
+    this.deleteQuizTemplate(template);
+  }
 
-publishModal(template: TemplateRef<any>, quizId, Mode) {
-  this.openMode = Mode;
-  // this.modalRef = this.modalService.show(template, { class: "modal-sm" });
-}
-
-onRemovedQuiz(template, item) {
-  if(item.QuizTypeId == 1){
-    this.automationType = "NPS";
- }else if(item.QuizTypeId == 2){
-    this.automationType = "BASIC";
- }else if(item.QuizTypeId == 3){
-    this.automationType = "PROFILE";
- }else{
-   this.automationType = "SCORED";
- }
- this.quizId = item.Id;
-  this.deleteQuizTemplate(template);
-}
-
-deleteQuizTemplate(template: TemplateRef<any>) {
-  this.modalRef = this.modalService.show(template, { class: "modal-sm" });
-}
+  deleteQuizTemplate(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: "modal-sm" });
+  }
 
   //Modal confirm
-delete(): void {
-  this.quizBuilderApiService.removeQuiz(this.quizId).subscribe(
-    data => {
-     // this.notificationsService.success("Success");
-      this.quizList = this.quizList.filter(quiz => quiz.Id != this.quizId);
-      this.pageIndex = 1;
-      this.getQuizListdetail();
-    },
+  delete(): void {
+    this.quizBuilderApiService.removeQuiz(this.quizId).subscribe(
+      data => {
+        // this.notificationsService.success("Success");
+        this.quizList = this.quizList.filter(quiz => quiz.Id != this.quizId);
+        this.pageIndex = 1;
+        this.getQuizListdetail();
+      },
       error => {
-     //   this.notificationsService.error("Error");
+        //   this.notificationsService.error("Error");
       }
     );
     this.modalRef.hide();
-}
+  }
 
   //Modal decline
   cancel(): void {
     this.modalRef.hide();
   }
 
-//end new style
+  //end new style
 
   onSelectAutomationType(index) {
     if (this.automationTypeArray.includes(this.AutomationType[index].value)) {
@@ -502,7 +502,7 @@ delete(): void {
     this.quizBuilderApiService.getUserListData(officeId).subscribe(
       data => {
         this.userList = data;
-        if(this.userList.length > 0) {
+        if (this.userList.length > 0) {
           this.selectedUser = this.userList[0].BusinessUserId;
           this.selectedUserEmail = this.userList[0].UserName;
           this.getQuizList(
@@ -604,7 +604,7 @@ delete(): void {
         //this.notificationsService.success("Success");
       },
       error => {
-      //  this.publishModal(publishTemplate, quizId);
+        //  this.publishModal(publishTemplate, quizId);
       }
     );
   }
@@ -618,8 +618,8 @@ delete(): void {
         } else if (this.openMode === "DUPLICATE") {
           this.onDuplicatedQuiz(this.publishTemplate, this.quizId);
         }
-        this.selectedQuiz ?this.selectedQuiz.IsPublished = true:'';
-        this.selectedQuiz  ? this.selectedQuiz.PublishedCode = data:'';
+        this.selectedQuiz ? this.selectedQuiz.IsPublished = true : '';
+        this.selectedQuiz ? this.selectedQuiz.PublishedCode = data : '';
       },
       error => {
         this.notificationsService.error("Error");
@@ -645,10 +645,10 @@ delete(): void {
     this.filterDataByUserName = "";
   }
 
-  onStatistic(quiz){
+  onStatistic(quiz) {
     this.startDate = moment().subtract(1, 'months').format('L');
     this.endDate = moment().format('L');
-    window.open(`quiz/automation-report?QuizId=${quiz.Id}&StartDate=${this.startDate}&EndDate=${this.endDate}`,"_blank");
+    window.open(`quiz/automation-report?QuizId=${quiz.Id}&StartDate=${this.startDate}&EndDate=${this.endDate}`, "_blank");
   }
 
   onShowPreview(publishTemplate, quiz) {
@@ -660,7 +660,7 @@ delete(): void {
           .getQuizCode(quizData.PublishedCode, "PREVIEW")
           .subscribe(
             data => {
-              window.open("quiz-preview/attempt-quiz?QuizCodePreview="+data,"_blank");
+              window.open("quiz-preview/attempt-quiz?QuizCodePreview=" + data, "_blank");
             },
             error => {
               this.notificationsService.error("Error");
@@ -690,18 +690,18 @@ delete(): void {
   }
 
   // call for favorite selection
-  selectFavoriteList(selectedId:any, isFavorite:any){
+  selectFavoriteList(selectedId: any, isFavorite: any) {
     this.isFavorite = !isFavorite;
 
     this.quizBuilderApiService.updateQuizFavoriteStatus(selectedId, this.isFavorite, this.companyCode).subscribe(
       data => {
-        if(data == "Favorite Status Updated"){
+        if (data == "Favorite Status Updated") {
           this.quizList.map(function (item: any) {
-            if(item.Id == selectedId){
-              if(item.IsFavorited){
+            if (item.Id == selectedId) {
+              if (item.IsFavorited) {
                 item.IsFavorited = false;
               }
-              else{
+              else {
                 item.IsFavorited = true;
               }
             }
@@ -710,54 +710,54 @@ delete(): void {
           this.pageIndex = 1;
           this.getQuizListdetail();
         }
-        
+
       },
       error => {
-      //  this.publishModal(publishTemplate, quizId);
+        //  this.publishModal(publishTemplate, quizId);
       }
     );
   }
 
   // get all favorite list
-  getFavoriteList(){
+  getFavoriteList() {
     this.isFavorited = !this.isFavorited;
     this.pageIndex = 1;
     this.getQuizListdetail();
   }
 
   // select tag to filter
-  selectTagToFilter(selectedTag:any){
-    this.shareConfigService.quizTagsReadyToFilter =  Object.assign({}, selectedTag);
+  selectTagToFilter(selectedTag: any) {
+    this.shareConfigService.quizTagsReadyToFilter = Object.assign({}, selectedTag);
     this.shareConfigService.changeQuizTagsReadyToFilter();
   }
 
-  onRecoding(){
+  onRecoding() {
     this.isRecoding = true;
   }
 
-  onRecodings(){
+  onRecodings() {
     this.isRecoding2 = true;
   }
-  
-  closeRecording(event){
+
+  closeRecording(event) {
     this.isRecoding = false;
   }
-  closeRecordings(event){
+  closeRecordings(event) {
     this.isRecoding2 = false;
   }
 
-//select all offices
+  //select all offices
   onSelectAll() {
     this.selectAllOffice();
     this.getQuizListdetail();
   }
 
-  selectAllOffice(){
+  selectAllOffice() {
     this.selectAll = !this.selectAll;
     this.selectedOfficeName = [];
     this.allOfficeIds = [];
     this.selectedOffice.officeName = 'Team';
-    if (this.selectAll) {
+    if (this.selectAll && this.userInfo.OfficeList) {
       this.userInfo.OfficeList.map(item => {
         this.allOfficeIds.push(item.id);
         this.selectedOfficeName.push(item.name)
@@ -766,8 +766,8 @@ delete(): void {
     }
   }
 
-  ngOnDestroy(){
-    this.titleService.setTitle( "Automation | Jobrock");
+  ngOnDestroy() {
+    this.titleService.setTitle("Automation | Jobrock");
   }
 
 }
